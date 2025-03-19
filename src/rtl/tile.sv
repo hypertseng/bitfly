@@ -20,8 +20,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-`timescale 1ns / 1ps
-
 module tile (
     input  logic        clk,
     input  logic        rst_n,
@@ -56,11 +54,6 @@ module tile (
     end else begin
       // 优先级控制：output_en 优先于 en
       if (output_en) begin
-        // 输出当前 output_regs 的值
-        for (int i = 0; i < 8; i++) begin
-          output_out[i*8+:8] <= output_regs[i];  // 输出 output_regs 的值
-        end
-
         // 写入来自其他 tile 的新值
         for (int i = 0; i < 8; i++) begin
           output_regs[i] <= $signed(input_output_reg[i*8+:8]);  // 将 int8 转为 int8
@@ -124,5 +117,12 @@ module tile (
     weight_regs[0]
   };
   assign activation_out = activation_reg;
-
+  
+  // 输出当前 output_regs 的值
+  always_comb begin
+    for (int i = 0; i < 8; i++) begin
+      output_out[i*8+:8] = output_regs[i];  // 输出 output_regs 的值
+    end
+  end
+    
 endmodule
