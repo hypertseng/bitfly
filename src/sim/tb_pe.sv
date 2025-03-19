@@ -27,7 +27,7 @@ module tb_pe;
   logic [63:0] activations;  // 64-bit activations (8x int8)
 
   // Outputs
-  logic [15:0] result;  // Final int16 result
+  logic [11:0] result;  // Final int16 result
 
   // Instantiate the module
   pe uut (
@@ -74,7 +74,7 @@ module tb_pe;
 
   // Dump waveform for power analysis
   initial begin
-    $dumpfile("waveform_int16.vcd");  // Updated waveform file name
+    $dumpfile("waveform_int.vcd");  // Updated waveform file name
     $dumpvars(0, tb_pe);
   end
 

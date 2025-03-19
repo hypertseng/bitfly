@@ -20,7 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module tile (
+module tile #(
+    parameter BIT_ACT    = 8,   // 激活值位宽（int8）
+    parameter BIT_WEIGHT = 1    // 权值位宽（int1）
+) (
     input  logic        clk,
     input  logic        rst_n,
     input  logic        en,
@@ -33,96 +36,68 @@ module tile (
     output logic [63:0] output_out         // 输出寄存器输出（8x int8）
 );
 
-  // 流水线寄存器
-  logic [63:0] activation_reg;  // 64-bit 激活寄存器
-  logic [7:0] weight_regs[8];  // 8 个 8-bit 权重寄存器
-  logic signed [15:0] patial_sum_regs[8];  // 8 个 16-bit 累加寄存器
-  logic signed [7:0] output_regs[8];  // 8 个 8-bit 输出寄存器
+  //--- 寄存器定义 ---//
+  logic [63:0] activation_reg;  // 激活寄存器
+  logic [63:0] weight_reg;  // 权重寄存器（8x 8-bit）
+  logic signed [11:0] partial_sum_reg[8];  // 累加寄存器（12-bit）
+  logic [63:0] output_reg;  // 输出寄存器（8x int8）
 
-  // PE 输出（unpacked array）
-  logic signed [15:0] pe_outputs[8];  // PE 输出
+  //--- PE输出接口 ---//
+  logic signed [11:0] pe_outputs[8];  // PE输出（12-bit）
 
-  // 寄存器更新逻辑
+  //--- 寄存器更新逻辑（修复关键问题）---//
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       activation_reg <= '0;
-      for (int i = 0; i < 8; i++) begin
-        weight_regs[i] <= '0;
-        patial_sum_regs[i] <= '0;
-        output_regs[i] <= '0;
-      end
+      weight_reg     <= '0;
+      output_reg     <= '0;
+      foreach (partial_sum_reg[i]) partial_sum_reg[i] <= '0;
     end else begin
-      // 优先级控制：output_en 优先于 en
       if (output_en) begin
-        // 写入来自其他 tile 的新值
-        for (int i = 0; i < 8; i++) begin
-          output_regs[i] <= $signed(input_output_reg[i*8+:8]);  // 将 int8 转为 int8
-        end
+        // 模式1：写入其他tile的输出值
+        output_reg <= input_output_reg;
       end else if (en) begin
-        // 累加写入 patial_sum_regs
-        activation_reg <= activations;  // 直接存储 64-bit 激活数据
+        // 模式2：正常计算流程
+        activation_reg <= activations;  // 激活向右传递
+        weight_reg     <= weights;  // 权重向下传递
 
-        // 权重分发：将64-bit输入拆分为8组8-bit
-        for (int i = 0; i < 8; i++) begin
-          weight_regs[i] <= weights[i*8+:8];
+        // 累加逻辑：PE输出与当前累加值相加
+        foreach (partial_sum_reg[i]) begin
+          partial_sum_reg[i] <= partial_sum_reg[i] + pe_outputs[i];
         end
 
-        // 累加器：将 pe_outputs 与 patial_sum_regs 按部分累加
-        for (int i = 0; i < 8; i++) begin
-          logic signed [15:0] temp_sum;  // 16 位有符号数，用于累加
-          temp_sum = $signed(pe_outputs[i]) + $signed(patial_sum_regs[i]);
-          patial_sum_regs[i] <= temp_sum;  // 直接存储 16 位结果
-        end
-
-        // 将 patial_sum_regs 的值转换为 int8 并存储到 output_regs
-        for (int i = 0; i < 8; i++) begin
-          logic signed [7:0] saturated_value;  // 饱和后的 int8 值
-          // 饱和处理
-          if (patial_sum_regs[i] > $signed({1'b0, {7{1'b1}}})) begin
-            saturated_value = 8'sh7F;  // 最大值 127
-          end else if (patial_sum_regs[i] < $signed({1'b1, {7{1'b0}}})) begin
-            //            $display("%d",$signed(patial_sum_regs[i]));
-            //            $display("%d",$signed({1'b1, {7{1'b0}}}));
-            saturated_value = 8'sh80;  // 最小值 -128
+        // 饱和处理：必须在时序逻辑中更新输出寄存器！
+        foreach (partial_sum_reg[i]) begin
+          logic signed [7:0] saturated;
+          if (partial_sum_reg[i] > 127) begin
+            saturated = 8'sh7F;  // 最大值 127
+          end else if (partial_sum_reg[i] < -128) begin
+            saturated = 8'sh80;  // 最小值 -128
           end else begin
-            saturated_value = patial_sum_regs[i][7:0];  // 取低 8 位
-            //            $display("%d",$signed(saturated_value));
+            saturated = partial_sum_reg[i][7:0];  // 直接截断低8位
           end
-          output_regs[i] <= saturated_value;  // 存储到 output_regs
+          output_reg[i*8+:8] <= saturated;  // 更新输出寄存器
         end
       end
     end
   end
 
-  // PE阵列实例化
+  //--- 输出信号直接连接寄存器 ---//
+  assign weight_out     = weight_reg;  // 向下传递权重
+  assign activation_out = activation_reg;  // 向右传递激活
+  assign output_out     = output_reg;  // 向左传递输出
+
+  //--- PE阵列实例化（关键修复：权重索引对齐）---//
   generate
     for (genvar i = 0; i < 8; i++) begin : pe_array
-      pe u_pe (
-          .weights    (weights[i*8+:8]),  // 每个 PE 获得 8-bit 权重
-          .activations(activations),      // 每个 PE 获得 8-int8 激活
-          .result     (pe_outputs[i])     // PE 输出
+      pe #(
+          .BIT_ACT   (BIT_ACT),
+          .BIT_WEIGHT(BIT_WEIGHT)
+      ) u_pe (
+          .weights    (weights[i*8+:8]),  // 第i个8-bit段
+          .activations(activations),      // 所有PE共享激活输入
+          .result     (pe_outputs[i])     // 12-bit输出
       );
     end
   endgenerate
-
-  // 输出逻辑
-  assign weight_out = {
-    weight_regs[7],
-    weight_regs[6],
-    weight_regs[5],
-    weight_regs[4],
-    weight_regs[3],
-    weight_regs[2],
-    weight_regs[1],
-    weight_regs[0]
-  };
-  assign activation_out = activation_reg;
-  
-  // 输出当前 output_regs 的值
-  always_comb begin
-    for (int i = 0; i < 8; i++) begin
-      output_out[i*8+:8] = output_regs[i];  // 输出 output_regs 的值
-    end
-  end
-    
 endmodule

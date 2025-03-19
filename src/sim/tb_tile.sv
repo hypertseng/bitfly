@@ -75,9 +75,7 @@ module tb_tile ();
     #10;
 
     // 使能 output_en 并输出结果
-    #10;
-    output_en = 1;
-    #10;
+    #10 output_en = 1;
     $display("Weight Out: %h", weight_out);
     $display("Activation Out: %h %h %h %h %h %h %h %h", $signed(activation_out[63:56]),
              $signed(activation_out[55:48]), $signed(activation_out[47:40]),
@@ -101,9 +99,7 @@ module tb_tile ();
     #10;
 
     // 使能 output_en 并输出结果
-    #10;
-    output_en = 1;
-    #10;
+    #10 output_en = 1;
     $display("Weight Out: %h", weight_out);
     $display("Activation Out: %h %h %h %h %h %h %h %h", $signed(activation_out[63:56]),
              $signed(activation_out[55:48]), $signed(activation_out[47:40]),
@@ -158,10 +154,7 @@ module tb_tile ();
     #10;
 
     // 使能 output_en 并输出结果
-    #10;
-    output_en = 1;
-    #10;
-
+    #10 output_en = 1;
     $display("Weight Out after 2nd cycle: %h", weight_out);
     $display("Activation Out after 2nd cycle: %h %h %h %h %h %h %h %h",
              $signed(activation_out[63:56]), $signed(activation_out[55:48]),
@@ -186,9 +179,7 @@ module tb_tile ();
     #10;
 
     // 使能 output_en 并输出结果
-    #10;
-    output_en = 1;
-    #10;
+    #10 output_en = 1;
     $display("Weight Out: %h", weight_out);
     $display("Activation Out: %h %h %h %h %h %h %h %h", $signed(activation_out[63:56]),
              $signed(activation_out[55:48]), $signed(activation_out[47:40]),
@@ -212,9 +203,7 @@ module tb_tile ();
     #10;
 
     // 使能 output_en 并输出结果
-    #10;
-    output_en = 1;
-    #10;
+    #10 output_en = 1;
     $display("Weight Out: %h", weight_out);
     $display("Activation Out: %h %h %h %h %h %h %h %h", $signed(activation_out[63:56]),
              $signed(activation_out[55:48]), $signed(activation_out[47:40]),
@@ -238,9 +227,7 @@ module tb_tile ();
     #10;
 
     // 使能 output_en 并输出结果
-    #10;
-    output_en = 1;
-    #10;
+    #10 output_en = 1;
     $display("Weight Out: %h", weight_out);
     $display("Activation Out: %h %h %h %h %h %h %h %h", $signed(activation_out[63:56]),
              $signed(activation_out[55:48]), $signed(activation_out[47:40]),
@@ -264,9 +251,7 @@ module tb_tile ();
     #10;
 
     // 使能 output_en 并输出结果
-    #10;
-    output_en = 1;
-    #10;
+    #10 output_en = 1;
     $display("Weight Out: %h", weight_out);
     $display("Activation Out: %h %h %h %h %h %h %h %h", $signed(activation_out[63:56]),
              $signed(activation_out[55:48]), $signed(activation_out[47:40]),
@@ -290,9 +275,7 @@ module tb_tile ();
     #10;
 
     // 使能 output_en 并输出结果
-    #10;
-    output_en = 1;
-    #10;
+    #10 output_en = 1;
     $display("Weight Out: %h", weight_out);
     $display("Activation Out: %h %h %h %h %h %h %h %h", $signed(activation_out[63:56]),
              $signed(activation_out[55:48]), $signed(activation_out[47:40]),

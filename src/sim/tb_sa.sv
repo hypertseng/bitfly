@@ -20,8 +20,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-`timescale 1ns / 1ps
-
 module tb_sa;
 
   // ----------------------
@@ -222,8 +220,8 @@ module tb_sa;
 
     output_en = 1;
     // 打印输出结果
+    #(CLK_PERIOD);
     for (int i = 0; i < COLS; i++) begin
-      #(CLK_PERIOD);
       $display("Output Data:");
       for (int i = 0; i < ROWS; i++) begin
         $display("output_data[%0d] = %h", i, output_data[i]);
