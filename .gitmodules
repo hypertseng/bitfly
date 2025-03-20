@@ -1,0 +1,3 @@
+[submodule "ara"]
+	path = ara
+	url = https://github.com/pulp-platform/ara.git
