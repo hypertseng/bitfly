@@ -1,5 +1,5 @@
-#define MATCH_MPCFG 0xb
-#define MASK_MPCFG 0x7fff
+#define MATCH_MPCFG 0x2b
+#define MASK_MPCFG 0xfff
 #define MATCH_MPLE 0x200b
 #define MASK_MPLE 0x7fff
 #define MATCH_MPMM 0x600b
