@@ -59,6 +59,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     output `STRUCT_PORT_BITS(pe_resp_t_bits)               pe_resp_o,
     output logic                                           alu_vinsn_done_o,
     output logic                                           mfpu_vinsn_done_o,
+    output logic                                           mpu_insn_done_o,
     input  logic                [NrVInsn-1:0][NrVInsn-1:0] global_hazard_table_i,
     // Interface with the Store unit
     output elen_t                                          stu_operand_o,
@@ -105,7 +106,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     // Interface between the Mask unit and the VFUs
     input  strb_t                                          mask_i,
     input  logic                                           mask_valid_i,
-    output logic                                           mask_ready_o,
+    output logic                                           mask_ready_o
   );
 
   `include "common_cells/registers.svh"
@@ -219,6 +220,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic                 [NrVInsn-1:0]         alu_vinsn_done;
   logic                                       mfpu_ready;
   logic                 [NrVInsn-1:0]         mfpu_vinsn_done;
+  logic                                       mpu_ready;
+  logic                 [NrVInsn-1:0]         mpu_insn_done;
   // Interface with the MaskB operand queue (VRGATHER/VCOMPRESS)
   logic                                       mask_b_cmd_pop_d, mask_b_cmd_pop_q;
   `FF(mask_b_cmd_pop_q, mask_b_cmd_pop_d, 1'b0, clk_i, rst_ni);
@@ -259,6 +262,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .operand_request_ready_i(operand_request_ready),
     .alu_vinsn_done_o       (alu_vinsn_done_o     ),
     .mfpu_vinsn_done_o      (mfpu_vinsn_done_o    ),
+    .mpu_insn_done_o        (mpu_insn_done_o      ),
     // Interface with the Operand Queue
     .mask_b_cmd_pop_i       (mask_b_cmd_pop_q     ),
     // Interface with the VFUs
@@ -268,6 +272,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .alu_vinsn_done_i       (alu_vinsn_done       ),
     .mfpu_ready_i           (mfpu_ready           ),
     .mfpu_vinsn_done_i      (mfpu_vinsn_done      ),
+    .mpu_ready_i            (mpu_ready            ),
+    .mpu_insn_done_i        (mpu_insn_done        ),
     // From the MASKU - for VRGATHER/VCOMPRESS
     .masku_vrgat_req_valid_i(masku_vrgat_req_valid_i ),
     .masku_vrgat_req_ready_o(masku_vrgat_req_ready_o ),
@@ -431,6 +437,12 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic sldu_operand_opqueues_ready, sldu_addrgen_opqueue_ready;
   logic sldu_addrgen_operand_opqueues_valid;
 
+  // SA 输入输出信号
+  elen_t mpu_act_operand [3:0], mpu_wgt_operand [3:0], mpu_output_data [3:0];
+  logic  [3:0] mpu_act_operand_valid, mpu_wgt_operand_valid, mpu_output_valid;
+  logic  [3:0] mpu_act_operand_ready, mpu_wgt_operand_ready, mpu_output_ready;
+
+
   operand_queues_stage #(
     .NrLanes            (NrLanes            ),
     .VLEN               (VLEN               ),
@@ -476,7 +488,18 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     // Mask Unit
     .mask_operand_o                   (mask_operand_o[1:0]                ),
     .mask_operand_valid_o             (mask_operand_valid_o[1:0]          ),
-    .mask_operand_ready_i             (mask_operand_ready_i[1:0]          )
+    .mask_operand_ready_i             (mask_operand_ready_i[1:0]          ),
+    // mpu 
+    .mpu_act_operand_o                 (mpu_act_operand                     ),
+    .mpu_act_operand_valid_o           (mpu_act_operand_valid               ),
+    .mpu_act_operand_ready_i           (mpu_act_operand_ready               ),
+    .mpu_wgt_operand_o                 (mpu_wgt_operand                     ),
+    .mpu_wgt_operand_valid_o           (mpu_wgt_operand_valid               ),
+    .mpu_wgt_operand_ready_i           (mpu_wgt_operand_ready               ),
+    .mpu_output_data_o                 (mpu_output_data                     ),
+    .mpu_output_valid_o                (mpu_output_valid                    ),
+    .mpu_output_ready_i                (mpu_output_ready                    ),
+    .mpu_output_en_i                   (pe_req.mpu_output_en                )
   );
 
   ///////////////////////////////
@@ -561,11 +584,6 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .mask_ready_o         (mask_ready                             )
   );
 
-  // SA 输入输出信号
-  elen_t [3:0] sa_act_operand, sa_op_operand, sa_output_data;
-  logic  [3:0] sa_act_valid, sa_op_valid, sa_output_valid;
-  logic  [3:0] sa_act_ready, sa_op_ready, sa_output_ready;
-
   // 实例化 SA 模块
   sa #(
     .ROWS      (4),
@@ -573,30 +591,32 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .BIT_ACT   (8),
     .BIT_WEIGHT(1)
   ) u_sa (
-    .clk_i          (clk_i),
-    .rst_ni         (rst_ni),
-    .en             (pe_req_valid_i & (pe_req_i.op == SA_OP)), // SA 操作码触发
-    .output_en      (/* 输出使能信号 */),
-    .act_in         (sa_act_operand),
-    .weight_in      (sa_op_operand),
-    .output_data    (sa_output_data)
+    .clk            (clk_i),
+    .rst_n          (rst_ni),
+    .en             (pe_req.mpu_en),
+    .output_en      (pe_req.mpu_output_en),
+    .act_in         (mpu_act_operand),
+    .weight_in      (mpu_wgt_operand),
+    .output_data    (mpu_output_data)
   );
 
   // 连接 SA 输入队列
-  assign sa_act_operand = sa_act_operand_o;  // 来自 operand_queues_stage
-  assign sa_act_ready_i = sa_act_operand_ready_i;
+  // assign mpu_act_operand = mpu_act_operand_i;  // 来自 operand_queues_stage
+  // assign sa_act_ready_i = mpu_act_operand_ready_i;
+  // assign mpu_wgt_operand = mpu_wgt_operand_i;  // 来自 operand_queues_stage
+  // assign sa_wgt_ready_i = mpu_wgt_operand_ready_i;
 
-  // 连接 SA 输出队列
-  assign sa_output_valid_i = sa_output_valid;
-  assign sa_output_ready_o = sa_output_ready;
+  // // 连接 SA 输出队列
+  // assign sa_output_valid_i = sa_output_valid;
+  // assign sa_output_ready_o = sa_output_ready;
 
   // 将 SA 输出路由到 Store Unit 或 Slide Unit
-  always_comb begin
-    case (sldu_mux_sel_i)
-      MUX_SA_SEL: sldu_addrgen_operand_o = sa_output_data[0];
-      default:    sldu_addrgen_operand_o = original_data;
-    endcase
-  end
+  // always_comb begin
+  //   case (sldu_mux_sel_i)
+  //     MUX_SA_SEL: sldu_addrgen_operand_o = sa_output_data[0];
+  //     default:    sldu_addrgen_operand_o = original_data;
+  //   endcase
+  // end
 
   /******************************
    *  SLDU/ADDRGEN arbitration  *
@@ -672,11 +692,11 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
           sldu_addrgen_sel_d = FPU_RED_SEL;
           sldu_addrgen_arbiter_push = 1'b1;
         end
-        // BMM: begin
-        //     // 将操作路由到 SA
-        //     sa_en = 1;
-        //     alu_ready = 0; // 禁用其他单元
-        //     mfpu_ready = 0;
+        // MPMM: begin
+        //   // 将操作路由到 SA
+        //   sa_en = 1;
+        //   alu_ready = 0; // 禁用其他单元
+        //   mfpu_ready = 0;
         // end
         default:;
       endcase

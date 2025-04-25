@@ -58,17 +58,19 @@ module operand_queues_stage
     output logic [1:0] mask_operand_valid_o,
     input logic [1:0] mask_operand_ready_i,
     // SA 队列接口
-    output elen_t [3:0] sa_act_operand_o,  // SA 激活输入
-    output logic [3:0] sa_act_operand_valid_o,
-    input logic [3:0] sa_act_operand_ready_i,
+    output elen_t mpu_act_operand_o [3:0],  // SA 激活输入
+    output logic [3:0] mpu_act_operand_valid_o,
+    input logic [3:0] mpu_act_operand_ready_i,
 
-    output elen_t [3:0] sa_op_operand_o,        // SA 操作输入
-    output logic  [3:0] sa_op_operand_valid_o,
-    input  logic  [3:0] sa_op_operand_ready_i,
+    output elen_t mpu_wgt_operand_o[3:0],        // SA 权重输入
+    output logic  [3:0] mpu_wgt_operand_valid_o,
+    input  logic  [3:0] mpu_wgt_operand_ready_i,
 
-    input  elen_t [3:0] sa_output_data_i,   // SA 输出
-    input  logic  [3:0] sa_output_valid_i,
-    output logic  [3:0] sa_output_ready_o
+    input  elen_t mpu_output_data_o [3:0],   // SA 输出
+    input  logic  [3:0] mpu_output_valid_o,
+    output logic  [3:0] mpu_output_ready_i,
+
+    input logic  mpu_output_en_i // MPU 输出使能
 );
 
   `include "common_cells/registers.svh"
@@ -349,38 +351,17 @@ module operand_queues_stage
   if (VrgatherOpQueueBufDepth % 2 != 0)
     $fatal(1, "Parameter VrgatherOpQueueBufDepth must be power of 2.");
 
-  // 实例化 SA 激活值操作数队列 (复用 Store Unit 队列结构)
-  generate
-    for (genvar i = 0; i < 4; i++) begin : gen_sa_act_queues
-      operand_queue #(
-          .CmdBufDepth        (VstuInsnQueueDepth),
-          .DataBufDepth       (5),
-          .FPUSupport         (FPUSupportNone),
-          .NrLanes            (NrLanes),
-          .VLEN               (VLEN),
-          .operand_queue_cmd_t(operand_queue_cmd_t)
-      ) i_sa_act_queue (
-          .clk_i                    (clk_i),
-          .rst_ni                   (rst_ni),
-          .flush_i                  (lsu_ex_flush_o),
-          .lane_id_i                (lane_id_i),
-          .operand_queue_cmd_i      (operand_queue_cmd_i[SAAct0+i]),
-          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[SAAct0+i]),
-          .cmd_pop_o                (  /* 无命令弹出 */),
-          .operand_i                (operand_i[SAAct0+i]),
-          .operand_valid_i          (operand_valid_i[SAAct0+i]),
-          .operand_issued_i         (operand_issued_i[SAAct0+i]),
-          .operand_queue_ready_o    (operand_queue_ready_o[SAAct0+i]),
-          .operand_o                (sa_act_operand_o[i]),
-          .operand_valid_o          (sa_act_operand_valid_o[i]),
-          .operand_ready_i          (sa_act_operand_ready_i[i])
-      );
-    end
-  endgenerate
+  // 模式控制信号
+  logic queue_mode; // 0:activation输入模式, 1:输出模式
+  logic activation_processed;
+  elen_t shared_operand_o [3:0];
+  logic [3:0] shared_operand_valid_o;
+  logic [NrLanes-1:0] queue_ready_internal;
 
-  // 实例化 SA 操作队列 (复用 ALU 队列结构)
+  // 共享的SA激活值/输出操作数队列
   generate
-    for (genvar i = 0; i < 4; i++) begin : gen_sa_op_queues
+    for (genvar i = 0; i < 4; i++) begin : gen_mpu_act_out_queues
+      // 共享队列实例
       operand_queue #(
           .CmdBufDepth        (ValuInsnQueueDepth),
           .DataBufDepth       (5),
@@ -388,49 +369,66 @@ module operand_queues_stage
           .NrLanes            (NrLanes),
           .VLEN               (VLEN),
           .operand_queue_cmd_t(operand_queue_cmd_t)
-      ) i_sa_op_queue (
+      ) i_mpu_shared_queue (
           .clk_i                    (clk_i),
           .rst_ni                   (rst_ni),
           .flush_i                  (1'b0),
           .lane_id_i                (lane_id_i),
-          .operand_queue_cmd_i      (operand_queue_cmd_i[SAOp0+i]),
-          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[SAOp0+i]),
-          .cmd_pop_o                (  /* 无命令弹出 */),
-          .operand_i                (operand_i[SAOp0+i]),
-          .operand_valid_i          (operand_valid_i[SAOp0+i]),
-          .operand_issued_i         (operand_issued_i[SAOp0+i]),
-          .operand_queue_ready_o    (operand_queue_ready_o[SAOp0+i]),
-          .operand_o                (sa_op_operand_o[i]),
-          .operand_valid_o          (sa_op_operand_valid_o[i]),
-          .operand_ready_i          (sa_op_operand_ready_i[i])
+          // 命令输入根据模式选择
+          .operand_queue_cmd_i      (queue_mode ? operand_queue_cmd_i[MPUOut0+i] : operand_queue_cmd_i[MPUAct0+i]),
+          .operand_queue_cmd_valid_i(queue_mode ? operand_queue_cmd_valid_i[MPUOut0+i] : operand_queue_cmd_valid_i[MPUAct0+i]),
+          .cmd_pop_o                (),
+          // 数据输入根据模式选择
+          .operand_i                (queue_mode ? operand_i[MPUOut0+i] : operand_i[MPUAct0+i]),
+          .operand_valid_i          (queue_mode ? operand_valid_i[MPUOut0+i] : operand_valid_i[MPUAct0+i]),
+          .operand_issued_i         (queue_mode ? 1'b0 : operand_issued_i[MPUAct0+i]),
+          .operand_queue_ready_o    (queue_ready_internal[i]),
+          // 输出数据
+          .operand_o                (shared_operand_o[i]),
+          .operand_valid_o          (shared_operand_valid_o[i]),
+          .operand_ready_i          (queue_mode ? mpu_output_ready_i[i] : mpu_act_operand_ready_i[i])
       );
+      
+      // 输出分配
+      assign mpu_act_operand_o[i] = !queue_mode ? shared_operand_o[i] : '0;
+      assign mpu_act_operand_valid_o[i] = !queue_mode ? shared_operand_valid_o[i] : '0;
+      logic [VLEN-1:0] shared_output_data[4];
+      assign shared_output_data[i] = shared_operand_o[i];
+      // assign mpu_output_data_o[i] = queue_mode ? shared_operand_o[i] : '0;
+      assign mpu_output_valid_o[i] = queue_mode ? shared_operand_valid_o[i] : '0;
+
+      assign operand_queue_ready_o[MPUOut0+i] = queue_mode ? queue_ready_internal[i] : '0;
+      assign operand_queue_ready_o[MPUAct0+i] = !queue_mode ? queue_ready_internal[i] : '0;
     end
   endgenerate
 
-  // SA 输出队列 (复用 Slide Unit 队列结构)
+  assign queue_mode = mpu_output_en_i;
+
+  // SA权重队列
   generate
-    for (genvar i = 0; i < 4; i++) begin : gen_sa_output_queues
+    for (genvar i = 0; i < 4; i++) begin : gen_mpu_wgt_queues
       operand_queue #(
-          .CmdBufDepth        (VlduInsnQueueDepth),
-          .DataBufDepth       (2),
-          .AccessCmdPop       (1'b1),
+          .CmdBufDepth        (ValuInsnQueueDepth),
+          .DataBufDepth       (5),
           .FPUSupport         (FPUSupportNone),
+          .NrLanes            (NrLanes),
+          .VLEN               (VLEN),
           .operand_queue_cmd_t(operand_queue_cmd_t)
-      ) i_sa_output_queue (
+      ) i_mpu_wgt_queue (
           .clk_i                    (clk_i),
           .rst_ni                   (rst_ni),
-          .flush_i                  (lsu_ex_flush_o),
+          .flush_i                  (1'b0),
           .lane_id_i                (lane_id_i),
-          .operand_queue_cmd_i      (operand_queue_cmd_i[SAOut0+i]),
-          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[SAOut0+i]),
-          .cmd_pop_o                (  /* 输出队列命令弹出逻辑 */),
-          .operand_i                (sa_output_data_i[i]),
-          .operand_valid_i          (sa_output_valid_i[i]),
-          .operand_issued_i         (  /* SA 输出不需要 issued 信号 */),
-          .operand_queue_ready_o    (sa_output_ready_o[i]),
-          .operand_o                (  /* 连接到目标单元 */),
-          .operand_valid_o          (  /* 输出到目标单元 */),
-          .operand_ready_i          (  /* 目标单元 ready 信号 */)
+          .operand_queue_cmd_i      (operand_queue_cmd_i[MPUWgt0+i]),
+          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[MPUWgt0+i]),
+          .cmd_pop_o                (),
+          .operand_i                (operand_i[MPUWgt0+i]),
+          .operand_valid_i          (operand_valid_i[MPUWgt0+i]),
+          .operand_issued_i         (operand_issued_i[MPUWgt0+i]),
+          .operand_queue_ready_o    (operand_queue_ready_o[MPUWgt0+i]),
+          .operand_o                (mpu_wgt_operand_o[i]),
+          .operand_valid_o          (mpu_wgt_operand_valid_o[i]),
+          .operand_ready_i          (mpu_wgt_operand_ready_i[i])
       );
     end
   endgenerate

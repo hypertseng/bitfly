@@ -171,19 +171,19 @@ package ara_pkg;
     // Load instructions
     VLE, VLSE, VLXE,
     // Store instructions
-    VSE, VSSE, VSXE
+    VSE, VSSE, VSXE,
     // custom instructions
-    BMM
+    MPCFG, MPLE, MPSE, MPMM
   } ara_op_e;
 
   // Return true if op is a load operation
   function automatic logic is_load(ara_op_e op);
-    is_load = op inside {[VLE:VLXE]};
+    is_load = op inside {[VLE:VLXE], MPLE};
   endfunction : is_load
 
   // Return true if op is a store operation
   function automatic logic is_store(ara_op_e op);
-    is_store = op inside {[VSE:VSXE]};
+    is_store = op inside {[VSE:VSXE], MPSE};
   endfunction : is_store
 
   // Return true of op is either VCPOP or VFIRST
@@ -363,9 +363,9 @@ typedef struct packed {
   // It is important that all the VFUs that can write back to the VRF
   // are grouped towards the beginning of the enumeration. The store unit
   // cannot do so, therefore it is at the end of the enumeration.
-  localparam int unsigned NrVFUs = 7;
+  localparam int unsigned NrVFUs = 8;
   typedef enum logic [$clog2(NrVFUs)-1:0] {
-    VFU_Alu, VFU_MFpu, VFU_SlideUnit, VFU_MaskUnit, VFU_LoadUnit, VFU_StoreUnit, VFU_None
+    VFU_Alu, VFU_MFpu, VFU_SlideUnit, VFU_MaskUnit, VFU_LoadUnit, VFU_StoreUnit, VFU_None, MPU
   } vfu_e;
 
   // Internally, each lane is treated as a processing element, between indexes
@@ -923,10 +923,10 @@ typedef struct packed {
   // There are seven operand queues, serving operands to the different functional units of each lane
   localparam int unsigned NrOperandQueues = 21;
   typedef enum logic [$clog2(NrOperandQueues)-1:0] {
-    AluA, AluB, MulFPUA, MulFPUB, MulFPUC, MaskB, MaskM, StA, SlideAddrGenA
-    SAAct0, SAAct1, SAAct2, SAAct3,    // 4 个激活值操作数队列
-    SAOp0, SAOp1, SAOp2, SAOp3,        // 4 个激活值操作队列
-    SAOut0, SAOut1, SAOut2, SAOut3     // 4 个输出队列
+    AluA, AluB, MulFPUA, MulFPUB, MulFPUC, MaskB, MaskM, StA, SlideAddrGenA,
+    MPUAct0, MPUAct1, MPUAct2, MPUAct3,    // 4 个激活值操作数队列
+    MPUWgt0, MPUWgt1, MPUWgt2, MPUWgt3,        // 4 个激活值操作队列
+    MPUOut0, MPUOut1, MPUOut2, MPUOut3     // 4 个输出队列
   } opqueue_e;
 
   // Each lane has eight VRF banks
