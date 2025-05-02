@@ -302,7 +302,9 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
       MPMM:
         for (int i = 0; i < NrVFUs; i++)
           if (i == MPU) target_vfus[i] = 1'b1;
-
+      MPCFG:
+        for (int i = 0; i < NrVFUs; i++)
+          if (i == VFU_None) target_vfus[i] = 1'b1;
     endcase
   endfunction : target_vfus
 
@@ -488,6 +490,7 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
               mpu_en        : ara_req_i.mpu_en,
               is_weight     : ara_req_i.is_weight,
               mpu_output_en : ara_req_i.mpu_output_en,
+              // offset        : ara_req_i.offset,
               default       : '0
             };
 

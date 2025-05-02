@@ -162,6 +162,7 @@ module ara import ara_pkg::*; #(
     logic               mpu_en;
     logic               is_weight;
     logic               mpu_output_en;
+    // elen_t              size;
   } ara_req_t;
 
   typedef struct packed {

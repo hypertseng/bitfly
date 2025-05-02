@@ -585,19 +585,21 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   );
 
   // 实例化 SA 模块
-  sa #(
+  mpu #(
     .ROWS      (4),
     .COLS      (4),
     .BIT_ACT   (8),
     .BIT_WEIGHT(1)
-  ) u_sa (
+  ) u_mpu (
     .clk            (clk_i),
     .rst_n          (rst_ni),
     .en             (pe_req.mpu_en),
     .output_en      (pe_req.mpu_output_en),
     .act_in         (mpu_act_operand),
     .weight_in      (mpu_wgt_operand),
-    .output_data    (mpu_output_data)
+    .k_dim          (pe_req.k_dim),
+    .output_data    (mpu_output_data),
+    .mpu_insn_done_o (mpu_insn_done)
   );
 
   // 连接 SA 输入队列

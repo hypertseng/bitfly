@@ -399,6 +399,20 @@ typedef struct packed {
    * packing) functions.
    */
 
+  // /* mple shuffle
+  //  * Byte:      1F 1E 1D 1C 1B 1A 19 18 | 17 16 15 14 13 12 11 10 | 0F 0E 0D 0C 0B 0A 09 08 | 07 06 05 04 03 02 01 00 |
+  //  * SEW = 8:                F  B  7  3 |              E  A  6  2 |              D  9  5  1 |              C  8  4  0 |
+  //  */
+
+  // function automatic logic [$clog2(8*MaxNrLanes)-1:0] mple_shuffle(logic[15:0] byte_idx, int NrLanes, rvv_pkg::vew_e ew);
+  //   automatic logic [$clog2(16)-1:0] idx [31:0];
+  //   idx[15] = 27; idx[14] = 19; idx[13] = 11; idx[12] = 03;
+  //   idx[11] = 26; idx[10] = 18; idx[09] = 10; idx[08] = 02;
+  //   idx[07] = 25; idx[06] = 17; idx[05] = 09; idx[04] = 01;
+  //   idx[03] = 24; idx[02] = 16; idx[01] = 08; idx[00] = 00;
+  //   return idx[byte_idx[4:0]];
+  // endfunction : mple_shuffle
+
   function automatic logic [$clog2(8*MaxNrLanes)-1:0] shuffle_index(logic[15:0] byte_idx, int NrLanes, rvv_pkg::vew_e ew);
     // Generate the shuffling of the table above
     unique case (NrLanes)

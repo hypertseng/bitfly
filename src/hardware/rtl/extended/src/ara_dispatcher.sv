@@ -254,6 +254,8 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
   logic is_stride_np2;
   logic [idx_width(idx_width(VLENB << 3)):0] sldu_popc;
 
+  logic [8:0] k_dim;
+
   // Is the stride power of two?
   popcount #(
     .INPUT_WIDTH (idx_width(VLENB << 3))
@@ -3579,10 +3581,12 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
             // Instruction is of one of the RVV types
             automatic rvv_instruction_t insn = rvv_instruction_t'(instr.instr);
 
-            ara_req.mpu_en = 1'b1;
+            ara_req.vm = 1'b1;
 
             unique case (insn.custom0_type.func3)
               3'b010: begin // mple
+                ara_req.op = MPLE;
+
                 // The instruction is a load
                 is_vload = 1'b1;
 
@@ -3592,20 +3596,55 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                   ara_req.is_weight <= 1'b0;
                 end
 
+                csr_vl_d = insn.instr[31] ? k_dim * 32/8 : k_dim * 4 * NrLanes;
+                // ignore_zero_vl_check = 1'b1;
+
                 // Wait before acknowledging this instruction
                 acc_resp_o.req_ready = 1'b0;
 
                 // These generate a request to Ara's backend
-                // ara_req.vd        = insn.custom0_type.rd;
-                // ara_req.use_vd    = 1'b1;
+                ara_req.vd        = insn.custom0_type.rd;
+                ara_req.use_vd    = 1'b1;
                 ara_req.scalar_op = acc_req_i.rs1;
                 ara_req_valid     = 1'b1;
+                // ara_req.size    = insn.custom0_type.imm[10:0];
+
+                // Wait until the back-end answers to acknowledge those instructions
+                if ( ara_resp_valid ) begin
+                  acc_resp_o.req_ready  = 1'b1;
+                  acc_resp_o.resp_valid = 1'b1;
+                  acc_resp_o.exception  = ara_resp.exception;
+                  ara_req_valid       = 1'b0;
+                  // In case of exception, modify vstart or vl, depending if the insn
+                  // was a fault-only-first
+                  if (ara_resp.fof_exception) begin
+                    csr_vl_d = ara_resp.exception_vstart;
+                    // Mask exception if we had a fault-only-first with exception on
+                    // idx > 0
+                    acc_resp_o.exception.valid = 1'b0;
+                    // Flush if mask reg was involved in the fof operation
+                    if (!ara_req.vm) begin
+                      state_d = WAIT_IDLE_FLUSH;
+                    end
+                  end else if (ara_resp.exception.valid) begin
+                    csr_vstart_d = ara_resp.exception_vstart;
+                    // If this load has VRF source operands, flush everything
+                    if (!ara_req.vm || ara_req.use_vs2) begin
+                      state_d = WAIT_IDLE_FLUSH;
+                    end
+                  end
+                end
+
               end
               3'b100: begin // mpse
+                ara_req.op = MPSE;
+
                 // The instruction is a store
                 is_vstore = 1'b1;
 
                 ara_req.mpu_output_en = 1'b1;
+
+                // ignore_zero_vl_check = 1'b1;
 
                 // Wait before acknowledging this instruction
                 acc_resp_o.req_ready = 1'b0;
@@ -3621,6 +3660,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 // ara_req.use_vs1   = 1'b1;
                 ara_req.scalar_op = acc_req_i.rs1;
                 ara_req_valid     = 1'b1;
+                // ara_req.size    = insn.custom0_type.imm;
 
                 // Wait until the back-end answers to acknowledge those instructions
                 if ( ara_resp_valid ) begin
@@ -3637,7 +3677,10 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 end
               end
               3'b110: begin // mpmm
-                
+                ara_req.op = MPMM;
+                ara_req_valid   = 1'b1;
+                ara_req.mpu_en = 1'b1;
+                csr_vl_d = 4 * NrLanes * 4 * 8;
               end
               default: begin
                 // Trigger an illegal instruction
@@ -3650,19 +3693,19 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
             // Decode the instruction
             automatic rvv_instruction_t insn = rvv_instruction_t'(instr.instr);
 
+            // ara_req.vm = 1'b1;
+
+            ara_req.op = MPCFG;
             //respond at the same cycle
             acc_resp_o.resp_valid = 1'b1;
 
-            ara_req.mpu_en = 1'b1;
-
             ara_req.k_dim = insn.custom1_type.uimm9;
+            k_dim = ara_req.k_dim;
+            csr_vl_d = insn.custom1_type.uimm9 * 4 * NrLanes;
 
-            // These generate a request to Ara's backend
-            // ara_req.use_vs1   = 1'b1;
-            ara_req_valid     = 1'b1;
-            // These can be acknowledged regardless of the state of Ara
-            // NOTE: unless there is a pending fault-only first vector load
-            // is_config       = 1'b1;
+            is_config       = 1'b1;
+
+            acc_resp_o.result = k_dim;
           end
 
           default: begin

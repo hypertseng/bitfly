@@ -80,12 +80,12 @@ typedef struct packed {
   logic [NrVInsn-1:0] hazard_vs2;
   logic [NrVInsn-1:0] hazard_vm;
   logic [NrVInsn-1:0] hazard_vd;
-  
+
   logic [8:0]         k_dim;
   logic               mpu_en;
   logic               is_weight;
   logic               mpu_output_en;
-  
+  // elen_t              size;
 } pe_req_t;
 
 typedef struct packed {
