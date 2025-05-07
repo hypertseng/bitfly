@@ -3596,7 +3596,6 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                   ara_req.is_weight <= 1'b0;
                 end
 
-                csr_vl_d = insn.instr[31] ? k_dim * 32/8 : k_dim * 4 * NrLanes;
                 // ignore_zero_vl_check = 1'b1;
 
                 // Wait before acknowledging this instruction
@@ -3677,6 +3676,14 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 end
               end
               3'b110: begin // mpmm
+                // These generate a request to Ara's backend
+                // ara_req.vs1     = insn.varith_type.rs1;
+                // ara_req.use_vs1 = 1'b1;
+                // ara_req.vs2     = insn.varith_type.rs2;
+                // ara_req.use_vs2 = 1'b1;
+                // ara_req.vd      = insn.varith_type.rd;
+                // ara_req.use_vd  = 1'b1;
+                // ara_req.vm      = insn.varith_type.vm;
                 ara_req.op = MPMM;
                 ara_req_valid   = 1'b1;
                 ara_req.mpu_en = 1'b1;

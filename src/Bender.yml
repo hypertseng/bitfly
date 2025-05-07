@@ -62,8 +62,9 @@ sources:
     - hardware/src/lane/fixed_p_rounding.sv
     - hardware/src/vlsu/vlsu.sv
     - hardware/src/masku/masku.sv
-    - hardware/src/mpu/mpu.sv
+    - hardware/src/mpu/sa.sv
     # Level 3
+    # - hardware/src/mpu/mpu.sv
     - hardware/src/lane/vector_fus_stage.sv
     # Level 4
     - hardware/src/lane/lane.sv

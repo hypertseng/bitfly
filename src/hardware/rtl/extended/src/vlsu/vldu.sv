@@ -367,6 +367,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         vrf_word_byte_pnt_d = vrf_word_byte_pnt_q + valid_bytes;
         vrf_word_byte_cnt_d = vrf_word_byte_cnt_q + valid_bytes;
 
+        
         // Copy data from the R channel into the result queue
         for (int unsigned axi_byte = 0; axi_byte < AxiDataWidth/8; axi_byte++) begin : axi_r_to_result_queue
           // Is this byte a valid byte in the R beat?
@@ -382,26 +383,16 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
             // We compare vrf_seq_byte_cnt since vrf_seq_byte contains also the vstart contribution, while the issue_cnt_bytes
             // counter does not.
             if (vrf_seq_byte_cnt < issue_cnt_bytes_q && vrf_seq_byte < (NrLanes * DataWidthB)) begin : is_vrf_byte
-              if (is_weight) begin
-                for (int unsigned lane = 0; lane < NrLanes; lane++) begin
-                  automatic int unsigned vrf_offset = vrf_seq_byte[2:0];
-                  result_queue_d[result_queue_write_pnt_q][lane].wdata[8*vrf_offset +: 8] =
-                    axi_r_i.data[8*axi_byte +: 8];
-                  result_queue_d[result_queue_write_pnt_q][lane].be[vrf_offset] =
-                    vinsn_issue_q.vm || mask_q[lane][vrf_offset];
-                end
-              end else begin
-                // At which lane, and what is the byte offset in that lane, of the byte vrf_byte?
-                automatic int unsigned vrf_offset = vrf_byte[2:0];
-                // Make sure this index wraps around the number of lane
-                automatic int unsigned vrf_lane = (vrf_byte >> 3);
+              // At which lane, and what is the byte offset in that lane, of the byte vrf_byte?
+              automatic int unsigned vrf_offset = vrf_byte[2:0];
+              // Make sure this index wraps around the number of lane
+              automatic int unsigned vrf_lane = (vrf_byte >> 3);
 
-                // Copy data and byte strobe
-                result_queue_d[result_queue_write_pnt_q][vrf_lane].wdata[8*vrf_offset +: 8] =
-                  axi_r_i.data[8*axi_byte +: 8];
-                result_queue_d[result_queue_write_pnt_q][vrf_lane].be[vrf_offset] =
-                  vinsn_issue_q.vm || mask_q[vrf_lane][vrf_offset];
-              end
+              // Copy data and byte strobe
+              result_queue_d[result_queue_write_pnt_q][vrf_lane].wdata[8*vrf_offset +: 8] =
+                axi_r_i.data[8*axi_byte +: 8];
+              result_queue_d[result_queue_write_pnt_q][vrf_lane].be[vrf_offset] =
+                vinsn_issue_q.vm || mask_q[vrf_lane][vrf_offset];
             end : is_vrf_byte
           end : is_axi_r_byte
         end : axi_r_to_result_queue
@@ -685,7 +676,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         vrf_word_start_byte  = pe_req_i.vstart[$clog2(8*NrLanes)-1:0] << pe_req_i.vtype.vsew;
         vrf_word_byte_pnt_d  = {1'b0, vrf_word_start_byte[$clog2(8*NrLanes)-1:0]};
         vrf_word_byte_cnt_d  = '0;
-        seq_word_wr_offset_d = '0;
+        seq_word_wr_offset_d = pe_req_i.is_weight ? 4 : 0;
         // The first payload byte width for this vload
         first_payload_byte_d = (NrLanes * DataWidthB) - vrf_word_start_byte[$clog2(8*NrLanes)-1:0];
       end
@@ -713,6 +704,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       ldu_current_burst_exception_o <= 1'b0;
       ldu_ex_state_q                <= IDLE;
       first_result_queue_read_q     <= 1'b0;
+      seq_word_wr_offset_q          <= '0;
     end else begin
       vinsn_running_q               <= vinsn_running_d;
       issue_cnt_bytes_q             <= issue_cnt_bytes_d;
@@ -728,18 +720,6 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       ldu_current_burst_exception_o <= ldu_current_burst_exception_d;
       ldu_ex_state_q                <= ldu_ex_state_d;
       first_result_queue_read_q     <= first_result_queue_read_d;
-    end
-  end
-
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      if (pe_req_i.is_weight) begin
-        seq_word_wr_offset_q        <=  4;
-      end else begin 
-        seq_word_wr_offset_q        <= '0;
-      end
-    end
-    else begin
       seq_word_wr_offset_q          <= seq_word_wr_offset_d;
     end
   end

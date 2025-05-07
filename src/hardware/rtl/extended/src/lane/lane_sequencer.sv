@@ -348,6 +348,9 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
         wide_fp_imm    : pe_req.wide_fp_imm,
         cvt_resize     : pe_req.cvt_resize,
         vtype          : pe_req.vtype,
+        k_dim          : pe_req.k_dim,
+        mpu_en         : pe_req.mpu_en,
+        mpu_output_en  : pe_req.mpu_output_en,
         default        : '0
       };
       vfu_operation_d.vtype.vsew = pe_req.op inside {[VMFEQ:VMSGT]} ? pe_req.eew_vs2 : pe_req.vtype.vsew;

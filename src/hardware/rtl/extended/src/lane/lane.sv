@@ -182,6 +182,9 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     vlen_t vl;
     vlen_t vstart;
     rvv_pkg::vtype_t vtype;
+    logic [8:0]         k_dim;
+    logic               mpu_en;
+    logic               mpu_output_en;
   } vfu_operation_t;
 
   /////////////////
@@ -584,41 +587,37 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .mask_ready_o         (mask_ready                             )
   );
 
-  // 实例化 SA 模块
-  mpu #(
-    .ROWS      (4),
-    .COLS      (4),
-    .BIT_ACT   (8),
-    .BIT_WEIGHT(1)
-  ) u_mpu (
-    .clk            (clk_i),
-    .rst_n          (rst_ni),
-    .en             (pe_req.mpu_en),
-    .output_en      (pe_req.mpu_output_en),
-    .act_in         (mpu_act_operand),
-    .weight_in      (mpu_wgt_operand),
-    .k_dim          (pe_req.k_dim),
-    .output_data    (mpu_output_data),
-    .mpu_insn_done_o (mpu_insn_done)
-  );
 
-  // 连接 SA 输入队列
-  // assign mpu_act_operand = mpu_act_operand_i;  // 来自 operand_queues_stage
-  // assign sa_act_ready_i = mpu_act_operand_ready_i;
-  // assign mpu_wgt_operand = mpu_wgt_operand_i;  // 来自 operand_queues_stage
-  // assign sa_wgt_ready_i = mpu_wgt_operand_ready_i;
-
-  // // 连接 SA 输出队列
-  // assign sa_output_valid_i = sa_output_valid;
-  // assign sa_output_ready_o = sa_output_ready;
-
-  // 将 SA 输出路由到 Store Unit 或 Slide Unit
-  // always_comb begin
-  //   case (sldu_mux_sel_i)
-  //     MUX_SA_SEL: sldu_addrgen_operand_o = sa_output_data[0];
-  //     default:    sldu_addrgen_operand_o = original_data;
-  //   endcase
-  // end
+  //   mpu #(
+  //   .NrLanes        (NrLanes        ),
+  //   .VLEN           (VLEN           ),
+  //   .FixPtSupport   (FixPtSupport   ),
+  //   .vaddr_t        (vaddr_t        ),
+  //   .vfu_operation_t(vfu_operation_t)
+  //   ) i_mpu (
+  //   .clk_i                (clk_i                          ),
+  //   .rst_ni               (rst_ni                         ),
+  //   .lane_id_i            (lane_id_i                      ),
+  //   // Interface with the lane sequencer
+  //   .vfu_operation_i      (vfu_operation                  ),
+  //   .vfu_operation_valid_i(vfu_operation_valid            ),
+  //   .mpu_ready_o          (mpu_ready                      ),
+  //   .mpu_vinsn_done_o     (mpu_vinsn_done                 ),
+  //   // Interface with the operand queues
+  //   .mpu_act_operand_i        (mpu_act_operand                    ),
+  //   .mpu_act_operand_valid_i  (mpu_act_operand_valid              ),
+  //   .mpu_act_operand_ready_o  (mpu_act_operand_ready              ),
+  //   .mpu_wgt_operand_i        (mpu_wgt_operand                    ),
+  //   .mpu_wgt_operand_valid_i  (mpu_wgt_operand_valid              ),
+  //   .mpu_wgt_operand_ready_o  (mpu_wgt_operand_ready              ),
+  //   // Interface with the vector register file
+  //   .mpu_result_req_o     (mpu_result_req                 ),
+  //   .mpu_result_addr_o    (mpu_result_addr                ),
+  //   .mpu_result_id_o      (mpu_result_id                  ),
+  //   .mpu_result_wdata_o   (mpu_result_wdata               ),
+  //   .mpu_result_be_o      (mpu_result_be                  ),
+  //   .mpu_result_gnt_i     (mpu_result_gnt                 )
+  // );
 
   /******************************
    *  SLDU/ADDRGEN arbitration  *
@@ -694,12 +693,6 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
           sldu_addrgen_sel_d = FPU_RED_SEL;
           sldu_addrgen_arbiter_push = 1'b1;
         end
-        // MPMM: begin
-        //   // 将操作路由到 SA
-        //   sa_en = 1;
-        //   alu_ready = 0; // 禁用其他单元
-        //   mfpu_ready = 0;
-        // end
         default:;
       endcase
     end

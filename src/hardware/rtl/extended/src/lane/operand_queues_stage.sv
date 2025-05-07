@@ -363,7 +363,7 @@ module operand_queues_stage
     for (genvar i = 0; i < 4; i++) begin : gen_mpu_act_out_queues
       // 共享队列实例
       operand_queue #(
-          .CmdBufDepth        (ValuInsnQueueDepth),
+          .CmdBufDepth        (MpuInsnQueueDepth),
           .DataBufDepth       (5),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),
@@ -408,7 +408,7 @@ module operand_queues_stage
   generate
     for (genvar i = 0; i < 4; i++) begin : gen_mpu_wgt_queues
       operand_queue #(
-          .CmdBufDepth        (ValuInsnQueueDepth),
+          .CmdBufDepth        (MpuInsnQueueDepth),
           .DataBufDepth       (5),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),

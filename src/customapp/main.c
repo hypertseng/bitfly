@@ -149,7 +149,7 @@ int main()
     asm volatile("vsetvli %0, %1, e8, m1, ta, ma" : "=r"(vl) : "r"(avl));
     // 加载 activation 的前 64 个 int8 元素到向量寄存器 v0
     asm volatile("vle8.v v31, (%0)" ::"r"(activation_int8));
-    int64_t runtime_m, runtime_v;
+    int64_t runtime_m, runtime_v; 
     start_timer();
     asm volatile("mpcfg  %0\n\t" ::"i"(imm));
     // asm volatile("mple 0(%0), a\n\t" ::"r"(activation_int8) : "memory");

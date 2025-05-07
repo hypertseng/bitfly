@@ -84,10 +84,6 @@ module operand_requester
     input  strb_t                                                   ldu_result_be_i,
     output logic                                                    ldu_result_gnt_o,
     output logic                                                    ldu_result_final_gnt_o
-    // // SA 队列接口
-    // output logic                 [                3:0]              sa_act_queue_gnt_o,
-    // output logic                 [                3:0]              sa_op_queue_gnt_o,
-    // input  logic                 [                3:0]              sa_output_queue_req_i
 );
 
   import cf_math_pkg::idx_width;
