@@ -257,7 +257,8 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
   // Counter to increase the VRF write address.
   vlen_t seq_word_wr_offset_d, seq_word_wr_offset_q;
 
-  logic is_mpu_load, is_weight;
+  logic is_mpu_load_d, is_mpu_load_q;
+  logic is_weight_d, is_weight_q;
 
   // Exception handling FSM
   // Needed because of the result queue buffer, which can contain partial
@@ -270,6 +271,10 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
   } ldu_ex_state_d, ldu_ex_state_q;
 
   localparam unsigned DataWidthB = DataWidth / 8;
+  localparam unsigned splits_per_beat = AxiDataWidth / DataWidth;
+  localparam unsigned bytes_per_split = AxiDataWidth / (8 * splits_per_beat);
+
+  logic [$clog2(splits_per_beat)-1:0] split_d, split_q;
 
   always_comb begin: p_vldu
     // Maintain state
@@ -280,6 +285,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
     axi_len_d           = axi_len_q;
     axi_r_byte_pnt_d    = axi_r_byte_pnt_q;
     vrf_word_byte_pnt_d = vrf_word_byte_pnt_q;
+    split_d             = split_q;
 
     result_queue_d           = result_queue_q;
     result_queue_valid_d     = result_queue_valid_q;
@@ -292,6 +298,9 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
     seq_word_wr_offset_d = seq_word_wr_offset_q;
     first_payload_byte_d = first_payload_byte_q;
     vrf_word_byte_cnt_d  = vrf_word_byte_cnt_q;
+
+    is_mpu_load_d = is_mpu_load_q;
+    is_weight_d = is_weight_q;
 
     // Vector instructions currently running
     vinsn_running_d = vinsn_running_q & pe_vinsn_running_i;
@@ -317,13 +326,9 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
     pe_req_ready_o = !vinsn_queue_full;
 
     if (pe_req_valid_i && pe_req_i.op == MPLE) begin
-      is_mpu_load = 1'b1;
-    end
-
-    if (pe_req_valid_i && pe_req_i.op == MPLE && pe_req_i.is_weight) begin
-      is_weight = 1'b1;
-    end else begin
-      is_weight = 1'b0;
+      is_mpu_load_d = 1'b1;
+      if (pe_req_i.is_weight)
+        is_weight_d = 1'b1;
     end
 
     ////////////////////////////////////
@@ -363,39 +368,71 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         valid_bytes = (valid_bytes       < axi_valid_bytes       ) ? valid_bytes       : axi_valid_bytes;
 
         // Bump R beat and VRF word pointers
-        axi_r_byte_pnt_d    = axi_r_byte_pnt_q + valid_bytes;
-        vrf_word_byte_pnt_d = vrf_word_byte_pnt_q + valid_bytes;
-        vrf_word_byte_cnt_d = vrf_word_byte_cnt_q + valid_bytes;
-
+        axi_r_byte_pnt_d    = is_weight_q ? axi_r_byte_pnt_q + DataWidthB : (axi_r_byte_pnt_q + valid_bytes);
+        vrf_word_byte_pnt_d = is_weight_q ? (vrf_word_byte_pnt_q + (NrLanes * DataWidthB)) : (vrf_word_byte_pnt_q + valid_bytes);
+        vrf_word_byte_cnt_d = is_weight_q ? (vrf_word_byte_cnt_q + (NrLanes * DataWidthB)) : (vrf_word_byte_cnt_q + valid_bytes);
         
-        // Copy data from the R channel into the result queue
-        for (int unsigned axi_byte = 0; axi_byte < AxiDataWidth/8; axi_byte++) begin : axi_r_to_result_queue
-          // Is this byte a valid byte in the R beat?
-          if ((axi_byte >= (lower_byte + axi_r_byte_pnt_q)) && (axi_byte <= upper_byte)) begin : is_axi_r_byte
-            // Map axi_byte to the corresponding byte in the VRF word (sequential)
-            automatic int unsigned vrf_seq_byte = axi_byte - lower_byte - axi_r_byte_pnt_q + vrf_word_byte_pnt_q;
-            // Follow the vrf_seq_byte, but without the vstart information
-            automatic int unsigned vrf_seq_byte_cnt = axi_byte - lower_byte - axi_r_byte_pnt_q + vrf_word_byte_cnt_q;
-            // And then shuffle it
-            automatic int unsigned vrf_byte = is_mpu_load ? vrf_seq_byte : shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.vtype.vsew);
+        if (is_weight_q) begin : weight_load
+            // 当前分段处理的字节范围
+            automatic int unsigned split_lower = split_q * bytes_per_split;
+            automatic int unsigned split_upper = (split_q + 1) * bytes_per_split - 1;
 
-            // Is this byte a valid byte in the VRF word?
-            // We compare vrf_seq_byte_cnt since vrf_seq_byte contains also the vstart contribution, while the issue_cnt_bytes
-            // counter does not.
-            if (vrf_seq_byte_cnt < issue_cnt_bytes_q && vrf_seq_byte < (NrLanes * DataWidthB)) begin : is_vrf_byte
-              // At which lane, and what is the byte offset in that lane, of the byte vrf_byte?
-              automatic int unsigned vrf_offset = vrf_byte[2:0];
-              // Make sure this index wraps around the number of lane
-              automatic int unsigned vrf_lane = (vrf_byte >> 3);
+            // 仅当当前分段包含有效数据时才处理
+            if ((split_lower >= (lower_byte + axi_r_byte_pnt_q)) && 
+                (split_upper <= upper_byte) && 
+                (vrf_word_byte_cnt_q + bytes_per_split <= issue_cnt_bytes_q)) begin : valid_split
 
-              // Copy data and byte strobe
-              result_queue_d[result_queue_write_pnt_q][vrf_lane].wdata[8*vrf_offset +: 8] =
-                axi_r_i.data[8*axi_byte +: 8];
-              result_queue_d[result_queue_write_pnt_q][vrf_lane].be[vrf_offset] =
-                vinsn_issue_q.vm || mask_q[vrf_lane][vrf_offset];
-            end : is_vrf_byte
-          end : is_axi_r_byte
-        end : axi_r_to_result_queue
+              // 分段内字节处理
+              for (int unsigned axi_byte = split_lower; axi_byte <= split_upper; axi_byte++) begin : split_bytes
+                automatic int unsigned vrf_seq_byte = axi_byte - lower_byte - axi_r_byte_pnt_q + vrf_word_byte_pnt_q;
+                automatic int unsigned vrf_byte = vrf_seq_byte; // Weight模式禁用重排
+
+                if (vrf_seq_byte < (NrLanes * DataWidthB)) begin : is_vrf_byte
+                  automatic int unsigned vrf_offset = vrf_byte % DataWidthB; // Lane内偏移
+
+                  // 写入数据（按分段偏移调整）
+                  for (int unsigned vrf_lane = 0; vrf_lane < NrLanes; vrf_lane++) begin
+                    result_queue_d[result_queue_write_pnt_q + split_q][vrf_lane].wdata[8*vrf_offset +: 8] =
+                      axi_r_i.data[8*axi_byte +: 8];
+                    
+                    // 掩码继承（需确保mask_q已按分段对齐）
+                    result_queue_d[result_queue_write_pnt_q + split_q][vrf_lane].be[vrf_offset] =
+                      vinsn_issue_q.vm || mask_q[vrf_lane][vrf_offset];
+                  end
+                end
+              end
+            end
+        end : weight_load
+        else begin : normal_load
+          // Copy data from the R channel into the result queue
+          for (int unsigned axi_byte = 0; axi_byte < AxiDataWidth/8; axi_byte++) begin : axi_r_to_result_queue
+            // Is this byte a valid byte in the R beat?
+            if ((axi_byte >= (lower_byte + axi_r_byte_pnt_q)) && (axi_byte <= upper_byte)) begin : is_axi_r_byte
+              // Map axi_byte to the corresponding byte in the VRF word (sequential)
+              automatic int unsigned vrf_seq_byte = axi_byte - lower_byte - axi_r_byte_pnt_q + vrf_word_byte_pnt_q;
+              // Follow the vrf_seq_byte, but without the vstart information
+              automatic int unsigned vrf_seq_byte_cnt = axi_byte - lower_byte - axi_r_byte_pnt_q + vrf_word_byte_cnt_q;
+              // And then shuffle it
+              automatic int unsigned vrf_byte = is_mpu_load_q ? (is_weight_q ? vrf_seq_byte : mple_shuffle(vrf_seq_byte, NrLanes, vinsn_issue_q.vtype.vsew)) : shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.vtype.vsew);
+
+              // Is this byte a valid byte in the VRF word?
+              // We compare vrf_seq_byte_cnt since vrf_seq_byte contains also the vstart contribution, while the issue_cnt_bytes
+              // counter does not.
+              if (vrf_seq_byte_cnt < issue_cnt_bytes_q && vrf_seq_byte < (NrLanes * DataWidthB)) begin : is_vrf_byte
+                // At which lane, and what is the byte offset in that lane, of the byte vrf_byte?
+                automatic int unsigned vrf_offset = vrf_byte[2:0];
+                // Make sure this index wraps around the number of lane
+                automatic int unsigned vrf_lane = (vrf_byte >> 3);
+
+                // Copy data and byte strobe
+                result_queue_d[result_queue_write_pnt_q][vrf_lane].wdata[8*vrf_offset +: 8] =
+                  axi_r_i.data[8*axi_byte +: 8];
+                result_queue_d[result_queue_write_pnt_q][vrf_lane].be[vrf_offset] =
+                  vinsn_issue_q.vm || mask_q[vrf_lane][vrf_offset];
+              end : is_vrf_byte
+            end : is_axi_r_byte
+          end : axi_r_to_result_queue
+        end : normal_load
 
         for (int unsigned lane = 0; lane < NrLanes; lane++) begin : compute_vrf_addr
           // vstart value local ot the lane
@@ -425,7 +462,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         result_queue_valid_d[result_queue_write_pnt_q] = {NrLanes{1'b1}};
 
         // Increase the VRF-write sequential counter
-        if (is_mpu_load) begin
+        if (is_mpu_load_q) begin
           if ((seq_word_wr_offset_q + 1) % 4 == 0) begin
             seq_word_wr_offset_d = seq_word_wr_offset_q + 1 + 4;
           end else begin
@@ -433,6 +470,10 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
           end
         end else begin
           seq_word_wr_offset_d = seq_word_wr_offset_q + 1;
+        end
+
+        if (is_weight_q) begin
+          split_d = split_q + 1;
         end
 
         // Acknowledge the mask operands
@@ -567,8 +608,8 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       // Signal complete load
       load_complete_o = 1'b1;
 
-      is_mpu_load = 1'b0;
-      is_weight   = 1'b0;
+      is_mpu_load_d = 1'b0;
+      is_weight_d   = 1'b0;
 
       // Update the commit counters and pointers
       vinsn_queue_d.commit_cnt -= 1;
@@ -705,6 +746,9 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       ldu_ex_state_q                <= IDLE;
       first_result_queue_read_q     <= 1'b0;
       seq_word_wr_offset_q          <= '0;
+      split_q                       <= '0;
+      is_mpu_load_q                 <= '0;
+      is_weight_q                   <= '0;
     end else begin
       vinsn_running_q               <= vinsn_running_d;
       issue_cnt_bytes_q             <= issue_cnt_bytes_d;
@@ -721,6 +765,9 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       ldu_ex_state_q                <= ldu_ex_state_d;
       first_result_queue_read_q     <= first_result_queue_read_d;
       seq_word_wr_offset_q          <= seq_word_wr_offset_d;
+      split_q                       <= split_d; 
+      is_mpu_load_q                 <= is_mpu_load_d;
+      is_weight_q                   <= is_weight_d;
     end
   end
 

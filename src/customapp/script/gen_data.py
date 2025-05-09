@@ -1,43 +1,54 @@
 import torch
 import numpy as np
 
-
 # 设置随机种子以确保结果可复现
 seed = 42
 torch.manual_seed(seed)
 np.random.seed(seed)
 
 
-def emit_int8(name, array, alignment="4"):
-    """将 int8 数组按 4 个一组打包成 uint32，输出为 .word 十六进制格式"""
+def emit_int8(name, array, alignment="NR_LANES*4"):
+    """将 int8 数组按列优先方式打包成 uint32 输出为 .word 十六进制格式"""
     print(f".global {name}")
     print(f".balign {alignment}")
     print(f"{name}:")
-    flat = array.flatten().numpy().astype(np.int8)
-    padded = np.pad(flat, (0, (4 - len(flat) % 4) % 4), constant_values=0)
-    # 使用 uint32，避免溢出
+
+    # 按列优先展平数组
+    flat_col_major = array.t().contiguous().flatten().numpy().astype(np.int8)
+
+    # 填充到 4 的倍数长度
+    padded = np.pad(
+        flat_col_major, (0, (4 - len(flat_col_major) % 4) % 4), constant_values=0
+    )
+
+    # 打包为 uint32
     packed = np.frombuffer(padded.tobytes(), dtype=np.uint32)
+
     for i in range(0, len(packed), 8):
         line = ", ".join([f"0x{v:08x}" for v in packed[i : i + 8]])
         print(f"    .word {line}")
 
 
-def emit_int32(name, array, alignment="4"):
-    """直接按 .word 输出 int32 数组，使用 uint32 避免溢出"""
+def emit_int32(name, array, alignment="NR_LANES*4"):
+    """直接按列优先方式输出 int32 数组，使用 uint32 避免溢出"""
     print(f".global {name}")
     print(f".balign {alignment}")
     print(f"{name}:")
-    flat = array.flatten().numpy().astype(np.int32)
-    # 将 int32 视为 uint32，防止溢出
-    as_uint32 = np.frombuffer(flat.tobytes(), dtype=np.uint32)
+
+    # 按列优先展平数组
+    flat_col_major = array.t().contiguous().flatten().numpy().astype(np.int32)
+
+    # 转为 uint32 表示避免符号扩展问题
+    as_uint32 = np.frombuffer(flat_col_major.tobytes(), dtype=np.uint32)
+
     for i in range(0, len(as_uint32), 8):
         line = ", ".join([f"0x{v:08x}" for v in as_uint32[i : i + 8]])
         print(f"    .word {line}")
 
 
-def emit_1bit_blocks(name, tensor, alignment="4"):
+def emit_1bit_blocks(name, tensor, alignment="NR_LANES*4"):
     """
-    将每个 8x8 的 1-bit block 打包为 64-bit，然后拆成两个 .word 输出（十六进制）
+    将每个 8x8 的 1-bit block 打包为 64-bit，然后拆成两个 .word 输出（十六进制格式）
     """
     assert tensor.dim() == 2
     K, N = tensor.shape
@@ -55,8 +66,11 @@ def emit_1bit_blocks(name, tensor, alignment="4"):
                 for row in range(8):
                     bit = int(block[row, col]) & 1
                     bits |= bit << (col * 8 + row)
+            # 拆分为低32位和高32位
             low = bits & 0xFFFFFFFF
             high = (bits >> 32) & 0xFFFFFFFF
+
+            # 输出为十六进制
             print(f"    .word 0x{low:08x}, 0x{high:08x}")
 
 

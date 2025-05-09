@@ -306,7 +306,7 @@ module addrgen import ara_pkg::*; import rvv_pkg::*; #(
           // pe_req_i shouldn't be that critical at this point
           lookahead_addr_e_d  = pe_req_i.scalar_op + (pe_req_i.vstart << unsigned'(pe_req_i.vtype.vsew));
           lookahead_addr_se_d = pe_req_i.scalar_op + (pe_req_i.vstart * pe_req_i.stride);
-          lookahead_len_d     = pe_req_i.is_weight ? (pe_req_i.vl - pe_req_i.vstart) << unsigned'(pe_req_i.vtype.vsew[1:0]) / NrLanes : (pe_req_i.vl - pe_req_i.vstart) << unsigned'(pe_req_i.vtype.vsew[1:0]);
+          lookahead_len_d     = pe_req_i.is_weight ? (((pe_req_i.vl - pe_req_i.vstart) << unsigned'(pe_req_i.vtype.vsew[1:0])) / NrLanes) : ((pe_req_i.vl - pe_req_i.vstart) << unsigned'(pe_req_i.vtype.vsew[1:0]));
 
           case (pe_req_i.op)
             VLXE, VSXE: begin
