@@ -1,4 +1,4 @@
-module sa #(
+module sa import ara_pkg::*; import rvv_pkg::*; #(
     parameter ROWS       = 4,  // 阵列行数（可配置）
     parameter COLS       = 4,  // 阵列列数（可配置）
     parameter BIT_ACT    = 8,  // 激活值位宽（int8）
@@ -6,15 +6,16 @@ module sa #(
 ) (
     input  logic        clk,
     input  logic        rst_n,
-    input  logic        en,                 // 全局使能
+    input  logic        valid,
+    // input  logic        en,                 // 全局使能
     input  logic        output_en,          // 输出使能（仅控制数据输出）
-    // 输入数据接口（64 位打包数据）
-    input  logic [63:0] act_in     [ROWS],   // 激活输入（每行一个 64 位数据）
-    input  logic [63:0] weight_in  [COLS],   // 权值输入（每列一个 64 位数据）
-    input  logic [8:0]  k_dim,               // k 维度
-    // 输出数据接口（64 位打包数据）
-    output logic [63:0] output_data[ROWS],   // 最终输出（每行一个 64 位数据）
-    output logic        mpu_insn_done_o      // 计算完成信号
+    // 输入数据接口（支持参数化类型 elen_t）
+    input  elen_t [ROWS-1:0] act_in,        // 激活输入（每行一个 elen_t 数据）
+    input  elen_t [COLS-1:0] weight_in,     // 权值输入（每列一个 elen_t 数据）
+    input  logic [8:0]  k_dim,              // k 维度
+    // 输出数据接口（支持参数化类型 elen_t）
+    output elen_t [ROWS-1:0] output_data,   // 最终输出（每行一个 elen_t 数据）
+    output logic        mpu_insn_done_o     // 计算完成信号
 );
 
   // ----------------------
@@ -32,9 +33,9 @@ module sa #(
   // ----------------------
   // Tile 间信号连接
   // ----------------------
-  logic [63:0] act_reg    [ROWS][COLS];
-  logic [63:0] weight_reg [ROWS][COLS];
-  logic [63:0] output_reg [ROWS][COLS];
+  elen_t act_reg    [ROWS-1:0][COLS-1:0];
+  elen_t weight_reg [ROWS-1:0][COLS-1:0];
+  elen_t output_reg [ROWS-1:0][COLS-1:0];
 
   // ----------------------
   // Cycle计数器与计算完成逻辑
@@ -42,7 +43,6 @@ module sa #(
   logic [15:0] cycle_cnt;
   logic [15:0] compute_cycles;
 
-  // 计算需要的总周期数 = ROWS + (k_dim / 8)
   always_comb begin
     compute_cycles = ROWS + (k_dim >> 3);  // k_dim除以8
   end
@@ -50,7 +50,7 @@ module sa #(
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       cycle_cnt <= 0;
-    end else if (en) begin
+    end else if (valid) begin
       if (cycle_cnt < compute_cycles)
         cycle_cnt <= cycle_cnt + 1;
     end else begin
@@ -72,7 +72,7 @@ module sa #(
         ) u_tile (
             .clk             (clk),
             .rst_n           (rst_n),
-            .en              (en),
+            .en              (valid),
             .output_en       (output_en),
             .activations     ((j == 0) ? act_in[i] : act_reg[i][j-1]),
             .weights         ((i == 0) ? weight_in[j] : weight_reg[i-1][j]),

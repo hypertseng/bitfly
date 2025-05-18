@@ -240,6 +240,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   assign pe_req    = pe_req_i;
   assign pe_resp_o = pe_resp;
 
+  logic mpu_en, mpu_output_en;
+
   lane_sequencer #(
     .NrLanes              (NrLanes              ),
     .pe_req_t             (pe_req_t             ),
@@ -314,6 +316,13 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   elen_t                                      mfpu_result_wdata;
   strb_t                                      mfpu_result_be;
   logic                                       mfpu_result_gnt;
+  // MPU
+  logic                                       mpu_result_req;
+  vid_t                [3:0]                  mpu_result_id;
+  vaddr_t              [3:0]                  mpu_result_addr;
+  elen_t               [3:0]                  mpu_result_wdata;
+  strb_t               [3:0]                  mpu_result_be;
+  logic                                       mpu_result_gnt;
   // To the slide unit (reductions)
   logic                                       sldu_result_gnt_opqueues;
   // Support for store exception flush
@@ -389,7 +398,16 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .ldu_result_wdata_i       (ldu_result_wdata_i      ),
     .ldu_result_be_i          (ldu_result_be_i         ),
     .ldu_result_gnt_o         (ldu_result_gnt_o        ),
-    .ldu_result_final_gnt_o   (ldu_result_final_gnt_o  )
+    .ldu_result_final_gnt_o   (ldu_result_final_gnt_o  ),
+    // MPU
+    .mpu_result_req_i         (mpu_result_req          ),
+    .mpu_result_id_i          (mpu_result_id           ), 
+    .mpu_result_addr_i        (mpu_result_addr         ),
+    .mpu_result_wdata_i       (mpu_result_wdata        ),
+    .mpu_result_be_i          (mpu_result_be           ),
+    .mpu_result_gnt_o         (mpu_result_gnt          ),
+    .mpu_en_i                 (mpu_en                  ),
+    .mpu_output_en_i          (mpu_output_en           )
   );
 
   ////////////////////////////
@@ -441,7 +459,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic sldu_addrgen_operand_opqueues_valid;
 
   // SA 输入输出信号
-  elen_t mpu_act_operand [3:0], mpu_wgt_operand [3:0], mpu_output_data [3:0];
+  elen_t [3:0] mpu_act_operand, mpu_wgt_operand, mpu_output_data;
   logic  [3:0] mpu_act_operand_valid, mpu_wgt_operand_valid, mpu_output_valid;
   logic  [3:0] mpu_act_operand_ready, mpu_wgt_operand_ready, mpu_output_ready;
 
@@ -498,11 +516,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .mpu_act_operand_ready_i           (mpu_act_operand_ready               ),
     .mpu_wgt_operand_o                 (mpu_wgt_operand                     ),
     .mpu_wgt_operand_valid_o           (mpu_wgt_operand_valid               ),
-    .mpu_wgt_operand_ready_i           (mpu_wgt_operand_ready               ),
-    .mpu_output_data_o                 (mpu_output_data                     ),
-    .mpu_output_valid_o                (mpu_output_valid                    ),
-    .mpu_output_ready_i                (mpu_output_ready                    ),
-    .mpu_output_en_i                   (pe_req.mpu_output_en                )
+    .mpu_wgt_operand_ready_i           (mpu_wgt_operand_ready               )
   );
 
   ///////////////////////////////
@@ -588,36 +602,35 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   );
 
 
-  //   mpu #(
-  //   .NrLanes        (NrLanes        ),
-  //   .VLEN           (VLEN           ),
-  //   .FixPtSupport   (FixPtSupport   ),
-  //   .vaddr_t        (vaddr_t        ),
-  //   .vfu_operation_t(vfu_operation_t)
-  //   ) i_mpu (
-  //   .clk_i                (clk_i                          ),
-  //   .rst_ni               (rst_ni                         ),
-  //   .lane_id_i            (lane_id_i                      ),
-  //   // Interface with the lane sequencer
-  //   .vfu_operation_i      (vfu_operation                  ),
-  //   .vfu_operation_valid_i(vfu_operation_valid            ),
-  //   .mpu_ready_o          (mpu_ready                      ),
-  //   .mpu_vinsn_done_o     (mpu_vinsn_done                 ),
-  //   // Interface with the operand queues
-  //   .mpu_act_operand_i        (mpu_act_operand                    ),
-  //   .mpu_act_operand_valid_i  (mpu_act_operand_valid              ),
-  //   .mpu_act_operand_ready_o  (mpu_act_operand_ready              ),
-  //   .mpu_wgt_operand_i        (mpu_wgt_operand                    ),
-  //   .mpu_wgt_operand_valid_i  (mpu_wgt_operand_valid              ),
-  //   .mpu_wgt_operand_ready_o  (mpu_wgt_operand_ready              ),
-  //   // Interface with the vector register file
-  //   .mpu_result_req_o     (mpu_result_req                 ),
-  //   .mpu_result_addr_o    (mpu_result_addr                ),
-  //   .mpu_result_id_o      (mpu_result_id                  ),
-  //   .mpu_result_wdata_o   (mpu_result_wdata               ),
-  //   .mpu_result_be_o      (mpu_result_be                  ),
-  //   .mpu_result_gnt_i     (mpu_result_gnt                 )
-  // );
+    mpu #(
+    .NrLanes        (NrLanes        ),
+    .VLEN           (VLEN           ),
+    .vaddr_t        (vaddr_t        ),
+    .vfu_operation_t(vfu_operation_t)
+    ) i_mpu (
+    .clk_i                (clk_i                          ),
+    .rst_ni               (rst_ni                         ),
+    .lane_id_i            (lane_id_i                      ),
+    // Interface with the lane sequencer
+    .vfu_operation_i      (vfu_operation                  ),
+    .vfu_operation_valid_i(vfu_operation_valid            ),
+    .mpu_ready_o          (mpu_ready                      ),
+    .mpu_insn_done_o     (mpu_insn_done                 ),
+    // Interface with the operand queues
+    .mpu_act_operand_i        (mpu_act_operand                    ),
+    .mpu_act_operand_valid_i  (mpu_act_operand_valid              ),
+    .mpu_act_operand_ready_o  (mpu_act_operand_ready              ),
+    .mpu_wgt_operand_i        (mpu_wgt_operand                    ),
+    .mpu_wgt_operand_valid_i  (mpu_wgt_operand_valid              ),
+    .mpu_wgt_operand_ready_o  (mpu_wgt_operand_ready              ),
+    // Interface with the vector register file
+    .mpu_result_req_o     (mpu_result_req                 ),
+    .mpu_result_addr_o    (mpu_result_addr                ),
+    .mpu_result_id_o      (mpu_result_id                  ),
+    .mpu_result_wdata_o   (mpu_result_wdata               ),
+    .mpu_result_be_o      (mpu_result_be                  ),
+    .mpu_result_gnt_i     (mpu_result_gnt                 )
+  );
 
   /******************************
    *  SLDU/ADDRGEN arbitration  *
@@ -722,6 +735,18 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
       FPU_RED_SEL: sldu_addrgen_mux_sel = MUX_FPU_SEL;
       default: sldu_addrgen_mux_sel = MUX_OPQUEUE_SEL;
     endcase
+
+    if (pe_req.op == MPMM) begin
+      mpu_en = 1'b1;
+    end
+    if (mpu_insn_done) begin
+      mpu_en = 1'b0;
+    end
+
+    mpu_output_en = 1'b0;
+    if (pe_req.op == MPSE) begin
+      mpu_output_en = 1'b1;
+    end
   end
 
   // Stream MUX to select the transmitter

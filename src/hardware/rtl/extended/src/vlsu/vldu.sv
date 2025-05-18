@@ -392,11 +392,11 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
 
                   // 写入数据（按分段偏移调整）
                   for (int unsigned vrf_lane = 0; vrf_lane < NrLanes; vrf_lane++) begin
-                    result_queue_d[result_queue_write_pnt_q + split_q][vrf_lane].wdata[8*vrf_offset +: 8] =
+                    result_queue_d[result_queue_write_pnt_q][vrf_lane].wdata[8*vrf_offset +: 8] =
                       axi_r_i.data[8*axi_byte +: 8];
                     
                     // 掩码继承（需确保mask_q已按分段对齐）
-                    result_queue_d[result_queue_write_pnt_q + split_q][vrf_lane].be[vrf_offset] =
+                    result_queue_d[result_queue_write_pnt_q][vrf_lane].be[vrf_offset] =
                       vinsn_issue_q.vm || mask_q[vrf_lane][vrf_offset];
                   end
                 end

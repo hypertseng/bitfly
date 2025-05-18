@@ -111,7 +111,7 @@ package ara_pkg;
   localparam int unsigned NoneInsnQueueDepth = 1;
   // Ara supports MaskuInsnQueueDepth = 1 only.
   localparam int unsigned MaskuInsnQueueDepth = 1;
-  localparam int unsigned MpuInsnQueueDepth = 4;
+  localparam int unsigned MpuInsnQueueDepth = 1;
 
   ///////////////////
   //  Definitions  //
@@ -947,12 +947,12 @@ typedef struct packed {
   ////////////////////////
 
   // There are seven operand queues, serving operands to the different functional units of each lane
-  localparam int unsigned NrOperandQueues = 21;
+  localparam int unsigned NrOperandQueues = 17;
   typedef enum logic [$clog2(NrOperandQueues)-1:0] {
-    AluA, AluB, MulFPUA, MulFPUB, MulFPUC, MaskB, MaskM, StA, SlideAddrGenA,
+    AluA, AluB, MulFPUA, MulFPUB, MulFPUC,
     MPUAct0, MPUAct1, MPUAct2, MPUAct3,    // 4 个激活值操作数队列
     MPUWgt0, MPUWgt1, MPUWgt2, MPUWgt3,        // 4 个激活值操作队列
-    MPUOut0, MPUOut1, MPUOut2, MPUOut3     // 4 个输出队列
+    MaskB, MaskM, StA, SlideAddrGenA
   } opqueue_e;
 
   // Each lane has eight VRF banks

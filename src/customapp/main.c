@@ -149,12 +149,15 @@ int main()
     asm volatile("vsetvli %0, %1, e8, m1, ta, ma" : "=r"(vl) : "r"(avl));
     // 加载 activation 的前 64 个 int8 元素到向量寄存器 v0
     asm volatile("vle8.v v31, (%0)" ::"r"(activation_int8));
+    asm volatile (
+    "vsub.vv v7, v5, v6\n\t" // 执行矢量减法
+    );
     int64_t runtime_m, runtime_v; 
     start_timer();
     asm volatile("mpcfg  %0\n\t" ::"i"(imm));
     asm volatile("mple 0(%0), a\n\t" ::"r"(activation_int8) : "memory");
     asm volatile("mple 0(%0), w\n\t" ::"r"(weight_int1) : "memory");
-    // asm volatile("mpmm\n\t" ::);
+    asm volatile("mpmm\n\t" ::);
     // asm volatile("mpse 0(%0)\n\t" ::"r"(result_int8) : "memory");
     stop_timer();
     runtime_m = get_timer();
@@ -184,16 +187,16 @@ int main()
     // {
     //     printf("Total mismatches: %d\n", errors);
     // }
-    // start_timer();
-    // imatmul(result_int32, activation_int8, weight_int8, M, K, N);
-    // stop_timer();
-    // runtime_v = get_timer();
-    // performance = 2.0 * M * K * N / runtime_v;
-    // utilization = 100 * performance / (16.0 * NR_LANES);
+    start_timer();
+    imatmul(result_int32, activation_int8, weight_int8, M, K, N);
+    stop_timer();
+    runtime_v = get_timer();
+    performance = 2.0 * M * K * N / runtime_v;
+    utilization = 100 * performance / (16.0 * NR_LANES);
 
-    // printf("The execution took %d cycles.\n", runtime_v);
-    // printf("The performance is %f OP/cycle (%f%% utilization).\n", performance,
-    //        utilization);
+    printf("The execution took %d cycles.\n", runtime_v);
+    printf("The performance is %f OP/cycle (%f%% utilization).\n", performance,
+           utilization);
 
     // return errors;
 }

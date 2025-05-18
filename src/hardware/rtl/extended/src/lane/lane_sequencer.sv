@@ -323,6 +323,16 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
           // VRGATHER/VCOMPRESS use the MaskB opqueue with non-traditional request scheme
           pe_req_ready = !(operand_request_valid_o[MaskB]) && ((vrgat_state_q == IDLE) && !masku_vrgat_req_valid_q);
         end
+        MPU : begin
+          pe_req_ready = !(operand_request_valid_o[MPUAct0] ||
+            operand_request_valid_o[MPUAct1] ||
+            operand_request_valid_o[MPUAct2] ||
+            operand_request_valid_o[MPUAct3] ||
+            operand_request_valid_o[MPUWgt0] ||
+            operand_request_valid_o[MPUWgt1] ||
+            operand_request_valid_o[MPUWgt2] ||
+            operand_request_valid_o[MPUWgt3]);
+        end
         default:;
       endcase
     end
@@ -939,6 +949,45 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
             default    : '0
           };
           operand_request_push[MaskB] = 1'b1;
+        end
+        MPU: begin
+          for (int i = 0; i < 4; i++) begin
+            operand_request[MPUAct0 + i] = '{
+                id         : pe_req.id,
+                vs         : pe_req.vs1,
+                eew        : pe_req.eew_vs1,
+                conv       : pe_req.conversion_vs1,
+                scale_vl   : pe_req.scale_vl,
+                cvt_resize : pe_req.cvt_resize,
+                vtype      : pe_req.vtype,
+                vl         : pe_req.k_dim,
+                vstart     : vfu_operation_d.vstart,
+                hazard     : pe_req.hazard_vs1 | pe_req.hazard_vd,
+                is_reduct  : 0,
+                target_fu  : ALU_SLDU,
+                default    : '0
+            };
+            operand_request_push[MPUAct0 + i] = 1'b1;
+          end
+
+          for (int i = 0; i < 4; i++) begin
+            operand_request[MPUWgt0 + i] = '{
+                id         : pe_req.id,
+                vs         : pe_req.vs1,
+                eew        : pe_req.eew_vs1,
+                conv       : pe_req.conversion_vs1,
+                scale_vl   : pe_req.scale_vl,
+                cvt_resize : pe_req.cvt_resize,
+                vtype      : pe_req.vtype,
+                vl         : pe_req.k_dim,
+                vstart     : vfu_operation_d.vstart,
+                hazard     : pe_req.hazard_vs1 | pe_req.hazard_vd,
+                is_reduct  : 0,
+                target_fu  : ALU_SLDU,
+                default    : '0
+            };
+            operand_request_push[MPUWgt0 + i] = 1'b1;
+          end
         end
         default:;
       endcase

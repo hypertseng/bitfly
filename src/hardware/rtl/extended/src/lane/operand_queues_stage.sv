@@ -58,19 +58,13 @@ module operand_queues_stage
     output logic [1:0] mask_operand_valid_o,
     input logic [1:0] mask_operand_ready_i,
     // SA 队列接口
-    output elen_t mpu_act_operand_o [3:0],  // SA 激活输入
+    output elen_t [3:0] mpu_act_operand_o,  // MPU 激活输入
     output logic [3:0] mpu_act_operand_valid_o,
     input logic [3:0] mpu_act_operand_ready_i,
 
-    output elen_t mpu_wgt_operand_o[3:0],        // SA 权重输入
+    output elen_t [3:0] mpu_wgt_operand_o,        // MPU 权重输入
     output logic  [3:0] mpu_wgt_operand_valid_o,
-    input  logic  [3:0] mpu_wgt_operand_ready_i,
-
-    input  elen_t mpu_output_data_o [3:0],   // SA 输出
-    input  logic  [3:0] mpu_output_valid_o,
-    output logic  [3:0] mpu_output_ready_i,
-
-    input logic  mpu_output_en_i // MPU 输出使能
+    input  logic  [3:0] mpu_wgt_operand_ready_i
 );
 
   `include "common_cells/registers.svh"
@@ -351,16 +345,9 @@ module operand_queues_stage
   if (VrgatherOpQueueBufDepth % 2 != 0)
     $fatal(1, "Parameter VrgatherOpQueueBufDepth must be power of 2.");
 
-  // 模式控制信号
-  logic queue_mode; // 0:activation输入模式, 1:输出模式
-  logic activation_processed;
-  elen_t shared_operand_o [3:0];
-  logic [3:0] shared_operand_valid_o;
-  logic [NrLanes-1:0] queue_ready_internal;
-
-  // 共享的SA激活值/输出操作数队列
+  // SA激活值操作数队列f
   generate
-    for (genvar i = 0; i < 4; i++) begin : gen_mpu_act_out_queues
+    for (genvar i = 0; i < 4; i++) begin : gen_mpu_act_queues
       // 共享队列实例
       operand_queue #(
           .CmdBufDepth        (MpuInsnQueueDepth),
@@ -369,40 +356,28 @@ module operand_queues_stage
           .NrLanes            (NrLanes),
           .VLEN               (VLEN),
           .operand_queue_cmd_t(operand_queue_cmd_t)
-      ) i_mpu_shared_queue (
+      ) i_mpu_act_queue (
           .clk_i                    (clk_i),
           .rst_ni                   (rst_ni),
           .flush_i                  (1'b0),
           .lane_id_i                (lane_id_i),
           // 命令输入根据模式选择
-          .operand_queue_cmd_i      (queue_mode ? operand_queue_cmd_i[MPUOut0+i] : operand_queue_cmd_i[MPUAct0+i]),
-          .operand_queue_cmd_valid_i(queue_mode ? operand_queue_cmd_valid_i[MPUOut0+i] : operand_queue_cmd_valid_i[MPUAct0+i]),
+          .operand_queue_cmd_i      (operand_queue_cmd_i[MPUAct0+i]),
+          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[MPUAct0+i]),
           .cmd_pop_o                (),
           // 数据输入根据模式选择
-          .operand_i                (queue_mode ? operand_i[MPUOut0+i] : operand_i[MPUAct0+i]),
-          .operand_valid_i          (queue_mode ? operand_valid_i[MPUOut0+i] : operand_valid_i[MPUAct0+i]),
-          .operand_issued_i         (queue_mode ? 1'b0 : operand_issued_i[MPUAct0+i]),
-          .operand_queue_ready_o    (queue_ready_internal[i]),
+          .operand_i                (operand_i[MPUAct0+i]),
+          .operand_valid_i          (operand_valid_i[MPUAct0+i]),
+          .operand_issued_i         (operand_issued_i[MPUAct0+i]),
+          .operand_queue_ready_o    (operand_queue_ready_o[MPUAct0+i]),
           // 输出数据
-          .operand_o                (shared_operand_o[i]),
-          .operand_valid_o          (shared_operand_valid_o[i]),
-          .operand_ready_i          (queue_mode ? mpu_output_ready_i[i] : mpu_act_operand_ready_i[i])
+          .operand_o                (mpu_act_operand_o[i]),
+          .operand_target_fu_o      (  /* Unused */),
+          .operand_valid_o          (mpu_act_operand_valid_o[i]),
+          .operand_ready_i          (mpu_act_operand_ready_i[i])
       );
-      
-      // 输出分配
-      assign mpu_act_operand_o[i] = !queue_mode ? shared_operand_o[i] : '0;
-      assign mpu_act_operand_valid_o[i] = !queue_mode ? shared_operand_valid_o[i] : '0;
-      logic [VLEN-1:0] shared_output_data[4];
-      assign shared_output_data[i] = shared_operand_o[i];
-      // assign mpu_output_data_o[i] = queue_mode ? shared_operand_o[i] : '0;
-      assign mpu_output_valid_o[i] = queue_mode ? shared_operand_valid_o[i] : '0;
-
-      assign operand_queue_ready_o[MPUOut0+i] = queue_mode ? queue_ready_internal[i] : '0;
-      assign operand_queue_ready_o[MPUAct0+i] = !queue_mode ? queue_ready_internal[i] : '0;
     end
   endgenerate
-
-  assign queue_mode = mpu_output_en_i;
 
   // SA权重队列
   generate
@@ -427,6 +402,7 @@ module operand_queues_stage
           .operand_issued_i         (operand_issued_i[MPUWgt0+i]),
           .operand_queue_ready_o    (operand_queue_ready_o[MPUWgt0+i]),
           .operand_o                (mpu_wgt_operand_o[i]),
+          .operand_target_fu_o      (  /* Unused */),
           .operand_valid_o          (mpu_wgt_operand_valid_o[i]),
           .operand_ready_i          (mpu_wgt_operand_ready_i[i])
       );

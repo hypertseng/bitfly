@@ -320,7 +320,8 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
     MaskuInsnQueueDepth,
     VlduInsnQueueDepth,
     VstuInsnQueueDepth,
-    NoneInsnQueueDepth
+    NoneInsnQueueDepth,
+    MpuInsnQueueDepth
   };
 
   logic ara_req_token_d, ara_req_token_q;
@@ -490,7 +491,6 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
               mpu_en        : ara_req_i.mpu_en,
               is_weight     : ara_req_i.is_weight,
               mpu_output_en : ara_req_i.mpu_output_en,
-              // offset        : ara_req_i.offset,
               default       : '0
             };
 

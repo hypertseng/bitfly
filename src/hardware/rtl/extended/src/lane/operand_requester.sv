@@ -83,7 +83,17 @@ module operand_requester
     input  elen_t                                                   ldu_result_wdata_i,
     input  strb_t                                                   ldu_result_be_i,
     output logic                                                    ldu_result_gnt_o,
-    output logic                                                    ldu_result_final_gnt_o
+    output logic                                                    ldu_result_final_gnt_o,
+    // MPU
+    input  logic                                                    mpu_result_req_i,
+    input  vid_t                [3:0]                               mpu_result_id_i,
+    input  vaddr_t              [3:0]                               mpu_result_addr_i,
+    input  elen_t               [3:0]                               mpu_result_wdata_i,
+    input  strb_t               [3:0]                               mpu_result_be_i,
+    output logic                                                    mpu_result_gnt_o,
+
+    input  logic                                                    mpu_en_i,
+    input  logic                                                    mpu_output_en_i
 );
 
   import cf_math_pkg::idx_width;
@@ -201,6 +211,7 @@ module operand_requester
     vinsn_result_written_d[masku_result_id] |= masku_result_gnt;
     vinsn_result_written_d[ldu_result_id] |= ldu_result_gnt;
     vinsn_result_written_d[sldu_result_id] |= sldu_result_gnt;
+    vinsn_result_written_d[mpu_result_id_i] |= mpu_result_gnt_o;
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin : p_vinsn_result_written_ff
@@ -228,7 +239,8 @@ module operand_requester
   // Masters 0 to NrOperandQueues-1 correspond to the operand queues.
   // The remaining four masters correspond to the ALU, the MFPU, the MASKU, the VLDU, and the SLDU.
   localparam NrGlobalMasters = 5;
-  localparam NrMasters = NrOperandQueues + NrGlobalMasters;
+  localparam NrMpuOutQueues = 4;
+  localparam NrMasters = NrOperandQueues + NrGlobalMasters + NrMpuOutQueues;
 
   typedef struct packed {
     vaddr_t addr;
@@ -240,7 +252,7 @@ module operand_requester
 
   logic       [        NrBanks-1:0]             [NrOperandQueues-1:0]  lane_operand_req;
   logic       [NrOperandQueues-1:0]             [        NrBanks-1:0]  lane_operand_req_transposed;
-  logic       [        NrBanks-1:0]             [NrGlobalMasters-1:0]  ext_operand_req;
+  logic       [        NrBanks-1:0]             [NrGlobalMasters+NrMpuOutQueues-1:0]  ext_operand_req;
   logic       [        NrBanks-1:0]             [      NrMasters-1:0]  operand_gnt;
   payload_t [                      NrMasters-1:0                     ] operand_payload;
 
@@ -283,7 +295,7 @@ module operand_requester
     // Is there a hazard during this cycle?
     logic stall;
     assign stall = |(requester_metadata_q.hazard & ~(vinsn_result_written_q &
-                   (~{NrVInsn{requester_metadata_q.is_widening}} | requester_metadata_q.waw_hazard_counter)));
+                   (~{NrVInsn{requester_metadata_q.is_widening}} | requester_metadata_q.waw_hazard_counter))) || (mpu_en_i && requester_metadata_q.hazard);
 
     // Did we get a grant?
     logic [NrBanks-1:0] operand_requester_gnt;
@@ -351,7 +363,7 @@ module operand_requester
       // Init helper variables
       requester_metadata_tmp = '{
           id          : operand_request_i[requester_index].id,
-          addr        : vrf_addr,
+          addr        : (requester_index > 4 && requester_index < 13) ? requester_index - 5 : vrf_addr,
           len         : effective_vector_body_length,
           vew         : operand_request_i[requester_index].eew,
           hazard      : operand_request_i[requester_index].hazard,
@@ -423,7 +435,7 @@ module operand_requester
             // Received a grant.
             if (|operand_requester_gnt) begin : op_req_grant
               // Bump the address pointer
-              requester_metadata_d.addr = requester_metadata_q.addr + 1'b1;
+              requester_metadata_d.addr = (requester_index > 4 && requester_index < 13) ? requester_metadata_q.addr + 4'b1000 : requester_metadata_q.addr + 1'b1;
 
               // We read less than 64 bits worth of elements
               num_elements = (1 << (unsigned'(EW64) - unsigned'(requester_metadata_q.vew)));
@@ -511,6 +523,10 @@ module operand_requester
       ext_operand_req[bank][VFU_MaskUnit]  = 1'b0;
       ext_operand_req[bank][VFU_SlideUnit] = 1'b0;
       ext_operand_req[bank][VFU_LoadUnit]  = 1'b0;
+      ext_operand_req[bank][5]           = 1'b0;
+      ext_operand_req[bank][6]           = 1'b0;
+      ext_operand_req[bank][7]           = 1'b0;
+      ext_operand_req[bank][8]           = 1'b0;
     end
 
     // Generate the payloads for write back operations
@@ -554,13 +570,26 @@ module operand_requester
         opqueue: AluA,
         default: '0
     };
-
+    if (mpu_output_en_i) begin
+      for (int i = 0; i < 4; i++) begin
+        operand_payload[NrOperandQueues + NrGlobalMasters + i].addr   = mpu_result_addr_i[i] >> $clog2(NrBanks);
+        operand_payload[NrOperandQueues + NrGlobalMasters + i].wen    = 1'b1;
+        operand_payload[NrOperandQueues + NrGlobalMasters + i].wdata  = mpu_result_wdata_i[i];
+        operand_payload[NrOperandQueues + NrGlobalMasters + i].be     = mpu_result_be_i[i];
+        operand_payload[NrOperandQueues + NrGlobalMasters + i].opqueue= opqueue_e'(MPUAct0 + i);
+      end
+    end
+    
     // Store their request value
     ext_operand_req[alu_result_addr_i[idx_width(NrBanks)-1:0]][VFU_Alu] = alu_result_req_i;
     ext_operand_req[mfpu_result_addr_i[idx_width(NrBanks)-1:0]][VFU_MFpu] = mfpu_result_req_i;
     ext_operand_req[masku_result_addr[idx_width(NrBanks)-1:0]][VFU_MaskUnit] = masku_result_req;
     ext_operand_req[sldu_result_addr[idx_width(NrBanks)-1:0]][VFU_SlideUnit] = sldu_result_req;
     ext_operand_req[ldu_result_addr[idx_width(NrBanks)-1:0]][VFU_LoadUnit] = ldu_result_req;
+    ext_operand_req[mpu_result_addr_i[idx_width(NrBanks)-1:0]][5] = mpu_result_req_i;
+    ext_operand_req[mpu_result_addr_i[idx_width(NrBanks)-1:0]][6] = mpu_result_req_i;
+    ext_operand_req[mpu_result_addr_i[idx_width(NrBanks)-1:0]][7] = mpu_result_req_i;
+    ext_operand_req[mpu_result_addr_i[idx_width(NrBanks)-1:0]][8] = mpu_result_req_i;
 
     // Generate the grant signals
     alu_result_gnt_o = 1'b0;
@@ -568,12 +597,14 @@ module operand_requester
     masku_result_gnt = 1'b0;
     sldu_result_gnt = 1'b0;
     ldu_result_gnt = 1'b0;
+    mpu_result_gnt_o = 1'b0;
     for (int bank = 0; bank < NrBanks; bank++) begin
       alu_result_gnt_o  = alu_result_gnt_o | operand_gnt[bank][NrOperandQueues + VFU_Alu];
       mfpu_result_gnt_o = mfpu_result_gnt_o | operand_gnt[bank][NrOperandQueues + VFU_MFpu];
       masku_result_gnt  = masku_result_gnt | operand_gnt[bank][NrOperandQueues + VFU_MaskUnit];
       sldu_result_gnt   = sldu_result_gnt | operand_gnt[bank][NrOperandQueues + VFU_SlideUnit];
       ldu_result_gnt    = ldu_result_gnt | operand_gnt[bank][NrOperandQueues + VFU_LoadUnit];
+      mpu_result_gnt_o  = mpu_result_gnt_o | operand_gnt[bank][NrOperandQueues + NrGlobalMasters+1] | operand_gnt[bank][NrOperandQueues + NrGlobalMasters+2] | operand_gnt[bank][NrOperandQueues + NrGlobalMasters+3];
     end
   end
 
@@ -584,7 +615,7 @@ module operand_requester
     logic payload_hp_req;
     logic payload_hp_gnt;
     rr_arb_tree #(
-        .NumIn    (unsigned'(MulFPUC) - unsigned'(AluA) + 1 + unsigned'(VFU_MFpu) - unsigned'(VFU_Alu) + 1),
+        .NumIn    (unsigned'(MPUWgt3) - unsigned'(AluA) + 1 + unsigned'(VFU_MFpu) - unsigned'(VFU_Alu) + 1 + 4),
         .DataWidth($bits(payload_t)),
         .AxiVldRdy(1'b0)
     ) i_hp_vrf_arbiter (
@@ -593,13 +624,15 @@ module operand_requester
         .flush_i(1'b0),
         .rr_i('0),
         .data_i({
-          operand_payload[MulFPUC:AluA],
-          operand_payload[NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu]
+          operand_payload[MPUWgt3:AluA],
+          operand_payload[NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu],
+          operand_payload[NrOperandQueues+NrGlobalMasters+NrMpuOutQueues-1:NrOperandQueues+NrGlobalMasters]
         }),
-        .req_i({lane_operand_req[bank][MulFPUC:AluA], ext_operand_req[bank][VFU_MFpu:VFU_Alu]}),
+        .req_i({lane_operand_req[bank][MPUWgt3:AluA], ext_operand_req[bank][VFU_MFpu:VFU_Alu], ext_operand_req[bank][8:5]}),
         .gnt_o({
-          operand_gnt[bank][MulFPUC:AluA],
-          operand_gnt[bank][NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu]
+          operand_gnt[bank][MPUWgt3:AluA],
+          operand_gnt[bank][NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu],
+          operand_gnt[bank][NrOperandQueues+NrGlobalMasters+NrMpuOutQueues-1:NrOperandQueues+NrGlobalMasters]
         }),
         .data_o(payload_hp),
         .idx_o(  /* Unused */),

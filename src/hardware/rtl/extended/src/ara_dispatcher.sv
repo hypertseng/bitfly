@@ -181,6 +181,8 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
   riscv::instruction_t instr;
   assign instr = riscv::instruction_t'(acc_req_i.insn);
 
+  logic [8:0] k_dim_d, k_dim_q;
+
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       state_q              <= NORMAL_OPERATION;
@@ -198,6 +200,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
       reshuffle_eew_vs2_q  <= rvv_pkg::EW8;
       reshuffle_eew_vd_q   <= rvv_pkg::EW8;
       pending_seg_mem_op_q <= 1'b0;
+      k_dim_q              <= '0;
     end else begin
       state_q              <= state_d;
       state_qq             <= state_q;
@@ -214,6 +217,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
       reshuffle_eew_vs2_q  <= reshuffle_eew_vs2_d;
       reshuffle_eew_vd_q   <= reshuffle_eew_vd_d;
       pending_seg_mem_op_q <= pending_seg_mem_op_d;
+      k_dim_q              <= k_dim_d;
     end
   end
 
@@ -253,8 +257,6 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
   // NP2 Slide support
   logic is_stride_np2;
   logic [idx_width(idx_width(VLENB << 3)):0] sldu_popc;
-
-  logic [8:0] k_dim;
 
   // Is the stride power of two?
   popcount #(
@@ -416,6 +418,8 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
     };
     acc_resp_o.req_ready  = 1'b0;
     acc_resp_o.resp_valid = 1'b0;
+
+    k_dim_d = k_dim_q;
 
     // fflags
     for (int lane = 0; lane < NrLanes; lane++) acc_resp_o.fflags |= fflags_ex_i[lane];
@@ -3677,16 +3681,17 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
               end
               3'b110: begin // mpmm
                 // These generate a request to Ara's backend
-                // ara_req.vs1     = insn.varith_type.rs1;
-                // ara_req.use_vs1 = 1'b1;
-                // ara_req.vs2     = insn.varith_type.rs2;
-                // ara_req.use_vs2 = 1'b1;
-                // ara_req.vd      = insn.varith_type.rd;
-                // ara_req.use_vd  = 1'b1;
-                // ara_req.vm      = insn.varith_type.vm;
+                ara_req.vs1     = insn.varith_type.rs1;
+                ara_req.use_vs1 = 1'b1;
+                ara_req.vs2     = insn.varith_type.rs2;
+                ara_req.use_vs2 = 1'b1;
+                ara_req.vd      = insn.varith_type.rd;
+                ara_req.use_vd  = 1'b1;
+                acc_resp_o.resp_valid = 1'b1;
                 ara_req.op = MPMM;
                 ara_req_valid   = 1'b1;
                 ara_req.mpu_en = 1'b1;
+                ara_req.k_dim = k_dim_q;
                 csr_vl_d = 4 * NrLanes * 4 * 8;
               end
               default: begin
@@ -3706,13 +3711,17 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
             //respond at the same cycle
             acc_resp_o.resp_valid = 1'b1;
 
+            k_dim_d = insn.custom1_type.uimm9;
             ara_req.k_dim = insn.custom1_type.uimm9;
-            k_dim = ara_req.k_dim;
             csr_vl_d = insn.custom1_type.uimm9 * 4 * NrLanes;
 
             is_config       = 1'b1;
 
-            acc_resp_o.result = k_dim;
+            acc_resp_o.result = insn.custom1_type.uimm9;;
+
+            if (insn.custom1_type.uimm9 > 496) begin
+              illegal_insn = 1'b1;
+            end
           end
 
           default: begin
