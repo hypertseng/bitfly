@@ -7,7 +7,7 @@ torch.manual_seed(seed)
 np.random.seed(seed)
 
 
-def emit_int8(name, array, alignment="NR_LANES*4"):
+def emit_int8_col_major(name, array, alignment="NR_LANES*4"):
     """将 int8 数组按列优先方式打包成 uint32 输出为 .word 十六进制格式"""
     print(f".global {name}")
     print(f".balign {alignment}")
@@ -19,6 +19,28 @@ def emit_int8(name, array, alignment="NR_LANES*4"):
     # 填充到 4 的倍数长度
     padded = np.pad(
         flat_col_major, (0, (4 - len(flat_col_major) % 4) % 4), constant_values=0
+    )
+
+    # 打包为 uint32
+    packed = np.frombuffer(padded.tobytes(), dtype=np.uint32)
+
+    for i in range(0, len(packed), 8):
+        line = ", ".join([f"0x{v:08x}" for v in packed[i : i + 8]])
+        print(f"    .word {line}")
+
+
+def emit_int8_row_major(name, array, alignment="NR_LANES*4"):  # <<< 新增：按行优先方式
+    """将 int8 数组按行优先方式打包成 uint32 输出为 .word 十六进制格式"""
+    print(f".global {name}")
+    print(f".balign {alignment}")
+    print(f"{name}:")
+
+    # 按行优先展平数组
+    flat_row_major = array.contiguous().flatten().numpy().astype(np.int8)
+
+    # 填充到 4 的倍数长度
+    padded = np.pad(
+        flat_row_major, (0, (4 - len(flat_row_major) % 4) % 4), constant_values=0
     )
 
     # 打包为 uint32
@@ -75,26 +97,34 @@ def emit_1bit_blocks(name, tensor, alignment="NR_LANES*4"):
 
 
 # 示例参数
-M, K, N = 16, 64, 32
-A = torch.randint(-128, 127, (M, K), dtype=torch.int8)
-B = torch.randint(0, 2, (K, N), dtype=torch.uint8)
+M, N = 16, 32
+K_dim = [16, 32, 64, 128, 256, 496]
 
-C = torch.zeros((M, N), dtype=torch.int32)
-for m in range(M):
-    for n in range(N):
-        acc = 0
-        for k in range(K):
-            a_val = int(A[m, k])
-            b_val = int(B[k, n])
-            acc += a_val if b_val == 1 else -a_val
-        C[m, n] = acc
+for K in K_dim:
+    # 创建矩阵
+    A = torch.ones((M, K), dtype=torch.int8)
+    B = torch.ones((K, N), dtype=torch.int8)
+    # A = torch.randint(-128, 127, (M, K), dtype=torch.int8)
+    # B = torch.randint(0, 2, (K, N), dtype=torch.uint8)
 
-result = torch.zeros((M, N), dtype=torch.int8)
+    # 发射数据段
+    emit_int8_col_major(f"activation_lp_K_{K}", A)
+    emit_1bit_blocks(f"weight_lp_K_{K}", B)
+    emit_int8_col_major(f"result_lp_K_{K}", torch.zeros((M, N), dtype=torch.int8))
 
-print('.section .data,"aw",@progbits')
+    emit_int8_row_major(f"activation_hp_K_{K}", A)
+    emit_int8_row_major(f"weight_hp_K_{K}", B)
+    emit_int8_row_major(f"result_hp_K_{K}", torch.zeros((M, N), dtype=torch.int8))
 
-emit_int8("activation_int8", A)
-emit_1bit_blocks("weight_int1", B)
-emit_int8("weight_int8", B)
-emit_int8("result", result)
-emit_int8("standard_result", C)
+    C = torch.zeros((M, N), dtype=torch.int32)
+    C = A @ B
+    # for m in range(M):
+    #     for n in range(N):
+    #         acc = 0
+    #         for k in range(K):
+    #             a_val = int(A[m, k])
+    #             b_val = int(B[k, n])
+    #             acc += a_val if b_val == 1 else -a_val
+    #         C[m, n] = acc
+
+    emit_int32(f"result_torch_K_{K}", C)
