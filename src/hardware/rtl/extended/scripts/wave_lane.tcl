@@ -16,6 +16,7 @@ for {set bank 0}  {$bank < [examine -radix dec ara_pkg::NrVRFBanksPerLane]} {inc
 
 add wave -noupdate -group Ara -group Lane[$1] -group vector_regfile /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_vrf/*
 for {set bank 0}  {$bank < [examine -radix dec ara_pkg::NrVRFBanksPerLane]} {incr bank} {
+    add wave -noupdate -group Ara -group Lane[$1] -group vector_regfile -group vrf_bank[$bank] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_vrf/gen_banks[$bank]/data_sram/*
     add wave -noupdate -group Ara -group Lane[$1] -group vector_regfile -group vrf_bank[$bank] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_vrf/gen_banks[$bank]/data_sram/sram
 }
 
@@ -29,8 +30,10 @@ add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group st_ma
 add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group slide_addrgen_a /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/i_operand_queue_slide_addrgen_a/*
 add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mask_b /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/i_operand_queue_mask_b/*
 add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mask_m /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/i_operand_queue_mask_m/*
-add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mpu_act /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/gen_mpu_act_queues[0]/i_mpu_act_queue/*
-add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mpu_wgt /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/gen_mpu_wgt_queues[0]/i_mpu_wgt_queue/*
+for {set queue 0}  {$queue < 4} {incr queue} {
+    add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mpu_act -group act[$queue] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/gen_mpu_act_queues[$queue]/i_mpu_act_queue/*
+    add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mpu_wgt -group wgt[$queue] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/gen_mpu_wgt_queues[$queue]/i_mpu_wgt_queue/*
+}
 add wave -noupdate -group Ara -group Lane[$1] -group operand_queues /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/*
 
 add wave -noupdate -group Ara -group Lane[$1] -group valu -group simd_alu /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_vfus/i_valu/i_simd_alu/*
@@ -47,5 +50,18 @@ add wave -noupdate -group Ara -group Lane[$1] -group vmfpu /ara_tb/dut/i_ara_soc
 
 add wave -noupdate -group Ara -group Lane[$1] -group mpu /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/*
 add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/*
+for {set row 0}  {$row < 4} {incr row} {
+    for {set col 0}  {$col < 4} {incr col} {
+        add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa -group tile[$row][$col] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/row_gen[$row]/col_gen[$col]/u_tile/*
+    }
+}
+for {set row 0}  {$row < 4} {incr row} {
+    for {set col 0}  {$col < 4} {incr col} {
+        for {set id 0}  {$id < 8} {incr id} {
+                    add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa -group tile[$row][$col] -group pe[$row][$col][$id] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/row_gen[$row]/col_gen[$col]/u_tile/pe_array[$id]/u_pe/*
+        }
+    }
+}
+
 
 add wave -noupdate -group Ara -group Lane[$1] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/*

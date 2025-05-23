@@ -31,7 +31,8 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
     output vaddr_t         [3:0]         mpu_result_addr_o,
     output elen_t          [3:0]         mpu_result_wdata_o,
     output strb_t          [3:0]         mpu_result_be_o,
-    input  logic                         mpu_result_gnt_i
+    input  logic                         mpu_result_gnt_i,
+    output logic                         mpu_output_en_o
   );
 
     import cf_math_pkg::idx_width;
@@ -125,7 +126,7 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
   logic     [idx_width(ResultQueueDepth)-1:0] [3:0] result_queue_write_pnt_d, result_queue_write_pnt_q;
   logic     [idx_width(ResultQueueDepth)-1:0] [3:0] result_queue_read_pnt_d, result_queue_read_pnt_q;
   // We need to count how many valid elements are there in this result queue.
-  logic     [idx_width(ResultQueueDepth):0]   [3:0] result_queue_cnt_d, result_queue_cnt_q;
+  logic     [idx_width(ResultQueueDepth):0]         result_queue_cnt_d, result_queue_cnt_q;
 
   // Is the result queue full?
   logic result_queue_full;
@@ -147,9 +148,19 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
     end
   end
 
-  logic mpu_valid;
+  logic mpu_valid_d, mpu_valid_q;
   elen_t [3:0] mpu_result;
-  logic mpu_output_en;
+  logic [8:0]  k_dim;
+  logic sa_done;
+
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+      mpu_valid_q <= 1'b0;
+    end else begin
+      mpu_valid_q <= mpu_valid_d;
+    end
+  end
+
 
   // 实例化 SA 模块
   sa #(
@@ -158,15 +169,15 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
     .BIT_ACT   (8),
     .BIT_WEIGHT(1)
   ) u_sa (
-    .clk            (clk_i),
-    .rst_n          (rst_ni),
-    .valid          (mpu_valid),
-    .output_en      (mpu_output_en),
-    .act_in         (mpu_act_operand_i),
-    .weight_in      (mpu_wgt_operand_i),
-    .k_dim          (vfu_operation_i.k_dim),
-    .output_data    (mpu_result),
-    .mpu_insn_done_o (mpu_insn_done)
+    .clk_i                (clk_i),
+    .rst_ni              (rst_ni),
+    .valid_i              (mpu_valid_q || mpu_valid_d),
+    .output_en_i          (mpu_output_en_o),
+    .mpu_act_operand_i  (mpu_act_operand_i),
+    .mpu_wgt_operand_i  (mpu_wgt_operand_i),
+    .k_dim_i              (k_dim),
+    .output_data_o        (mpu_result),
+    .sa_done_o    (sa_done)
     );
 
   ///////////////
@@ -179,10 +190,10 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
   vlen_t commit_cnt_d, commit_cnt_q;
 
   // How many elements are issued/committed
-  logic [3:0] element_cnt_buf_issue, element_cnt_buf_commit;
+  logic [5:0] element_cnt_buf_issue, element_cnt_buf_commit;
   logic [1:0] issue_effective_eew, commit_effective_eew;
-  logic [6:0] element_cnt_issue;
-  logic [6:0] element_cnt_commit;
+  logic [8:0] element_cnt_issue;
+  logic [8:0] element_cnt_commit;
 
   always_comb begin: p_mpu
     // Maintain state
@@ -197,8 +208,7 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
     result_queue_cnt_d       = result_queue_cnt_q;
 
     // Do not issue any operations
-    mpu_valid  = 1'b0;
-    mpu_output_en = 1'b0;
+    mpu_valid_d  = 1'b0;
 
     // Inform our status to the lane controller
     mpu_ready_o      = !vinsn_queue_full;
@@ -210,13 +220,13 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
 
     // How many elements are we processing this cycle?
     issue_effective_eew = unsigned'(vinsn_issue_q.vtype.vsew[1:0]);
-    element_cnt_buf_issue = 1 << (unsigned'(EW64) - issue_effective_eew);
+    element_cnt_buf_issue = 4 * (1 << (unsigned'(EW64) - issue_effective_eew));
     element_cnt_issue = {2'b0, element_cnt_buf_issue};
 
     commit_effective_eew = unsigned'(vinsn_commit.vtype.vsew[1:0]);
-    element_cnt_buf_commit = 1 << (unsigned'(EW64) - commit_effective_eew);
+    element_cnt_buf_commit = 4 * (1 << (unsigned'(EW64) - commit_effective_eew));
     element_cnt_commit = {2'b0, element_cnt_buf_commit};
-  
+
     ////////////////////////////////////////
     //  Write data into the result queue  //
     ////////////////////////////////////////
@@ -224,51 +234,51 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
       // Do not accept operands if the result queue is full!
       if (!result_queue_full) begin
         // Do we have all the operands necessary for this instruction?
-        if ((& mpu_act_operand_valid_i) && (& mpu_wgt_operand_valid_i)) begin
-          // How many elements are we committing with this word?
-          automatic logic [6:0] element_cnt = element_cnt_issue;
-
-          if (element_cnt > issue_cnt_q)
-            element_cnt = issue_cnt_q;
-
+        if ((| mpu_act_operand_valid_i) && (| mpu_wgt_operand_valid_i)) begin
           // Issue the operation
-          mpu_valid = 1'b1;
+          mpu_valid_d = 1'b1;
 
           // Acknowledge the operands of this instruction
           mpu_act_operand_ready_o = '1;
           mpu_wgt_operand_ready_o = '1;
-
-          // Store the result in the result queue
-          for (int unsigned i = 0; i < 4; i++) begin 
-            result_queue_d[result_queue_write_pnt_q][i].wdata = mpu_result[i];
-            result_queue_d[result_queue_write_pnt_q][i].addr  = vaddr(vinsn_issue_q.vd, NrLanes, VLEN) + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew)));
-            result_queue_d[result_queue_write_pnt_q][i].id    = vinsn_issue_q.id;
-            result_queue_d[result_queue_write_pnt_q][i].be = be(element_cnt, vinsn_issue_q.vtype.vsew);
-          end
-
-          // Bump pointers and counters of the result queue
-          result_queue_valid_d[result_queue_write_pnt_q] = 1'b1;
-          result_queue_cnt_d += 1;
-          if (result_queue_write_pnt_q == ResultQueueDepth-1)
-            result_queue_write_pnt_d = 0;
-          else
-            result_queue_write_pnt_d = result_queue_write_pnt_q + 1;
-          issue_cnt_d = issue_cnt_q - element_cnt;
-
-          // Finished issuing the micro-operations of this vector instruction
-          if (vinsn_issue_valid && issue_cnt_d == '0) begin
-            // Bump issue counter and pointers
-            vinsn_queue_d.issue_cnt -= 1;
-            if (vinsn_queue_q.issue_pnt == VInsnQueueDepth-1)
-              vinsn_queue_d.issue_pnt = '0;
-            else
-              vinsn_queue_d.issue_pnt = vinsn_queue_q.issue_pnt + 1;
-
-            // Assign vector length for next instruction in the instruction queue
-            if (vinsn_queue_d.issue_cnt != 0)
-              issue_cnt_d = vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].vl;
-          end
         end
+        if (mpu_output_en_o) begin
+            // How many elements are we committing with this word?
+            automatic logic [8:0] element_cnt = element_cnt_issue;
+
+            if (element_cnt > issue_cnt_q)
+              element_cnt = issue_cnt_q;
+            // Store the result in the result queue
+            for (int unsigned i = 0; i < 4; i++) begin 
+              result_queue_d[result_queue_write_pnt_q][i].wdata = mpu_result[i];
+              result_queue_d[result_queue_write_pnt_q][i].addr  = (k_dim * (4'b1000 << unsigned'(vinsn_issue_q.vtype.vsew)) / DataWidth) * NrVRFBanksPerLane + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew))) + i;
+              result_queue_d[result_queue_write_pnt_q][i].id    = vinsn_issue_q.id;
+              result_queue_d[result_queue_write_pnt_q][i].be = '1;
+            end
+
+            // Bump pointers and counters of the result queue
+            result_queue_valid_d[result_queue_write_pnt_q] = 1'b1;
+            result_queue_cnt_d += 1;
+            if (result_queue_write_pnt_q == ResultQueueDepth-1)
+              result_queue_write_pnt_d = 0;
+            else
+              result_queue_write_pnt_d = result_queue_write_pnt_q + 1;
+            issue_cnt_d = issue_cnt_q - element_cnt;
+
+            // Finished issuing the micro-operations of this vector instruction
+            if (vinsn_issue_valid && issue_cnt_d == '0) begin
+              // Bump issue counter and pointers
+              vinsn_queue_d.issue_cnt -= 1;
+              if (vinsn_queue_q.issue_pnt == VInsnQueueDepth-1)
+                vinsn_queue_d.issue_pnt = '0;
+              else
+                vinsn_queue_d.issue_pnt = vinsn_queue_q.issue_pnt + 1;
+
+              // Assign vector length for next instruction in the instruction queue
+              if (vinsn_queue_d.issue_cnt != 0)
+                issue_cnt_d = vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].vl;
+            end
+          end
       end
     end
 
@@ -276,7 +286,7 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
     //  Write results into the VRF  //
     //////////////////////////////////
 
-    mpu_result_req_o = result_queue_valid_q[result_queue_read_pnt_q] && vfu_operation_i.mpu_output_en;
+    mpu_result_req_o = result_queue_valid_q[result_queue_read_pnt_q] && mpu_output_en_o;
     for (int unsigned i = 0; i < 4; i++) begin 
       mpu_result_wdata_o[i] = result_queue_q[result_queue_read_pnt_q][i].wdata;
       mpu_result_addr_o[i] = result_queue_q[result_queue_read_pnt_q][i].addr;
@@ -288,7 +298,7 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
     // Received a grant from the VRF.
     // Deactivate the request.
     if (mpu_result_gnt_i) begin
-      automatic logic [6:0] element_cnt = element_cnt_commit;
+      automatic logic [8:0] element_cnt = element_cnt_commit;
       result_queue_valid_d[result_queue_read_pnt_q] = 1'b0;
       result_queue_d[result_queue_read_pnt_q]       = '0;
 
@@ -309,9 +319,6 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
 
     // Finished committing the results of a vector instruction
     if (vinsn_commit_valid && (commit_cnt_d == '0)) begin
-      // Mark the vector instruction as being done
-      mpu_insn_done_o[vinsn_commit.id] = 1'b1;
-
       // Update the commit counters and pointers
       vinsn_queue_d.commit_cnt -= 1;
       if (vinsn_queue_d.commit_pnt == VInsnQueueDepth-1) vinsn_queue_d.commit_pnt = '0;
@@ -322,11 +329,15 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
         commit_cnt_d = vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].vl;
     end
 
+    if (commit_cnt_q == '0) begin
+      mpu_output_en_o = 1'b0;
+    end
+
     //////////////////////////////
     //  Accept new instruction  //
     //////////////////////////////
 
-    if (!vinsn_queue_full && vfu_operation_valid_i && vfu_operation_i.vfu == MPU) begin
+    if (!vinsn_queue_full && vfu_operation_valid_i && (vfu_operation_i.vfu == MPU || vfu_operation_i.op == MPSE)) begin
       vinsn_queue_d.vinsn[vinsn_queue_q.accept_pnt] = vfu_operation_i;
 
       // Initialize counters and alu state if the instruction queue was empty
@@ -336,13 +347,29 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
       if (vinsn_queue_d.commit_cnt == '0)
         commit_cnt_d = vfu_operation_i.vl;
 
-      mpu_output_en = vfu_operation_i.mpu_output_en;
+      k_dim = vfu_operation_i.k_dim;
 
       // Bump pointers and counters of the vector instruction queue
       vinsn_queue_d.accept_pnt += 1;
       vinsn_queue_d.issue_cnt += 1;
       vinsn_queue_d.commit_cnt += 1;
+
+      if (vfu_operation_i.vfu == MPU) begin
+        mpu_output_en_o = 1'b0;
+      end
+      else begin
+        mpu_output_en_o = 1'b1;   // MPSE
+      end
+
     end
+
+    if (sa_done) begin 
+      // Mark the vector instruction as being done
+      mpu_insn_done_o[vinsn_commit.id] = 1'b1;
+      vinsn_queue_d = '0;
+    end
+
+  
   end : p_mpu
 
   always_ff @(posedge clk_i or negedge rst_ni) begin

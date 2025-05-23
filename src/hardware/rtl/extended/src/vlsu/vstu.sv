@@ -242,6 +242,8 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
   // Signal that the current burst is having an exception
   logic stu_current_burst_exception_d;
 
+  logic is_mpu_store_d, is_mpu_store_q;
+
   always_comb begin: p_vstu
     // NOTE: these are out here only for debug visibility, they could go in p_vldu as automatic variables
     vrf_seq_byte = '0;
@@ -258,6 +260,8 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
 
     axi_len_d     = axi_len_q;
     vrf_pnt_d = vrf_pnt_q;
+
+    is_mpu_store_d = is_mpu_store_q;
 
     // Vector instructions currently running
     vinsn_running_d = vinsn_running_q & pe_vinsn_running_i;
@@ -282,6 +286,10 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
 
     // Inform the main sequencer if we are idle
     pe_req_ready_o = !vinsn_queue_full;
+
+    if (pe_req_valid_i && pe_req_i.op == MPSE) begin
+      is_mpu_store_d = 1'b1;
+    end
 
     /////////////////////////////////////
     //  Write data into the W channel  //
@@ -337,7 +345,7 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
             // Follow the vrf_seq_byte, but without the vstart information
             vrf_seq_byte_cnt = axi_byte - lower_byte + vrf_cnt_q;
             // And then shuffle it
-            vrf_byte     = shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.old_eew_vs1);
+            vrf_byte     = is_mpu_store_q ? vrf_seq_byte : shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.old_eew_vs1);
 
             // Is this byte a valid byte in the VRF word?
             if (vrf_seq_byte_cnt < issue_cnt_bytes_q) begin
@@ -433,6 +441,8 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       if (vinsn_queue_d.issue_pnt != vinsn_queue_d.commit_pnt) begin : instr_done
         // Signal complete store
         store_complete_o = 1'b1;
+
+        is_mpu_store_d = 1'b0;
 
         pe_resp_d.vinsn_done[vinsn_commit.id] = 1'b1;
 
@@ -538,6 +548,8 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       lsu_ex_flush_q <= 1'b0;
 
       stu_current_burst_exception_o <= 1'b0;
+
+      is_mpu_store_q <= 1'b0;
     end else begin
       vinsn_running_q   <= vinsn_running_d;
       issue_cnt_bytes_q <= issue_cnt_bytes_d;
@@ -555,6 +567,8 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       lsu_ex_flush_q <= lsu_ex_flush_i;
 
       stu_current_burst_exception_o <= stu_current_burst_exception_d;
+
+      is_mpu_store_q <= is_mpu_store_d;
     end
   end
 

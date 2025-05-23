@@ -3600,8 +3600,6 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                   ara_req.is_weight <= 1'b0;
                 end
 
-                // ignore_zero_vl_check = 1'b1;
-
                 // Wait before acknowledging this instruction
                 acc_resp_o.req_ready = 1'b0;
 
@@ -3610,7 +3608,8 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 ara_req.use_vd    = 1'b1;
                 ara_req.scalar_op = acc_req_i.rs1;
                 ara_req_valid     = 1'b1;
-                // ara_req.size    = insn.custom0_type.imm[10:0];
+
+                ara_req.k_dim = k_dim_q;
 
                 // Wait until the back-end answers to acknowledge those instructions
                 if ( ara_resp_valid ) begin
@@ -3647,23 +3646,16 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
 
                 ara_req.mpu_output_en = 1'b1;
 
-                // ignore_zero_vl_check = 1'b1;
-
                 // Wait before acknowledging this instruction
                 acc_resp_o.req_ready = 1'b0;
 
-                // vl depends on the EEW encoded in the instruction.
-                // Ara does not reshuffle source vregs upon vector stores,
-                // thus the operand requesters will fetch Bytes referring
-                // to the encoding of the source register
-                // ara_req.scale_vl = 1'b1;
-
                 // These generate a request to Ara's backend
-                // ara_req.vs1       = insn.custom0_type.rd; // vs3 is encoded in the same position as rd
-                // ara_req.use_vs1   = 1'b1;
+                ara_req.vs1       = insn.custom0_type.rd; // vs3 is encoded in the same position as rd
+                ara_req.use_vs1   = 1'b1;
                 ara_req.scalar_op = acc_req_i.rs1;
                 ara_req_valid     = 1'b1;
-                // ara_req.size    = insn.custom0_type.imm;
+
+                ara_req.k_dim = k_dim_q;
 
                 // Wait until the back-end answers to acknowledge those instructions
                 if ( ara_resp_valid ) begin

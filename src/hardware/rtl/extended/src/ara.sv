@@ -203,9 +203,9 @@ module ara import ara_pkg::*; #(
   // Flush support for store exceptions
   logic lsu_ex_flush_lane, lsu_ex_flush_done;
   logic [NrLanes-1:0] lsu_ex_flush_stu;
-  logic [8:0]         k_dim;
+  // logic [8:0]         k_dim;
 
-  assign k_dim = ara_req.k_dim;
+  // assign k_dim = ara_req.k_dim;
 
   ara_dispatcher #(
     .CVA6Cfg           (CVA6Cfg           ),

@@ -13,7 +13,8 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
     parameter type         pe_req_t              = logic,
     parameter type         pe_resp_t             = logic,
     parameter type         operand_request_cmd_t = logic,
-    parameter type         vfu_operation_t       = logic
+    parameter type         vfu_operation_t       = logic,
+    localparam int      unsigned DataWidth       = $bits(elen_t) // Width of the lane datapath
   ) (
     input  logic                                          clk_i,
     input  logic                                          rst_ni,
@@ -46,6 +47,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
     input  logic                 [NrVInsn-1:0]            mfpu_vinsn_done_i,
     input  logic                                          mpu_ready_i,
     input  logic                 [NrVInsn-1:0]            mpu_insn_done_i,
+    output logic                                          is_mpu_store_o,
 
     // Masku interface for vrgather/vcompress
     input  logic                                          masku_vrgat_req_valid_i,
@@ -91,6 +93,11 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
     .valid_o   (pe_req_valid      ),
     .ready_i   (pe_req_ready      )
   );
+
+
+  always_comb begin
+    is_mpu_store_o = pe_req.op == MPSE;
+  end
 
   always_comb begin
     // Default assignment
@@ -597,7 +604,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
             scale_vl: pe_req.scale_vl,
             vtype   : pe_req.vtype,
             vl      : vfu_operation_d.vl,
-            vstart  : vfu_operation_d.vstart,
+            vstart  : (pe_req.op == MPSE) ? (pe_req.k_dim * (4'b1000 << unsigned'(pe_req.vtype.vsew)) / DataWidth) * NrVRFBanksPerLane : vfu_operation_d.vstart,
             hazard  : pe_req.hazard_vs1 | pe_req.hazard_vd,
             target_fu : ALU_SLDU,
             cvt_resize: CVT_SAME,
@@ -960,7 +967,8 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
                 scale_vl   : pe_req.scale_vl,
                 cvt_resize : pe_req.cvt_resize,
                 vtype      : pe_req.vtype,
-                vl         : pe_req.k_dim,
+                // vl         : pe_req.k_dim + (i << 3) + (1 >> (EW64 - pe_req.eew_vs1)), // + (1 >> (EW64 - pe_req.eew_vs1) 多一个cycle为了tile的output输出
+                vl         : pe_req.k_dim + (i << 3),
                 vstart     : vfu_operation_d.vstart,
                 hazard     : pe_req.hazard_vs1 | pe_req.hazard_vd,
                 is_reduct  : 0,
@@ -979,7 +987,8 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
                 scale_vl   : pe_req.scale_vl,
                 cvt_resize : pe_req.cvt_resize,
                 vtype      : pe_req.vtype,
-                vl         : pe_req.k_dim,
+                // vl         : pe_req.k_dim + (i << 3) + (1 >> (EW64 - pe_req.eew_vs1)),
+                vl         : pe_req.k_dim + (i << 3),
                 vstart     : vfu_operation_d.vstart,
                 hazard     : pe_req.hazard_vs1 | pe_req.hazard_vd,
                 is_reduct  : 0,

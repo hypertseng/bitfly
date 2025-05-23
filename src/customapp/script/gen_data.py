@@ -89,14 +89,12 @@ for m in range(M):
             acc += a_val if b_val == 1 else -a_val
         C[m, n] = acc
 
-result_int8 = torch.zeros((M, N), dtype=torch.int8)
-result_int32 = torch.zeros((M, N), dtype=torch.int32)
+result = torch.zeros((M, N), dtype=torch.int8)
 
 print('.section .data,"aw",@progbits')
 
 emit_int8("activation_int8", A)
 emit_1bit_blocks("weight_int1", B)
 emit_int8("weight_int8", B)
-emit_int8("result_int8", result_int8)
-emit_int32("result_int32", result_int32)
-emit_int32("standard_int8", C)
+emit_int8("result", result)
+emit_int8("standard_result", C)

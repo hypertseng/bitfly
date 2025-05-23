@@ -240,7 +240,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   assign pe_req    = pe_req_i;
   assign pe_resp_o = pe_resp;
 
-  logic mpu_en, mpu_output_en;
+  logic mpu_en, mpu_output_en, is_mpu_store;
 
   lane_sequencer #(
     .NrLanes              (NrLanes              ),
@@ -268,6 +268,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .alu_vinsn_done_o       (alu_vinsn_done_o     ),
     .mfpu_vinsn_done_o      (mfpu_vinsn_done_o    ),
     .mpu_insn_done_o        (mpu_insn_done_o      ),
+    .is_mpu_store_o         (is_mpu_store         ),
     // Interface with the Operand Queue
     .mask_b_cmd_pop_i       (mask_b_cmd_pop_q     ),
     // Interface with the VFUs
@@ -407,7 +408,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .mpu_result_be_i          (mpu_result_be           ),
     .mpu_result_gnt_o         (mpu_result_gnt          ),
     .mpu_en_i                 (mpu_en                  ),
-    .mpu_output_en_i          (mpu_output_en           )
+    .mpu_output_en_i          (mpu_output_en           ),
+    .is_mpu_store_i           (is_mpu_store            )
   );
 
   ////////////////////////////
@@ -629,7 +631,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .mpu_result_id_o      (mpu_result_id                  ),
     .mpu_result_wdata_o   (mpu_result_wdata               ),
     .mpu_result_be_o      (mpu_result_be                  ),
-    .mpu_result_gnt_i     (mpu_result_gnt                 )
+    .mpu_result_gnt_i     (mpu_result_gnt                 ),
+    .mpu_output_en_o      (mpu_output_en                  )
   );
 
   /******************************
@@ -743,10 +746,6 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
       mpu_en = 1'b0;
     end
 
-    mpu_output_en = 1'b0;
-    if (pe_req.op == MPSE) begin
-      mpu_output_en = 1'b1;
-    end
   end
 
   // Stream MUX to select the transmitter

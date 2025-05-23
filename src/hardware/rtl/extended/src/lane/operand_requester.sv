@@ -93,7 +93,8 @@ module operand_requester
     output logic                                                    mpu_result_gnt_o,
 
     input  logic                                                    mpu_en_i,
-    input  logic                                                    mpu_output_en_i
+    input  logic                                                    mpu_output_en_i,
+    input  logic                                                    is_mpu_store_i
 );
 
   import cf_math_pkg::idx_width;
@@ -284,6 +285,18 @@ module operand_requester
     end
   end
 
+  logic mpu_output_en_d, mpu_output_en_q;
+
+  assign mpu_output_en_d = mpu_output_en_i;
+
+  always_ff @(posedge clk_i or negedge rst_ni) begin : p_mpu_output_en_ff
+    if (!rst_ni) begin
+      mpu_output_en_q <= 1'b0;
+    end else begin
+      mpu_output_en_q <= mpu_output_en_d;
+    end
+  end
+
   for (
       genvar requester_index = 0; requester_index < NrOperandQueues; requester_index++
   ) begin : gen_operand_requester
@@ -294,8 +307,16 @@ module operand_requester
 
     // Is there a hazard during this cycle?
     logic stall;
-    assign stall = |(requester_metadata_q.hazard & ~(vinsn_result_written_q &
-                   (~{NrVInsn{requester_metadata_q.is_widening}} | requester_metadata_q.waw_hazard_counter))) || (mpu_en_i && requester_metadata_q.hazard);
+    assign stall = (
+      |(requester_metadata_q.hazard & ~(
+          vinsn_result_written_q &
+          (~{NrVInsn{requester_metadata_q.is_widening}} | requester_metadata_q.waw_hazard_counter)
+      ))
+      ) || (
+          (mpu_en_i && requester_metadata_q.hazard)
+      ) || (
+          (requester_index == 15) && (mpu_output_en_q === 1'b1)
+      );
 
     // Did we get a grant?
     logic [NrBanks-1:0] operand_requester_gnt;
@@ -305,6 +326,8 @@ module operand_requester
 
     // Did we issue a word to this operand queue?
     assign operand_issued_o[requester_index] = |(operand_requester_gnt);
+
+    logic [6:0] request_cnt_d, request_cnt_q;
 
     always_comb begin : operand_requester
       // Helper local variables
@@ -324,6 +347,7 @@ module operand_requester
       // Maintain state
       state_d                          = state_q;
       requester_metadata_d             = requester_metadata_q;
+      request_cnt_d                    = request_cnt_q;
 
       // Make no requests to the VRF
       operand_payload[requester_index] = '0;
@@ -357,9 +381,10 @@ module operand_requester
       // Address of the vstart element of the vector in the VRF
       // This vstart is NOT the architectural one and was modified in the lane
       // sequencer to provide the correct start address
-      vrf_addr = vaddr(operand_request_i[requester_index].vs, NrLanes, VLEN) +
+      vrf_addr = is_mpu_store_i ? operand_request_i[requester_index].vstart : vaddr(operand_request_i[requester_index].vs, NrLanes, VLEN) +
           (operand_request_i[requester_index].vstart >>
            (unsigned'(EW64) - unsigned'(operand_request_i[requester_index].eew)));
+
       // Init helper variables
       requester_metadata_tmp = '{
           id          : operand_request_i[requester_index].id,
@@ -410,6 +435,8 @@ module operand_requester
               state_d                                    = IDLE;
               operand_queue_cmd_valid_o[requester_index] = 1'b0;
             end : zero_vl
+
+            request_cnt_d = '0;
           end : op_req_valid
         end : state_q_IDLE
 
@@ -435,7 +462,20 @@ module operand_requester
             // Received a grant.
             if (|operand_requester_gnt) begin : op_req_grant
               // Bump the address pointer
-              requester_metadata_d.addr = (requester_index > 4 && requester_index < 13) ? requester_metadata_q.addr + 4'b1000 : requester_metadata_q.addr + 1'b1;
+              if (requester_index > 4 && requester_index < 13) begin
+                requester_metadata_d.addr = requester_metadata_q.addr + 4'b1000;
+                if (requester_index < 9) begin
+                  if (request_cnt_q < requester_index - 5) begin
+                    requester_metadata_d.addr = requester_metadata_q.addr;
+                  end
+                end else begin
+                  if (request_cnt_q < requester_index - 9) begin
+                    requester_metadata_d.addr = requester_metadata_q.addr;
+                  end
+                end
+              end else begin
+                requester_metadata_d.addr = requester_metadata_q.addr + 1'b1;
+              end
 
               // We read less than 64 bits worth of elements
               num_elements = (1 << (unsigned'(EW64) - unsigned'(requester_metadata_q.vew)));
@@ -444,11 +484,15 @@ module operand_requester
               end else begin
                 requester_metadata_d.len = requester_metadata_q.len - num_elements;
               end
+
+              request_cnt_d += 1;
             end : op_req_grant
 
             // Finished requesting all the elements
+            
             if (requester_metadata_d.len == '0) begin
               state_d = IDLE;
+              request_cnt_d = '0;
 
               // Accept a new instruction
               if (operand_request_valid_i[requester_index]) begin
@@ -496,6 +540,8 @@ module operand_requester
         requester_metadata_d = '0;
         // Flush this request
         lane_operand_req_transposed[requester_index][bank] = '0;
+
+        request_cnt_d = '0;
       end : vlsu_exception_idle
     end : operand_requester
 
@@ -503,9 +549,11 @@ module operand_requester
       if (!rst_ni) begin
         state_q              <= IDLE;
         requester_metadata_q <= '0;
+        request_cnt_q        <= '0;
       end else begin
         state_q              <= state_d;
         requester_metadata_q <= requester_metadata_d;
+        request_cnt_q        <= request_cnt_d;
       end
     end
   end : gen_operand_requester
@@ -570,7 +618,7 @@ module operand_requester
         opqueue: AluA,
         default: '0
     };
-    if (mpu_output_en_i) begin
+    if (mpu_output_en_q) begin
       for (int i = 0; i < 4; i++) begin
         operand_payload[NrOperandQueues + NrGlobalMasters + i].addr   = mpu_result_addr_i[i] >> $clog2(NrBanks);
         operand_payload[NrOperandQueues + NrGlobalMasters + i].wen    = 1'b1;
@@ -586,10 +634,10 @@ module operand_requester
     ext_operand_req[masku_result_addr[idx_width(NrBanks)-1:0]][VFU_MaskUnit] = masku_result_req;
     ext_operand_req[sldu_result_addr[idx_width(NrBanks)-1:0]][VFU_SlideUnit] = sldu_result_req;
     ext_operand_req[ldu_result_addr[idx_width(NrBanks)-1:0]][VFU_LoadUnit] = ldu_result_req;
-    ext_operand_req[mpu_result_addr_i[idx_width(NrBanks)-1:0]][5] = mpu_result_req_i;
-    ext_operand_req[mpu_result_addr_i[idx_width(NrBanks)-1:0]][6] = mpu_result_req_i;
-    ext_operand_req[mpu_result_addr_i[idx_width(NrBanks)-1:0]][7] = mpu_result_req_i;
-    ext_operand_req[mpu_result_addr_i[idx_width(NrBanks)-1:0]][8] = mpu_result_req_i;
+    ext_operand_req[mpu_result_addr_i[0][idx_width(NrBanks)-1:0]][5] = mpu_result_req_i;
+    ext_operand_req[mpu_result_addr_i[1][idx_width(NrBanks)-1:0]][6] = mpu_result_req_i;
+    ext_operand_req[mpu_result_addr_i[2][idx_width(NrBanks)-1:0]][7] = mpu_result_req_i;
+    ext_operand_req[mpu_result_addr_i[3][idx_width(NrBanks)-1:0]][8] = mpu_result_req_i;
 
     // Generate the grant signals
     alu_result_gnt_o = 1'b0;

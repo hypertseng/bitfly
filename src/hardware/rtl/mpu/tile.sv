@@ -39,13 +39,13 @@ module tile #(
   //--- 寄存器定义 ---//
   logic [63:0] activation_reg;  // 激活寄存器
   logic [63:0] weight_reg;  // 权重寄存器（8x 8-bit）
-  logic signed [11:0] partial_sum_reg[8];  // 累加寄存器（12-bit）
+  logic signed [15:0] partial_sum_reg[8];  // 累加寄存器（12-bit）
   logic [63:0] output_reg;  // 输出寄存器（8x int8）
 
   //--- PE输出接口 ---//
   logic signed [11:0] pe_outputs[8];  // PE输出（12-bit）
 
-  //--- 寄存器更新逻辑（修复关键问题）---//
+  //--- 寄存器更新逻辑 ---//
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       activation_reg <= '0;

@@ -298,7 +298,7 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
           if (i == VFU_LoadUnit) target_vfus[i] = 1'b1;
       MPSE:
         for (int i = 0; i < NrVFUs; i++)
-          if (i == VFU_StoreUnit) target_vfus[i] = 1'b1;
+          if (i == VFU_StoreUnit || i == MPU) target_vfus[i] = 1'b1;
       MPMM:
         for (int i = 0; i < NrVFUs; i++)
           if (i == MPU) target_vfus[i] = 1'b1;
