@@ -327,6 +327,8 @@ module mpu import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::idx_width; 
       // Update the commit counter for the next instruction
       if (vinsn_queue_d.commit_cnt != '0)
         commit_cnt_d = vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].vl;
+      
+      mpu_insn_done_o[vinsn_commit.id] = 1'b1;
     end
 
     if (commit_cnt_q == '0) begin

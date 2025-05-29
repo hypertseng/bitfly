@@ -111,7 +111,7 @@ package ara_pkg;
   localparam int unsigned NoneInsnQueueDepth = 1;
   // Ara supports MaskuInsnQueueDepth = 1 only.
   localparam int unsigned MaskuInsnQueueDepth = 1;
-  localparam int unsigned MpuInsnQueueDepth = 1;
+  localparam int unsigned MpuInsnQueueDepth = 4;
 
   ///////////////////
   //  Definitions  //
