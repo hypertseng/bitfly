@@ -4,4 +4,5 @@ rsync -av ./hardware/rtl/mpu/* ../ara/hardware/src/mpu/
 rsync -av ./Bender.yml ../ara/
 cd ../ara/hardware/
 
-make compile
+make compile -j8
+make verilate -j8

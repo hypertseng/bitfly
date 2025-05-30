@@ -6,6 +6,14 @@
 
 #include <riscv_vector.h>
 
+#ifdef SPIKE
+#include <stdio.h>
+#elif defined ARA_LINUX
+#include <stdio.h>
+#else
+#include "printf.h"
+#endif
+
 // 根据VLEN计算最大向量位数
 #define MAX_VLEN_BITS VLEN
 #define MAX_VLEN_BYTES (MAX_VLEN_BITS / 8)

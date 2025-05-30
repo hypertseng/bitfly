@@ -3,14 +3,6 @@
 
 #include "kernel/bmpmm.h"
 
-#ifdef SPIKE
-#include <stdio.h>
-#elif defined ARA_LINUX
-#include <stdio.h>
-#else
-#include "printf.h"
-#endif
-
 extern int8_t activation_lp_K_16[] __attribute__((aligned(32 * NR_LANES), section(".l2")));
 extern int8_t weight_lp_K_16[] __attribute__((aligned(32 * NR_LANES), section(".l2")));
 extern int8_t result_lp_K_16[] __attribute__((aligned(32 * NR_LANES), section(".l2")));
@@ -166,12 +158,11 @@ void run_test(const char *test_name, unsigned long M, unsigned long K, unsigned 
     printf("Performance: %.2f OP/cycle (%.2f%% utilization)\n\n", performance, utilization);
 }
 
-void compare_results(unsigned long M, unsigned long N, const int32_t *result_lp, const int32_t *result_hp, const int32_t *result_torch)
+void compare_results(unsigned long M, unsigned long N, const int8_t *result_lp, const int32_t *result_hp, const int32_t *result_torch)
 {
     int errors = 0;
 
-    // 打印前10个元素作为示例
-    printf("result_lp (first 10):\n");
+    printf("result_lp:\n");
     for (int i = 0; i < N; ++i)
     {
         for (int j = 0; j < M; ++j)
@@ -180,17 +171,21 @@ void compare_results(unsigned long M, unsigned long N, const int32_t *result_lp,
     }
     printf("\n");
 
-    printf("result_hp (first row):\n");
-    for (int i = 0; i < N; ++i)
-    {
-        printf("%d ", result_hp[i]);
-    }
-    printf("\n");
+    // printf("result_hp:\n");
+    // for (int i = 0; i < M; ++i)
+    // {
+    //     for (int j = 0; j < N; ++j)
+    //         printf("%d ", result_hp[i * N + j]);
+    //     printf("\n");
+    // }
+    // printf("\n");
 
-    printf("result_torch (first row):\n");
-    for (int i = 0; i < N; ++i)
+    printf("result_torch:\n");
+    for (int i = 0; i < M; ++i)
     {
-        printf("%d ", result_torch[i]);
+        for (int j = 0; j < N; ++j)
+            printf("%d ", result_torch[i * N + j]);
+        printf("\n");
     }
     printf("\n");
 
@@ -203,10 +198,10 @@ void compare_results(unsigned long M, unsigned long N, const int32_t *result_lp,
             int idx_lp = i + j * M; // 列主序
             int idx_hp = i * N + j; // 行主序
 
-            if ((int32_t)result_lp[idx_lp] != result_hp[idx_hp])
+            if ((int32_t)result_lp[idx_lp] != result_torch[idx_hp])
             {
                 printf("Mismatch at [%d][%d]: got %d vs %d\n",
-                       i, j, (int32_t)result_lp[idx_lp], result_hp[idx_hp]);
+                       i, j, (int32_t)result_lp[idx_lp], result_torch[idx_hp]);
                 errors++;
             }
             cnt++;
@@ -232,7 +227,7 @@ int main()
     const unsigned long M = 16;
     const unsigned long N = 32;
     const unsigned long K_DIMS[] = {16, 32, 64, 128, 256, 496};
-    // const unsigned long K_DIMS[] = {16};
+    // const unsigned long K_DIMS[] = {64};
     const int NUM_K_DIMS = sizeof(K_DIMS) / sizeof(K_DIMS[0]);
 
     for (int i = 0; i < NUM_K_DIMS; ++i)
@@ -255,7 +250,7 @@ int main()
         run_test("vector", M, K, N);
 
         if (K == 16)
-            compare_results(M, N, data.result_hp, data.result_torch, data.result_torch);
+            compare_results(M, N, data.result_lp, data.result_hp, data.result_torch);
     }
 
     return 0;

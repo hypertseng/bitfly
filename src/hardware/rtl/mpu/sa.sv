@@ -44,7 +44,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   logic [15:0] compute_cycles;
 
   always_comb begin
-    compute_cycles = ROWS + (k_dim_i >> 3) - 1;  // k_dim除以8
+    compute_cycles = ROWS - 1 + (k_dim_i / BIT_ACT) + COLS;  // k_dim除以8
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
@@ -110,26 +110,27 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   // ----------------------
   // 输出捕获逻辑
   // ----------------------
-  // assign output_en_d = output_en_i;
 
-  // always_ff @(posedge clk_i or negedge rst_ni) begin
-  //   if (!rst_ni) begin
-  //     output_en_q <= 1'b0;
-  //   end else begin
-  //     output_en_q <= output_en_d;
-  //   end
-  // end
-
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      output_data_o <= '{default:'0};
-    end else if (output_en_i) begin
+  always_comb begin
+    output_data_o = '{default:'0};  // 初始化输出数据为0
+    // 仅在输出使能时更新输出数据
+    if (output_en_i) begin
       for (int i = 0; i < ROWS; i++) begin
         output_data_o[i] <= output_reg[i][0];
       end
-    end else begin
-      output_data_o <= '{default:'0};
     end
   end
+
+  // always_ff @(posedge clk_i or negedge rst_ni) begin
+  //   if (!rst_ni) begin
+  //     output_data_o <= '{default:'0};
+  //   end else if (output_en_i) begin
+  //     for (int i = 0; i < ROWS; i++) begin
+  //       output_data_o[i] <= output_reg[i][0];
+  //     end
+  //   end else begin
+  //     output_data_o <= '{default:'0};
+  //   end
+  // end
 
 endmodule

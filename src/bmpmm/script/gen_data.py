@@ -113,8 +113,9 @@ for K in K_dim:
     emit_int8_col_major(f"result_lp_K_{K}", torch.zeros((M, N), dtype=torch.int8))
 
     emit_int8_row_major(f"activation_hp_K_{K}", A)
+    B = torch.where(B == 0, -1, B)
     emit_int8_row_major(f"weight_hp_K_{K}", B)
-    emit_int8_row_major(f"result_hp_K_{K}", torch.zeros((M, N), dtype=torch.int8))
+    emit_int32(f"result_hp_K_{K}", torch.zeros((M, N), dtype=torch.int32))
 
     C = torch.zeros((M, N), dtype=torch.int32)
     C = A @ B
