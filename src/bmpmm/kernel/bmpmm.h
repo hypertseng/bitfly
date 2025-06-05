@@ -21,22 +21,22 @@
 #define MAX_INT32_VL (MAX_VLEN_BITS / 32)
 
 // 算子1: 使用自定义指令加速的混合精度矩阵乘法
-#define DECLARE_KERNEL(K) void mixed_precision_matmul_##K(int8_t *result, const int8_t *a, const int8_t *w);
+#define DECLARE_KERNEL(K) void mixed_precision_matmul_##K(int16_t *result, const int8_t *a, const int8_t *w);
 
 DECLARE_KERNEL(16)
 DECLARE_KERNEL(32)
 DECLARE_KERNEL(64)
 DECLARE_KERNEL(128)
 DECLARE_KERNEL(256)
-DECLARE_KERNEL(496)
+DECLARE_KERNEL(480)
 
-typedef void (*mixed_kernel_func)(int8_t *, const int8_t *, const int8_t *);
+typedef void (*mixed_kernel_func)(int16_t *, const int8_t *, const int8_t *);
 
 typedef struct
 {
     int8_t *activation_lp;
     int8_t *weight_lp;
-    int8_t *result_lp;
+    int16_t *result_lp;
     int8_t *activation_hp;
     int8_t *weight_hp;
     int32_t *result_hp;

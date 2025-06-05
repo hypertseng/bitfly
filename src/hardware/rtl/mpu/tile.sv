@@ -1,46 +1,24 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2025/03/17 15:45:42
-// Design Name: 
-// Module Name: tile
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
 module tile #(
     parameter BIT_ACT    = 8,   // 激活值位宽（int8）
     parameter BIT_WEIGHT = 1    // 权值位宽（int1）
 ) (
-    input  logic        clk,
-    input  logic        rst_n,
-    input  logic        en,
-    input  logic        output_en,         // 输出使能信号
-    input  logic [63:0] activations,       // 64-bit 激活输入（8x int8）
-    input  logic [63:0] weights,           // 64-bit 权重输入（8x int1）
-    input  logic [63:0] input_output_reg,  // 来自其他 tile 的 output_reg 值
-    output logic [63:0] weight_out,        // 权重寄存器输出
-    output logic [63:0] activation_out,    // 激活寄存器输出
-    output logic [63:0] output_out         // 输出寄存器输出（8x int8）
+    input  logic         clk,
+    input  logic         rst_n,
+    input  logic         en,
+    input  logic         output_en,         // 输出使能信号
+    input  logic [ 63:0] activations,       // 64-bit 激活输入（8x int8）
+    input  logic [ 63:0] weights,           // 64-bit 权重输入（8x int1）
+    input  logic [127:0] input_output_reg,  // 来自其他 tile 的 output_reg 值
+    output logic [ 63:0] weight_out,        // 权重寄存器输出
+    output logic [ 63:0] activation_out,    // 激活寄存器输出
+    output logic [127:0] output_out         // 输出寄存器输出（8x int8）
 );
 
   //--- 寄存器定义 ---//
   logic [63:0] activation_reg;  // 激活寄存器
   logic [63:0] weight_reg;  // 权重寄存器（8x 8-bit）
-  logic signed [15:0] partial_sum_reg[8];  // 累加寄存器（12-bit）
-  logic [63:0] output_reg;  // 输出寄存器（8x int8）
+  logic signed [16:0] partial_sum_reg[8];  // 累加寄存器（17-bit）
+  logic [127:0] output_reg;  // 输出寄存器（8x int16）
 
   //--- PE输出接口 ---//
   logic signed [11:0] pe_outputs[8];  // PE输出（12-bit）
@@ -68,15 +46,19 @@ module tile #(
 
         // 饱和处理：必须在时序逻辑中更新输出寄存器！
         foreach (partial_sum_reg[i]) begin
-          logic signed [7:0] saturated;
-          if (partial_sum_reg[i] > 127) begin
-            saturated = 8'sh7F;  // 最大值 127
-          end else if (partial_sum_reg[i] < -128) begin
-            saturated = 8'sh80;  // 最小值 -128
+          logic signed [15:0] saturated;
+          automatic logic signed [16:0] current_sum = partial_sum_reg[i];
+
+          // 比较时使用 17-bit 的阈值
+          if (current_sum > 17'sd32767) begin
+            saturated = 16'sh7FFF;  // 最大值 32767
+          end else if (current_sum < -17'sd32768) begin
+            saturated = 16'sh8000;  // 最小值 -32768
           end else begin
-            saturated = partial_sum_reg[i][7:0];  // 直接截断低8位
+            saturated = current_sum[15:0];  // 直接截断低16位
           end
-          output_reg[i*8+:8] <= saturated;  // 更新输出寄存器
+
+          output_reg[i*16+:16] <= saturated;
         end
       end
     end

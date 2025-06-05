@@ -3655,6 +3655,8 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 ara_req.scalar_op = acc_req_i.rs1;
                 ara_req_valid     = 1'b1;
 
+                ara_req.vtype.vsew = EW16;
+
                 ara_req.k_dim = k_dim_q;
 
                 // Wait until the back-end answers to acknowledge those instructions

@@ -3,7 +3,7 @@
 // #define DEBUG
 // 算子1: 混合精度矩阵乘法（使用自定义指令）
 #define DEFINE_KERNEL(K_VAL)                                                              \
-    void mixed_precision_matmul_##K_VAL(int8_t *result, const int8_t *a, const int8_t *w) \
+    void mixed_precision_matmul_##K_VAL(int16_t *result, const int8_t *a, const int8_t *w) \
     {                                                                                     \
         asm volatile("mpcfg " #K_VAL "\n\t");                                             \
         asm volatile("mple 0(%0), a\n\t" ::"r"(a) : "memory");                            \
@@ -18,7 +18,7 @@ DEFINE_KERNEL(32)
 DEFINE_KERNEL(64)
 DEFINE_KERNEL(128)
 DEFINE_KERNEL(256)
-DEFINE_KERNEL(496)
+DEFINE_KERNEL(480)
 
 mixed_kernel_func get_mixed_kernel(unsigned long K)
 {
@@ -34,8 +34,8 @@ mixed_kernel_func get_mixed_kernel(unsigned long K)
         return mixed_precision_matmul_128;
     case 256:
         return mixed_precision_matmul_256;
-    case 496:
-        return mixed_precision_matmul_496;
+    case 480:
+        return mixed_precision_matmul_480;
     }
 }
 

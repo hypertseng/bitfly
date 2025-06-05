@@ -14,7 +14,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     input  elen_t [COLS-1:0] mpu_wgt_operand_i,     // 权值输入（每列一个 elen_t 数据）
     input  logic [8:0]  k_dim_i,              // k 维度
     // 输出数据接口（支持参数化类型 elen_t）
-    output elen_t [ROWS-1:0] output_data_o,   // 最终输出（每行一个 elen_t 数据）
+    output logic [127:0] output_data_o [ROWS-1:0],   // 最终输出（每行一个 elen_t 数据）
     output logic        sa_done_o     // 计算完成信号
 );
 
@@ -35,7 +35,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   // ----------------------
   elen_t act_reg    [ROWS-1:0][COLS-1:0];
   elen_t weight_reg [ROWS-1:0][COLS-1:0];
-  elen_t output_reg [ROWS-1:0][COLS-1:0];
+  logic [127:0] output_reg [ROWS-1:0][COLS-1:0];
 
   // ----------------------
   // Cycle计数器与计算完成逻辑
@@ -120,17 +120,5 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
       end
     end
   end
-
-  // always_ff @(posedge clk_i or negedge rst_ni) begin
-  //   if (!rst_ni) begin
-  //     output_data_o <= '{default:'0};
-  //   end else if (output_en_i) begin
-  //     for (int i = 0; i < ROWS; i++) begin
-  //       output_data_o[i] <= output_reg[i][0];
-  //     end
-  //   end else begin
-  //     output_data_o <= '{default:'0};
-  //   end
-  // end
 
 endmodule

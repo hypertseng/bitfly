@@ -53,6 +53,7 @@ add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa /ara_tb/dut/i
 for {set row 0}  {$row < 4} {incr row} {
     for {set col 0}  {$col < 4} {incr col} {
         add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa -group tile[$row][$col] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/row_gen[$row]/col_gen[$col]/u_tile/*
+        add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa -group tile[$row][$col] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/row_gen[$row]/col_gen[$col]/u_tile/partial_sum_reg
     }
 }
 for {set row 0}  {$row < 4} {incr row} {

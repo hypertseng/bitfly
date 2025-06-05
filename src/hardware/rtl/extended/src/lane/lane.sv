@@ -33,7 +33,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     localparam int           unsigned DataWidth       = $bits(elen_t), // Width of the lane datapath
     localparam type                   strb_t          = logic [DataWidth/8-1:0], // Byte-strobe type
     // vl_csr type
-    localparam type                   vlen_t          = logic [$clog2(VLEN+1)-1:0]
+    localparam type                   vlen_t          = logic [$clog2(VLEN+1)-1:0],
+    localparam int           unsigned NrMpuResultQueues = 8
   ) (
     input  logic                                           clk_i,
     input  logic                                           rst_ni,
@@ -319,10 +320,10 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic                                       mfpu_result_gnt;
   // MPU
   logic                                       mpu_result_req;
-  vid_t                [3:0]                  mpu_result_id;
-  vaddr_t              [3:0]                  mpu_result_addr;
-  elen_t               [3:0]                  mpu_result_wdata;
-  strb_t               [3:0]                  mpu_result_be;
+  vid_t                [NrMpuResultQueues-1:0]mpu_result_id;
+  vaddr_t              [NrMpuResultQueues-1:0]mpu_result_addr;
+  elen_t               [NrMpuResultQueues-1:0]mpu_result_wdata;
+  strb_t               [NrMpuResultQueues-1:0]mpu_result_be;
   logic                                       mpu_result_gnt;
   // To the slide unit (reductions)
   logic                                       sldu_result_gnt_opqueues;

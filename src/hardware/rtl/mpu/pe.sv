@@ -1,32 +1,10 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2025/03/17 15:39:54
-// Design Name: 
-// Module Name: pe
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
 module pe #(
     parameter BIT_ACT    = 8,  // 激活值位宽（int8）
     parameter BIT_WEIGHT = 1   // 权值位宽（int1）
 ) (
     input  logic [ 7:0] weights,      // 8-bit 权重（1:保持原值，0:取反）
     input  logic [63:0] activations,  // 64-bit 激活输入（8x int8）
-    output logic [11:0] result        // 12-bit 有符号结果
+    output logic signed [11:0] result        // 12-bit 有符号结果
 );
 
   // ----------------------
