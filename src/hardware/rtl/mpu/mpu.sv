@@ -168,8 +168,6 @@ module mpu
     end
   end
 
-
-  // 实例化 SA 模块
   sa #(
       .ROWS      (4),
       .COLS      (4),

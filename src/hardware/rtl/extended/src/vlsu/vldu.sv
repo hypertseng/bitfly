@@ -413,14 +413,14 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
               // Follow the vrf_seq_byte, but without the vstart information
               automatic int unsigned vrf_seq_byte_cnt = axi_byte - lower_byte - axi_r_byte_pnt_q + vrf_word_byte_cnt_q;
               // And then shuffle it
-              automatic int unsigned vrf_byte = is_mpu_load_q ? (is_weight_q ? vrf_seq_byte : mple_shuffle(vrf_seq_byte, NrLanes, vinsn_issue_q.vtype.vsew)) : shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.vtype.vsew);
+              automatic int unsigned vrf_byte = is_mpu_load_q ? vrf_seq_byte : shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.vtype.vsew);
 
               // Is this byte a valid byte in the VRF word?
               // We compare vrf_seq_byte_cnt since vrf_seq_byte contains also the vstart contribution, while the issue_cnt_bytes
               // counter does not.
               if (vrf_seq_byte_cnt < issue_cnt_bytes_q && vrf_seq_byte < (NrLanes * DataWidthB)) begin : is_vrf_byte
                 // At which lane, and what is the byte offset in that lane, of the byte vrf_byte?
-                automatic int unsigned vrf_offset = vrf_byte[2:0];
+                automatic int unsigned vrf_offset = vrf_byte[2:0];  // offset in bank
                 // Make sure this index wraps around the number of lane
                 automatic int unsigned vrf_lane = (vrf_byte >> 3);
 
@@ -441,7 +441,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
           // vstart of the lanes that we are writing to in this cycle
           vstart_lane = vinsn_issue_q.vstart / NrLanes;
 
-          // Store in result queue
+          // Store in result queue   which bank
           result_queue_d[result_queue_write_pnt_q][lane].addr = vaddr(vinsn_issue_q.vd, NrLanes, VLEN) + (vstart_lane >> (EW64 - vinsn_issue_q.vtype.vsew)) + seq_word_wr_offset_q;
           result_queue_d[result_queue_write_pnt_q][lane].id   = vinsn_issue_q.id;
         end : compute_vrf_addr

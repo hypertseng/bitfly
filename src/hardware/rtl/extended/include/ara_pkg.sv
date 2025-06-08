@@ -400,31 +400,6 @@ typedef struct packed {
    * packing) functions.
    */
 
-  function automatic logic [$clog2(8*MaxNrLanes)-1:0] mple_shuffle(logic[15:0] byte_idx, int NrLanes, rvv_pkg::vew_e ew);
-    automatic logic [$clog2(32)-1:0] idx [31:0];
-    idx[31] = 31; idx[30] = 23; idx[29] = 15; idx[28] = 07;
-    idx[27] = 30; idx[26] = 22; idx[25] = 14; idx[24] = 06;
-    idx[23] = 29; idx[22] = 21; idx[21] = 13; idx[20] = 05;
-    idx[19] = 28; idx[18] = 20; idx[17] = 12; idx[16] = 04;
-    idx[15] = 27; idx[14] = 19; idx[13] = 11; idx[12] = 03;
-    idx[11] = 26; idx[10] = 18; idx[09] = 10; idx[08] = 02;
-    idx[07] = 25; idx[06] = 17; idx[05] = 09; idx[04] = 01;
-    idx[03] = 24; idx[02] = 16; idx[01] = 08; idx[00] = 00;
-    return idx[byte_idx[4:0]];
-  endfunction
-          //    rvv_pkg::EW8: begin
-          //   automatic logic [$clog2(32)-1:0] idx [31:0];
-          //   idx[31] = 31; idx[30] = 23; idx[29] = 15; idx[28] = 07;
-          //   idx[27] = 27; idx[26] = 19; idx[25] = 11; idx[24] = 03;
-          //   idx[23] = 29; idx[22] = 21; idx[21] = 13; idx[20] = 05;
-          //   idx[19] = 25; idx[18] = 17; idx[17] = 09; idx[16] = 01;
-          //   idx[15] = 30; idx[14] = 22; idx[13] = 14; idx[12] = 06;
-          //   idx[11] = 26; idx[10] = 18; idx[09] = 10; idx[08] = 02;
-          //   idx[07] = 28; idx[06] = 20; idx[05] = 12; idx[04] = 04;
-          //   idx[03] = 24; idx[02] = 16; idx[01] = 08; idx[00] = 00;
-          //   return idx[byte_idx[4:0]];
-          // end
-   
   function automatic logic [$clog2(8*MaxNrLanes)-1:0] shuffle_index(logic[15:0] byte_idx, int NrLanes, rvv_pkg::vew_e ew);
     // Generate the shuffling of the table above
     unique case (NrLanes)

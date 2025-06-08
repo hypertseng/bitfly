@@ -3595,9 +3595,9 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 is_vload = 1'b1;
 
                 if (insn.instr[31] == 1'b1) begin
-                  ara_req.is_weight <= 1'b1;
+                  ara_req.is_weight = 1'b1;
                 end else begin
-                  ara_req.is_weight <= 1'b0;
+                  ara_req.is_weight = 1'b0;
                 end
 
                 // Wait before acknowledging this instruction
@@ -3713,7 +3713,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
 
             acc_resp_o.result = insn.custom1_type.uimm9;;
 
-            if (insn.custom1_type.uimm9 > 496) begin
+            if (insn.custom1_type.uimm9 > 480) begin
               illegal_insn = 1'b1;
             end
           end
