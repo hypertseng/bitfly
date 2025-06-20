@@ -22,14 +22,14 @@ with open("../tokenizer.h", "w", encoding="utf-8") as out:
     out.write(f"#define TOKENIZER_MAX_TOKEN_LENGTH {max_token_length}\n\n")
 
     # 写入 scores
-    out.write(f"static const float tokenizer_vocab_scores[{vocab_size}] = {{\n")
+    out.write(f"static float tokenizer_vocab_scores[{vocab_size}] = {{\n")
     for score in scores:
         out.write(f"    {score:.8f}f,\n")
     out.write("};\n\n")
 
     # 写入 vocab（二进制字节数组）
     out.write(
-        f"static const unsigned char tokenizer_vocab[{vocab_size}][TOKENIZER_MAX_TOKEN_LENGTH] = {{\n"
+        f"static char tokenizer_vocab[{vocab_size}][TOKENIZER_MAX_TOKEN_LENGTH] = {{\n"
     )
     for s_bytes in strings:
         # 用 hex 形式输出，长度不足补 0

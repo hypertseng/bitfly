@@ -14,7 +14,6 @@
 #else
 #include "printf.h"
 #endif
-// #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdint.h>
@@ -25,10 +24,18 @@
 #include "win.h"
 #else
 #include <unistd.h>
-// #include <sys/mman.h>
 #endif
 
-#define MAX_TOKEN_LENGTH 27
+#define DEBUG_LEVEL 0
+
+#define DEBUG_PRINT(level, fmt, ...)    \
+    do                                  \
+    {                                   \
+        if (DEBUG_LEVEL >= level)       \
+            printf(fmt, ##__VA_ARGS__); \
+    } while (0)
+
+#define MAX_TOKEN_LENGTH 7
 #define VOCAB_SIZE 512
 #define DIM 64
 #define HIDDEN_DIM 172
@@ -308,23 +315,33 @@ void read_checkpoint(Config *config, TransformerWeights *weights, float **data, 
 
     // 权重映射：跳过前 256 字节
     void *weights_ptr = (void *)(model_bin + 256);
-    printf("Begin memory_map_weights\n");
+    printf("Begin memory_map_weights:\n");
     memory_map_weights(weights, weights_ptr, shared_classifier);
 }
 
 void build_transformer(Transformer *t)
 {
-    // read in the Config and the Weights from the checkpoint
-    printf("Read checkpoint\n");
+    printf("┌────────────────────────────────────────┐\n");
+    printf("│  Begin building Transformer model      │\n");
+    printf("└────────────────────────────────────────┘\n");
+
     read_checkpoint(&t->config, &t->weights, &t->data, &t->file_size);
-    printf("Config: dim=%d, hidden_dim=%d, n_layers=%d, n_heads=%d, n_kv_heads=%d, vocab_size=%d, seq_len=%d\n",
-           t->config.dim, t->config.hidden_dim, t->config.n_layers,
-           t->config.n_heads, t->config.n_kv_heads, t->config.vocab_size,
-           t->config.seq_len);
-    // allocate the RunState buffers
+
+    printf("┌──────────────────────────────┐\n");
+    printf("│ model config:                │\n");
+    printf("├──────────────────────────────┤\n");
+    printf("│ dim: %-16d        │\n", t->config.dim);
+    printf("│ hidden_dim: %-14d   │\n", t->config.hidden_dim);
+    printf("│ n_layers: %-19d│\n", t->config.n_layers);
+    printf("│ n_heads: %-16d    │\n", t->config.n_heads);
+    printf("│ n_kv_heads: %-17d│\n", t->config.n_kv_heads);
+    printf("│ vocab_size: %-17d│\n", t->config.vocab_size);
+    printf("│ seq_len: %-17d   │\n", t->config.seq_len);
+    printf("└──────────────────────────────┘\n");
+
     StaticRunState run_state_buffer;
     malloc_run_state(&t->state, &run_state_buffer);
-    printf("Allocated RunState\n");
+    printf("✓ RunState mallocated\n");
 }
 
 // ----------------------------------------------------------------------------
@@ -344,7 +361,14 @@ void rmsnorm(float *o, float *x, float *weight, int size)
     // normalize and scale
     for (int j = 0; j < size; j++)
     {
-        o[j] = weight[j] * (ss * x[j]);
+        asm volatile("mpcfg 9\n\t");
+        float a = weight[j];
+        asm volatile("mpcfg 10\n\t");
+        float b = ss * x[j];
+        asm volatile("mpcfg 11\n\t");
+        float tmp = a * b;
+        asm volatile("mpcfg 12\n\t");
+        o[j] = tmp;
     }
 }
 
@@ -378,7 +402,7 @@ void matmul(float *xout, QuantizedTensor *x, QuantizedTensor *w, int n, int d)
     // W (d,n) @ x (n,) -> xout (d,)
     // by far the most amount of time is spent inside this little function
     // inputs to this function are both quantized
-
+    
     int i;
     for (i = 0; i < d; i++)
     {
@@ -405,7 +429,7 @@ void matmul(float *xout, QuantizedTensor *x, QuantizedTensor *w, int n, int d)
 
 float *forward(Transformer *transformer, int token, int pos)
 {
-
+    DEBUG_PRINT(2, "┌── Begin forward pass (pos=%d, token=%d)\n", pos, token);
     // a few convenience variables
     Config *p = &transformer->config;
     TransformerWeights *w = &transformer->weights;
@@ -423,15 +447,17 @@ float *forward(Transformer *transformer, int token, int pos)
     // forward all the layers
     for (int l = 0; l < N_LAYERS; l++)
     {
+        DEBUG_PRINT(2, "├─ %d layer computation begin\n", l + 1);
 
         // attention rmsnorm
         rmsnorm(s->xb, x, w->rms_att_weight + l * dim, dim);
-        // qkv matmuls for this position
+
+        // qkv matmuls
         quantize(&s->xq, s->xb, dim);
         matmul(s->q, &s->xq, w->wq + l, dim, dim);
         matmul(s->k, &s->xq, w->wk + l, dim, kv_dim);
         matmul(s->v, &s->xq, w->wv + l, dim, kv_dim);
-        printf("q, k, v matmuls done for layer %d\n", l);
+        DEBUG_PRINT(3, "│  ✓ Q/K/V computation finished\n");
 
         // RoPE relative positional encoding: complex-valued rotate q and k in each head
         for (int i = 0; i < dim; i += 2)
@@ -458,9 +484,8 @@ float *forward(Transformer *transformer, int token, int pos)
         float *value_cache_row = s->value_cache + loff + pos * kv_dim;
         memcpy(key_cache_row, s->k, kv_dim * sizeof(*key_cache_row));
         memcpy(value_cache_row, s->v, kv_dim * sizeof(*value_cache_row));
-        
-        printf("Key and value cached for layer %d at position %d\n", l, pos);
-        printf("Begin attention for layer %d at position %d\n", l, pos);
+
+        DEBUG_PRINT(3, "│  ✓ K/V cache update finished\n");
         // multihead attention. iterate over all heads
         int h;
         for (h = 0; h < N_HEADS; h++)
@@ -508,18 +533,16 @@ float *forward(Transformer *transformer, int token, int pos)
         // final matmul to get the output of the attention
         quantize(&s->xq, s->xb, dim);
         matmul(s->xb2, &s->xq, w->wo + l, dim, dim);
-        printf("Attention output matmul done for layer %d\n", l);
+        DEBUG_PRINT(3, "│  ✓ MHA output computaiton finished\n");
 
         // residual connection back into x
         for (int i = 0; i < dim; i++)
         {
             x[i] += s->xb2[i];
         }
-
         // ffn rmsnorm
         rmsnorm(s->xb, x, w->rms_ffn_weight + l * dim, dim);
 
-        printf("Beginning FFN for layer %d\n");
         // Now for FFN in PyTorch we have: self.w2(F.silu(self.w1(x)) * self.w3(x))
         // first calculate self.w1(x) and self.w3(x)
         quantize(&s->xq, s->xb, dim);
@@ -540,13 +563,14 @@ float *forward(Transformer *transformer, int token, int pos)
         // final matmul to get the output of the ffn
         quantize(&s->hq, s->hb, hidden_dim);
         matmul(s->xb, &s->hq, w->w2 + l, hidden_dim, dim);
-        printf("FFN output matmul done for layer %d\n");
+        DEBUG_PRINT(3, "│  ✓ FFN output matmul finished\n");
 
         // residual connection
         for (int i = 0; i < dim; i++)
         {
             x[i] += s->xb[i];
         }
+        DEBUG_PRINT(2, "├─ %d layer computation finished\n", l + 1);
     }
 
     // final rmsnorm
@@ -555,6 +579,7 @@ float *forward(Transformer *transformer, int token, int pos)
     // classifier into logits
     quantize(&s->xq, x, dim);
     matmul(s->logits, &s->xq, w->wcls, dim, VOCAB_SIZE);
+    DEBUG_PRINT(2, "└── forward pass finished\n");
     return s->logits;
 }
 
@@ -569,7 +594,7 @@ typedef struct
 
 typedef struct
 {
-    char **vocab;
+    char (*vocab)[MAX_TOKEN_LENGTH];
     float *vocab_scores;
     TokenIndex *sorted_vocab;
     int vocab_size;
@@ -582,49 +607,21 @@ int compare_tokens(const void *a, const void *b)
     return strcmp(((TokenIndex *)a)->str, ((TokenIndex *)b)->str);
 }
 
+static TokenIndex sorted_vocab[VOCAB_SIZE] __attribute__((aligned(32 * NR_LANES), section(".l2")));
 void build_tokenizer(Tokenizer *t)
 {
-    t->vocab_size = TOKENIZER_VOCAB_SIZE;
-    t->max_token_length = TOKENIZER_MAX_TOKEN_LENGTH;
+    t->vocab_size = VOCAB_SIZE;
+    t->vocab = tokenizer_vocab;
+    t->max_token_length = MAX_TOKEN_LENGTH;
+    t->vocab_scores = tokenizer_vocab_scores;
+    t->sorted_vocab = sorted_vocab;
 
-    t->vocab_scores = (float *)tokenizer_vocab_scores;
-
-    // 指向静态 vocab 字符串数组
-    static char *vocab_ptrs[TOKENIZER_VOCAB_SIZE];
-    for (int i = 0; i < TOKENIZER_VOCAB_SIZE; ++i)
-    {
-        vocab_ptrs[i] = (char *)tokenizer_vocab[i];
-    }
-    t->vocab = vocab_ptrs;
-
-    // 不初始化 sorted_vocab，按需延迟处理
-    t->sorted_vocab = NULL;
-
-    // 初始化 byte_pieces（每个字符加一个 '\0'）
     for (int i = 0; i < 256; i++)
     {
         t->byte_pieces[i * 2] = (unsigned char)i;
         t->byte_pieces[i * 2 + 1] = '\0';
     }
 }
-
-// char *decode(Tokenizer *t, int prev_token, int token)
-// {
-//     char *piece = t->vocab[token];
-//     // following BOS (1) token, sentencepiece decoder strips any leading whitespace (see PR #89)
-//     if (prev_token == 1 && piece[0] == ' ')
-//     {
-//         piece++;
-//     }
-//     // careful, some tokens designate raw bytes, and look like e.g. '<0x01>'
-//     // parse this and convert and return the actual byte
-//     unsigned char byte_val;
-//     if (sscanf(piece, "<0x%02hhX>", &byte_val) == 1)
-//     {
-//         piece = (char *)t->byte_pieces + byte_val * 2;
-//     }
-//     return piece;
-// }
 
 // 判断是否是有效十六进制字符
 int is_hex_digit(char c)
@@ -703,8 +700,7 @@ int str_lookup(char *str, TokenIndex *sorted_vocab, int vocab_size)
     return res != NULL ? res->id : -1;
 }
 
-static TokenIndex sorted_vocab_buffer[VOCAB_SIZE];
-
+char str_buffer[MAX_TOKEN_LENGTH * 2 + 3] __attribute__((aligned(32 * NR_LANES), section(".l2")));
 void encode(Tokenizer *t, char *text, int8_t bos, int8_t eos, int *tokens, int *n_tokens)
 {
     // encode the string text (input) into an upper-bound preallocated tokens[] array
@@ -718,9 +714,7 @@ void encode(Tokenizer *t, char *text, int8_t bos, int8_t eos, int *tokens, int *
 
     if (t->sorted_vocab == NULL)
     {
-        // lazily malloc and sort the vocabulary
         // t->sorted_vocab = malloc(t->vocab_size * sizeof(TokenIndex));
-        t->sorted_vocab = sorted_vocab_buffer;
 
         for (int i = 0; i < t->vocab_size; i++)
         {
@@ -733,7 +727,6 @@ void encode(Tokenizer *t, char *text, int8_t bos, int8_t eos, int *tokens, int *
     // create a temporary buffer that will store merge candidates of always two consecutive tokens
     // *2 for concat, +1 for null terminator +2 for UTF8 (in case max_token_length is 1)
     // char *str_buffer = malloc((t->max_token_length * 2 + 1 + 2) * sizeof(char));
-    char str_buffer[MAX_TOKEN_LENGTH * 2 + 3];
     size_t str_len = 0;
 
     // start at 0 tokens
@@ -962,7 +955,7 @@ int sample_topp(float *probabilities, int n, float topp, ProbIndex *probindex, f
     return probindex[last_idx].index; // in case of rounding errors
 }
 
-static ProbIndex sampler_probindex[VOCAB_SIZE];
+static ProbIndex sampler_probindex[VOCAB_SIZE] __attribute__((aligned(32 * NR_LANES), section(".l2")));
 
 void build_sampler(Sampler *sampler, int vocab_size, float temperature, float topp, unsigned long long rng_seed)
 {
@@ -1025,10 +1018,16 @@ int sample(Sampler *sampler, float *logits)
 
 // ----------------------------------------------------------------------------
 // generation loop
-int prompt_tokens[3];
+static int prompt_tokens[3] __attribute__((aligned(32 * NR_LANES), section(".l2")));
 
 void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, char *prompt, int steps)
 {
+    printf("\n┌──────────────────────────────────┐\n");
+    printf("│  Begin Generation                │\n");
+    printf("│──────────────────────────────────│\n");
+    printf("│ prompt: \"%12s\"           │\n", prompt ? prompt : "(null)");
+    printf("│ steps: %-16d          │\n", steps);
+    printf("└──────────────────────────────────┘\n");
     char *empty_prompt = "";
     if (prompt == NULL)
     {
@@ -1039,21 +1038,20 @@ void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, 
     int num_prompt_tokens = 0;
     // int *prompt_tokens = (int *)malloc((strlen(prompt) + 3) * sizeof(int)); // +3 for '\0', ?BOS, ?EOS
     encode(tokenizer, prompt, 1, 0, prompt_tokens, &num_prompt_tokens);
-    printf("prompt: %s, num_prompt_tokens: %d\n", prompt, num_prompt_tokens);
+    DEBUG_PRINT(3, "prompt: %s, num_prompt_tokens: %d\n", prompt, num_prompt_tokens);
     if (num_prompt_tokens < 1)
     {
-        // fprintf(stderr, "something is wrong, expected at least 1 prompt token\n");
-        // exit(EXIT_FAILURE);
-        printf("something is wrong, expected at least 1 prompt token\n");
+        DEBUG_PRINT(3, "something is wrong, expected at least 1 prompt token\n");
     }
 
     // start the main loop
     int next;                     // will store the next token in the sequence
     int token = prompt_tokens[0]; // kick off with the first token in the prompt
     int pos = 0;                  // position in the sequence
+    start_timer();
     while (pos < steps)
     {
-        printf("Begin forward iteration, pos: %d, token: %d\n", pos, token);
+        DEBUG_PRINT(3, "\nBegin forward iteration, pos: %d, token: %d\n", pos, token);
         // forward the transformer to get logits for the next token
         float *logits = forward(transformer, token, pos);
 
@@ -1078,13 +1076,12 @@ void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, 
 
         // print the token as string, decode it with the Tokenizer object
         char *piece = decode(tokenizer, token, next);
-        printf("original decode piece: %s\n", piece);
+        DEBUG_PRINT(3, "token: %s", piece);
         safe_printf(piece); // same as printf("%s", piece), but skips "unsafe" bytes
         token = next;
 
         // init the timer here because the first iteration can be slower
         // if (start == 0) { start = time_in_ms(); }
-        start_timer();
     }
     printf("\n");
 
@@ -1094,7 +1091,8 @@ void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, 
         // long end = time_in_ms();
         stop_timer();
         // fprintf(stderr, "achieved tok/s: %f\n", (pos-1) / (double)(end-start)*1000);
-        printf("achieved tok/s: %f\n", (pos - 1) / get_timer());
+        int64_t runtime = get_timer();
+        printf("generated toks: %d spent cycles: %ld\n", (pos - 1), runtime);
     }
 }
 
@@ -1109,11 +1107,6 @@ static inline unsigned long read_cycle()
     return cycle;
 }
 
-void error_usage()
-{
-    printf("error!\n");
-}
-
 int main()
 {
 
@@ -1121,7 +1114,7 @@ int main()
     float temperature = 1.0f;        // 0.0 = greedy deterministic. 1.0 = original. don't set higher
     float topp = 0.9f;               // top-p in nucleus sampling. 1.0 = off. 0.9 works well, but slower
     int steps = 3;                   // number of steps to run for
-    char *prompt = NULL;             // prompt string
+    char *prompt = "";               // prompt string
     unsigned long long rng_seed = 0; // seed rng with time by default
 
     // poor man's C argparse so we can override the defaults above from the command line
@@ -1138,23 +1131,19 @@ int main()
 
     // build the Transformer via the model .bin file
     Transformer transformer;
-    printf("begin build transformer\n");
     build_transformer(&transformer);
     if (steps == 0 || steps > transformer.config.seq_len)
         steps = transformer.config.seq_len; // override to ~max length
 
     // build the Tokenizer via the tokenizer .bin file
     Tokenizer tokenizer;
-    printf("begin build tokenizer\n");
     build_tokenizer(&tokenizer);
 
     // build the Sampler
     Sampler sampler;
-    printf("begin build sampler\n");
     build_sampler(&sampler, transformer.config.vocab_size, temperature, topp, rng_seed);
 
     // run!
-    printf("begin generation\n");
     generate(&transformer, &tokenizer, &sampler, prompt, steps);
     return 0;
 }

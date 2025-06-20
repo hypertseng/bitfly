@@ -3,7 +3,7 @@
 #define TOKENIZER_VOCAB_SIZE 512
 #define TOKENIZER_MAX_TOKEN_LENGTH 7
 
-static const float tokenizer_vocab_scores[512] = {
+static float tokenizer_vocab_scores[512] = {
     0.00000000f,
     0.00000000f,
     0.00000000f,
@@ -518,7 +518,7 @@ static const float tokenizer_vocab_scores[512] = {
     -252.00000000f,
 };
 
-static const unsigned char tokenizer_vocab[512][TOKENIZER_MAX_TOKEN_LENGTH] = {
+static char tokenizer_vocab[512][TOKENIZER_MAX_TOKEN_LENGTH] = {
     { 0x3c, 0x75, 0x6e, 0x6b, 0x3e, 0x00, 0x00 },
     { 0x0a, 0x3c, 0x73, 0x3e, 0x0a, 0x00, 0x00 },
     { 0x0a, 0x3c, 0x2f, 0x73, 0x3e, 0x0a, 0x00 },
