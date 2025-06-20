@@ -7,14 +7,14 @@ from numba import njit  # For performance optimization
 from matplotlib.colors import Normalize
 
 # Constants
-VLEN = 8192
+VLEN = 4096
 NR_LANES = 8
 LMUL = 8
 MAX_PPE = 64
 MAX_PRODUCT = 64
 
 # Configuration ranges
-k_values = np.array([32, 64, 128, 256], dtype=int)
+k_values = np.array([16, 64, 256, 480], dtype=int)
 R_values = np.arange(1, 8, dtype=int)
 C_values = np.arange(1, 8, dtype=int)
 Ppe_values = np.arange(1, 9, dtype=int)
@@ -25,18 +25,18 @@ valid_RC = [(R, C) for R in R_values for C in C_values if R + C <= 8]
 
 
 @njit
-def compute_tops(k, R, C, Ppe, Ptile):
+def compute_tops(k, R, C, Pmac, Ppe):
     """Optimized TOPS calculation using Numba"""
-    t = math.ceil(k / Ppe)
+    t = math.ceil(k / Pmac)
 
     # Check constraints
-    if 8 * Ppe > MAX_PPE or Ptile * Ppe > MAX_PRODUCT or 8 * Ptile > MAX_PRODUCT:
+    if  8 * R * Pmac + C * Ppe * Pmac > 64 * 8 or 2 * R * Ppe > 64 * 8:
         return -1
     
-    if (8 * t * R * Ppe) + (t * C * Ptile * Ppe) + (8 * R * C * Ptile) > 32 * VLEN:
+    if (8 * t * R * Pmac) + (t * C * Ppe * Pmac) + (8 * R * C * Ppe) > 32 * VLEN:
         return -1
 
-    numerator = 2 * R * C * Ptile * (k - 1)
+    numerator = 2 * R * C * Ppe * (k - 1)
     denominator = R + t + C
     return numerator / denominator
 
@@ -48,17 +48,17 @@ def find_best_config(k):
 
     # First filter by valid R,C pairs
     for R, C in valid_RC:
-        for Ppe in Ppe_values:
-            # Early exit for Ppe constraints
-            if 8 * Ppe > MAX_PPE:
+        for Pmac in Ppe_values:
+            # Early exit for Pmac constraints
+            if 8 * Pmac > MAX_PPE:
                 continue
 
-            for Ptile in Ptile_values:
-                tops = compute_tops(k, R, C, Ppe, Ptile)
+            for Ppe in Ptile_values:
+                tops = compute_tops(k, R, C, Pmac, Ppe)
                 if tops > best_tops:
                     best_tops = tops
-                    t = math.ceil(k / Ppe)
-                    best_config = (k, R, C, Ppe, Ptile, t, tops)
+                    t = math.ceil(k / Pmac)
+                    best_config = (k, R, C, Pmac, Ppe, t, tops)
 
     return best_config
 
@@ -66,7 +66,7 @@ def find_best_config(k):
 def print_results():
     """Print the best configurations in a formatted table"""
     header = (
-        f"{'k':>4} {'R':>3} {'C':>3} {'Ppe':>5} {'Ptile':>6} {'t':>5} {'TOPS':>10} |"
+        f"{'k':>4} {'R':>3} {'C':>3} {'Pmac':>5} {'Ppe':>6} {'t':>5} {'TOPS':>10} |"
         f" {'SRAM':^6} {'BW_Ppe':^8} {'BW_Tile':^10} {'BW_Total':^10}"
     )
     print("best config:")
@@ -76,11 +76,11 @@ def print_results():
     for k in k_values:
         config = find_best_config(k)
         if config:
-            k, R, C, Ppe, Ptile, t, tops = config
+            k, R, C, Pmac, Ppe, t, tops = config
             print(
-                f"{k:>4} {R:>3} {C:>3} {Ppe:>5} {Ptile:>6} {t:>5} {tops:>10.2f} |"
-                f" {'✅':^6} {'✅' if 8*Ppe<=64 else '❌':^8} "
-                f"{'✅' if Ptile*Ppe<=64 else '❌':^10} {'✅' if 8*Ptile<=64 else '❌':^10}"
+                f"{k:>4} {R:>3} {C:>3} {Pmac:>5} {Ppe:>6} {t:>5} {tops:>10.2f} |"
+                f" {'✅':^6} {'✅' if 8*Pmac<=64 else '❌':^8} "
+                f"{'✅' if Ppe*Pmac<=64 else '❌':^10} {'✅' if 8*Ppe<=64 else '❌':^10}"
             )
         else:
             print(f"{k:>4} 无合法配置")
@@ -100,9 +100,9 @@ def generate_heatmaps():
         heatmap_data = np.full((len(R_values), len(C_values)), np.nan)
         for R, C in valid_RC:
             best_tops = -1
-            for Ppe in Ppe_values:
-                for Ptile in Ptile_values:
-                    tops = compute_tops(k, R, C, Ppe, Ptile)
+            for Pmac in Ppe_values:
+                for Ppe in Ptile_values:
+                    tops = compute_tops(k, R, C, Pmac, Ppe)
                     if tops > best_tops:
                         best_tops = tops
             if best_tops > 0:
@@ -216,8 +216,8 @@ def plot_3d_tops_surface(R=4, C=4, k=64):
             )
 
     # 图形装饰
-    ax.set_xlabel("Ppe Value", labelpad=15)
-    ax.set_ylabel("Ptile Value", labelpad=15)
+    ax.set_xlabel("Pmac Value", labelpad=15)
+    ax.set_ylabel("Ppe Value", labelpad=15)
     ax.set_zlabel("TOPS Performance", labelpad=15)
     ax.set_title(
         f"3D TOPS Performance Surface\n(R={R}, C={C}, k={k})", y=1.05, fontsize=14
