@@ -132,26 +132,6 @@ def emit_int8_row_major(name, array, alignment="NR_LANES*4"):  # <<< 新增：�
         line = ", ".join([f"0x{v:08x}" for v in packed[i : i + 8]])
         print(f"    .word {line}")
 
-
-# def emit_int32(name, array, alignment="NR_LANES*4"):
-#     print(f".global {name}")
-#     print(f".balign {alignment}")
-#     print(f"{name}:")
-
-#     flat = array.contiguous().flatten().numpy().astype(np.int32)
-
-#     # 转为 uint32 表示避免符号扩展问题
-#     packed = np.frombuffer(flat.tobytes(), dtype=np.uint32)
-
-#     for i in range(0, len(packed), 8):
-#         line = ", ".join([f"0x{v:08x}" for v in packed[i : i + 8]])
-#         print(f"    .word {line}")
-
-
-import math
-import torch  # 确保支持 tensor 操作
-
-
 def emit_1bit_packed_weights(name, array, alignment="NR_LANES*4"):
     """
     将每个 8x8 的 1-bit block 打包为 64-bit，然后拆成两个 .word 输出（十六进制格式）。
@@ -176,8 +156,8 @@ def emit_1bit_packed_weights(name, array, alignment="NR_LANES*4"):
                     bits = 0
                     for col in range(8):
                         for row in range(8):
-                            global_row = j * 480 + i_block * 8 + row
-                            global_col = i * 32 + j_block * 8 + col
+                            global_row = j * 480 + i_block + row
+                            global_col = i * 32 + j_block + col
                             if global_row < K and global_col < N:
                                 bit = int(array[global_row, global_col]) & 1
                             else:
@@ -192,7 +172,7 @@ def emit_1bit_packed_weights(name, array, alignment="NR_LANES*4"):
 # M, N = 16, 32
 K = 172
 # M_dim = [1, 16, 32, 64, 128, 256, 512]
-M_dim = [1024]
+M_dim = [16]
 N = 64 
 
 for M in M_dim:
