@@ -2,26 +2,27 @@ module pe #(
     parameter BIT_ACT    = 8,  // 激活值位宽（int8）
     parameter BIT_WEIGHT = 1   // 权值位宽（int1）
 ) (
-    input  logic [ 7:0] weights,      // 8-bit 权重（1:保持原值，0:取反）
-    input  logic [63:0] activations,  // 64-bit 激活输入（8x int8）
+    input  logic        [ 7:0] weights,      // 8-bit 权重（1:保持原值，0:取反）
+    input  logic        [63:0] activations,  // 64-bit 激活输入（8x int8）
     output logic signed [11:0] result        // 12-bit 有符号结果
 );
 
   // ----------------------
   // 加权激活值计算
   // ----------------------
-  logic signed [7:0] weighted_activations[8];  // 8个加权后的激活值（int8）
+logic signed [8:0] weighted_activations[8];
 
-  always_comb begin
-    for (int i = 0; i < 8; i++) begin
-      // 权重为0时取反（补码操作），注意激活值按高位到低位排列
-      // activations[63:56] 对应 i=0（第一个int8）
-      weighted_activations[i] = weights[i] ? 
-          activations[( (7 - i) * 8 ) +:8] :  // 高位在前
-          ~activations[( (7 - i) * 8 ) +:8] + 1;
-    end
+always_comb begin
+  for (int i = 0; i < 8; i++) begin
+    automatic logic signed [7:0] act;
+    automatic logic signed [8:0] neg;
+
+    act = activations[((7 - i) * 8) +: 8];
+    neg = -act;  //防止 -(-128) 溢出
+
+    weighted_activations[i] = weights[i] ? act : neg;
   end
-
+end
   // ----------------------
   // 树形累加结构（优化时序）
   // ----------------------
