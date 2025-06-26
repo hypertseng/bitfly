@@ -2,6 +2,7 @@
 #include "runtime.h"
 #include "util.h"
 #include "model.h"
+#include "kernel/bmpmm.h"
 #include "tokenizer.h"
 #include <string.h>
 
@@ -172,6 +173,7 @@ void malloc_run_state(RunState *s, StaticRunState *buf)
 
 void dequantize(QuantizedTensor *qx, float *x, int n)
 {
+    GS = n;
     for (int i = 0; i < n; i++)
     {
         x[i] = qx->q[i] * qx->s[i / GS];
@@ -180,6 +182,7 @@ void dequantize(QuantizedTensor *qx, float *x, int n)
 
 void quantize(QuantizedTensor *qx, float *x, int n)
 {
+    GS = n;
     int num_groups = n / GS;
     float Q_MAX = 127.0f;
 
@@ -214,6 +217,7 @@ void quantize(QuantizedTensor *qx, float *x, int n)
 // /* initialize `n` x quantized tensor (with `size_each` elements), starting from memory pointed at *ptr */
 QuantizedTensor *init_quantized_tensors(void **ptr, QuantizedTensor *res, int n, int size_each)
 {
+    GS = n;
     void *p = *ptr;
     for (int i = 0; i < n; i++)
     {
@@ -228,16 +232,16 @@ QuantizedTensor *init_quantized_tensors(void **ptr, QuantizedTensor *res, int n,
     return res;
 }
 
-static QuantizedTensor q_tokens[1] __attribute__((aligned(32 * NR_LANES), section(".l2"))); // global quantized token embedding table
-static QuantizedTensor wq[N_LAYERS] __attribute__((aligned(32 * NR_LANES), section(".l2")));
-static QuantizedTensor wk[N_LAYERS] __attribute__((aligned(32 * NR_LANES), section(".l2")));
-static QuantizedTensor wv[N_LAYERS] __attribute__((aligned(32 * NR_LANES), section(".l2")));
-static QuantizedTensor wo[N_LAYERS] __attribute__((aligned(32 * NR_LANES), section(".l2")));
-static QuantizedTensor w1[N_LAYERS] __attribute__((aligned(32 * NR_LANES), section(".l2")));
-static QuantizedTensor w2[N_LAYERS] __attribute__((aligned(32 * NR_LANES), section(".l2")));
-static QuantizedTensor w3[N_LAYERS] __attribute__((aligned(32 * NR_LANES), section(".l2")));
-static QuantizedTensor wcls[1] __attribute__((aligned(32 * NR_LANES), section(".l2")));
-static float token_embedding_table_buffer[VOCAB_SIZE * DIM] __attribute__((aligned(32 * NR_LANES), section(".l2")));
+static QuantizedTensor q_tokens[1] __attribute__((aligned(4 * NR_LANES), section(".l2"))); // global quantized token embedding table
+static QuantizedTensor wq[N_LAYERS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static QuantizedTensor wk[N_LAYERS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static QuantizedTensor wv[N_LAYERS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static QuantizedTensor wo[N_LAYERS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static QuantizedTensor w1[N_LAYERS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static QuantizedTensor w2[N_LAYERS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static QuantizedTensor w3[N_LAYERS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static QuantizedTensor wcls[1] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static float token_embedding_table_buffer[VOCAB_SIZE * DIM] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 
 void memory_map_weights(TransformerWeights *w, void *ptr, uint8_t shared_classifier)
 {
@@ -397,35 +401,197 @@ void softmax(float *x, int size)
     }
 }
 
+void transpose(const int8_t *A, int8_t *B, int M, int N)
+{
+    for (int col = 0; col < N; col++)
+    {
+        int i = 0;
+        while (i < M)
+        {
+            size_t vl;
+            const int8_t *src = A + i * N + col;
+            int8_t *dst = B + col * M + i;
+            __asm__ volatile("vsetvli %[vl], %[remain], e8, m1, ta, ma" 
+                : [vl] "=&r"(vl)
+                : [remain] "r"(M - i)
+                : "memory");
+            __asm__ volatile("vlse8.v v0, (%[src]), %[stride]"
+                :
+                : [src] "r"(src),
+                  [stride] "r"((ptrdiff_t)(N))
+                : "memory", "v0");
+            __asm__ volatile("vse8.v v0, (%[dst])"
+                :
+                : [dst] "r"(dst)
+                : "memory", "v0");
+            i += vl;
+        }
+    }
+}
+
+#define MAX_PADDED_K 480
+#define MAX_CHUNKS_PER_ROW (MAX_PADDED_K / 8)
+
+// 静态分配缓冲区
+static int8_t padded_row_buf[488]__attribute__((aligned(4 * NR_LANES), section(".l2")));               // 最大需要 488 字节
+static uint64_t block_matrix[16][MAX_CHUNKS_PER_ROW]__attribute__((aligned(4 * NR_LANES), section(".l2")));
+
+/**
+ * pack_activation - 打包激活矩阵以适配后续向量化计算
+ * @array: 输入矩阵 (M x K)
+ * @M: 行数
+ * @K: 列数
+ * @out: 输出 buffer，用于存储打包后的数据
+ * @padded_row_buf: 外部提供的临时 buffer，大小 >= 488 字节
+ * @block_matrix: 外部提供的一块 buffer，大小 = 16 * chunks_per_row * sizeof(uint64_t)
+ *
+ * 返回值：写入 out 的字节数
+ */
+size_t pack_activation(
+    const int8_t* array,
+    int M,
+    int K,
+    int8_t* out
+) {
+    int tm = (M + 15) / 16;        // number of tiles in m dimension
+    int tk = (K > 480) ? ((K + 479) / 480) : 1;
+
+    int8_t* out_start = out;
+
+    for (int i = 0; i < tm; ++i) {
+        int m_start = i * 16;
+        int m_valid = M - m_start;
+        int m_tile = (m_valid < 0) ? 0 : ((m_valid > 16) ? 16 : m_valid);
+
+        for (int jj = 0; jj < tk; ++jj) {
+            int k_start = jj * 480;
+            int k_end = k_start + 480;
+            if (k_end > K) k_end = K;
+            int k_tile = k_end - k_start;
+
+            // round up to multiple of 8
+            int padded_k = (k_tile + 7) & (~7);  // 向上对齐到 8 的倍数
+            int chunks_per_row = padded_k / 8;
+
+            // 指向 block_matrix 缓冲区
+            uint64_t (*block)[chunks_per_row] = (uint64_t (*)[chunks_per_row])block_matrix;
+
+            for (int r = 0; r < 16; ++r) {
+                int src_row = m_start + r;
+                const int8_t* src_data;
+
+                if (src_row >= M || r >= m_tile) {
+                    // Zero pad the row
+                    static int8_t zero_pad[488];
+                    src_data = zero_pad;
+                } else {
+                    src_data = &array[src_row * K + k_start];
+                }
+
+                // Copy and pad to padded_row
+                memcpy(padded_row_buf, src_data, k_tile);
+                memset(padded_row_buf + k_tile, 0, padded_k - k_tile);
+
+                // Split into 8-byte chunks, reverse and pack
+                for (int c = 0; c < chunks_per_row; ++c) {
+                    const int8_t* chunk = padded_row_buf + c * 8;
+                    uint64_t packed = 0;
+
+                    for (int b = 0; b < 8; ++b) {
+                        packed <<= 8;
+                        packed |= (uint8_t)(chunk[7 - b]);  // Reverse order
+                    }
+
+                    block[r][c] = packed;
+                }
+            }
+
+            // Now transpose block_matrix (16 x chunks_per_row) -> (chunks_per_row x 16)
+            for (int c = 0; c < chunks_per_row; ++c) {
+                for (int r = 0; r < 16; ++r) {
+                    uint64_t val = block[r][c];
+                    memcpy(out, &val, 8);
+                    out += 8;
+                }
+            }
+        }
+    }
+
+    return out - out_start;
+}
+static int8_t transposed_buffer[512*172] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static int8_t packed_activation[512] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static int16_t matmul_out_buffer[512] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 void matmul(float *xout, QuantizedTensor *x, QuantizedTensor *w, int n, int d)
 {
     // W (d,n) @ x (n,) -> xout (d,)
     // by far the most amount of time is spent inside this little function
     // inputs to this function are both quantized
-    
-    int i;
-    for (i = 0; i < d; i++)
-    {
+    // printf("matmul shape: W(%d, %d) @ x(%d,) -> xout(%d,)\n", d, n, n, d);
+    int8_t *transposed_weight = transposed_buffer;
+    transpose(w->q, transposed_weight, n, d);
+    pack_activation(x->q, 1, n, packed_activation);
+    binary_mixed_matmul(matmul_out_buffer, packed_activation, transposed_weight, 1, n, d);
+    int i = 0;
+    while (i < d) {
+        size_t vl;
+        __asm__ volatile (
+            // 设置向量长度
+            "vsetvli    %[vl], %[remain], e16, m1, ta, ma          \n"
+            // 加载 int16 向量到 v0
+            "vle16.v    v0, (%[in])                        \n"
+            // 扩展 int16 到 int32（有符号扩展）
+            "vsext.vf2  v1, v0                             \n"
+            // 转换 int32 -> float32
+            "vfcvt.f.x.v v2, v1                            \n"
+            // 标量广播 float -> 向量
+            "vfmv.v.f   v3, %[scale]                       \n"
+            // 浮点乘法
+            "vfmul.vv   v4, v2, v3                         \n"
+            // 存储 float32 结果
+            "vse32.v    v4, (%[out])                       \n"
 
-        float val = 0.0f;
-        int32_t ival = 0;
-        int in = i * n;
-
-        // do the matmul in groups of GS
-        int j;
-        for (j = 0; j <= n - GS; j += GS)
-        {
-            for (int k = 0; k < GS; k++)
-            {
-                ival += ((int32_t)x->q[j + k]) * ((int32_t)w->q[in + j + k]);
-            }
-            val += ((float)ival) * w->s[(in + j) / GS] * x->s[j / GS];
-            ival = 0;
-        }
-
-        xout[i] = val;
+            : [vl] "=&r" (vl)  // 输出：向量长度寄存器
+            : [in] "r" (matmul_out_buffer + i),       // 输入矩阵指针
+              [out] "r" (xout + i),     // 输出指针
+              [scale] "f" (x->s[0]+w->s[0]),      // 标量因子
+              [remain] "r" (d - i)   // 剩余处理元素
+            : "v0", "v1", "v2", "v3", "v4", "memory"
+        );
+        i += vl;
     }
+    // printf("%d\n", i);
+    // vector_int8_matmul(xout, x->q, w->q, 1, n, d);
 }
+
+// void matmul(float* xout, QuantizedTensor *x, QuantizedTensor *w, int n, int d) {
+//     // W (d,n) @ x (n,) -> xout (d,)
+//     // by far the most amount of time is spent inside this little function
+//     // inputs to this function are both quantized
+//     // printf matmul shape
+//     // printf("matmul shape: W(%d, %d) @ x(%d,) -> xout(%d,)\n", d, n, n, d);
+
+//     int i;
+//     #pragma omp parallel for private(i)
+//     for (i = 0; i < d; i++) {
+
+//         float val = 0.0f;
+//         int32_t ival = 0;
+//         int in = i * n;
+
+//         // do the matmul in groups of GS
+//         int j;
+//         for (j = 0; j <= n - GS; j += GS) {
+//             for (int k = 0; k < GS; k++) {
+//                 ival += ((int32_t) x->q[j + k]) * ((int32_t) w->q[in + j + k]);
+//             }
+//             val += ((float) ival) * w->s[(in + j) / GS] * x->s[j / GS];
+//             ival = 0;
+//         }
+
+//         xout[i] = val;
+//     }
+// }
 
 float *forward(Transformer *transformer, int token, int pos)
 {
@@ -447,18 +613,17 @@ float *forward(Transformer *transformer, int token, int pos)
     // forward all the layers
     for (int l = 0; l < N_LAYERS; l++)
     {
+        start_timer();
         DEBUG_PRINT(2, "├─ %d layer computation begin\n", l + 1);
 
         // attention rmsnorm
         rmsnorm(s->xb, x, w->rms_att_weight + l * dim, dim);
-
         // qkv matmuls
         quantize(&s->xq, s->xb, dim);
         matmul(s->q, &s->xq, w->wq + l, dim, dim);
         matmul(s->k, &s->xq, w->wk + l, dim, kv_dim);
         matmul(s->v, &s->xq, w->wv + l, dim, kv_dim);
         DEBUG_PRINT(3, "│  ✓ Q/K/V computation finished\n");
-
         // RoPE relative positional encoding: complex-valued rotate q and k in each head
         for (int i = 0; i < dim; i += 2)
         {
@@ -477,7 +642,6 @@ float *forward(Transformer *transformer, int token, int pos)
                 vec[i + 1] = v0 * fci + v1 * fcr;
             }
         }
-
         // save key,value at this time step (pos) to our kv cache
         int loff = l * p->seq_len * kv_dim; // kv cache layer offset for convenience
         float *key_cache_row = s->key_cache + loff + pos * kv_dim;
@@ -529,12 +693,10 @@ float *forward(Transformer *transformer, int token, int pos)
                 }
             }
         }
-
         // final matmul to get the output of the attention
         quantize(&s->xq, s->xb, dim);
         matmul(s->xb2, &s->xq, w->wo + l, dim, dim);
         DEBUG_PRINT(3, "│  ✓ MHA output computaiton finished\n");
-
         // residual connection back into x
         for (int i = 0; i < dim; i++)
         {
@@ -548,7 +710,6 @@ float *forward(Transformer *transformer, int token, int pos)
         quantize(&s->xq, s->xb, dim);
         matmul(s->hb, &s->xq, w->w1 + l, dim, hidden_dim);
         matmul(s->hb2, &s->xq, w->w3 + l, dim, hidden_dim);
-
         // SwiGLU non-linearity
         for (int i = 0; i < hidden_dim; i++)
         {
@@ -559,18 +720,19 @@ float *forward(Transformer *transformer, int token, int pos)
             val *= s->hb2[i];
             s->hb[i] = val;
         }
-
         // final matmul to get the output of the ffn
         quantize(&s->hq, s->hb, hidden_dim);
         matmul(s->xb, &s->hq, w->w2 + l, hidden_dim, dim);
         DEBUG_PRINT(3, "│  ✓ FFN output matmul finished\n");
-
         // residual connection
         for (int i = 0; i < dim; i++)
         {
             x[i] += s->xb[i];
         }
         DEBUG_PRINT(2, "├─ %d layer computation finished\n", l + 1);
+        stop_timer();
+        int64_t runtime = get_timer();
+        printf("layer%d spent cycles: %ld\n", l, runtime);
     }
 
     // final rmsnorm
@@ -607,7 +769,7 @@ int compare_tokens(const void *a, const void *b)
     return strcmp(((TokenIndex *)a)->str, ((TokenIndex *)b)->str);
 }
 
-static TokenIndex sorted_vocab[VOCAB_SIZE] __attribute__((aligned(32 * NR_LANES), section(".l2")));
+static TokenIndex sorted_vocab[VOCAB_SIZE] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 void build_tokenizer(Tokenizer *t)
 {
     t->vocab_size = VOCAB_SIZE;
@@ -700,7 +862,7 @@ int str_lookup(char *str, TokenIndex *sorted_vocab, int vocab_size)
     return res != NULL ? res->id : -1;
 }
 
-char str_buffer[MAX_TOKEN_LENGTH * 2 + 3] __attribute__((aligned(32 * NR_LANES), section(".l2")));
+char str_buffer[MAX_TOKEN_LENGTH * 2 + 3] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 void encode(Tokenizer *t, char *text, int8_t bos, int8_t eos, int *tokens, int *n_tokens)
 {
     // encode the string text (input) into an upper-bound preallocated tokens[] array
@@ -955,7 +1117,7 @@ int sample_topp(float *probabilities, int n, float topp, ProbIndex *probindex, f
     return probindex[last_idx].index; // in case of rounding errors
 }
 
-static ProbIndex sampler_probindex[VOCAB_SIZE] __attribute__((aligned(32 * NR_LANES), section(".l2")));
+static ProbIndex sampler_probindex[VOCAB_SIZE] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 
 void build_sampler(Sampler *sampler, int vocab_size, float temperature, float topp, unsigned long long rng_seed)
 {
@@ -1018,7 +1180,7 @@ int sample(Sampler *sampler, float *logits)
 
 // ----------------------------------------------------------------------------
 // generation loop
-static int prompt_tokens[3] __attribute__((aligned(32 * NR_LANES), section(".l2")));
+static int prompt_tokens[3] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 
 void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, char *prompt, int steps)
 {
@@ -1048,7 +1210,7 @@ void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, 
     int next;                     // will store the next token in the sequence
     int token = prompt_tokens[0]; // kick off with the first token in the prompt
     int pos = 0;                  // position in the sequence
-    start_timer();
+    // start_timer();
     while (pos < steps)
     {
         DEBUG_PRINT(3, "\nBegin forward iteration, pos: %d, token: %d\n", pos, token);
@@ -1113,7 +1275,7 @@ int main()
     // default parameters
     float temperature = 1.0f;        // 0.0 = greedy deterministic. 1.0 = original. don't set higher
     float topp = 0.9f;               // top-p in nucleus sampling. 1.0 = off. 0.9 works well, but slower
-    int steps = 3;                   // number of steps to run for
+    int steps = 2;                   // number of steps to run for
     char *prompt = "";               // prompt string
     unsigned long long rng_seed = 0; // seed rng with time by default
 

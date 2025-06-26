@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include <string.h>
-#include <math.h>
 
 #ifdef __riscv_v_intrinsic
 #include <riscv_vector.h>

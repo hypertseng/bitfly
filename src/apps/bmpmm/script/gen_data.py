@@ -34,7 +34,7 @@ def emit_int8_packed_activations(name, array):
             k = min(480, K - j * 480)
             blocks = []
             for r in range(16):
-                if r + 1 > m:   # pad zero row
+                if r + 1 > m:  # pad zero row
                     row = np.zeros(k, dtype=np.int8)
                 else:
                     row = array[i * 16 + r][j * 480 : j * 480 + k]
@@ -132,6 +132,7 @@ def emit_int8_row_major(name, array, alignment="NR_LANES*4"):  # <<< 新增：�
         line = ", ".join([f"0x{v:08x}" for v in packed[i : i + 8]])
         print(f"    .word {line}")
 
+
 def emit_1bit_packed_weights(name, array, alignment="NR_LANES*4"):
     """
     将每个 8x8 的 1-bit block 打包为 64-bit，然后拆成两个 .word 输出（十六进制格式）。
@@ -170,10 +171,10 @@ def emit_1bit_packed_weights(name, array, alignment="NR_LANES*4"):
 
 # 示例参数
 # M, N = 16, 32
-K = 172
 # M_dim = [1, 16, 32, 64, 128, 256, 512]
-M_dim = [16]
-N = 64 
+M_dim = [50]
+N = 50
+K = 500
 
 for M in M_dim:
     # 创建矩阵
@@ -184,7 +185,7 @@ for M in M_dim:
     # A 每行值从 0 一直增加
 
     # data for debug
-    # A = torch.arange(0, M * K, dtype=torch.int16).reshape(M, K)
+    # A = torch.arange(0, M * K, dtype=torch.int16).reshape(M, K)  # A[0] must in int8 scope
     # B = torch.ones((K, N), dtype=torch.int16)
     # B = torch.zeros((K, N), dtype=torch.int16)
     # 发射数据段
@@ -212,5 +213,27 @@ for M in M_dim:
     #             b_val = int(B[k, n])
     #             acc += a_val if b_val == 1 else -a_val
     #         C[m, n] = acc
+    # print(f"A = {A.tolist()}")
+    # print(f"B = {B.tolist()}")
+    # print(f"C = {C.tolist()}")
+    # x = A[0, :K]
+    # y = B[:K, 0]
+    # # A 的第一行
+    # print(f"x = {x.tolist()}")
+    # # A 的第一行（十六进制显示）
+    # print(f"x_hex = {[f'0x{(v & 0xFF):02x}' for v in x.tolist()]}")
+
+    # # B 的第一列
+    # print(f"y = {y.tolist()}")
+    # # 计算x y同位置相乘再相加，每八个元素一组，一共8个
+    # for i in range(0, K, 8):
+    #     acc = 0
+    #     for j in range(8):
+    #         if i + j < K:
+    #             a_val = int(x[i + j])
+    #             b_val = int(y[i + j])
+    #             acc += a_val if b_val == 1 else -a_val
+    #     print(f"acc[{i // 8}] = {acc}")
+    # z = x @ y
 
     emit_int16_row_major(f"result_torch_len_{M}", C)

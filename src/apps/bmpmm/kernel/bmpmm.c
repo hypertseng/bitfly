@@ -229,9 +229,9 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
                          const unsigned long int M, const unsigned long int K,
                          const unsigned long int N)
 {
-    int tm = ceil(M / 16.0);
-    int tn = ceil(N / 32.0);
-    int tk = ceil(K / 480.0);
+    int tm = (M + 15) / 16;
+    int tn = (N + 31) / 32;
+    int tk = (K + 479) / 480;
     if (tk > 1)
     {
         asm volatile("mpcfg 480\n\t");
@@ -244,7 +244,7 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
             for (int k = 0; k < tk; k++)
             {
                 if (k == tk - 1)
-                    get_config(K % 480);
+                    get_config((8 - (K % 480) % 8) + (K % 480));
                 const int8_t *a_ = a + i * 16 * K + k * 16 * 480;
                 const int8_t *b_ = b + j * 32 * K / 8 + k * 32 * 480 / 8;
                 asm volatile("mple 0(%0), a\n\t" ::"r"(a_) : "memory");
