@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <string.h>
+// #include "runtime.h"
 
 #ifdef __riscv_v_intrinsic
 #include <riscv_vector.h>
@@ -10,7 +11,7 @@
 
 #ifdef SPIKE
 #include <stdio.h>
-#elif defined ARA_LINUX
+#elif defined ARA_LINUX 
 #include <stdio.h>
 #else
 #include "printf.h"

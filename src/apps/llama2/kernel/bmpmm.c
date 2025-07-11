@@ -12,32 +12,32 @@
         asm volatile("mpse 0(%0)\n\t" ::"r"(result) : "memory");                           \
     }
 
-// 实例化你需要的 K 值
-DEFINE_KERNEL(16)
-DEFINE_KERNEL(32)
-DEFINE_KERNEL(64)
-DEFINE_KERNEL(128)
-DEFINE_KERNEL(256)
-DEFINE_KERNEL(480)
+// // 实例化你需要的 K 值
+// DEFINE_KERNEL(16)
+// DEFINE_KERNEL(32)
+// DEFINE_KERNEL(64)
+// DEFINE_KERNEL(128)
+// DEFINE_KERNEL(256)
+// DEFINE_KERNEL(480)
 
-mixed_kernel_func get_mixed_kernel(int K)
-{
-    switch (K)
-    {
-    case 16:
-        return mixed_precision_matmul_16;
-    case 32:
-        return mixed_precision_matmul_32;
-    case 64:
-        return mixed_precision_matmul_64;
-    case 128:
-        return mixed_precision_matmul_128;
-    case 256:
-        return mixed_precision_matmul_256;
-    case 480:
-        return mixed_precision_matmul_480;
-    }
-}
+// mixed_kernel_func get_mixed_kernel(int K)
+// {
+//     switch (K)
+//     {
+//     case 16:
+//         return mixed_precision_matmul_16;
+//     case 32:
+//         return mixed_precision_matmul_32;
+//     case 64:
+//         return mixed_precision_matmul_64;
+//     case 128:
+//         return mixed_precision_matmul_128;
+//     case 256:
+//         return mixed_precision_matmul_256;
+//     case 480:
+//         return mixed_precision_matmul_480;
+//     }
+// }
 
 void static inline get_config(unsigned long int K)
 {
@@ -236,22 +236,62 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
     {
         asm volatile("mpcfg 480\n\t");
     }
+    // if (K > 64){ // reuse activation
+        
+    // } 
+    // else {  // reuse output
+    //     for (int i = 0; i < tm; i++)
+    //     {
+    //         for (int j = 0; j < tn; j++)
+    //         {
+    //             int16_t *c_ = c + i * N * 16 + j * 32 * 16;
+    //             // int64_t runtime = get_timer();
+    //             // printf("bmm1 timer cycles: %ld\n", runtime);
+    //             for (int k = 0; k < tk; k++)
+    //             {
+    //                 if (k == tk - 1)
+    //                     get_config((8 - (K % 480) % 8) + (K % 480));
+    //                 const int8_t *a_ = a + i * 16 * K + k * 16 * 480;
+    //                 const int8_t *b_ = b + j * 32 * K / 8 + k * 32 * 480 / 8;
+    //                 asm volatile("mple 0(%0), a\n\t" ::"r"(a_) : "memory");
+    //                 asm volatile("mple 0(%0), w\n\t" ::"r"(b_) : "memory");
+    //                 asm volatile("mpmm\n\t" ::);
+    //             }
+    //             // runtime = get_timer();
+    //             // printf("bmm2 timer cycles: %ld\n", runtime);
+    //             asm volatile("mpse 0(%0)\n\t" ::"r"(c_) : "memory");
+    //             // runtime = get_timer();
+    //             // printf("bmm3 timer cycles: %ld\n", runtime);
+    //         }
+    //     }
+    // }
     for (int i = 0; i < tm; i++)
     {
         for (int j = 0; j < tn; j++)
         {
             int16_t *c_ = c + i * N * 16 + j * 32 * 16;
+            // int64_t runtime = get_timer();
+            // printf("bmm1 timer cycles: %ld\n", runtime);
             for (int k = 0; k < tk; k++)
             {
-                if (k == tk - 1)
-                    get_config((8 - (K % 480) % 8) + (K % 480));
+                if (k == tk - 1){
+                    if ((K % 480) % 8){
+                        get_config((8 - (K % 480) % 8) + (K % 480));
+                    }else{
+                        get_config(K);
+                    }
+                }
                 const int8_t *a_ = a + i * 16 * K + k * 16 * 480;
                 const int8_t *b_ = b + j * 32 * K / 8 + k * 32 * 480 / 8;
                 asm volatile("mple 0(%0), a\n\t" ::"r"(a_) : "memory");
                 asm volatile("mple 0(%0), w\n\t" ::"r"(b_) : "memory");
                 asm volatile("mpmm\n\t" ::);
             }
+            // runtime = get_timer();
+            // printf("bmm2 timer cycles: %ld\n", runtime);
             asm volatile("mpse 0(%0)\n\t" ::"r"(c_) : "memory");
+            // runtime = get_timer();
+            // printf("bmm3 timer cycles: %ld\n", runtime);
         }
     }
 }
@@ -300,134 +340,6 @@ void vector_int8_matmul(int16_t *restrict c, const int8_t *restrict a, const int
         }
     }
 }
-
-// void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
-//                 const unsigned long int K, const unsigned long int N)
-// {
-//     // Temporary variables
-//     int8_t t0, t1, t2, t3, t4, t5, t6, t7;
-
-//     // Original pointer
-//     const int8_t *a_ = a;
-
-//     // Prefetch one row of matrix B
-//     asm volatile("vle8.v v18, (%0);" ::"r"(b));
-//     b += N;
-
-//     // Prefetch one row of scalar values
-//     asm volatile("lb %[t], (%[a])" : [t] "=r"(t0) : [a] "r"(a));
-//     a += K;
-//     asm volatile("lb %[t], (%[a])" : [t] "=r"(t1) : [a] "r"(a));
-//     a += K;
-//     asm volatile("lb %[t], (%[a])" : [t] "=r"(t2) : [a] "r"(a));
-//     a += K;
-//     asm volatile("lb %[t], (%[a])" : [t] "=r"(t3) : [a] "r"(a));
-//     a += K;
-//     asm volatile("lb %[t], (%[a])" : [t] "=r"(t4) : [a] "r"(a));
-//     a += K;
-//     asm volatile("lb %[t], (%[a])" : [t] "=r"(t5) : [a] "r"(a));
-//     a += K;
-//     asm volatile("lb %[t], (%[a])" : [t] "=r"(t6) : [a] "r"(a));
-//     a += K;
-//     asm volatile("lb %[t], (%[a])" : [t] "=r"(t7) : [a] "r"(a));
-
-//     // Compute the multiplication
-//     unsigned long int k = 0;
-
-//     while (k < K)
-//     {
-//         // Calculate pointer to the matrix A
-//         a = (const int8_t *)a_ + ++k;
-
-//         asm volatile("vle8.v v20, (%0);" ::"r"(b));
-//         b += N;
-
-//         asm volatile("vsext.vf2 v18, v18");
-//         asm volatile("vmacc.vx v0, %0, v18" ::"r"(t0));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t0) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v2, %0, v18" ::"r"(t1));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t1) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v4, %0, v18" ::"r"(t2));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t2) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v6, %0, v18" ::"r"(t3));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t3) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v8, %0, v18" ::"r"(t4));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t4) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v10, %0, v18" ::"r"(t5));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t5) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v12, %0, v18" ::"r"(t6));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t6) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v14, %0, v18" ::"r"(t7));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t7) : [a] "r"(a));
-
-//         // Load one row of B
-//         asm volatile("vle8.v v18, (%0);" ::"r"(b));
-//         b += N;
-
-//         if (k == K - 1)
-//             break;
-
-//         a = (const int8_t *)a_ + ++k;
-//         asm volatile("vsext.vf2 v20, v20");
-//         asm volatile("vmacc.vx v0, %0, v20" ::"r"(t0));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t0) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v2, %0, v20" ::"r"(t1));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t1) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v4, %0, v20" ::"r"(t2));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t2) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v6, %0, v20" ::"r"(t3));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t3) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v8, %0, v20" ::"r"(t4));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t4) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v10, %0, v20" ::"r"(t5));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t5) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v12, %0, v20" ::"r"(t6));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t6) : [a] "r"(a));
-//         a += K;
-//         asm volatile("vmacc.vx v14, %0, v20" ::"r"(t7));
-//         asm volatile("lb %[t], (%[a])" : [t] "=r"(t7) : [a] "r"(a));
-//     }
-
-//     // Last iteration: store results
-//     asm volatile("vsetivli zero, 0, e16, m2, ta, ma");
-//     asm volatile("vsext.vf2 v20, v20");
-//     asm volatile("vmacc.vx v0, %0, v20" ::"r"(t0));
-//     asm volatile("vse16.v v0, (%0);" ::"r"(c));
-//     c += N;
-//     asm volatile("vmacc.vx v2, %0, v20" ::"r"(t1));
-//     asm volatile("vse16.v v2, (%0);" ::"r"(c));
-//     c += N;
-//     asm volatile("vmacc.vx v4, %0, v20" ::"r"(t2));
-//     asm volatile("vse16.v v4, (%0);" ::"r"(c));
-//     c += N;
-//     asm volatile("vmacc.vx v6, %0, v20" ::"r"(t3));
-//     asm volatile("vse16.v v6, (%0);" ::"r"(c));
-//     c += N;
-//     asm volatile("vmacc.vx v8, %0, v20" ::"r"(t4));
-//     asm volatile("vse16.v v8, (%0);" ::"r"(c));
-//     c += N;
-//     asm volatile("vmacc.vx v10, %0, v20" ::"r"(t5));
-//     asm volatile("vse16.v v10, (%0);" ::"r"(c));
-//     c += N;
-//     asm volatile("vmacc.vx v12, %0, v20" ::"r"(t6));
-//     asm volatile("vse16.v v12, (%0);" ::"r"(c));
-//     c += N;
-//     asm volatile("vmacc.vx v14, %0, v20" ::"r"(t7));
-//     asm volatile("vse16.v v14, (%0);" ::"r"(c));
-// }
 
 void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
                 const unsigned long int K, const unsigned long int N)

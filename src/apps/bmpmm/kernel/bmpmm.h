@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include "runtime.h"
 
 #ifdef __riscv_v_intrinsic
 #include <riscv_vector.h>
@@ -21,18 +22,6 @@
 #define MAX_VLEN_BYTES (MAX_VLEN_BITS / 8)
 #define MAX_INT8_VL (MAX_VLEN_BITS / 8)
 #define MAX_INT16_VL (MAX_VLEN_BITS / 16)
-
-// 算子1: 使用自定义指令加速的混合精度矩阵乘法
-#define DECLARE_KERNEL(K) void mixed_precision_matmul_##K(int16_t *result, const int8_t *a, const int8_t *w);
-
-DECLARE_KERNEL(16)
-DECLARE_KERNEL(32)
-DECLARE_KERNEL(64)
-DECLARE_KERNEL(128)
-DECLARE_KERNEL(256)
-DECLARE_KERNEL(480)
-
-typedef void (*mixed_kernel_func)(int16_t *, const int8_t *, const int8_t *);
 
 typedef struct
 {
@@ -54,4 +43,6 @@ void vector_int8_matmul(int16_t *result, const int8_t *a, const int8_t *b, unsig
 void matmul_vec_slice_init();
 void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
                 const unsigned long int K, const unsigned long int N);
+
+void scalar_matmul(int16_t *result, const int8_t *a, const int8_t *b, unsigned long int M, unsigned long int K, unsigned long int N);
 #endif // BMPMM_H

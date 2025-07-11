@@ -170,13 +170,14 @@ def emit_1bit_packed_weights(name, array, alignment="NR_LANES*4"):
 
 
 # 示例参数
-# M, N = 16, 32
+M, N = 16, 32
+K_dim = [8, 16, 32, 64, 128, 256, 480]
 # M_dim = [1, 16, 32, 64, 128, 256, 512]
-M_dim = [50]
-N = 50
-K = 500
+# M_dim = [50]
+# N = 50
+# K = 500
 
-for M in M_dim:
+for K in K_dim:
     # 创建矩阵
     # A = torch.ones((M, K), dtype=torch.int16)
     # B = torch.ones((K, N), dtype=torch.int16)
@@ -189,14 +190,14 @@ for M in M_dim:
     # B = torch.ones((K, N), dtype=torch.int16)
     # B = torch.zeros((K, N), dtype=torch.int16)
     # 发射数据段
-    emit_int8_packed_activations(f"activation_lp_len_{M}", A)
-    emit_1bit_packed_weights(f"weight_lp_len_{M}", B)
-    emit_int16_col_major(f"result_lp_len_{M}", torch.zeros((M, N), dtype=torch.int16))
+    emit_int8_packed_activations(f"activation_lp_len_{K}", A)
+    emit_1bit_packed_weights(f"weight_lp_len_{K}", B)
+    emit_int16_col_major(f"result_lp_len_{K}", torch.zeros((M, N), dtype=torch.int16))
 
-    emit_int8_row_major(f"activation_hp_len_{M}", A)
+    emit_int8_row_major(f"activation_hp_len_{K}", A)
     B = torch.where(B == 0, -1, B)
-    emit_int8_row_major(f"weight_hp_len_{M}", B)
-    emit_int16_row_major(f"result_hp_len_{M}", torch.zeros((M, N), dtype=torch.int16))
+    emit_int8_row_major(f"weight_hp_len_{K}", B)
+    emit_int16_row_major(f"result_hp_len_{K}", torch.zeros((M, N), dtype=torch.int16))
 
     C = torch.zeros((M, N), dtype=torch.int16)
     C = A @ B
@@ -236,4 +237,5 @@ for M in M_dim:
     #     print(f"acc[{i // 8}] = {acc}")
     # z = x @ y
 
-    emit_int16_row_major(f"result_torch_len_{M}", C)
+    emit_int16_row_major(f"result_torch_len_{K}", C)
+

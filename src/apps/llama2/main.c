@@ -3,7 +3,7 @@
 #include "util.h"
 #include "model.h"
 #include "kernel/bmpmm.h"
-#include "tokenizer.h"
+#include "tokenizer_data.h"
 #include <string.h>
 
 #include <riscv_vector.h>
@@ -36,15 +36,28 @@
             printf(fmt, ##__VA_ARGS__); \
     } while (0)
 
-#define MAX_TOKEN_LENGTH 7
-#define VOCAB_SIZE 512
-#define DIM 64
-#define HIDDEN_DIM 172
-#define SEQ_LEN 512
-#define N_HEADS 8
-#define N_LAYERS 5
-#define N_KV_HEADS 4
+// 15m
+// #define MAX_TOKEN_LENGTH 27
+// #define VOCAB_SIZE 32000
+// #define DIM 288
+// #define HIDDEN_DIM 768
+// #define SEQ_LEN 256
+// #define N_HEADS 6
+// #define N_LAYERS 1 // 6
+// #define N_KV_HEADS 6
+// #define KV_DIM DIM *N_KV_HEADS / N_HEADS
+// #define N_PROMPT_TOKENS 16
+// 110m
+#define MAX_TOKEN_LENGTH 27
+#define VOCAB_SIZE 32000
+#define DIM 768
+#define HIDDEN_DIM 2048
+#define SEQ_LEN 1024
+#define N_HEADS 12
+#define N_LAYERS 1 // 12
+#define N_KV_HEADS 12
 #define KV_DIM DIM *N_KV_HEADS / N_HEADS
+#define N_PROMPT_TOKENS 16
 
 // ----------------------------------------------------------------------------
 // Globals
@@ -116,23 +129,24 @@ typedef struct
 
 typedef struct
 {
-    float x[DIM];
-    float xb[DIM];
-    float xb2[DIM];
-    float hb[HIDDEN_DIM];
-    float hb2[HIDDEN_DIM];
-    int8_t xq_q[DIM];
-    float xq_s[DIM];
-    int8_t hq_q[HIDDEN_DIM];
-    float hq_s[HIDDEN_DIM];
-    float q[DIM];
-    float k[KV_DIM];
-    float v[KV_DIM];
+    float x[DIM * N_PROMPT_TOKENS];
+    float xb[DIM * N_PROMPT_TOKENS];
+    float xb2[DIM * N_PROMPT_TOKENS];
+    float hb[HIDDEN_DIM * N_PROMPT_TOKENS];
+    float hb2[HIDDEN_DIM * N_PROMPT_TOKENS];
+    int8_t xq_q[DIM * N_PROMPT_TOKENS];
+    float xq_s[DIM * N_PROMPT_TOKENS];
+    int8_t hq_q[HIDDEN_DIM * N_PROMPT_TOKENS];
+    float hq_s[HIDDEN_DIM * N_PROMPT_TOKENS];
+    float q[DIM * N_PROMPT_TOKENS];
+    float k[KV_DIM * N_PROMPT_TOKENS];
+    float v[KV_DIM * N_PROMPT_TOKENS];
     float att[N_HEADS * SEQ_LEN];
-    float logits[VOCAB_SIZE];
+    float logits[N_PROMPT_TOKENS * VOCAB_SIZE];
     float key_cache[N_LAYERS * SEQ_LEN * KV_DIM];
     float value_cache[N_LAYERS * SEQ_LEN * KV_DIM];
 } StaticRunState;
+StaticRunState run_state_buf __attribute__((aligned(4 * NR_LANES), section(".l2")));
 
 typedef struct
 {
@@ -214,6 +228,96 @@ void quantize(QuantizedTensor *qx, float *x, int n)
     }
 }
 
+// void quantize_batch(QuantizedTensor *qx, float *x, int batch, int dim)
+// {
+//     const int groups_per_row = dim / GS;
+//     const float Q_MAX = 127.0f;
+
+//     for (int b = 0; b < batch; b++)
+//     {
+//         float *x_row = x + b * dim;
+//         int8_t *q_row = qx->q + b * dim;
+//         float  *s_row = qx->s + b * groups_per_row;
+
+//         for (int g = 0; g < groups_per_row; g++)
+//         {
+//             float wmax = 0.0f;
+//             for (int i = 0; i < GS; i++)
+//             {
+//                 float val = fabsf(x_row[g * GS + i]);
+//                 if (val > wmax) wmax = val;
+//             }
+
+//             float scale = wmax / Q_MAX;
+//             s_row[g] = scale;
+
+//             for (int i = 0; i < GS; i++)
+//             {
+//                 float quant = x_row[g * GS + i] / scale;
+//                 int8_t qval = (int8_t)roundf(quant);
+//                 q_row[g * GS + i] = qval;
+//             }
+//         }
+//     }
+// }
+#define TILE_BATCH 4  // 可调，根据平台寄存器与缓存配置
+
+void quantize_batch(QuantizedTensor *qx, float *x, int batch, int dim)
+{
+    const int groups_per_row = dim / GS;
+    const float Q_MAX = 127.0f;
+
+    for (int b_base = 0; b_base < batch; b_base += TILE_BATCH)
+    {
+        int b_lim = (b_base + TILE_BATCH > batch) ? batch : b_base + TILE_BATCH;
+        int this_batch = b_lim - b_base;
+
+        for (int g = 0; g < groups_per_row; g++)
+        {
+            for (int b = 0; b < this_batch; b++)
+            {
+                float *xg = x + (b_base + b) * dim + g * GS;
+                int8_t *qg = qx->q + (b_base + b) * dim + g * GS;
+                float  *sg = qx->s + (b_base + b) * groups_per_row + g;
+
+                float maxval = 0.0f;
+                float scale, inv_scale;
+
+                // ---- Step 1: maxval = max(abs(xg[0..63])) ----
+                __asm__ volatile(
+                    "li         t1, 64\n\t"
+                    "vsetvli    t0, t1, e32, m8, ta, ma\n\t"       // 最大 VLEN（4096 位）设置
+                    "vle32.v    v0, (%[xg])\n\t"
+                    "vfabs.v    v0, v0\n\t"
+                    "vredmax.vs v1, v0, v0\n\t"
+                    "vmv.f.s    %[maxval], v1\n\t"
+                    : [maxval] "=f"(maxval)
+                    : [xg] "r"(xg)
+                    : "v0", "v1", "t0", "t1"
+                );
+
+                scale = maxval / Q_MAX;
+                inv_scale = (scale == 0.0f) ? 0.0f : 1.0f / scale;
+                *sg = scale;
+
+                // ---- Step 2: 量化向量 xg → int8 qg ----
+                __asm__ volatile(
+                    "li         t1, 64\n\t"
+                    "vsetvli    t0, t1, e32, m8, ta, ma\n\t"
+                    "vle32.v    v0, (%[xg])\n\t"                 // 加载 float32
+                    "vfmul.vf   v0, v0, %[inv_scale]\n\t"        // 缩放
+                    "vfcvt.x.f.v v1, v0\n\t"                     // 转换为 int32
+                    "vnclip.wi v2, v1, 0\n\t"                    // 截断为 int8
+                    "vse8.v     v2, (%[qg])\n\t"                 // 存储 int8
+                    :
+                    : [xg] "r"(xg), [qg] "r"(qg), [inv_scale] "f"(inv_scale)
+                    : "v0", "v1", "v2", "t0", "t1", "memory"
+                );
+            }
+        }
+    }
+}
+
 // /* initialize `n` x quantized tensor (with `size_each` elements), starting from memory pointed at *ptr */
 QuantizedTensor *init_quantized_tensors(void **ptr, QuantizedTensor *res, int n, int size_each)
 {
@@ -262,7 +366,8 @@ void memory_map_weights(TransformerWeights *w, void *ptr, uint8_t shared_classif
     // dequantize token embedding table
     // w->token_embedding_table = malloc(p->vocab_size * p->dim * sizeof(float));
     w->token_embedding_table = token_embedding_table_buffer;
-    dequantize(w->q_tokens, w->token_embedding_table, VOCAB_SIZE * DIM);
+
+    // dequantize(w->q_tokens, w->token_embedding_table, VOCAB_SIZE * DIM);
 
     w->wq = init_quantized_tensors(&ptr, wq, N_LAYERS, DIM * (N_HEADS * head_size));
     printf("wq initialized\n");
@@ -325,27 +430,22 @@ void read_checkpoint(Config *config, TransformerWeights *weights, float **data, 
 
 void build_transformer(Transformer *t)
 {
-    printf("┌────────────────────────────────────────┐\n");
-    printf("│  Begin building Transformer model      │\n");
-    printf("└────────────────────────────────────────┘\n");
+    printf("Begin building Transformer model\n");
 
     read_checkpoint(&t->config, &t->weights, &t->data, &t->file_size);
 
-    printf("┌──────────────────────────────┐\n");
-    printf("│ model config:                │\n");
-    printf("├──────────────────────────────┤\n");
-    printf("│ dim: %-16d        │\n", t->config.dim);
-    printf("│ hidden_dim: %-14d   │\n", t->config.hidden_dim);
-    printf("│ n_layers: %-19d│\n", t->config.n_layers);
-    printf("│ n_heads: %-16d    │\n", t->config.n_heads);
-    printf("│ n_kv_heads: %-17d│\n", t->config.n_kv_heads);
-    printf("│ vocab_size: %-17d│\n", t->config.vocab_size);
-    printf("│ seq_len: %-17d   │\n", t->config.seq_len);
-    printf("└──────────────────────────────┘\n");
+    printf("model config:\n");
+    printf("dim: %d\n", t->config.dim);
+    printf("hidden_dim: %d\n", t->config.hidden_dim);
+    printf("n_layers: %d\n", t->config.n_layers);
+    printf("n_heads: %d\n", t->config.n_heads);
+    printf("n_kv_heads: %d\n", t->config.n_kv_heads);
+    printf("vocab_size: %d\n", t->config.vocab_size);
+    printf("seq_len: %d\n", t->config.seq_len);
 
-    StaticRunState run_state_buffer;
-    malloc_run_state(&t->state, &run_state_buffer);
-    printf("✓ RunState mallocated\n");
+    // StaticRunState run_state_buffer;
+    malloc_run_state(&t->state, &run_state_buf);
+    printf("RunState mallocated\n");
 }
 
 // ----------------------------------------------------------------------------
@@ -365,13 +465,9 @@ void rmsnorm(float *o, float *x, float *weight, int size)
     // normalize and scale
     for (int j = 0; j < size; j++)
     {
-        asm volatile("mpcfg 9\n\t");
         float a = weight[j];
-        asm volatile("mpcfg 10\n\t");
         float b = ss * x[j];
-        asm volatile("mpcfg 11\n\t");
         float tmp = a * b;
-        asm volatile("mpcfg 12\n\t");
         o[j] = tmp;
     }
 }
@@ -403,195 +499,452 @@ void softmax(float *x, int size)
 
 void transpose(const int8_t *A, int8_t *B, int M, int N)
 {
-    for (int col = 0; col < N; col++)
+    size_t vl;
+    __asm__ volatile("vsetvli %[vl], %[m], e8, m1, ta, ma"
+                     : [vl] "=&r"(vl)
+                     : [m] "r"(M)
+                     : "memory");
+
+    const int TILE = 4; // 每次处理4列
+
+    for (int col = 0; col < N; col += TILE)
     {
-        int i = 0;
-        while (i < M)
+        int tile = (N - col >= TILE) ? TILE : (N - col);
+        for (int i = 0; i < M; i += vl)
         {
-            size_t vl;
-            const int8_t *src = A + i * N + col;
-            int8_t *dst = B + col * M + i;
-            __asm__ volatile("vsetvli %[vl], %[remain], e8, m1, ta, ma" 
-                : [vl] "=&r"(vl)
-                : [remain] "r"(M - i)
-                : "memory");
-            __asm__ volatile("vlse8.v v0, (%[src]), %[stride]"
-                :
-                : [src] "r"(src),
-                  [stride] "r"((ptrdiff_t)(N))
-                : "memory", "v0");
-            __asm__ volatile("vse8.v v0, (%[dst])"
-                :
-                : [dst] "r"(dst)
-                : "memory", "v0");
-            i += vl;
+            for (int t = 0; t < tile; ++t)
+            {
+                const int8_t *src = A + (i * N) + (col + t);
+                int8_t *dst = B + (col + t) * M + i;
+
+                // 可以展开为 v0~v3
+                __asm__ volatile("vlse8.v v0, (%[src]), %[stride]"
+                                 :
+                                 : [src] "r"(src),
+                                   [stride] "r"((ptrdiff_t)(N))
+                                 : "memory", "v0");
+                __asm__ volatile("vse8.v v0, (%[dst])"
+                                 :
+                                 : [dst] "r"(dst)
+                                 : "memory", "v0");
+            }
         }
     }
 }
 
-#define MAX_PADDED_K 480
-#define MAX_CHUNKS_PER_ROW (MAX_PADDED_K / 8)
-
-// 静态分配缓冲区
-static int8_t padded_row_buf[488]__attribute__((aligned(4 * NR_LANES), section(".l2")));               // 最大需要 488 字节
-static uint64_t block_matrix[16][MAX_CHUNKS_PER_ROW]__attribute__((aligned(4 * NR_LANES), section(".l2")));
 
 /**
- * pack_activation - 打包激活矩阵以适配后续向量化计算
- * @array: 输入矩阵 (M x K)
- * @M: 行数
- * @K: 列数
- * @out: 输出 buffer，用于存储打包后的数据
- * @padded_row_buf: 外部提供的临时 buffer，大小 >= 488 字节
- * @block_matrix: 外部提供的一块 buffer，大小 = 16 * chunks_per_row * sizeof(uint64_t)
+ * 将任意大小的 int8 张量按每行 8 个 int8 打包为 uint64，
+ * 每个块内部反转顺序（a0 在高位），最终按列优先顺序输出为 int8_t 字节数组。
  *
- * 返回值：写入 out 的字节数
+ * 参数:
+ * - array: 输入的 int8_t 数组指针 (M x K)
+ * - M: 行数
+ * - K: 列数
+ * - out: 输出缓冲区，必须足够大以容纳所有打包后的数据
  */
-size_t pack_activation(
-    const int8_t* array,
-    int M,
-    int K,
-    int8_t* out
-) {
-    int tm = (M + 15) / 16;        // number of tiles in m dimension
-    int tk = (K > 480) ? ((K + 479) / 480) : 1;
+void pack_activation(const int8_t *array, int M, int K, int8_t *out) {
+    const int tm = (M + 15) / 16;
+    const int tk = (K > 480) ? ((K + 479) / 480) : 1;
 
-    int8_t* out_start = out;
+    for (int i = 0; i < tm; i++) {
+        const int m_start = i * 16;
+        const int rows = (M - m_start < 16) ? (M - m_start) : 16;
+        
+        for (int j = 0; j < tk; j++) {
+            const int k_start = j * 480;
+            const int k_end = (k_start + 480 <= K) ? k_start + 480 : K;
+            const int chunk_count = (k_end - k_start + 7) / 8;
+            const int offset = (i * tk + j) * 16 * 480;
+            
+            const int8_t *block_in = array + offset;
+            int8_t *out_block = out + offset;
 
-    for (int i = 0; i < tm; ++i) {
-        int m_start = i * 16;
-        int m_valid = M - m_start;
-        int m_tile = (m_valid < 0) ? 0 : ((m_valid > 16) ? 16 : m_valid);
-
-        for (int jj = 0; jj < tk; ++jj) {
-            int k_start = jj * 480;
-            int k_end = k_start + 480;
-            if (k_end > K) k_end = K;
-            int k_tile = k_end - k_start;
-
-            // round up to multiple of 8
-            int padded_k = (k_tile + 7) & (~7);  // 向上对齐到 8 的倍数
-            int chunks_per_row = padded_k / 8;
-
-            // 指向 block_matrix 缓冲区
-            uint64_t (*block)[chunks_per_row] = (uint64_t (*)[chunks_per_row])block_matrix;
-
-            for (int r = 0; r < 16; ++r) {
-                int src_row = m_start + r;
-                const int8_t* src_data;
-
-                if (src_row >= M || r >= m_tile) {
-                    // Zero pad the row
-                    static int8_t zero_pad[488];
-                    src_data = zero_pad;
-                } else {
-                    src_data = &array[src_row * K + k_start];
-                }
-
-                // Copy and pad to padded_row
-                memcpy(padded_row_buf, src_data, k_tile);
-                memset(padded_row_buf + k_tile, 0, padded_k - k_tile);
-
-                // Split into 8-byte chunks, reverse and pack
-                for (int c = 0; c < chunks_per_row; ++c) {
-                    const int8_t* chunk = padded_row_buf + c * 8;
-                    uint64_t packed = 0;
-
-                    for (int b = 0; b < 8; ++b) {
-                        packed <<= 8;
-                        packed |= (uint8_t)(chunk[7 - b]);  // Reverse order
-                    }
-
-                    block[r][c] = packed;
-                }
-            }
-
-            // Now transpose block_matrix (16 x chunks_per_row) -> (chunks_per_row x 16)
-            for (int c = 0; c < chunks_per_row; ++c) {
-                for (int r = 0; r < 16; ++r) {
-                    uint64_t val = block[r][c];
-                    memcpy(out, &val, 8);
-                    out += 8;
-                }
-            }
+            size_t vl;  // 声明vl变量
+            asm volatile (
+                "li t0, 0\n"                 // 初始化列计数器 (c)
+                "1:\n"                       // 外层循环开始 (按列)
+                "li t1, 0\n"                 // 初始化行计数器 (r)
+                "2:\n"                       // 内层循环开始 (按行)
+                
+                // 设置向量长度
+                "vsetvli %0, %1, e8, m1, ta, ma\n" 
+                
+                // 计算输入地址: block_in + c * 128 + r * 8
+                "slli t2, t0, 7\n"           // t2 = c * 128
+                "slli t3, t1, 3\n"          // t3 = r * 8
+                "add t4, %2, t2\n"          // t4 = block_in + c * 128
+                "add t4, t4, t3\n"         // t4 += r * 8
+                
+                // 加载向量
+                "vle8.v v0, (t4)\n"         // 从输入地址加载向量
+                
+                // 计算输出地址: out_block + r * chunk_count * 8 + c * 8
+                "mul t5, t1, %4\n"         // t5 = r * chunk_count
+                "slli t5, t5, 3\n"          // t5 *= 8
+                "slli t6, t0, 3\n"          // t6 = c * 8
+                "add t5, t5, t6\n"          // t5 += c * 8
+                "add t5, %3, t5\n"          // t5 = out_block + offset
+                
+                // 存储向量
+                "vse8.v v0, (t5)\n"         // 存储向量到输出地址
+                
+                // 更新行计数器
+                "add t1, t1, %0\n"         // r += vl
+                "blt t1, %1, 2b\n"         // 如果 r < rows，继续内层循环
+                
+                // 更新列计数器
+                "addi t0, t0, 1\n"         // c += 1
+                "blt t0, %4, 1b\n"          // 如果 c < chunk_count，继续外层循环
+                
+                : "=&r" (vl)                // 输出操作数，绑定到vl变量
+                : "r" (rows),               // 输入操作数1: rows
+                  "r" (block_in),           // 输入操作数2: block_in
+                  "r" (out_block),          // 输入操作数3: out_block
+                  "r" (chunk_count)         // 输入操作数4: chunk_count
+                : "t0", "t1", "t2", "t3", "t4", "t5", "t6", "v0", "memory"
+            );
         }
     }
-
-    return out - out_start;
 }
-static int8_t transposed_buffer[512*172] __attribute__((aligned(4 * NR_LANES), section(".l2")));
-static int8_t packed_activation[512] __attribute__((aligned(4 * NR_LANES), section(".l2")));
-static int16_t matmul_out_buffer[512] __attribute__((aligned(4 * NR_LANES), section(".l2")));
-void matmul(float *xout, QuantizedTensor *x, QuantizedTensor *w, int n, int d)
+
+#define BLOCK_H 16
+#define BLOCK_W 32
+#define SUBTILE_W 4
+#define SUBTILES_PER_ROW (BLOCK_W / SUBTILE_W)  // 8
+#define SUBTILES_PER_COL (BLOCK_H)              // 16
+#define SUBTILES_PER_BLOCK (SUBTILES_PER_ROW * SUBTILES_PER_COL)  // 128
+
+void unpack_output(
+    const int16_t *input,
+    int16_t *output,
+    int H, int W
+) {
+    const int blocks_per_row = (W + BLOCK_W - 1) / BLOCK_W;
+    const int blocks_per_col = (H + BLOCK_H - 1) / BLOCK_H;
+
+    for (int by = 0; by < blocks_per_col; ++by) {
+        for (int bx = 0; bx < blocks_per_row; ++bx) {
+            const int64_t *block_in = (const int64_t *)(input + (by * blocks_per_row + bx) * BLOCK_H * BLOCK_W);
+            int64_t *out_block_base = (int64_t *)(output + by * BLOCK_H * W + bx * BLOCK_W);
+            // start_timer();
+            for (int c = 0; c < SUBTILES_PER_COL; c += 8) {
+                // 一次处理8列 × 8行 → tile = 8x8
+                __asm__ volatile (
+                    "vsetvli t0, %[vl], e64, m1, ta, ma\n"
+                    // 加载 8 列
+                    "vle64.v v0,  (%[in0])\n"
+                    "vle64.v v1,  (%[in1])\n"
+                    "vle64.v v2,  (%[in2])\n"
+                    "vle64.v v3,  (%[in3])\n"
+                    "vle64.v v4,  (%[in4])\n"
+                    "vle64.v v5,  (%[in5])\n"
+                    "vle64.v v6,  (%[in6])\n"
+                    "vle64.v v7,  (%[in7])\n"
+
+                    // 可选：进行寄存器级的shuffle转置（跳过，直接按列写回）
+                    // 写回每一行（共8行，每行含1个元素来自 v0~v7）
+                    // out[r * 16 + c + i] = v[i][r]
+
+                    "vse64.v v0, (%[out0])\n"
+                    "vse64.v v1, (%[out1])\n"
+                    "vse64.v v2, (%[out2])\n"
+                    "vse64.v v3, (%[out3])\n"
+                    "vse64.v v4, (%[out4])\n"
+                    "vse64.v v5, (%[out5])\n"
+                    "vse64.v v6, (%[out6])\n"
+                    "vse64.v v7, (%[out7])\n"
+
+                    :
+                    : [vl] "r"(8),
+                      [in0] "r"(block_in + (c + 0) * SUBTILES_PER_ROW),
+                      [in1] "r"(block_in + (c + 1) * SUBTILES_PER_ROW),
+                      [in2] "r"(block_in + (c + 2) * SUBTILES_PER_ROW),
+                      [in3] "r"(block_in + (c + 3) * SUBTILES_PER_ROW),
+                      [in4] "r"(block_in + (c + 4) * SUBTILES_PER_ROW),
+                      [in5] "r"(block_in + (c + 5) * SUBTILES_PER_ROW),
+                      [in6] "r"(block_in + (c + 6) * SUBTILES_PER_ROW),
+                      [in7] "r"(block_in + (c + 7) * SUBTILES_PER_ROW),
+
+                      [out0] "r"(out_block_base + 0 * SUBTILES_PER_COL + c),
+                      [out1] "r"(out_block_base + 1 * SUBTILES_PER_COL + c),
+                      [out2] "r"(out_block_base + 2 * SUBTILES_PER_COL + c),
+                      [out3] "r"(out_block_base + 3 * SUBTILES_PER_COL + c),
+                      [out4] "r"(out_block_base + 4 * SUBTILES_PER_COL + c),
+                      [out5] "r"(out_block_base + 5 * SUBTILES_PER_COL + c),
+                      [out6] "r"(out_block_base + 6 * SUBTILES_PER_COL + c),
+                      [out7] "r"(out_block_base + 7 * SUBTILES_PER_COL + c)
+                    : "t0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "memory"
+                );
+            }
+            // stop_timer();
+            // int64_t runtime = get_timer();
+            // printf("unpack timer cycles: %ld\n", runtime);
+        }
+    }
+}
+
+static int8_t transposed_buffer[VOCAB_SIZE * HIDDEN_DIM] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static int8_t packed_activation[7680] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static int16_t matmul_out_buffer[VOCAB_SIZE * N_PROMPT_TOKENS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static int16_t unpacked_out[VOCAB_SIZE  * N_PROMPT_TOKENS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+void matmul_batch(float *xout, QuantizedTensor *x, QuantizedTensor *w, int seq_len, int n, int d)
 {
     // W (d,n) @ x (n,) -> xout (d,)
     // by far the most amount of time is spent inside this little function
     // inputs to this function are both quantized
     // printf("matmul shape: W(%d, %d) @ x(%d,) -> xout(%d,)\n", d, n, n, d);
-    int8_t *transposed_weight = transposed_buffer;
-    transpose(w->q, transposed_weight, n, d);
-    pack_activation(x->q, 1, n, packed_activation);
-    binary_mixed_matmul(matmul_out_buffer, packed_activation, transposed_weight, 1, n, d);
-    int i = 0;
-    while (i < d) {
-        size_t vl;
-        __asm__ volatile (
-            // 设置向量长度
-            "vsetvli    %[vl], %[remain], e16, m1, ta, ma          \n"
-            // 加载 int16 向量到 v0
-            "vle16.v    v0, (%[in])                        \n"
-            // 扩展 int16 到 int32（有符号扩展）
-            "vsext.vf2  v1, v0                             \n"
-            // 转换 int32 -> float32
-            "vfcvt.f.x.v v2, v1                            \n"
-            // 标量广播 float -> 向量
-            "vfmv.v.f   v3, %[scale]                       \n"
-            // 浮点乘法
-            "vfmul.vv   v4, v2, v3                         \n"
-            // 存储 float32 结果
-            "vse32.v    v4, (%[out])                       \n"
+    // int8_t *transposed_weight = transposed_buffer;
+    // start_timer();
+    // transpose(w->q, transposed_weight, n, d);
+    // stop_timer();
+    // int64_t runtime = get_timer();
+    // printf("mm1 timer cycles: %ld\n", runtime);
 
-            : [vl] "=&r" (vl)  // 输出：向量长度寄存器
-            : [in] "r" (matmul_out_buffer + i),       // 输入矩阵指针
-              [out] "r" (xout + i),     // 输出指针
-              [scale] "f" (x->s[0]+w->s[0]),      // 标量因子
-              [remain] "r" (d - i)   // 剩余处理元素
-            : "v0", "v1", "v2", "v3", "v4", "memory"
-        );
-        i += vl;
+    // start_timer();
+    // pack_activation(x->q, seq_len, n, packed_activation);
+    // stop_timer();
+    // int64_t runtime = get_timer();
+    // printf("mm2 timer cycles: %ld\n", runtime);
+    // start_timer();
+    // binary_mixed_matmul(matmul_out_buffer, packed_activation, w->q, seq_len, n, d);
+    // stop_timer();
+    // runtime = get_timer();
+    // printf("mm3 timer cycles: %ld\n", runtime);
+    // start_timer();
+    // unpack_output(matmul_out_buffer, unpacked_out, seq_len, d);
+    // stop_timer();
+    // runtime = get_timer();
+    // printf("mm4 timer cycles: %ld\n", runtime);
+
+    // start_timer();
+    vector_int8_matmul(unpacked_out, x->q, transposed_buffer, seq_len, n, d);
+    // stop_timer();
+    // int64_t runtime = get_timer();
+    // printf("mm4 timer cycles: %ld\n", runtime);
+
+    // start_timer();
+    for (int l = 0; l < seq_len; l++) {
+        int i = 0;
+        int16_t* in_row = unpacked_out + l * d;
+        float* out_row = xout + l * d;
+    
+        // 将 scale 提前加载到浮点寄存器中
+        float scale_val = x->s[0] + w->s[0];
+        register float fscale asm("fa0") = scale_val;  // 显式分配 fa0 寄存器
+    
+        while (i < d) {
+            size_t vl;
+            __asm__ volatile(
+                "vsetvli    %[vl], %[remain], e16, m1, ta, ma\n"
+                "vle16.v    v0, (%[in])                   \n"  // 加载 int16
+                "vsext.vf2  v1, v0                        \n"  // 扩展到 int32
+                "vfcvt.f.x.v v2, v1                       \n"  // 转换为 float
+                "vfmv.v.f   v3, %[scale]                  \n"  // 广播 scale
+                "vfmul.vv   v4, v2, v3                    \n"  // scale × value
+                "vse32.v    v4, (%[out])                  \n"  // 存储结果
+    
+                : [vl] "=&r"(vl)
+                : [in] "r"(in_row + i),
+                  [out] "r"(out_row + i),
+                  [scale] "f"(fscale),      // 使用固定寄存器
+                  [remain] "r"(d - i)
+                : "v0", "v1", "v2", "v3", "v4", "memory"
+            );
+            i += vl;
+        }
     }
+    // stop_timer();
+    // runtime = get_timer();
+    // printf("mm5 timer cycles: %ld\n", runtime);
     // printf("%d\n", i);
-    // vector_int8_matmul(xout, x->q, w->q, 1, n, d);
+}
+void matmul(float* xout, QuantizedTensor *x, QuantizedTensor *w, int n, int d) {
+    // W (d,n) @ x (n,) -> xout (d,)
+    // by far the most amount of time is spent inside this little function
+    // inputs to this function are both quantized
+    // printf matmul shape
+    // printf("matmul shape: W(%d, %d) @ x(%d,) -> xout(%d,)\n", d, n, n, d);
+
+    int i;
+    #pragma omp parallel for private(i)
+    for (i = 0; i < d; i++) {
+
+        float val = 0.0f;
+        int32_t ival = 0;
+        int in = i * n;
+
+        // do the matmul in groups of GS
+        int j;
+        for (j = 0; j <= n - GS; j += GS) {
+            for (int k = 0; k < GS; k++) {
+                ival += ((int32_t) x->q[j + k]) * ((int32_t) w->q[in + j + k]);
+            }
+            val += ((float) ival) * w->s[(in + j) / GS] * x->s[j / GS];
+            ival = 0;
+        }
+
+        xout[i] = val;
+    }
 }
 
-// void matmul(float* xout, QuantizedTensor *x, QuantizedTensor *w, int n, int d) {
-//     // W (d,n) @ x (n,) -> xout (d,)
-//     // by far the most amount of time is spent inside this little function
-//     // inputs to this function are both quantized
-//     // printf matmul shape
-//     // printf("matmul shape: W(%d, %d) @ x(%d,) -> xout(%d,)\n", d, n, n, d);
+float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_prompt_tokens)
+{
+    Config *p = &transformer->config;
+    TransformerWeights *w = &transformer->weights;
+    RunState *s = &transformer->state;
 
-//     int i;
-//     #pragma omp parallel for private(i)
-//     for (i = 0; i < d; i++) {
+    int dim = DIM;
+    int kv_dim = (DIM * N_KV_HEADS) / N_HEADS;
+    int kv_mul = N_HEADS / N_KV_HEADS;
+    int hidden_dim = HIDDEN_DIM;
+    int head_size = dim / N_HEADS;
 
-//         float val = 0.0f;
-//         int32_t ival = 0;
-//         int in = i * n;
+    float *x = s->x; // shape: [num_prompt_tokens, dim]
 
-//         // do the matmul in groups of GS
-//         int j;
-//         for (j = 0; j <= n - GS; j += GS) {
-//             for (int k = 0; k < GS; k++) {
-//                 ival += ((int32_t) x->q[j + k]) * ((int32_t) w->q[in + j + k]);
-//             }
-//             val += ((float) ival) * w->s[(in + j) / GS] * x->s[j / GS];
-//             ival = 0;
-//         }
+    // ─────────────────────────────
+    // 1. Token embedding lookup
+    for (int i = 0; i < num_prompt_tokens; i++) {
+        int token = prompt_tokens[i];
+        memcpy(x + i * dim, w->token_embedding_table + token * dim, dim * sizeof(float));
+    }
 
-//         xout[i] = val;
-//     }
-// }
+    // ─────────────────────────────
+    // 2. Layer-wise forward
+    for (int l = 0; l < N_LAYERS; l++) {
+        printf("begin layer%d prefill forward\n", l);
+        // ── 2.1 RMSNorm
+        for (int i = 0; i < num_prompt_tokens; i++) {
+            rmsnorm(s->xb + i * dim, x + i * dim, w->rms_att_weight + l * dim, dim);
+        }
+        stop_timer();
+        int64_t runtime = get_timer();
+        printf("layer%d prefill forward RMSNorm timer cycles: %ld\n", l, runtime);
+        start_timer();
+        // ── 2.2 Q/K/V projection
+        quantize_batch(&s->xq, s->xb, num_prompt_tokens, dim); // [T, dim] → quantized
+        matmul_batch(s->q, &s->xq, w->wq + l, num_prompt_tokens, dim, dim);     // [T, dim]
+        matmul_batch(s->k, &s->xq, w->wk + l, num_prompt_tokens, dim, kv_dim);  // [T, kv_dim]
+        matmul_batch(s->v, &s->xq, w->wv + l, num_prompt_tokens, dim, kv_dim);  // [T, kv_dim]
+        stop_timer();
+        runtime = get_timer();
+        printf("layer%d prefill forward QKV timer cycles: %ld\n", l, runtime);
+        start_timer();
+        // ── 2.3 Apply RoPE positional encoding to Q & K
+        for (int t = 0; t < num_prompt_tokens; t++) {
+            float *q_t = s->q + t * dim;
+            float *k_t = s->k + t * kv_dim;
+
+            for (int i = 0; i < dim; i += 2) {
+                int head_dim = i % head_size;
+                float freq = 1.0f / powf(10000.0f, head_dim / (float)head_size);
+                float val = t * freq;
+                float c = cosf(val), s_val = sinf(val);
+
+                if (i + 1 >= dim) break;
+                // rotate Q
+                float v0 = q_t[i], v1 = q_t[i + 1];
+                q_t[i]     = v0 * c - v1 * s_val;
+                q_t[i + 1] = v0 * s_val + v1 * c;
+
+                // rotate K (if within kv_dim)
+                if (i < kv_dim) {
+                    float k0 = k_t[i], k1 = k_t[i + 1];
+                    k_t[i]     = k0 * c - k1 * s_val;
+                    k_t[i + 1] = k0 * s_val + k1 * c;
+                }
+            }
+        }
+        stop_timer();
+        runtime = get_timer();
+        printf("layer%d prefill forward RoPE timer cycles: %ld\n", l, runtime);
+        start_timer();
+        // ── 2.4 Save K/V to KV cache
+        float *kcache = s->key_cache + l * p->seq_len * kv_dim;
+        float *vcache = s->value_cache + l * p->seq_len * kv_dim;
+        memcpy(kcache, s->k, num_prompt_tokens * kv_dim * sizeof(float));
+        memcpy(vcache, s->v, num_prompt_tokens * kv_dim * sizeof(float));
+        stop_timer();
+        runtime = get_timer();
+        printf("layer%d prefill forward KV cache timer cycles: %ld\n", l, runtime);
+        start_timer();
+        // ── 2.5 Multi-head attention
+        for (int t = 0; t < num_prompt_tokens; t++) {
+            float *q_t = s->q + t * dim;
+            float *xb_t = s->xb + t * dim;
+            memset(xb_t, 0, dim * sizeof(float));
+
+            for (int h = 0; h < N_HEADS; h++) {
+                float *q = q_t + h * head_size;
+                float *att = s->att + h * p->seq_len;
+
+                // Attention scores over [0, t]
+                for (int k = 0; k <= t; k++) {
+                    float *kvec = s->key_cache + l * p->seq_len * kv_dim + k * kv_dim + (h / kv_mul) * head_size;
+                    float score = 0.0f;
+                    for (int i = 0; i < head_size; i++) score += q[i] * kvec[i];
+                    att[k] = score / sqrtf(head_size);
+                }
+
+                softmax(att, t + 1);
+
+                // Attention-weighted sum over values
+                float *out = xb_t + h * head_size;
+                for (int k = 0; k <= t; k++) {
+                    float *vvec = s->value_cache + l * p->seq_len * kv_dim + k * kv_dim + (h / kv_mul) * head_size;
+                    float a = att[k];
+                    for (int i = 0; i < head_size; i++) {
+                        out[i] += a * vvec[i];
+                    }
+                }
+            }
+        }
+        // ── 2.6 Project MHA output
+        quantize_batch(&s->xq, s->xb, num_prompt_tokens, dim);
+        matmul_batch(s->xb2, &s->xq, w->wo + l, num_prompt_tokens, dim, dim);
+        for (int i = 0; i < num_prompt_tokens * dim; i++) {
+            x[i] += s->xb2[i];
+        }
+        stop_timer();
+        runtime = get_timer();
+        printf("layer%d prefill forward attention timer cycles: %ld\n", l, runtime);
+        start_timer();
+        // ── 2.7 FFN path
+        for (int i = 0; i < num_prompt_tokens; i++) {
+            rmsnorm(s->xb + i * dim, x + i * dim, w->rms_ffn_weight + l * dim, dim);
+        }
+
+        quantize_batch(&s->xq, s->xb, num_prompt_tokens, dim);
+        matmul_batch(s->hb, &s->xq, w->w1 + l, num_prompt_tokens, dim, hidden_dim);
+        matmul_batch(s->hb2, &s->xq, w->w3 + l, num_prompt_tokens, dim, hidden_dim);
+
+        for (int i = 0; i < num_prompt_tokens * hidden_dim; i++) {
+            float val = s->hb[i];
+            val *= 1.0f / (1.0f + expf(-val)); // SiLU
+            val *= s->hb2[i];                 // SwiGLU
+            s->hb[i] = val;
+        }
+
+        quantize_batch(&s->hq, s->hb, num_prompt_tokens, hidden_dim);
+        matmul_batch(s->xb, &s->hq, w->w2 + l, num_prompt_tokens, hidden_dim, dim);
+        for (int i = 0; i < num_prompt_tokens * dim; i++) {
+            x[i] += s->xb[i];
+        }
+        stop_timer();
+        runtime = get_timer();
+        printf("layer%d prefill forward FFN timer cycles: %ld\n", l, runtime);
+    }
+
+    // ─────────────────────────────
+    // 3. Final RMSNorm and logits projection
+    for (int i = 0; i < num_prompt_tokens; i++) {
+        rmsnorm(x + i * dim, x + i * dim, w->rms_final_weight, dim);
+    }
+    quantize_batch(&s->xq, x, num_prompt_tokens, dim);
+    matmul_batch(s->logits, &s->xq, w->wcls, num_prompt_tokens, dim, VOCAB_SIZE);
+    printf("4\n");
+    return s->logits + (num_prompt_tokens - 1) * VOCAB_SIZE; // return final token logits
+}
 
 float *forward(Transformer *transformer, int token, int pos)
 {
@@ -613,17 +966,24 @@ float *forward(Transformer *transformer, int token, int pos)
     // forward all the layers
     for (int l = 0; l < N_LAYERS; l++)
     {
-        start_timer();
+        printf("begin layer%d decode forward\n", l);
+        // start_timer();
+        // int64_t runtime = get_timer();
+        // printf("layer%d cycle reset: %ld\n", l, runtime);
         DEBUG_PRINT(2, "├─ %d layer computation begin\n", l + 1);
 
         // attention rmsnorm
         rmsnorm(s->xb, x, w->rms_att_weight + l * dim, dim);
         // qkv matmuls
+        // runtime = get_timer();
+        // printf("layer%d 1timer cycles: %ld\n", l, runtime);
         quantize(&s->xq, s->xb, dim);
-        matmul(s->q, &s->xq, w->wq + l, dim, dim);
-        matmul(s->k, &s->xq, w->wk + l, dim, kv_dim);
-        matmul(s->v, &s->xq, w->wv + l, dim, kv_dim);
+        matmul_batch(s->q, &s->xq, w->wq + l, 1, dim, dim);
+        matmul_batch(s->k, &s->xq, w->wk + l, 1, dim, kv_dim);
+        matmul_batch(s->v, &s->xq, w->wv + l, 1, dim, kv_dim);
         DEBUG_PRINT(3, "│  ✓ Q/K/V computation finished\n");
+        // runtime = get_timer();
+        // printf("layer%d 2timer cycles: %ld\n", l, runtime);
         // RoPE relative positional encoding: complex-valued rotate q and k in each head
         for (int i = 0; i < dim; i += 2)
         {
@@ -673,7 +1033,6 @@ float *forward(Transformer *transformer, int token, int pos)
                 // save the score to the attention buffer
                 att[t] = score;
             }
-
             // softmax the scores to get attention weights, from 0..pos inclusively
             softmax(att, pos + 1);
 
@@ -693,9 +1052,11 @@ float *forward(Transformer *transformer, int token, int pos)
                 }
             }
         }
+        // runtime = get_timer();
+        // printf("layer%d 5timer cycles: %ld\n", l, runtime);
         // final matmul to get the output of the attention
         quantize(&s->xq, s->xb, dim);
-        matmul(s->xb2, &s->xq, w->wo + l, dim, dim);
+        matmul_batch(s->xb2, &s->xq, w->wo + l, 1, dim, dim);
         DEBUG_PRINT(3, "│  ✓ MHA output computaiton finished\n");
         // residual connection back into x
         for (int i = 0; i < dim; i++)
@@ -708,8 +1069,8 @@ float *forward(Transformer *transformer, int token, int pos)
         // Now for FFN in PyTorch we have: self.w2(F.silu(self.w1(x)) * self.w3(x))
         // first calculate self.w1(x) and self.w3(x)
         quantize(&s->xq, s->xb, dim);
-        matmul(s->hb, &s->xq, w->w1 + l, dim, hidden_dim);
-        matmul(s->hb2, &s->xq, w->w3 + l, dim, hidden_dim);
+        matmul_batch(s->hb, &s->xq, w->w1 + l, 1, dim, hidden_dim);
+        matmul_batch(s->hb2, &s->xq, w->w3 + l, 1, dim, hidden_dim);
         // SwiGLU non-linearity
         for (int i = 0; i < hidden_dim; i++)
         {
@@ -722,7 +1083,7 @@ float *forward(Transformer *transformer, int token, int pos)
         }
         // final matmul to get the output of the ffn
         quantize(&s->hq, s->hb, hidden_dim);
-        matmul(s->xb, &s->hq, w->w2 + l, hidden_dim, dim);
+        matmul_batch(s->xb, &s->hq, w->w2 + l, 1, hidden_dim, dim);
         DEBUG_PRINT(3, "│  ✓ FFN output matmul finished\n");
         // residual connection
         for (int i = 0; i < dim; i++)
@@ -730,9 +1091,12 @@ float *forward(Transformer *transformer, int token, int pos)
             x[i] += s->xb[i];
         }
         DEBUG_PRINT(2, "├─ %d layer computation finished\n", l + 1);
-        stop_timer();
-        int64_t runtime = get_timer();
-        printf("layer%d spent cycles: %ld\n", l, runtime);
+        // printf("layer%d cycles: %ld\n", l, get_cycle_count());
+        // runtime = get_timer();
+        // printf("layer%d timer cycles: %ld\n", l, runtime);
+        // stop_timer();
+        // runtime = get_timer();
+        // printf("layer%d spent cycles: %ld\n", l, runtime);
     }
 
     // final rmsnorm
@@ -740,7 +1104,7 @@ float *forward(Transformer *transformer, int token, int pos)
 
     // classifier into logits
     quantize(&s->xq, x, dim);
-    matmul(s->logits, &s->xq, w->wcls, dim, VOCAB_SIZE);
+    matmul_batch(s->logits, &s->xq, w->wcls, 1, dim, VOCAB_SIZE);
     DEBUG_PRINT(2, "└── forward pass finished\n");
     return s->logits;
 }
@@ -756,7 +1120,7 @@ typedef struct
 
 typedef struct
 {
-    char (*vocab)[MAX_TOKEN_LENGTH];
+    char** vocab;
     float *vocab_scores;
     TokenIndex *sorted_vocab;
     int vocab_size;
@@ -769,17 +1133,34 @@ int compare_tokens(const void *a, const void *b)
     return strcmp(((TokenIndex *)a)->str, ((TokenIndex *)b)->str);
 }
 
-static TokenIndex sorted_vocab[VOCAB_SIZE] __attribute__((aligned(4 * NR_LANES), section(".l2")));
-void build_tokenizer(Tokenizer *t)
-{
+static TokenIndex sorted_vocab[VOCAB_SIZE];
+static char* vocab_ptrs[VOCAB_SIZE];
+void build_tokenizer(Tokenizer* t) {
     t->vocab_size = VOCAB_SIZE;
-    t->vocab = tokenizer_vocab;
-    t->max_token_length = MAX_TOKEN_LENGTH;
-    t->vocab_scores = tokenizer_vocab_scores;
-    t->sorted_vocab = sorted_vocab;
 
-    for (int i = 0; i < 256; i++)
-    {
+    // 遍历 vocab_data 构造 vocab[i]
+    for (int i = 0; i < VOCAB_SIZE; i++) {
+        int offset = vocab_offsets[i];
+        int len = vocab_lengths[i];
+
+        // vocab_ptrs[i] 指向 vocab_data 中 token 的起始位置
+        vocab_ptrs[i] = (char*)&vocab_data[offset];
+
+        // 确保 null-terminated（裸机运行时安全）
+        if (vocab_data[offset + len] != '\0') {
+            // vocab_data 在生成时就已经添加了 '\0'，这里是保险措施
+            // 可以跳过或触发断言
+        }
+    }
+
+    // 设置结构体字段
+    t->vocab = vocab_ptrs;
+    t->vocab_scores = (float*)vocab_scores;
+    t->max_token_length = max_token_length;
+    t->sorted_vocab = NULL;
+
+    // 初始化 byte fallback
+    for (int i = 0; i < 256; i++) {
         t->byte_pieces[i * 2] = (unsigned char)i;
         t->byte_pieces[i * 2 + 1] = '\0';
     }
@@ -877,6 +1258,7 @@ void encode(Tokenizer *t, char *text, int8_t bos, int8_t eos, int *tokens, int *
     if (t->sorted_vocab == NULL)
     {
         // t->sorted_vocab = malloc(t->vocab_size * sizeof(TokenIndex));
+        t->sorted_vocab = sorted_vocab;
 
         for (int i = 0; i < t->vocab_size; i++)
         {
@@ -1003,6 +1385,15 @@ void encode(Tokenizer *t, char *text, int8_t bos, int8_t eos, int *tokens, int *
     // add optional EOS (=2) token, if desired
     if (eos)
         tokens[(*n_tokens)++] = 2;
+
+    // printf("text: \"%s\"\n", text);
+    // printf("prompt_length: %ld\n", strlen(text));
+    // printf("bos: %d, eos: %d\n", bos, eos);
+    // printf("tokens: ");
+    // for (int i = 0; i < *n_tokens; i++) {
+    //     printf("%d(%s) ", tokens[i], t->vocab[tokens[i]]);
+    // }
+    // printf("\nnum_tokens: %d\n", *n_tokens);
 }
 
 // ----------------------------------------------------------------------------
@@ -1180,16 +1571,13 @@ int sample(Sampler *sampler, float *logits)
 
 // ----------------------------------------------------------------------------
 // generation loop
-static int prompt_tokens[3] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static int prompt_tokens[512] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 
 void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, char *prompt, int steps)
 {
-    printf("\n┌──────────────────────────────────┐\n");
-    printf("│  Begin Generation                │\n");
-    printf("│──────────────────────────────────│\n");
-    printf("│ prompt: \"%12s\"           │\n", prompt ? prompt : "(null)");
-    printf("│ steps: %-16d          │\n", steps);
-    printf("└──────────────────────────────────┘\n");
+    printf("Begin Generation\n");
+    printf("prompt: \"%s\"\n", prompt ? prompt : "(null)");
+    printf("steps: %d\n", steps);
     char *empty_prompt = "";
     if (prompt == NULL)
     {
@@ -1199,61 +1587,82 @@ void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, 
     // encode the (string) prompt into tokens sequence
     int num_prompt_tokens = 0;
     // int *prompt_tokens = (int *)malloc((strlen(prompt) + 3) * sizeof(int)); // +3 for '\0', ?BOS, ?EOS
-    encode(tokenizer, prompt, 1, 0, prompt_tokens, &num_prompt_tokens);
+    // encode(tokenizer, prompt, 1, 0, prompt_tokens, &num_prompt_tokens);
+    // fix num_prompt_tokens for test
+    num_prompt_tokens = 16;
     DEBUG_PRINT(3, "prompt: %s, num_prompt_tokens: %d\n", prompt, num_prompt_tokens);
     if (num_prompt_tokens < 1)
     {
         DEBUG_PRINT(3, "something is wrong, expected at least 1 prompt token\n");
     }
+    printf("num_prompt_tokens: %d\n", num_prompt_tokens);
+    start_timer();
+    int64_t start_time = get_cycle_count();
+    // prefill：一次性 forward 整个 prompt
+    forward_prefill(transformer, prompt_tokens, num_prompt_tokens);
+    printf("prefill finished\n");
+    // 设置初始 token 和 pos
+    int token = prompt_tokens[num_prompt_tokens - 1];
+    int pos = num_prompt_tokens;
+    // printf("pos:%d\n", pos);
 
-    // start the main loop
-    int next;                     // will store the next token in the sequence
-    int token = prompt_tokens[0]; // kick off with the first token in the prompt
-    int pos = 0;                  // position in the sequence
-    // start_timer();
+    // decode 阶段：逐步 forward + sample
     while (pos < steps)
     {
-        DEBUG_PRINT(3, "\nBegin forward iteration, pos: %d, token: %d\n", pos, token);
-        // forward the transformer to get logits for the next token
         float *logits = forward(transformer, token, pos);
-
-        // advance the state state machine
-        if (pos < num_prompt_tokens - 1)
-        {
-            // if we are still processing the input prompt, force the next prompt token
-            next = prompt_tokens[pos + 1];
-        }
-        else
-        {
-            // otherwise sample the next token from the logits
-            next = sample(sampler, logits);
-        }
-        pos++;
-
-        // data-dependent terminating condition: the BOS (=1) token delimits sequences
+        int next = sample(sampler, logits);
         if (next == 1)
-        {
-            break;
-        }
+            break; // 终止条件
 
-        // print the token as string, decode it with the Tokenizer object
         char *piece = decode(tokenizer, token, next);
-        DEBUG_PRINT(3, "token: %s", piece);
-        safe_printf(piece); // same as printf("%s", piece), but skips "unsafe" bytes
+        printf("token: %d, piece: %s\n", next, piece);
+        safe_printf(piece);
+
         token = next;
-
-        // init the timer here because the first iteration can be slower
-        // if (start == 0) { start = time_in_ms(); }
+        pos++;
     }
-    printf("\n");
+    // // start the main loop
+    // int next;                     // will store the next token in the sequence
+    // int token = prompt_tokens[0]; // kick off with the first token in the prompt
+    // int pos = 0;                  // position in the sequence
+    // while (pos < steps)
+    // {
+    //     DEBUG_PRINT(3, "\nBegin forward iteration, pos: %d, token: %d\n", pos, token);
+    //     // forward the transformer to get logits for the next token
+    //     float *logits = forward(transformer, token, pos);
+    //     // advance the state state machine
+    //     if (pos < num_prompt_tokens - 1)
+    //     {
+    //         // if we are still processing the input prompt, force the next prompt token
+    //         next = prompt_tokens[pos + 1];
+    //     }
+    //     else
+    //     {
+    //         // otherwise sample the next token from the logits
+    //         next = sample(sampler, logits);
+    //     }
+    //     pos++;
+    //     // data-dependent terminating condition: the BOS (=1) token delimits sequences
+    //     if (next == 1)
+    //     {
+    //         break;
+    //     }
 
+    //     // print the token as string, decode it with the Tokenizer object
+    //     char *piece = decode(tokenizer, token, next);
+    //     DEBUG_PRINT(3, "token: %s", piece);
+    //     printf("token: %d, piece: %s\n", next, piece);
+    //     safe_printf(piece); // same as printf("%s", piece), but skips "unsafe" bytes
+    //     token = next;
+    // }
     // report achieved tok/s (pos-1 because the timer starts after first iteration)
     if (pos > 1)
     {
         // long end = time_in_ms();
-        stop_timer();
+        int64_t stop_time = get_cycle_count();
         // fprintf(stderr, "achieved tok/s: %f\n", (pos-1) / (double)(end-start)*1000);
-        int64_t runtime = get_timer();
+        int64_t runtime = stop_time - start_time;
+        printf("\nGeneration finished\n");
         printf("generated toks: %d spent cycles: %ld\n", (pos - 1), runtime);
     }
 }
@@ -1262,28 +1671,21 @@ void generate(Transformer *transformer, Tokenizer *tokenizer, Sampler *sampler, 
 // CLI, include only if not testing
 #ifndef TESTING
 
-static inline unsigned long read_cycle()
-{
-    unsigned long cycle;
-    asm volatile("rdcycle %0" : "=r"(cycle));
-    return cycle;
-}
-
 int main()
 {
 
     // default parameters
     float temperature = 1.0f;        // 0.0 = greedy deterministic. 1.0 = original. don't set higher
     float topp = 0.9f;               // top-p in nucleus sampling. 1.0 = off. 0.9 works well, but slower
-    int steps = 2;                   // number of steps to run for
-    char *prompt = "";               // prompt string
+    int steps = N_PROMPT_TOKENS + 1;                   // number of steps to run for
+    char *prompt = "Once upon a time, there was a mountain, and";               // prompt string
     unsigned long long rng_seed = 0; // seed rng with time by default
 
     // poor man's C argparse so we can override the defaults above from the command line
 
     // parameter validation/overrides
     if (rng_seed <= 0)
-        rng_seed = (unsigned int)read_cycle();
+        rng_seed = get_cycle_count();
     if (temperature < 0.0)
         temperature = 0.0;
     if (topp < 0.0 || 1.0 < topp)

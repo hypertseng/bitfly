@@ -21,4 +21,4 @@ def bin_to_header(bin_file, header_file):
 
 
 if __name__ == "__main__":
-    bin_to_header("../260Kmodel.bin", "../model.h")
+    bin_to_header("../15mmodel.bin", "../model.h")
