@@ -116,7 +116,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     // 仅在输出使能时更新输出数据
     if (output_en_i) begin
       for (int i = 0; i < ROWS; i++) begin
-        output_data_o[i] <= output_reg[i][0];
+        output_data_o[i] = output_reg[i][0];
       end
     end
   end
