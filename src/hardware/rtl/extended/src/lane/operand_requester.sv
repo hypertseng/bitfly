@@ -314,7 +314,7 @@ module operand_requester
           (~{NrVInsn{requester_metadata_q.is_widening}} | requester_metadata_q.waw_hazard_counter)
       ))
       ) || (
-          (mpu_en_i && requester_metadata_q.hazard)
+          (mpu_en_i === 1'b1 && requester_metadata_q.hazard)
       ) || (
           (requester_index == 15) && (mpu_output_en_q === 1'b1)
       );
