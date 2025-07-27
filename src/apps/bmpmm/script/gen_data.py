@@ -239,3 +239,66 @@ for K in K_dim:
 
     emit_int16_row_major(f"result_torch_len_{K}", C)
 
+S = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
+
+for s in S:
+    # 创建矩阵
+    # A = torch.ones((s, s), dtype=torch.int16)
+    # B = torch.ones((s, s), dtype=torch.int16)
+    A = torch.randint(-128, 127, (s, s), dtype=torch.int16)
+    B = torch.randint(0, 2, (s, s), dtype=torch.int16)
+    # A 每行值从 0 一直增加
+
+    # data for debug
+    # A = torch.arange(0, s * s, dtype=torch.int16).reshape(s, s)  # A[0] must in int8 scope
+    # B = torch.ones((s, s), dtype=torch.int16)
+    # B = torch.zeros((s, s), dtype=torch.int16)
+    # 发射数据段
+    emit_int8_packed_activations(f"activation_lp_square_{s}", A)
+    emit_1bit_packed_weights(f"weight_lp_square_{s}", B)
+    emit_int16_col_major(f"result_lp_square_{s}", torch.zeros((s, s), dtype=torch.int16))
+
+    emit_int8_row_major(f"activation_hp_square_{s}", A)
+    B = torch.where(B == 0, -1, B)
+    emit_int8_row_major(f"weight_hp_square_{s}", B)
+    emit_int16_row_major(f"result_hp_square_{s}", torch.zeros((s, s), dtype=torch.int16))
+
+    C = torch.zeros((s, s), dtype=torch.int16)
+    C = A @ B
+    # 打印A的第一列，按十六进制输出
+    # print(f"A[0, :] = {[f'0x{v:02x}' for v in A[0, :]]}")
+    # print(A[0, :])
+    # print(B[:, 0])
+    # print(C)
+    # for m in range(M):
+    #     for n in range(N):
+    #         acc = 0
+    #         for k in range(K):
+    #             a_val = int(A[m, k])
+    #             b_val = int(B[k, n])
+    #             acc += a_val if b_val == 1 else -a_val
+    #         C[m, n] = acc
+    # print(f"A = {A.tolist()}")
+    # print(f"B = {B.tolist()}")
+    # print(f"C = {C.tolist()}")
+    # x = A[0, :K]
+    # y = B[:K, 0]
+    # # A 的第一行
+    # print(f"x = {x.tolist()}")
+    # # A 的第一行（十六进制显示）
+    # print(f"x_hex = {[f'0x{(v & 0xFF):02x}' for v in x.tolist()]}")
+
+    # # B 的第一列
+    # print(f"y = {y.tolist()}")
+    # # 计算x y同位置相乘再相加，每八个元素一组，一共8个
+    # for i in range(0, K, 8):
+    #     acc = 0
+    #     for j in range(8):
+    #         if i + j < K:
+    #             a_val = int(x[i + j])
+    #             b_val = int(y[i + j])
+    #             acc += a_val if b_val == 1 else -a_val
+    #     print(f"acc[{i // 8}] = {acc}")
+    # z = x @ y
+
+    emit_int16_row_major(f"result_torch_square_{s}", C)

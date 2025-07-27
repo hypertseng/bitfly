@@ -12,6 +12,15 @@ extern int8_t weight_hp_len_##K[] __attribute__((aligned(32 * NR_LANES), section
 extern int16_t result_hp_len_##K[] __attribute__((aligned(32 * NR_LANES), section(".l2"))); \
 extern int16_t result_torch_len_##K[] __attribute__((aligned(32 * NR_LANES), section(".l2")));
 
+#define DECLARE_KERNEL_DATA_SQUARE(s) \
+extern int8_t activation_lp_square_##s[] __attribute__((aligned(32 * NR_LANES), section(".l2"))); \
+extern int8_t weight_lp_square_##s[] __attribute__((aligned(32 * NR_LANES), section(".l2"))); \
+extern int16_t result_lp_square_##s[] __attribute__((aligned(32 * NR_LANES), section(".l2"))); \
+extern int8_t activation_hp_square_##s[] __attribute__((aligned(32 * NR_LANES), section(".l2"))); \
+extern int8_t weight_hp_square_##s[] __attribute__((aligned(32 * NR_LANES), section(".l2"))); \
+extern int16_t result_hp_square_##s[] __attribute__((aligned(32 * NR_LANES), section(".l2"))); \
+extern int16_t result_torch_square_##s[] __attribute__((aligned(32 * NR_LANES), section(".l2")));
+
 // 使用
 DECLARE_KERNEL_DATA(8)
 DECLARE_KERNEL_DATA(16)
@@ -21,105 +30,188 @@ DECLARE_KERNEL_DATA(128)
 DECLARE_KERNEL_DATA(256)
 DECLARE_KERNEL_DATA(480)
 
+DECLARE_KERNEL_DATA_SQUARE(16)
+DECLARE_KERNEL_DATA_SQUARE(32)
+DECLARE_KERNEL_DATA_SQUARE(64)
+DECLARE_KERNEL_DATA_SQUARE(128)
+DECLARE_KERNEL_DATA_SQUARE(256)
+DECLARE_KERNEL_DATA_SQUARE(512)
+DECLARE_KERNEL_DATA_SQUARE(1024)
+DECLARE_KERNEL_DATA_SQUARE(2048)
+DECLARE_KERNEL_DATA_SQUARE(4096)
+
+// KernelData get_kernel_data(int x)
+// {
+//     switch (x)
+//     {
+//     // case 1:
+//     //     return (KernelData){
+//     //         .activation_lp = activation_lp_len_1,
+//     //         .weight_lp = weight_lp_len_1,
+//     //         .result_lp = result_lp_len_1,
+//     //         .activation_hp = activation_hp_len_1,
+//     //         .weight_hp = weight_hp_len_1,
+//     //         .result_hp = result_hp_len_1,
+//     //         .result_torch = result_torch_len_1};
+//     case 8:
+//         return (KernelData){
+//             .activation_lp = activation_lp_len_8,
+//             .weight_lp = weight_lp_len_8,
+//             .result_lp = result_lp_len_8,
+//             .activation_hp = activation_hp_len_8,
+//             .weight_hp = weight_hp_len_8,
+//             .result_hp = result_hp_len_8,
+//             .result_torch = result_torch_len_8};
+//     case 16:
+//         return (KernelData){
+//             .activation_lp = activation_lp_len_16,
+//             .weight_lp = weight_lp_len_16,
+//             .result_lp = result_lp_len_16,
+//             .activation_hp = activation_hp_len_16,
+//             .weight_hp = weight_hp_len_16,
+//             .result_hp = result_hp_len_16,
+//             .result_torch = result_torch_len_16};
+//     case 32:
+//         return (KernelData){
+//             .activation_lp = activation_lp_len_32,
+//             .weight_lp = weight_lp_len_32,
+//             .result_lp = result_lp_len_32,
+//             .activation_hp = activation_hp_len_32,
+//             .weight_hp = weight_hp_len_32,
+//             .result_hp = result_hp_len_32,
+//             .result_torch = result_torch_len_32};
+//     case 64:
+//         return (KernelData){
+//             .activation_lp = activation_lp_len_64,
+//             .weight_lp = weight_lp_len_64,
+//             .result_lp = result_lp_len_64,
+//             .activation_hp = activation_hp_len_64,
+//             .weight_hp = weight_hp_len_64,
+//             .result_hp = result_hp_len_64,
+//             .result_torch = result_torch_len_64};
+//     case 128:
+//         return (KernelData){
+//             .activation_lp = activation_lp_len_128,
+//             .weight_lp = weight_lp_len_128,
+//             .result_lp = result_lp_len_128,
+//             .activation_hp = activation_hp_len_128,
+//             .weight_hp = weight_hp_len_128,
+//             .result_hp = result_hp_len_128,
+//             .result_torch = result_torch_len_128};
+//     case 256:
+//         return (KernelData){
+//             .activation_lp = activation_lp_len_256,
+//             .weight_lp = weight_lp_len_256,
+//             .result_lp = result_lp_len_256,
+//             .activation_hp = activation_hp_len_256,
+//             .weight_hp = weight_hp_len_256,
+//             .result_hp = result_hp_len_256,
+//             .result_torch = result_torch_len_256};
+//     case 480:
+//         return (KernelData){
+//             .activation_lp = activation_lp_len_480,
+//             .weight_lp = weight_lp_len_480,
+//             .result_lp = result_lp_len_480,
+//             .activation_hp = activation_hp_len_480,
+//             .weight_hp = weight_hp_len_480,
+//             .result_hp = result_hp_len_480,
+//             .result_torch = result_torch_len_480};
+    
+//     default:
+//         return (KernelData){0};
+//     }
+// }
 
 KernelData get_kernel_data(int x)
 {
     switch (x)
     {
-    // case 1:
-    //     return (KernelData){
-    //         .activation_lp = activation_lp_len_1,
-    //         .weight_lp = weight_lp_len_1,
-    //         .result_lp = result_lp_len_1,
-    //         .activation_hp = activation_hp_len_1,
-    //         .weight_hp = weight_hp_len_1,
-    //         .result_hp = result_hp_len_1,
-    //         .result_torch = result_torch_len_1};
-    case 8:
-        return (KernelData){
-            .activation_lp = activation_lp_len_8,
-            .weight_lp = weight_lp_len_8,
-            .result_lp = result_lp_len_8,
-            .activation_hp = activation_hp_len_8,
-            .weight_hp = weight_hp_len_8,
-            .result_hp = result_hp_len_8,
-            .result_torch = result_torch_len_8};
     case 16:
         return (KernelData){
-            .activation_lp = activation_lp_len_16,
-            .weight_lp = weight_lp_len_16,
-            .result_lp = result_lp_len_16,
-            .activation_hp = activation_hp_len_16,
-            .weight_hp = weight_hp_len_16,
-            .result_hp = result_hp_len_16,
-            .result_torch = result_torch_len_16};
+            .activation_lp = activation_lp_square_16,
+            .weight_lp = weight_lp_square_16,
+            .result_lp = result_lp_square_16,
+            .activation_hp = activation_hp_square_16,
+            .weight_hp = weight_hp_square_16,
+            .result_hp = result_hp_square_16,
+            .result_torch = result_torch_square_16};
     case 32:
         return (KernelData){
-            .activation_lp = activation_lp_len_32,
-            .weight_lp = weight_lp_len_32,
-            .result_lp = result_lp_len_32,
-            .activation_hp = activation_hp_len_32,
-            .weight_hp = weight_hp_len_32,
-            .result_hp = result_hp_len_32,
-            .result_torch = result_torch_len_32};
+            .activation_lp = activation_lp_square_32,
+            .weight_lp = weight_lp_square_32,
+            .result_lp = result_lp_square_32,
+            .activation_hp = activation_hp_square_32,
+            .weight_hp = weight_hp_square_32,
+            .result_hp = result_hp_square_32,
+            .result_torch = result_torch_square_32};
     case 64:
         return (KernelData){
-            .activation_lp = activation_lp_len_64,
-            .weight_lp = weight_lp_len_64,
-            .result_lp = result_lp_len_64,
-            .activation_hp = activation_hp_len_64,
-            .weight_hp = weight_hp_len_64,
-            .result_hp = result_hp_len_64,
-            .result_torch = result_torch_len_64};
+            .activation_lp = activation_lp_square_64,
+            .weight_lp = weight_lp_square_64,
+            .result_lp = result_lp_square_64,
+            .activation_hp = activation_hp_square_64,
+            .weight_hp = weight_hp_square_64,
+            .result_hp = result_hp_square_64,
+            .result_torch = result_torch_square_64};
     case 128:
         return (KernelData){
-            .activation_lp = activation_lp_len_128,
-            .weight_lp = weight_lp_len_128,
-            .result_lp = result_lp_len_128,
-            .activation_hp = activation_hp_len_128,
-            .weight_hp = weight_hp_len_128,
-            .result_hp = result_hp_len_128,
-            .result_torch = result_torch_len_128};
+            .activation_lp = activation_lp_square_128,
+            .weight_lp = weight_lp_square_128,
+            .result_lp = result_lp_square_128,
+            .activation_hp = activation_hp_square_128,
+            .weight_hp = weight_hp_square_128,
+            .result_hp = result_hp_square_128,
+            .result_torch = result_torch_square_128};
     case 256:
         return (KernelData){
-            .activation_lp = activation_lp_len_256,
-            .weight_lp = weight_lp_len_256,
-            .result_lp = result_lp_len_256,
-            .activation_hp = activation_hp_len_256,
-            .weight_hp = weight_hp_len_256,
-            .result_hp = result_hp_len_256,
-            .result_torch = result_torch_len_256};
-    case 480:
+            .activation_lp = activation_lp_square_256,
+            .weight_lp = weight_lp_square_256,
+            .result_lp = result_lp_square_256,
+            .activation_hp = activation_hp_square_256,
+            .weight_hp = weight_hp_square_256,
+            .result_hp = result_hp_square_256,
+            .result_torch = result_torch_square_256};
+    case 512:
         return (KernelData){
-            .activation_lp = activation_lp_len_480,
-            .weight_lp = weight_lp_len_480,
-            .result_lp = result_lp_len_480,
-            .activation_hp = activation_hp_len_480,
-            .weight_hp = weight_hp_len_480,
-            .result_hp = result_hp_len_480,
-            .result_torch = result_torch_len_480};
-    // case 512:
-    //     return (KernelData){
-    //         .activation_lp = activation_lp_len_512,
-    //         .weight_lp = weight_lp_len_512,
-    //         .result_lp = result_lp_len_512,
-    //         .activation_hp = activation_hp_len_512,
-    //         .weight_hp = weight_hp_len_512,
-    //         .result_hp = result_hp_len_512,
-    //         .result_torch = result_torch_len_512};
-    // case 1024:
-    //     return (KernelData){
-    //         .activation_lp = activation_lp_len_1024,
-    //         .weight_lp = weight_lp_len_1024,
-    //         .result_lp = result_lp_len_1024,
-    //         .activation_hp = activation_hp_len_1024,
-    //         .weight_hp = weight_hp_len_1024,
-    //         .result_hp = result_hp_len_1024,
-    //         .result_torch = result_torch_len_1024};
+            .activation_lp = activation_lp_square_512,
+            .weight_lp = weight_lp_square_512,
+            .result_lp = result_lp_square_512,
+            .activation_hp = activation_hp_square_512,
+            .weight_hp = weight_hp_square_512,
+            .result_hp = result_hp_square_512,
+            .result_torch = result_torch_square_512};
+    case 1024:
+        return (KernelData){
+            .activation_lp = activation_lp_square_1024,
+            .weight_lp = weight_lp_square_1024,
+            .result_lp = result_lp_square_1024,
+            .activation_hp = activation_hp_square_1024,
+            .weight_hp = weight_hp_square_1024,
+            .result_hp = result_hp_square_1024,
+            .result_torch = result_torch_square_1024};
+    case 2048:
+        return (KernelData){
+            .activation_lp = activation_lp_square_2048,
+            .weight_lp = weight_lp_square_2048,
+            .result_lp = result_lp_square_2048,
+            .activation_hp = activation_hp_square_2048,
+            .weight_hp = weight_hp_square_2048,
+            .result_hp = result_hp_square_2048,
+            .result_torch = result_torch_square_2048};
+    case 4096:
+        return (KernelData){
+            .activation_lp = activation_lp_square_4096,
+            .weight_lp = weight_lp_square_4096,
+            .result_lp = result_lp_square_4096,
+            .activation_hp = activation_hp_square_4096,
+            .weight_hp = weight_hp_square_4096,
+            .result_hp = result_hp_square_4096,
+            .result_torch = result_torch_square_4096};
     default:
         return (KernelData){0};
     }
 }
+
 
 void run_test(const char *test_name, int M, int K, int N)
 {
@@ -228,41 +320,74 @@ void compare_results(int M, int K, int N)
 
 int main()
 {
-    // const int M_DIMS[] = {1, 16, 32, 64, 128, 256, 512};
-    // const int M_DIMS[] = {50};
-    const int M = 16;
-    const int N = 32;
-    // const int K_DIMS[] = {8, 16, 32, 64, 128};
-    const int K_DIMS[] = {256, 480};
-    // const int K = 500;
-    const int NUM_K_DIMS = sizeof(K_DIMS) / sizeof(K_DIMS[0]);
+    // // const int M_DIMS[] = {1, 16, 32, 64, 128, 256, 512};
+    // // const int M_DIMS[] = {50};
+    // const int M = 16;
+    // const int N = 32;
+    // // const int K_DIMS[] = {8, 16, 32, 64, 128};
+    // const int K_DIMS[] = {256, 480};
+    // // const int K = 500;
+    // const int NUM_K_DIMS = sizeof(K_DIMS) / sizeof(K_DIMS[0]);
 
-    for (int i = 0; i < NUM_K_DIMS; ++i)
+    // for (int i = 0; i < NUM_K_DIMS; ++i)
+    // {
+    //     int K = K_DIMS[i];
+    //     printf("\n");
+    //     printf("------------------------------------------------------------\n");
+    //     printf("Calculating a (%d x %d) x (%d x %d) Binary mixed precision matrix multiplication...\n", M,
+    //            K, K, N);
+    //     printf("------------------------------------------------------------\n");
+    //     printf("\n");
+    //     run_test("mixed", M, K, N);
+    //     printf("\n");
+    //     printf("------------------------------------------------------------\n");
+    //     printf("Calculating a (%d x %d) x (%d x %d) RVV int8 matrix multiplication...\n", M,
+    //            K, K, N);
+    //     printf("------------------------------------------------------------\n");
+    //     printf("\n");
+    //     run_test("vector", M, K, N);
+    //     printf("------------------------------------------------------------\n");
+    //     printf("Calculating a (%d x %d) x (%d x %d) RVV scalar matrix multiplication...\n", M,
+    //            K, K, N);
+    //     printf("------------------------------------------------------------\n");
+    //     printf("\n");
+    //     run_test("scalar", M, K, N);
+
+    //     // compare_results(M, K, N);
+    // }
+
+    // const int S[] = {16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
+    const int S[] = {1024};
+    const int NUM_DIMS = sizeof(S) / sizeof(S[0]);
+
+    for (int i = 0; i < NUM_DIMS; ++i)
     {
-        int K = K_DIMS[i];
+        int s = S[i];
+        printf("s=%d\n", s);
         printf("\n");
         printf("------------------------------------------------------------\n");
-        printf("Calculating a (%d x %d) x (%d x %d) Binary mixed precision matrix multiplication...\n", M,
-               K, K, N);
+        printf("Calculating a (%d x %d) x (%d x %d) Binary mixed precision matrix multiplication...\n", s,
+               s, s, s);
         printf("------------------------------------------------------------\n");
         printf("\n");
-        run_test("mixed", M, K, N);
+        run_test("mixed", s, s, s);
         printf("\n");
         printf("------------------------------------------------------------\n");
-        printf("Calculating a (%d x %d) x (%d x %d) RVV int8 matrix multiplication...\n", M,
-               K, K, N);
+        printf("Calculating a (%d x %d) x (%d x %d) RVV int8 matrix multiplication...\n", s,
+               s, s, s);
         printf("------------------------------------------------------------\n");
         printf("\n");
-        run_test("vector", M, K, N);
-        printf("------------------------------------------------------------\n");
-        printf("Calculating a (%d x %d) x (%d x %d) RVV scalar matrix multiplication...\n", M,
-               K, K, N);
-        printf("------------------------------------------------------------\n");
-        printf("\n");
-        run_test("scalar", M, K, N);
+        run_test("vector", s, s, s);
+        // printf("------------------------------------------------------------\n");
+        // printf("Calculating a (%d x %d) x (%d x %d) RVV scalar matrix multiplication...\n", s,
+        //        s, s, s);
+        // printf("------------------------------------------------------------\n");
+        // printf("\n");
+        // run_test("scalar", s, s, s);
 
-        // compare_results(M, K, N);
+        // compare_results(s, s, s);
     }
+
 
     return 0;
 }

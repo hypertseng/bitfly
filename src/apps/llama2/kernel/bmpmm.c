@@ -236,35 +236,6 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
     {
         asm volatile("mpcfg 480\n\t");
     }
-    // if (K > 64){ // reuse activation
-        
-    // } 
-    // else {  // reuse output
-    //     for (int i = 0; i < tm; i++)
-    //     {
-    //         for (int j = 0; j < tn; j++)
-    //         {
-    //             int16_t *c_ = c + i * N * 16 + j * 32 * 16;
-    //             // int64_t runtime = get_timer();
-    //             // printf("bmm1 timer cycles: %ld\n", runtime);
-    //             for (int k = 0; k < tk; k++)
-    //             {
-    //                 if (k == tk - 1)
-    //                     get_config((8 - (K % 480) % 8) + (K % 480));
-    //                 const int8_t *a_ = a + i * 16 * K + k * 16 * 480;
-    //                 const int8_t *b_ = b + j * 32 * K / 8 + k * 32 * 480 / 8;
-    //                 asm volatile("mple 0(%0), a\n\t" ::"r"(a_) : "memory");
-    //                 asm volatile("mple 0(%0), w\n\t" ::"r"(b_) : "memory");
-    //                 asm volatile("mpmm\n\t" ::);
-    //             }
-    //             // runtime = get_timer();
-    //             // printf("bmm2 timer cycles: %ld\n", runtime);
-    //             asm volatile("mpse 0(%0)\n\t" ::"r"(c_) : "memory");
-    //             // runtime = get_timer();
-    //             // printf("bmm3 timer cycles: %ld\n", runtime);
-    //         }
-    //     }
-    // }
     for (int i = 0; i < tm; i++)
     {
         for (int j = 0; j < tn; j++)
@@ -283,12 +254,17 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
                 }
                 const int8_t *a_ = a + i * 16 * K + k * 16 * 480;
                 const int8_t *b_ = b + j * 32 * K / 8 + k * 32 * 480 / 8;
-                asm volatile("mple 0(%0), a\n\t" ::"r"(a_) : "memory");
-                asm volatile("mple 0(%0), w\n\t" ::"r"(b_) : "memory");
+
+                asm volatile("mple 0(%0), w\n\t" ::"r"(a_) : "memory");
+                // printf("1\n");
+                asm volatile("mple 0(%0), a\n\t" ::"r"(b_) : "memory");
+                // printf("2\n");
                 asm volatile("mpmm\n\t" ::);
+                printf("3\n");
             }
             // runtime = get_timer();
             // printf("bmm2 timer cycles: %ld\n", runtime);
+            printf("4\n");
             asm volatile("mpse 0(%0)\n\t" ::"r"(c_) : "memory");
             // runtime = get_timer();
             // printf("bmm3 timer cycles: %ld\n", runtime);
