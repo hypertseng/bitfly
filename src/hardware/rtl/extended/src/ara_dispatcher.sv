@@ -3705,6 +3705,8 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
             //respond at the same cycle
             acc_resp_o.resp_valid = 1'b1;
 
+            // csr_vtype_d.vsew = EW8;
+
             k_dim_d = insn.custom1_type.uimm9;
             ara_req.k_dim = insn.custom1_type.uimm9;
             csr_vl_d = insn.custom1_type.uimm9 * 4 * NrLanes;

@@ -224,7 +224,7 @@ void static inline get_config(unsigned long int K)
         break;
     }
 }
-
+int64_t mixed_compute_time = 0;
 void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
                          const unsigned long int M, const unsigned long int K,
                          const unsigned long int N)
@@ -259,7 +259,9 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
                 // printf("bmm2 timer cycles: %ld\n", runtime);
                 asm volatile("mple 0(%0), w\n\t" ::"r"(b_) : "memory");
                 // printf("bmm2 timer cycles: %ld\n", runtime);
+                int64_t start = get_cycle_count();
                 asm volatile("mpmm\n\t" ::);
+                mixed_compute_time += get_cycle_count() - start;
                 // printf("bmm2 timer cycles: %ld\n", runtime);
             }
             // runtime = get_timer();
@@ -269,6 +271,7 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
             // printf("bmm3 timer cycles: %ld\n", runtime);
         }
     }
+    printf("mixed_compute_time: %ld\n",mixed_compute_time);
 }
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -283,7 +286,7 @@ void matmul_vec_slice_init()
     asm volatile("vmv.v.i v12, 0");
     asm volatile("vmv.v.i v14, 0");
 }
-
+int64_t vector_compute_time = 0;
 void vector_int8_matmul(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
                         unsigned long int M, unsigned long int K, unsigned long int N)
 {
@@ -314,6 +317,7 @@ void vector_int8_matmul(int16_t *restrict c, const int8_t *restrict a, const int
             matmul_vec(c__, a_, b_, K, N);
         }
     }
+    printf("vector_compute_time: %ld\n",vector_compute_time);
 }
 
 void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
@@ -356,30 +360,44 @@ void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
 
         asm volatile("vle8.v v20, (%0);" ::"r"(b));
         b += N;
-
+        int64_t start = get_cycle_count();
         asm volatile("vwmacc.vx v0, %0, v18" ::"r"(t0));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t0) : [a] "r"(a));
         a += K;
-
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v2, %0, v18" ::"r"(t1));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t1) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v4, %0, v18" ::"r"(t2));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t2) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v6, %0, v18" ::"r"(t3));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t3) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v8, %0, v18" ::"r"(t4));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t4) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v10, %0, v18" ::"r"(t5));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t5) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v12, %0, v18" ::"r"(t6));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t6) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v14, %0, v18" ::"r"(t7));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t7) : [a] "r"(a));
 
         // Load one row of B
@@ -390,33 +408,49 @@ void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
             break;
 
         a = (const int8_t *)a_ + ++k;
-
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v0, %0, v20" ::"r"(t0));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t0) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v2, %0, v20" ::"r"(t1));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t1) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v4, %0, v20" ::"r"(t2));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t2) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v6, %0, v20" ::"r"(t3));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t3) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v8, %0, v20" ::"r"(t4));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t4) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v10, %0, v20" ::"r"(t5));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t5) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v12, %0, v20" ::"r"(t6));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t6) : [a] "r"(a));
         a += K;
+        start = get_cycle_count();
         asm volatile("vwmacc.vx v14, %0, v20" ::"r"(t7));
+        vector_compute_time += get_cycle_count() - start;
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t7) : [a] "r"(a));
     }
 
     // Last iteration: store results
+    int64_t start = get_cycle_count();
     asm volatile("vwmacc.vx v0, %0, v20" ::"r"(t0));
     asm volatile("vwmacc.vx v2, %0, v20" ::"r"(t1));
     asm volatile("vwmacc.vx v4, %0, v20" ::"r"(t2));
@@ -425,6 +459,7 @@ void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
     asm volatile("vwmacc.vx v10, %0, v20" ::"r"(t5));
     asm volatile("vwmacc.vx v12, %0, v20" ::"r"(t6));
     asm volatile("vwmacc.vx v14, %0, v20" ::"r"(t7));
+    vector_compute_time += get_cycle_count() - start;
     asm volatile("vsetivli zero, 0, e16, m2, ta, ma");
     asm volatile("vse16.v v0, (%0);" ::"r"(c));
     c += N;

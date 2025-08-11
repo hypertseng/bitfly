@@ -1,0 +1,516 @@
+------------------------------------------------------------
+Calculating a (1 x 172) x (172 x 64) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=1, K=172, N=64
+Execution took 658 cycles.
+Performance: 33.46 OP/cycle (52.28% utilization)
+
+
+------------------------------------------------------------
+Calculating a (1 x 172) x (172 x 64) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=1, K=172, N=64
+Execution took 9317 cycles.
+Performance: 2.36 OP/cycle (3.69% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 172) x (172 x 64) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=172, N=64
+Execution took 568 cycles.
+Performance: 620.17 OP/cycle (969.01% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 172) x (172 x 64) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=172, N=64
+Execution took 18007 cycles.
+Performance: 19.56 OP/cycle (30.57% utilization)
+
+
+------------------------------------------------------------
+Calculating a (32 x 172) x (172 x 64) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=32, K=172, N=64
+Execution took 966 cycles.
+Performance: 729.31 OP/cycle (1139.54% utilization)
+
+
+------------------------------------------------------------
+Calculating a (32 x 172) x (172 x 64) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=32, K=172, N=64
+Execution took 35798 cycles.
+Performance: 19.68 OP/cycle (30.75% utilization)
+
+
+------------------------------------------------------------
+Calculating a (64 x 172) x (172 x 64) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=64, K=172, N=64
+Execution took 1843 cycles.
+Performance: 764.53 OP/cycle (1194.57% utilization)
+
+
+------------------------------------------------------------
+Calculating a (64 x 172) x (172 x 64) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=64, K=172, N=64
+Execution took 71387 cycles.
+Performance: 19.74 OP/cycle (30.84% utilization)
+
+
+------------------------------------------------------------
+Calculating a (128 x 172) x (172 x 64) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=128, K=172, N=64
+Execution took 3570 cycles.
+Performance: 789.37 OP/cycle (1233.39% utilization)
+
+
+------------------------------------------------------------
+Calculating a (128 x 172) x (172 x 64) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=128, K=172, N=64
+Execution took 142488 cycles.
+Performance: 19.78 OP/cycle (30.90% utilization)
+
+
+------------------------------------------------------------
+Calculating a (256 x 172) x (172 x 64) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=256, K=172, N=64
+Execution took 7009 cycles.
+Performance: 804.12 OP/cycle (1256.44% utilization)
+
+
+------------------------------------------------------------
+Calculating a (256 x 172) x (172 x 64) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=256, K=172, N=64
+Execution took 284719 cycles.
+Performance: 19.80 OP/cycle (30.93% utilization)
+
+
+------------------------------------------------------------
+Calculating a (512 x 172) x (172 x 64) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=512, K=172, N=64
+Execution took 13897 cycles.
+Performance: 811.12 OP/cycle (1267.38% utilization)
+
+
+------------------------------------------------------------
+Calculating a (512 x 172) x (172 x 64) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=512, K=172, N=64
+Execution took 569237 cycles.
+Performance: 19.80 OP/cycle (30.94% utilization)
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------
+Calculating a (16 x 8) x (8 x 32) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=8, N=32
+Execution took 662 cycles.
+Performance: 12.37 OP/cycle (19.34% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 8) x (8 x 32) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=8, N=32
+Execution took 1496 cycles.
+Performance: 5.48 OP/cycle (8.56% utilization)
+
+------------------------------------------------------------
+Calculating a (16 x 8) x (8 x 32) RVV scalar matrix multiplication...
+------------------------------------------------------------
+
+Running test: scalar | M=16, K=8, N=32
+Execution took 44633 cycles.
+Performance: 0.18 OP/cycle (0.29% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 16) x (16 x 32) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=16, N=32
+Execution took 618 cycles.
+Performance: 26.51 OP/cycle (41.42% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 16) x (16 x 32) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=16, N=32
+Execution took 1955 cycles.
+Performance: 8.38 OP/cycle (13.09% utilization)
+
+------------------------------------------------------------
+Calculating a (16 x 16) x (16 x 32) RVV scalar matrix multiplication...
+------------------------------------------------------------
+
+Running test: scalar | M=16, K=16, N=32
+Execution took 81512 cycles.
+Performance: 0.20 OP/cycle (0.31% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 32) x (32 x 32) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=32, N=32
+Execution took 678 cycles.
+Performance: 48.33 OP/cycle (75.52% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 32) x (32 x 32) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=32, N=32
+Execution took 3481 cycles.
+Performance: 9.41 OP/cycle (14.71% utilization)
+
+------------------------------------------------------------
+Calculating a (16 x 32) x (32 x 32) RVV scalar matrix multiplication...
+------------------------------------------------------------
+
+Running test: scalar | M=16, K=32, N=32
+Execution took 155455 cycles.
+Performance: 0.21 OP/cycle (0.33% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 64) x (64 x 32) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=64, N=32
+Execution took 791 cycles.
+Performance: 82.85 OP/cycle (129.46% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 64) x (64 x 32) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=64, N=32
+Execution took 6451 cycles.
+Performance: 10.16 OP/cycle (15.87% utilization)
+
+------------------------------------------------------------
+Calculating a (16 x 64) x (64 x 32) RVV scalar matrix multiplication...
+------------------------------------------------------------
+
+Running test: scalar | M=16, K=64, N=32
+Execution took 303498 cycles.
+Performance: 0.22 OP/cycle (0.34% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 128) x (128 x 32) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=128, N=32
+Execution took 1025 cycles.
+Performance: 127.88 OP/cycle (199.80% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 128) x (128 x 32) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=128, N=32
+Execution took 12356 cycles.
+Performance: 10.61 OP/cycle (16.57% utilization)
+
+------------------------------------------------------------
+Calculating a (16 x 128) x (128 x 32) RVV scalar matrix multiplication...
+------------------------------------------------------------
+
+Running test: scalar | M=16, K=128, N=32
+Execution took 599431 cycles.
+Performance: 0.22 OP/cycle (0.34% utilization)
+
+------------------------------------------------------------
+Calculating a (16 x 256) x (256 x 32) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=256, N=32
+Execution took 1141 cycles.
+Performance: 229.75 OP/cycle (358.98% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 256) x (256 x 32) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=256, N=32
+Execution took 24462 cycles.
+Performance: 10.72 OP/cycle (16.74% utilization)
+
+------------------------------------------------------------
+Calculating a (16 x 256) x (256 x 32) RVV scalar matrix multiplication...
+------------------------------------------------------------
+
+Running test: scalar | M=16, K=256, N=32
+Execution took 1325671 cycles.
+Performance: 0.20 OP/cycle (0.31% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 480) x (480 x 32) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=480, N=32
+Execution took 1983 cycles.
+Performance: 247.87 OP/cycle (387.29% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 480) x (480 x 32) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=480, N=32
+Execution took 44945 cycles.
+Performance: 10.94 OP/cycle (17.09% utilization)
+
+------------------------------------------------------------
+Calculating a (16 x 480) x (480 x 32) RVV scalar matrix multiplication...
+------------------------------------------------------------
+
+Running test: scalar | M=16, K=480, N=32
+Execution took 4895558 cycles.
+Performance: 0.10 OP/cycle (0.16% utilization)
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------
+Calculating a (16 x 16) x (16 x 16) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=16, K=16, N=16
+Execution took 798 cycles.
+Performance: 10.27 OP/cycle (16.04% utilization)
+
+
+------------------------------------------------------------
+Calculating a (16 x 16) x (16 x 16) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=16, K=16, N=16
+Execution took 2182 cycles.
+Performance: 3.75 OP/cycle (5.87% utilization)
+
+------------------------------------------------------------
+Calculating a (32 x 32) x (32 x 32) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=32, K=32, N=32
+Execution took 1059 cycles.
+Performance: 61.88 OP/cycle (96.69% utilization)
+
+
+------------------------------------------------------------
+Calculating a (32 x 32) x (32 x 32) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=32, K=32, N=32
+Execution took 6933 cycles.
+Performance: 9.45 OP/cycle (14.77% utilization)
+
+s=64
+
+------------------------------------------------------------
+Calculating a (64 x 64) x (64 x 64) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=64, K=64, N=64
+Execution took 3748 cycles.
+Performance: 139.88 OP/cycle (218.57% utilization)
+
+
+------------------------------------------------------------
+Calculating a (64 x 64) x (64 x 64) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=64, K=64, N=64
+Execution took 27479 cycles.
+Performance: 19.08 OP/cycle (29.81% utilization)
+
+s=128
+
+------------------------------------------------------------
+Calculating a (128 x 128) x (128 x 128) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=128, K=128, N=128
+Execution took 20907 cycles.
+Performance: 200.62 OP/cycle (313.46% utilization)
+
+
+------------------------------------------------------------
+Calculating a (128 x 128) x (128 x 128) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=128, K=128, N=128
+Execution took 185179 cycles.
+Performance: 22.65 OP/cycle (35.39% utilization)
+
+------------------------------------------------------------
+Calculating a (256 x 256) x (256 x 256) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=256, K=256, N=256
+Execution took 76227 cycles.
+Performance: 440.19 OP/cycle (687.80% utilization)
+
+
+------------------------------------------------------------
+Calculating a (256 x 256) x (256 x 256) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=256, K=256, N=256
+Execution took 1384686 cycles.
+Performance: 24.23 OP/cycle (37.86% utilization)
+
+
+------------------------------------------------------------
+Calculating a (512 x 512) x (512 x 512) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=512, K=512, N=512
+Execution took 208686 cycles.
+Performance: 1286.31 OP/cycle (2009.86% utilization)
+
+
+------------------------------------------------------------
+Calculating a (512 x 512) x (512 x 512) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=512, K=512, N=512
+Execution took 10511623 cycles.
+Performance: 25.54 OP/cycle (39.90% utilization)
+
+
+------------------------------------------------------------
+Calculating a (1024 x 1024) x (1024 x 1024) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=1024, K=1024, N=1024
+Execution took 1126072 cycles.
+Performance: 1907.06 OP/cycle (2979.78% utilization)
+
+
+------------------------------------------------------------
+Calculating a (1024 x 1024) x (1024 x 1024) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=1024, K=1024, N=1024
+Execution took 42020778 cycles.
+Performance: 51.11 OP/cycle (79.85% utilization)
+
+
+------------------------------------------------------------
+Calculating a (2048 x 2048) x (2048 x 2048) Binary mixed precision matrix multiplication...
+------------------------------------------------------------
+
+Running test: mixed | M=2048, K=2048, N=2048
+Execution took 6928871 cycles.
+Performance: 2479.46 OP/cycle (3874.16% utilization)
+
+
+------------------------------------------------------------
+Calculating a (2048 x 2048) x (2048 x 2048) RVV int8 matrix multiplication...
+------------------------------------------------------------
+
+Running test: vector | M=2048, K=2048, N=2048
+Execution took 335985509 cycles.
+Performance: 51.13 OP/cycle (79.89% utilization)
+
+
+
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| qwen3 0.6B BF16                |   1.11 GiB |   596.05 M | CPU        |      64 |           pp512 |      932.78 ± 134.17 |
+| qwen3 0.6B BF16                |   1.11 GiB |   596.05 M | CPU        |      64 |           tg128 |         43.83 ± 1.53 |
+| qwen3 0.6B IQ1_S - 1.5625 bpw  | 199.02 MiB |   596.05 M | CPU        |      64 |           pp512 |       655.35 ± 22.50 |
+| qwen3 0.6B IQ1_S - 1.5625 bpw  | 199.02 MiB |   596.05 M | CPU        |      64 |           tg128 |         78.73 ± 1.65 |
+| qwen3 0.6B IQ1_M - 1.75 bpw    | 204.85 MiB |   596.05 M | CPU        |      64 |           pp512 |       656.40 ± 23.77 |
+| qwen3 0.6B IQ1_M - 1.75 bpw    | 204.85 MiB |   596.05 M | CPU        |      64 |           tg128 |         76.14 ± 0.46 |
+| qwen3 0.6B IQ2_M - 2.7 bpw     | 250.58 MiB |   596.05 M | CPU        |      64 |           pp512 |       597.11 ± 29.35 |
+| qwen3 0.6B IQ2_M - 2.7 bpw     | 250.58 MiB |   596.05 M | CPU        |      64 |           tg128 |         67.99 ± 1.06 |
+| qwen3 0.6B IQ2_XXS - 2.0625 bpw | 217.55 MiB |   596.05 M | CPU        |      64 |           pp512 |       634.78 ± 25.14 |
+| qwen3 0.6B IQ2_XXS - 2.0625 bpw | 217.55 MiB |   596.05 M | CPU        |      64 |           tg128 |         72.89 ± 1.08 |
+| qwen3 0.6B IQ3_XXS - 3.0625 bpw | 263.34 MiB |   596.05 M | CPU        |      64 |           pp512 |       570.66 ± 23.25 |
+| qwen3 0.6B IQ3_XXS - 3.0625 bpw | 263.34 MiB |   596.05 M | CPU        |      64 |           tg128 |         64.41 ± 1.09 |
+| llama 1B BF16                  |   2.30 GiB |     1.24 B | CPU        |      64 |           pp512 |       720.89 ± 62.10 |
+| llama 1B BF16                  |   2.30 GiB |     1.24 B | CPU        |      64 |           tg128 |         26.33 ± 0.55 |
+| llama 1B IQ1_S - 1.5625 bpw    | 394.62 MiB |     1.24 B | CPU        |      64 |           pp512 |        469.59 ± 9.70 |
+| llama 1B IQ1_S - 1.5625 bpw    | 394.62 MiB |     1.24 B | CPU        |      64 |           tg128 |         52.89 ± 0.60 |
+| llama 1B IQ1_M - 1.75 bpw      | 411.37 MiB |     1.24 B | CPU        |      64 |           pp512 |        477.83 ± 5.92 |
+| llama 1B IQ1_M - 1.75 bpw      | 411.37 MiB |     1.24 B | CPU        |      64 |           tg128 |         53.92 ± 0.53 |
+| llama 1B IQ2_M - 2.7 bpw       | 504.01 MiB |     1.24 B | CPU        |      64 |           pp512 |        449.10 ± 8.81 |
+| llama 1B IQ2_M - 2.7 bpw       | 504.01 MiB |     1.24 B | CPU        |      64 |           tg128 |         47.36 ± 1.29 |
+| llama 1B IQ2_XXS - 2.0625 bpw  | 435.35 MiB |     1.24 B | CPU        |      64 |           pp512 |       464.97 ± 12.98 |
+| llama 1B IQ2_XXS - 2.0625 bpw  | 435.35 MiB |     1.24 B | CPU        |      64 |           tg128 |         51.67 ± 1.23 |
+| llama 1B IQ3_XXS - 3.0625 bpw  | 541.26 MiB |     1.24 B | CPU        |      64 |           pp512 |        397.33 ± 6.47 |
+| llama 1B IQ3_XXS - 3.0625 bpw  | 541.26 MiB |     1.24 B | CPU        |      64 |           tg128 |         40.45 ± 0.68 |
+| qwen2 1.5B BF16                |   3.31 GiB |     1.78 B | CPU        |      64 |           pp512 |       575.62 � 39.39 |
+| qwen2 1.5B BF16                |   3.31 GiB |     1.78 B | CPU        |      64 |           tg128 |         20.11 � 0.56 |
+| qwen2 1.5B IQ1_S - 1.5625 bpw  | 662.03 MiB |     1.78 B | CPU        |      64 |           pp512 |        350.07 � 6.75 |
+| qwen2 1.5B IQ1_S - 1.5625 bpw  | 662.03 MiB |     1.78 B | CPU        |      64 |           tg128 |         34.73 � 1.55 |
+| qwen2 1.5B IQ1_M - 1.75 bpw    | 677.41 MiB |     1.78 B | CPU        |      64 |           pp512 |        348.92 � 6.65 |
+| qwen2 1.5B IQ1_M - 1.75 bpw    | 677.41 MiB |     1.78 B | CPU        |      64 |           tg128 |         35.28 � 0.20 |
+| qwen2 1.5B IQ2_M - 2.7 bpw     | 749.78 MiB |     1.78 B | CPU        |      64 |           pp512 |       340.41 � 30.38 |
+| qwen2 1.5B IQ2_M - 2.7 bpw     | 749.78 MiB |     1.78 B | CPU        |      64 |           tg128 |         33.93 � 0.41 |
+| qwen2 1.5B IQ2_XXS - 2.0625 bpw | 733.37 MiB |     1.78 B | CPU        |      64 |           pp512 |        349.60 � 8.31 |
+| qwen2 1.5B IQ2_XXS - 2.0625 bpw | 733.37 MiB |     1.78 B | CPU        |      64 |           tg128 |         33.59 � 0.78 |
+| qwen2 1.5B IQ3_XXS - 3.0625 bpw | 835.54 MiB |     1.78 B | CPU        |      64 |           pp512 |        305.38 � 4.20 |
+| qwen2 1.5B IQ3_XXS - 3.0625 bpw | 835.54 MiB |     1.78 B | CPU        |      64 |           tg128 |         32.07 � 0.37 |
+
+
+
+end2end inference(cycle):
+                mixed                 RVV
+model size
+    15m         3872148               11716927
+    42m         4742817               20467264
+    110m        6648582               30801115
+

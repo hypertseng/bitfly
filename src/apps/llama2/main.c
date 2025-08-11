@@ -73,7 +73,7 @@
 // #define KV_DIM DIM *N_KV_HEADS / N_HEADS
 // #define N_PROMPT_TOKENS 16
 
-// 110m
+// // 110m
 // #define MAX_TOKEN_LENGTH 27
 // #define VOCAB_SIZE 32000
 // #define DIM 768
@@ -156,22 +156,22 @@ typedef struct
 
 typedef struct
 {
-    float x[DIM * N_PROMPT_TOKENS];
-    float xb[DIM * N_PROMPT_TOKENS];
-    float xb2[DIM * N_PROMPT_TOKENS];
-    float hb[HIDDEN_DIM * N_PROMPT_TOKENS];
-    float hb2[HIDDEN_DIM * N_PROMPT_TOKENS];
-    int8_t xq_q[DIM * N_PROMPT_TOKENS];
-    float xq_s[DIM * N_PROMPT_TOKENS];
-    int8_t hq_q[HIDDEN_DIM * N_PROMPT_TOKENS];
-    float hq_s[HIDDEN_DIM * N_PROMPT_TOKENS];
-    float q[DIM * N_PROMPT_TOKENS];
-    float k[KV_DIM * N_PROMPT_TOKENS];
-    float v[KV_DIM * N_PROMPT_TOKENS];
-    float att[N_HEADS * SEQ_LEN];
-    float logits[N_PROMPT_TOKENS * VOCAB_SIZE];
-    float key_cache[N_LAYERS * SEQ_LEN * KV_DIM];
-    float value_cache[N_LAYERS * SEQ_LEN * KV_DIM];
+    float x[DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float xb[DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float xb2[DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float hb[HIDDEN_DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float hb2[HIDDEN_DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    int8_t xq_q[DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float xq_s[DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    int8_t hq_q[HIDDEN_DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float hq_s[HIDDEN_DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float q[DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float k[KV_DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float v[KV_DIM * N_PROMPT_TOKENS]__attribute__((aligned(4 * NR_LANES)));
+    float att[N_HEADS * SEQ_LEN]__attribute__((aligned(4 * NR_LANES)));
+    float logits[N_PROMPT_TOKENS * VOCAB_SIZE]__attribute__((aligned(4 * NR_LANES)));
+    float key_cache[N_LAYERS * SEQ_LEN * KV_DIM]__attribute__((aligned(4 * NR_LANES)));
+    float value_cache[N_LAYERS * SEQ_LEN * KV_DIM]__attribute__((aligned(4 * NR_LANES)));
 } StaticRunState;
 StaticRunState run_state_buf __attribute__((aligned(4 * NR_LANES), section(".l2")));
 
@@ -185,6 +185,8 @@ typedef struct
     float *data;      // memory mapped data pointer
     size_t file_size; // size of the checkpoint file in bytes
 } Transformer;
+
+// Transformer llama2 __attribute__((aligned(4 * NR_LANES), section(".l2")));
 
 void malloc_run_state(RunState *s, StaticRunState *buf)
 {
@@ -381,6 +383,8 @@ void quantize_batch(QuantizedTensor *qx, float *x, int batch, int dim) {
     }
 }
 
+// #define ALIGN_PTR(p, align) \
+//     (void *)(((uintptr_t)(p) + (align - 1)) & ~(uintptr_t)(align - 1))
 
 // /* initialize `n` x quantized tensor (with `size_each` elements), starting from memory pointed at *ptr */
 QuantizedTensor *init_quantized_tensors(void **ptr, QuantizedTensor *res, int n, int size_each)
@@ -390,6 +394,7 @@ QuantizedTensor *init_quantized_tensors(void **ptr, QuantizedTensor *res, int n,
     for (int i = 0; i < n; i++)
     {
         /* map quantized int8 values*/
+        // p = ALIGN_PTR(p, 4 * NR_LANES);
         res[i].q = (int8_t *)p;
         p = (int8_t *)p + size_each;
         /* map scale factors */
@@ -625,6 +630,7 @@ void rmsnorm(float *o, float *x, float *weight, int size)
 void softmax(float *x, int size)
 {
     start_timer();
+    printf("softmax test\n");
     // ---- Step 1: Find max value using RVV ----
     float max_val = -FLT_MAX;
     int i = 0;
@@ -705,6 +711,7 @@ void softmax(float *x, int size)
     }
     stop_timer();
     time_softmax += get_timer();
+    printf("timesoft:%ld",time_softmax);
 }
 
 float freq_table[DIM / 2];
@@ -759,198 +766,158 @@ void transpose(const int8_t *A, int8_t *B, int M, int N)
  */
 
 
-#define TM 16
-#define TK 480
 
 void pack_activation(const int8_t *array, int M, int K, int8_t *out) {
-    const int tm = (M + TM - 1) / TM;
-    const int tk = (K > TK) ? ((K + TK - 1) / TK) : 1;
+    const int tm = (M + 15) / 16;
+    const int tk = (K > 480) ? ((K + 479) / 480) : 1;
 
-    for (int i = 0; i < tm; ++i) {
-        const int m_start = i * TM;
-        const int rows = (M - m_start < TM) ? (M - m_start) : TM;
+    for (int i = 0; i < tm; i++) {
+        const int m_start = i * 16;
+        const int rows = (M - m_start < 16) ? (M - m_start) : 16;
+        
+        for (int j = 0; j < tk; j++) {
+            const int k_start = j * 480;
+            const int k_end = (k_start + 480 <= K) ? k_start + 480 : K;
+            const int chunk_count = (k_end - k_start + 7) / 8;
+            const int offset = (i * tk + j) * 16 * 480;
+            
+            const int8_t *block_in = array + offset;
+            int8_t *out_block = out + offset;
 
-        for (int j = 0; j < tk; ++j) {
-            const int k_start = j * TK;
-            const int k_len = (K - k_start < TK) ? (K - k_start) : TK;
-            const int chunk_count = (k_len + 7) / 8;  // 每个chunk是64位（8个int8）
-
-            const int64_t *block_in = (const int64_t *)(array + m_start * K + k_start * rows);
-            int64_t *out_block      = (int64_t *)(out   + m_start * K + k_start * rows);
-
-            const int row_stride_in  = chunk_count;  // 每行有多少chunk
-            const int row_stride_out = rows;         // 每列间距
-
-            int row = 0;
-            for (; row + 7 < rows; row += 8) {
-                const int64_t *row_ptr[8];
-                int64_t *col_ptr[8];
-                for (int r = 0; r < 8; ++r) {
-                    row_ptr[r] = block_in + (row + r) * row_stride_in;
-                    col_ptr[r] = out_block + (row + r);
-                }
-                __asm__ volatile (
-                    "vsetvli t0, %[cnt], e64, m1, ta, ma\n\t"
-                    "vle64.v v0, (%[in0])\n\t"
-                    "vle64.v v1, (%[in1])\n\t"
-                    "vle64.v v2, (%[in2])\n\t"
-                    "vle64.v v3, (%[in3])\n\t"
-                    "vle64.v v4, (%[in4])\n\t"
-                    "vle64.v v5, (%[in5])\n\t"
-                    "vle64.v v6, (%[in6])\n\t"
-                    "vle64.v v7, (%[in7])\n\t"
-
-                    "vsse64.v v0, (%[out0]), %[stride]\n\t"
-                    "vsse64.v v1, (%[out1]), %[stride]\n\t"
-                    "vsse64.v v2, (%[out2]), %[stride]\n\t"
-                    "vsse64.v v3, (%[out3]), %[stride]\n\t"
-                    "vsse64.v v4, (%[out4]), %[stride]\n\t"
-                    "vsse64.v v5, (%[out5]), %[stride]\n\t"
-                    "vsse64.v v6, (%[out6]), %[stride]\n\t"
-                    "vsse64.v v7, (%[out7]), %[stride]\n\t"
-                    :
-                    : [cnt] "r"(chunk_count),
-                      [in0] "r"(row_ptr[0]), [in1] "r"(row_ptr[1]),
-                      [in2] "r"(row_ptr[2]), [in3] "r"(row_ptr[3]),
-                      [in4] "r"(row_ptr[4]), [in5] "r"(row_ptr[5]),
-                      [in6] "r"(row_ptr[6]), [in7] "r"(row_ptr[7]),
-                      [out0] "r"(col_ptr[0]), [out1] "r"(col_ptr[1]),
-                      [out2] "r"(col_ptr[2]), [out3] "r"(col_ptr[3]),
-                      [out4] "r"(col_ptr[4]), [out5] "r"(col_ptr[5]),
-                      [out6] "r"(col_ptr[6]), [out7] "r"(col_ptr[7]),
-                      [stride] "r"(row_stride_out * 8)
-                    : "t0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "memory"
-                );
-            }
-
-            // 处理剩余行（< 8）
-            for (; row < rows; ++row) {
-                const int64_t *row_ptr = block_in + row * row_stride_in;
-                int64_t *col_ptr       = out_block + row;
-
-                __asm__ volatile (
-                    "vsetvli t0, %[cnt], e64, m1, ta, ma\n\t"
-                    "vle64.v v0, (%[in])\n\t"
-                    "vsse64.v v0, (%[out]), %[stride]\n\t"
-                    :
-                    : [cnt] "r"(chunk_count),
-                      [in] "r"(row_ptr),
-                      [out] "r"(col_ptr),
-                      [stride] "r"(row_stride_out * 8)
-                    : "t0", "v0", "memory"
-                );
-            }
+            size_t vl;  // 声明vl变量
+            asm volatile (
+                "li t0, 0\n"                 // 初始化列计数器 (c)
+                "1:\n"                       // 外层循环开始 (按列)
+                "li t1, 0\n"                 // 初始化行计数器 (r)
+                "2:\n"                       // 内层循环开始 (按行)
+                
+                // 设置向量长度
+                "vsetvli %0, %1, e8, m1, ta, ma\n" 
+                
+                // 计算输入地址: block_in + c * 128 + r * 8
+                "slli t2, t0, 7\n"           // t2 = c * 128
+                "slli t3, t1, 3\n"          // t3 = r * 8
+                "add t4, %2, t2\n"          // t4 = block_in + c * 128
+                "add t4, t4, t3\n"         // t4 += r * 8
+                
+                // 加载向量
+                "vle8.v v0, (t4)\n"         // 从输入地址加载向量
+                
+                // 计算输出地址: out_block + r * chunk_count * 8 + c * 8
+                "mul t5, t1, %4\n"         // t5 = r * chunk_count
+                "slli t5, t5, 3\n"          // t5 *= 8
+                "slli t6, t0, 3\n"          // t6 = c * 8
+                "add t5, t5, t6\n"          // t5 += c * 8
+                "add t5, %3, t5\n"          // t5 = out_block + offset
+                
+                // 存储向量
+                "vse8.v v0, (t5)\n"         // 存储向量到输出地址
+                
+                // 更新行计数器
+                "add t1, t1, %0\n"         // r += vl
+                "blt t1, %1, 2b\n"         // 如果 r < rows，继续内层循环
+                
+                // 更新列计数器
+                "addi t0, t0, 1\n"         // c += 1
+                "blt t0, %4, 1b\n"          // 如果 c < chunk_count，继续外层循环
+                
+                : "=&r" (vl)                // 输出操作数，绑定到vl变量
+                : "r" (rows),               // 输入操作数1: rows
+                  "r" (block_in),           // 输入操作数2: block_in
+                  "r" (out_block),          // 输入操作数3: out_block
+                  "r" (chunk_count)         // 输入操作数4: chunk_count
+                : "t0", "t1", "t2", "t3", "t4", "t5", "t6", "v0", "memory"
+            );
         }
     }
 }
 
+// #define TM 16
+// #define TK 480
 
 // void pack_activation(const int8_t *array, int M, int K, int8_t *out) {
-//     const int tm = (M + 15) / 16;
-//     const int tk = (K > 480) ? ((K + 479) / 480) : 1;
+//     const int tm = (M + TM - 1) / TM;
+//     const int tk = (K > TK) ? ((K + TK - 1) / TK) : 1;
 
-//     for (int i = 0; i < tm; i++) {
-//         const int m_start = i * 16;
-//         const int rows = (M - m_start < 16) ? (M - m_start) : 16;
-        
-//         for (int j = 0; j < tk; j++) {
-//             const int k_start = j * 480;
-//             const int k_end = (k_start + 480 <= K) ? k_start + 480 : K;
-//             const int chunk_count = (k_end - k_start + 7) / 8;
-//             const int offset = (i * tk + j) * 16 * 480;
-            
-//             const int8_t *block_in = array + offset;
-//             int8_t *out_block = out + offset;
+//     for (int i = 0; i < tm; ++i) {
+//         const int m_start = i * TM;
+//         const int rows = (M - m_start < TM) ? (M - m_start) : TM;
 
-//             size_t vl;  // 声明vl变量
-//             asm volatile (
-//                 "li t0, 0\n"                 // 初始化列计数器 (c)
-//                 "1:\n"                       // 外层循环开始 (按列)
-//                 "li t1, 0\n"                 // 初始化行计数器 (r)
-//                 "2:\n"                       // 内层循环开始 (按行)
-                
-//                 // 设置向量长度
-//                 "vsetvli %0, %1, e8, m1, ta, ma\n" 
-                
-//                 // 计算输入地址: block_in + c * 128 + r * 8
-//                 "slli t2, t0, 7\n"           // t2 = c * 128
-//                 "slli t3, t1, 3\n"          // t3 = r * 8
-//                 "add t4, %2, t2\n"          // t4 = block_in + c * 128
-//                 "add t4, t4, t3\n"         // t4 += r * 8
-                
-//                 // 加载向量
-//                 "vle8.v v0, (t4)\n"         // 从输入地址加载向量
-                
-//                 // 计算输出地址: out_block + r * chunk_count * 8 + c * 8
-//                 "mul t5, t1, %4\n"         // t5 = r * chunk_count
-//                 "slli t5, t5, 3\n"          // t5 *= 8
-//                 "slli t6, t0, 3\n"          // t6 = c * 8
-//                 "add t5, t5, t6\n"          // t5 += c * 8
-//                 "add t5, %3, t5\n"          // t5 = out_block + offset
-                
-//                 // 存储向量
-//                 "vse8.v v0, (t5)\n"         // 存储向量到输出地址
-                
-//                 // 更新行计数器
-//                 "add t1, t1, %0\n"         // r += vl
-//                 "blt t1, %1, 2b\n"         // 如果 r < rows，继续内层循环
-                
-//                 // 更新列计数器
-//                 "addi t0, t0, 1\n"         // c += 1
-//                 "blt t0, %4, 1b\n"          // 如果 c < chunk_count，继续外层循环
-                
-//                 : "=&r" (vl)                // 输出操作数，绑定到vl变量
-//                 : "r" (rows),               // 输入操作数1: rows
-//                   "r" (block_in),           // 输入操作数2: block_in
-//                   "r" (out_block),          // 输入操作数3: out_block
-//                   "r" (chunk_count)         // 输入操作数4: chunk_count
-//                 : "t0", "t1", "t2", "t3", "t4", "t5", "t6", "v0", "memory"
-//             );
+//         for (int j = 0; j < tk; ++j) {
+//             const int k_start = j * TK;
+//             const int k_len = (K - k_start < TK) ? (K - k_start) : TK;
+//             const int chunk_count = (k_len + 7) / 8;  // 每个chunk是64位（8个int8）
+
+//             const int64_t *block_in = (const int64_t *)(array + m_start * K + k_start * rows);
+//             int64_t *out_block      = (int64_t *)(out   + m_start * K + k_start * rows);
+
+//             const int row_stride_in  = chunk_count;  // 每行有多少chunk
+//             const int row_stride_out = rows;         // 每列间距
+
+//             int row = 0;
+//             for (; row + 7 < rows; row += 8) {
+//                 const int64_t *row_ptr[8];
+//                 int64_t *col_ptr[8];
+//                 for (int r = 0; r < 8; ++r) {
+//                     row_ptr[r] = block_in + (row + r) * row_stride_in;
+//                     col_ptr[r] = out_block + (row + r);
+//                 }
+//                 __asm__ volatile (
+//                     "vsetvli t0, %[cnt], e64, m1, ta, ma\n\t"
+//                     "vle64.v v0, (%[in0])\n\t"
+//                     "vle64.v v1, (%[in1])\n\t"
+//                     "vle64.v v2, (%[in2])\n\t"
+//                     "vle64.v v3, (%[in3])\n\t"
+//                     "vle64.v v4, (%[in4])\n\t"
+//                     "vle64.v v5, (%[in5])\n\t"
+//                     "vle64.v v6, (%[in6])\n\t"
+//                     "vle64.v v7, (%[in7])\n\t"
+
+//                     "vsse64.v v0, (%[out0]), %[stride]\n\t"
+//                     "vsse64.v v1, (%[out1]), %[stride]\n\t"
+//                     "vsse64.v v2, (%[out2]), %[stride]\n\t"
+//                     "vsse64.v v3, (%[out3]), %[stride]\n\t"
+//                     "vsse64.v v4, (%[out4]), %[stride]\n\t"
+//                     "vsse64.v v5, (%[out5]), %[stride]\n\t"
+//                     "vsse64.v v6, (%[out6]), %[stride]\n\t"
+//                     "vsse64.v v7, (%[out7]), %[stride]\n\t"
+//                     :
+//                     : [cnt] "r"(chunk_count),
+//                       [in0] "r"(row_ptr[0]), [in1] "r"(row_ptr[1]),
+//                       [in2] "r"(row_ptr[2]), [in3] "r"(row_ptr[3]),
+//                       [in4] "r"(row_ptr[4]), [in5] "r"(row_ptr[5]),
+//                       [in6] "r"(row_ptr[6]), [in7] "r"(row_ptr[7]),
+//                       [out0] "r"(col_ptr[0]), [out1] "r"(col_ptr[1]),
+//                       [out2] "r"(col_ptr[2]), [out3] "r"(col_ptr[3]),
+//                       [out4] "r"(col_ptr[4]), [out5] "r"(col_ptr[5]),
+//                       [out6] "r"(col_ptr[6]), [out7] "r"(col_ptr[7]),
+//                       [stride] "r"(row_stride_out * 8)
+//                     : "t0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "memory"
+//                 );
+//             }
+
+//             // 处理剩余行（< 8）
+//             for (; row < rows; ++row) {
+//                 const int64_t *row_ptr = block_in + row * row_stride_in;
+//                 int64_t *col_ptr       = out_block + row;
+
+//                 __asm__ volatile (
+//                     "vsetvli t0, %[cnt], e64, m1, ta, ma\n\t"
+//                     "vle64.v v0, (%[in])\n\t"
+//                     "vsse64.v v0, (%[out]), %[stride]\n\t"
+//                     :
+//                     : [cnt] "r"(chunk_count),
+//                       [in] "r"(row_ptr),
+//                       [out] "r"(col_ptr),
+//                       [stride] "r"(row_stride_out * 8)
+//                     : "t0", "v0", "memory"
+//                 );
+//             }
 //         }
 //     }
 // }
 
 
-#define BLOCK_H 16
-#define BLOCK_W 32
-#define SUBTILES_PER_ROW (BLOCK_W / 4)  // 8
-#define SUBTILES_PER_COL (BLOCK_H)      // 16
-
-void unpack_output(const int16_t *input, int16_t *output, int H, int W) {
-    const int blocks_per_row = (W + BLOCK_W - 1) / BLOCK_W;
-    const int blocks_per_col = (H + BLOCK_H - 1) / BLOCK_H;
-
-    for (int by = 0; by < blocks_per_col; ++by) {
-        for (int bx = 0; bx < blocks_per_row; ++bx) {
-            const int block_idx = by * blocks_per_row + bx;
-            const int64_t *block_in = (const int64_t *)input + block_idx * BLOCK_H * BLOCK_W / 4;
-
-            const int out_row_start = by * BLOCK_H;
-            const int out_col_start = bx * BLOCK_W;
-            const int row_stride_out = W;  // row-major
-
-            for (int r = 0; r < BLOCK_H; r += 8) {
-                for (int c = 0; c < BLOCK_W; ++c) {
-                    const int64_t *src = block_in + c * BLOCK_H + r;  // chunk layout: [col][row]
-                    int64_t *dst = (int64_t *)(output + (out_row_start + r) * row_stride_out + (out_col_start + c));
-
-                    __asm__ volatile (
-                        "vsetvli zero, %[vl], e64, m1, ta, ma\n\t"
-                        "vle64.v v0, (%[in])\n\t"
-
-                        "vse64.v v0, (%[out])\n\t"  // 连续存储
-
-                        :
-                        : [vl] "r"(8),
-                          [in] "r"(src),
-                          [out] "r"(dst)
-                        : "v0", "memory"
-                    );
-                }
-            }
-        }
-    }
-}
 
 // #define BLOCK_H 16
 // #define BLOCK_W 32
@@ -1017,6 +984,7 @@ void unpack_output(const int16_t *input, int16_t *output, int H, int W) {
 //         }
 //     }
 // }
+
 // #define BLOCK_H 16
 // #define BLOCK_W 32
 // #define SUBTILE_W 4
@@ -1093,12 +1061,90 @@ void unpack_output(const int16_t *input, int16_t *output, int H, int W) {
 // }
 
 
+#define BLOCK_H 16
+#define BLOCK_W 32
+#define SUBTILE_W 4
+#define SUBTILES_PER_ROW (BLOCK_W / SUBTILE_W)  // 8
+#define SUBTILES_PER_COL (BLOCK_H)              // 16
+#define SUBTILES_PER_BLOCK (SUBTILES_PER_ROW * SUBTILES_PER_COL)  // 128
+
+void unpack_output(
+    const int16_t *input,
+    int16_t *output,
+    int H, int W
+) {
+    const int blocks_per_row = (W + BLOCK_W - 1) / BLOCK_W;
+    const int blocks_per_col = (H + BLOCK_H - 1) / BLOCK_H;
+
+    for (int by = 0; by < blocks_per_col; ++by) {
+        for (int bx = 0; bx < blocks_per_row; ++bx) {
+            const int64_t *block_in = (const int64_t *)(input + (by * blocks_per_row + bx) * BLOCK_H * BLOCK_W);
+            int64_t *out_block_base = (int64_t *)(output + by * BLOCK_H * W + bx * BLOCK_W);
+            // start_timer();
+            for (int c = 0; c < SUBTILES_PER_COL; c += 8) {
+                // 一次处理8列 × 8行 → tile = 8x8
+                __asm__ volatile (
+                    "vsetvli t0, %[vl], e64, m1, ta, ma\n"
+                    // 加载 8 列
+                    "vle64.v v0,  (%[in0])\n"
+                    "vle64.v v1,  (%[in1])\n"
+                    "vle64.v v2,  (%[in2])\n"
+                    "vle64.v v3,  (%[in3])\n"
+                    "vle64.v v4,  (%[in4])\n"
+                    "vle64.v v5,  (%[in5])\n"
+                    "vle64.v v6,  (%[in6])\n"
+                    "vle64.v v7,  (%[in7])\n"
+
+                    // 可选：进行寄存器级的shuffle转置（跳过，直接按列写回）
+                    // 写回每一行（共8行，每行含1个元素来自 v0~v7）
+                    // out[r * 16 + c + i] = v[i][r]
+
+                    "vse64.v v0, (%[out0])\n"
+                    "vse64.v v1, (%[out1])\n"
+                    "vse64.v v2, (%[out2])\n"
+                    "vse64.v v3, (%[out3])\n"
+                    "vse64.v v4, (%[out4])\n"
+                    "vse64.v v5, (%[out5])\n"
+                    "vse64.v v6, (%[out6])\n"
+                    "vse64.v v7, (%[out7])\n"
+
+                    :
+                    : [vl] "r"(8),
+                      [in0] "r"(block_in + (c + 0) * SUBTILES_PER_ROW),
+                      [in1] "r"(block_in + (c + 1) * SUBTILES_PER_ROW),
+                      [in2] "r"(block_in + (c + 2) * SUBTILES_PER_ROW),
+                      [in3] "r"(block_in + (c + 3) * SUBTILES_PER_ROW),
+                      [in4] "r"(block_in + (c + 4) * SUBTILES_PER_ROW),
+                      [in5] "r"(block_in + (c + 5) * SUBTILES_PER_ROW),
+                      [in6] "r"(block_in + (c + 6) * SUBTILES_PER_ROW),
+                      [in7] "r"(block_in + (c + 7) * SUBTILES_PER_ROW),
+
+                      [out0] "r"(out_block_base + 0 * SUBTILES_PER_COL + c),
+                      [out1] "r"(out_block_base + 1 * SUBTILES_PER_COL + c),
+                      [out2] "r"(out_block_base + 2 * SUBTILES_PER_COL + c),
+                      [out3] "r"(out_block_base + 3 * SUBTILES_PER_COL + c),
+                      [out4] "r"(out_block_base + 4 * SUBTILES_PER_COL + c),
+                      [out5] "r"(out_block_base + 5 * SUBTILES_PER_COL + c),
+                      [out6] "r"(out_block_base + 6 * SUBTILES_PER_COL + c),
+                      [out7] "r"(out_block_base + 7 * SUBTILES_PER_COL + c)
+                    : "t0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "memory"
+                );
+            }
+            // stop_timer();
+            // int64_t runtime = get_timer();
+            // printf("unpack timer cycles: %ld\n", runtime);
+        }
+    }
+}
+
 static int8_t transposed_buffer[VOCAB_SIZE * HIDDEN_DIM] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 static int8_t packed_activation[VOCAB_SIZE * DIM] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 static int16_t matmul_out_buffer[VOCAB_SIZE * N_PROMPT_TOKENS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 static int16_t unpacked_out[VOCAB_SIZE  * N_PROMPT_TOKENS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
 void matmul_batch(float *xout, QuantizedTensor *x, QuantizedTensor *w, int seq_len, int n, int d)
 {
+    // printf("test\n");
+    // printf("xout ptr = %p\n", (void *)xout);
     int64_t start = get_cycle_count();
     // W (d,n) @ x (n,) -> xout (d,)
     // by far the most amount of time is spent inside this little function
@@ -1112,21 +1158,24 @@ void matmul_batch(float *xout, QuantizedTensor *x, QuantizedTensor *w, int seq_l
     // printf("mm1 timer cycles: %ld\n", runtime);
     // print matmul shape
     // printf("gemm shape: (%d, %d) (%d, %d)\n", seq_len, n, n ,d);
-    start_timer();
+    // start_timer();
     pack_activation(x->q, seq_len, n, packed_activation);
-    stop_timer();
-    int64_t runtime = get_timer();
-    printf("mm2 timer cycles: %ld\n", runtime);
-    start_timer();
+    // printf("packed_activation ptr = %p\n", (void *)packed_activation);
+    // printf("w ptr = %p\n", (void *)w);
+    // printf("w->q ptr = %p\n", (void *)w->q);
+    // stop_timer();
+    // int64_t runtime = get_timer();
+    // printf("mm2 timer cycles: %ld\n", runtime);
+    // start_timer();
     binary_mixed_matmul(matmul_out_buffer, packed_activation, w->q, seq_len, n, d);
-    stop_timer();
-    runtime = get_timer();
-    printf("mm3 timer cycles: %ld\n", runtime);
-    start_timer();
+    // stop_timer();
+    // runtime = get_timer();
+    // printf("mm3 timer cycles: %ld\n", runtime);
+    // start_timer();
     unpack_output(matmul_out_buffer, unpacked_out, seq_len, d);
-    stop_timer();
-    runtime = get_timer();
-    printf("mm4 timer cycles: %ld\n", runtime);
+    // stop_timer();
+    // runtime = get_timer();
+    // printf("mm4 timer cycles: %ld\n", runtime);
 
     // start_timer();
     // vector_int8_matmul(unpacked_out, x->q, transposed_buffer, seq_len, n, d);
@@ -1135,45 +1184,45 @@ void matmul_batch(float *xout, QuantizedTensor *x, QuantizedTensor *w, int seq_l
     // printf("mm4 timer cycles: %ld\n", runtime);
 
     // start_timer();
-    for (int l = 0; l < seq_len; l++) {
-        int i = 0;
-        int16_t* in_row = unpacked_out + l * d;
-        float* out_row = xout + l * d;
+    // float scale_val = x->s[0] + w->s[0];
+    // register float fscale asm("fa0") = scale_val;
 
-        float scale_val = x->s[0] + w->s[0];
-        register float fscale asm("fa0") = scale_val;
+    // __asm__ volatile(
+    //     "vfmv.v.f v24, %[scale]\n"
+    //     :
+    //     : [scale] "f"(fscale)
+    //     : "v24"
+    // );
 
-        __asm__ volatile(
-            "vfmv.v.f v24, %[scale]\n"
-            :
-            : [scale] "f"(fscale)
-            : "v24"
-        );
+    // for (int l = 0; l < seq_len; l++) {
+    //     int i = 0;
+    //     int16_t* in_row = unpacked_out + l * d;
+    //     float* out_row = xout + l * d;
 
-        while (i < d) {
-            size_t vl;
-            __asm__ volatile(
-                "vsetvli    %[vl], %[remain], e16, m8, ta, ma\n"
-                "vle16.v    v16, (%[in])           \n"  // v16..v23
-                "vfcvt.f.x.v v0, v16               \n"  // v0..v7
-                "vfmul.vv   v8, v0, v24            \n"  // v8..v15 = scaled result
-                "vse32.v    v8, (%[out])           \n"
-
-                : [vl] "=&r"(vl)
-                : [in] "r"(in_row + i),
-                [out] "r"(out_row + i),
-                [remain] "r"(d - i)
-                : "v0", "v8", "v16", "v24", "memory"
-            );
-            i += vl;
-        }
-    }
+    //     while (i < d) {
+    //         size_t vl;
+    //         __asm__ volatile(
+    //             "vsetvli    %[vl], %[remain], e16, m8, ta, ma\n"
+    //             "vle16.v    v16, (%[in])           \n"
+    //             "vfcvt.f.x.v v16, v16              \n"
+    //             "vfmul.vv   v16, v16, v24          \n"
+    //             "vse32.v    v16, (%[out])          \n"
+    //             : [vl] "=&r"(vl)
+    //             : [in] "r"(in_row + i),
+    //             [out] "r"(out_row + i),
+    //             [remain] "r"(d - i)
+    //             : "v16", "v24", "memory"
+    //         );
+    //         i += vl;
+    //     }
+    // }
     // stop_timer();
     // runtime = get_timer();
     // printf("mm5 timer cycles: %ld\n", runtime);
     // printf("mixed gemm timer cycles: %ld\n", runtime);
     // printf("RVV gemm timer cycles: %ld\n", runtime);
     time_matmul += get_cycle_count() - start;
+    // printf("time_matmul:%ld\n",time_matmul);
 }
 
 void matmul(float* xout, QuantizedTensor *x, QuantizedTensor *w, int n, int d) {
@@ -1212,6 +1261,7 @@ float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_pro
 {
     Config *p = &transformer->config;
     TransformerWeights *w = &transformer->weights;
+    // printf("w ptr = %p\n", (void *)w);
     RunState *s = &transformer->state;
 
     int dim = DIM;
@@ -1255,11 +1305,12 @@ float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_pro
         start = get_cycle_count();
         // ── 2.2 Q/K/V projection
         quantize_batch(&s->xq, s->xb, num_prompt_tokens, dim); // [T, dim] → quantized
+        // printf("w->wq ptr = %p\n", (void *)w->wq);
         matmul_batch(s->q, &s->xq, w->wq + l, num_prompt_tokens, dim, dim);     // [T, dim]
         matmul_batch(s->k, &s->xq, w->wk + l, num_prompt_tokens, dim, kv_dim);  // [T, kv_dim]
         matmul_batch(s->v, &s->xq, w->wv + l, num_prompt_tokens, dim, kv_dim);  // [T, kv_dim]
         runtime = get_cycle_count() - start;
-        // printf("layer%d prefill forward QKV timer cycles: %ld\n", l, runtime);
+        printf("layer%d prefill forward QKV timer cycles: %ld\n", l, runtime);
         start = get_cycle_count();
         // ── 2.3 Apply RoPE positional encoding to Q & K
         // for (int t = 0; t < num_prompt_tokens; t++) {
@@ -1422,7 +1473,7 @@ float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_pro
             }
         }
         runtime = get_cycle_count() - start;
-        // printf("layer%d prefill forward RoPE timer cycles: %ld\n", l, runtime);
+        printf("layer%d prefill forward RoPE timer cycles: %ld\n", l, runtime);
         start = get_cycle_count();
         // ── 2.4 Save K/V to KV cache
         float *kcache = s->key_cache + l * p->seq_len * kv_dim;
@@ -1430,7 +1481,7 @@ float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_pro
         memcpy(kcache, s->k, num_prompt_tokens * kv_dim * sizeof(float));
         memcpy(vcache, s->v, num_prompt_tokens * kv_dim * sizeof(float));
         runtime = get_cycle_count() - start;
-        // printf("layer%d prefill forward KV cache timer cycles: %ld\n", l, runtime);
+        printf("layer%d prefill forward KV cache timer cycles: %ld\n", l, runtime);
         start = get_cycle_count();
         // ── 2.5 Multi-head attention
         float scale = 1.0f / sqrtf(head_size);
@@ -1444,7 +1495,9 @@ float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_pro
             // (1) Attention score：Q × K^T
             matmul_batch(att_h, (QuantizedTensor *)q_h, (QuantizedTensor *)k_h, num_prompt_tokens, p->seq_len, head_size);
 
+
             // (2) Scaled softmax with mask
+            int64_t tmp_start = get_cycle_count();
             for (int t = 0; t < num_prompt_tokens; t++)
             {
                 float *att_row = att_h + t * p->seq_len;
@@ -1480,6 +1533,7 @@ float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_pro
                     att_row[k] /= sum;
                 }
             }
+            time_softmax += get_cycle_count() - tmp_start;
 
             // (3) Attention × Value → s->xb
             float *v_h = s->value_cache + l * p->seq_len * kv_dim + (h / kv_mul) * head_size;
@@ -1494,7 +1548,7 @@ float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_pro
             x[i] += s->xb2[i];
         }
         runtime = get_cycle_count() - start;
-        // printf("layer%d prefill forward attention timer cycles: %ld\n", l, runtime);
+        printf("layer%d prefill forward attention timer cycles: %ld\n", l, runtime);
         start = get_cycle_count();
         // ── 2.7 FFN path
         for (int i = 0; i < num_prompt_tokens; i++) {
@@ -1582,7 +1636,7 @@ float *forward_prefill(Transformer *transformer, int *prompt_tokens, int num_pro
         // printf("ffn test2: %ld\n", runtime);
 
         runtime = get_cycle_count() - runtime;
-        // printf("layer%d prefill forward FFN timer cycles: %ld\n", l, runtime);
+        printf("layer%d prefill forward FFN timer cycles: %ld\n", l, runtime);
     }
 
     // ─────────────────────────────
@@ -2343,24 +2397,24 @@ int main()
         steps = 0;
 
     // build the Transformer via the model .bin file
-    Transformer transformer;
-    build_transformer(&transformer);
-    if (steps == 0 || steps > transformer.config.seq_len)
-        steps = transformer.config.seq_len; // override to ~max length
-
+    Transformer llama2;
+    build_transformer(&llama2);
+    if (steps == 0 || steps > llama2.config.seq_len)
+        steps = llama2.config.seq_len; // override to ~max length
+    // printf("ptr = %p\n", (void *)llama2.weights.wq);
     // build the Tokenizer via the tokenizer .bin file
     Tokenizer tokenizer;
     build_tokenizer(&tokenizer);
 
     // build the Sampler
     Sampler sampler;
-    build_sampler(&sampler, transformer.config.vocab_size, temperature, topp, rng_seed);
+    build_sampler(&sampler, llama2.config.vocab_size, temperature, topp, rng_seed);
 
     // run!
-    generate(&transformer, &tokenizer, &sampler, prompt, steps);
-    printf("time_rmsnorm = %ld", time_rmsnorm);
-    printf("time_softmax = %ld", time_softmax);
-    printf("time_matmul = %ld", time_matmul);
+    generate(&llama2, &tokenizer, &sampler, prompt, steps);
+    printf("time_rmsnorm = %ld\n", time_rmsnorm);
+    printf("time_softmax = %ld\n", time_softmax);
+    printf("time_matmul = %ld\n", time_matmul);
     return 0;
 }
 #endif

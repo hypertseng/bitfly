@@ -357,7 +357,7 @@ int main()
     // }
 
     // const int S[] = {16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
-    const int S[] = {1024};
+    const int S[] = {32};
     const int NUM_DIMS = sizeof(S) / sizeof(S[0]);
 
     for (int i = 0; i < NUM_DIMS; ++i)
@@ -384,8 +384,7 @@ int main()
         // printf("------------------------------------------------------------\n");
         // printf("\n");
         // run_test("scalar", s, s, s);
-
-        // compare_results(s, s, s);
+        compare_results(s, s, s);
     }
 
 
