@@ -316,7 +316,7 @@ module operand_requester
       ) || (
           (mpu_en_i === 1'b1 && requester_metadata_q.hazard)
       ) || (
-          (requester_index == 15) && (mpu_output_en_q === 1'b1)
+          (requester_index == 15) && ((mpu_output_en_q === 1'b1)||(mpu_output_en_d === 1'b1))
       );
 
     // Did we get a grant?
