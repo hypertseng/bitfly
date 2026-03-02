@@ -144,8 +144,8 @@ package rvv_pkg;
   } vsetvl_type_t;
 
   typedef struct packed {
-    logic [31:21] imm;
-    logic [20:12] uimm9;
+    logic [31:29] prec;
+    logic [28:12] kdim;
     logic [11:7] rd;
     logic [6:0] opcode;
   } custom1_type_t;

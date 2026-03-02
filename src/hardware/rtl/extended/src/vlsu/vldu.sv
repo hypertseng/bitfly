@@ -257,7 +257,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
   // Counter to increase the VRF write address.
   vlen_t seq_word_wr_offset_d, seq_word_wr_offset_q;
 
-  logic is_mpu_load_d, is_mpu_load_q;
+  logic is_bmpu_load_d, is_bmpu_load_q;
   logic is_weight_d, is_weight_q;
 
   // Exception handling FSM
@@ -299,7 +299,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
     first_payload_byte_d = first_payload_byte_q;
     vrf_word_byte_cnt_d  = vrf_word_byte_cnt_q;
 
-    is_mpu_load_d = is_mpu_load_q;
+    is_bmpu_load_d = is_bmpu_load_q;
     is_weight_d = is_weight_q;
 
     // Vector instructions currently running
@@ -325,8 +325,8 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
     // Inform the main sequencer if we are idle
     pe_req_ready_o = !vinsn_queue_full;
 
-    if (pe_req_valid_i && pe_req_i.op == MPLE) begin
-      is_mpu_load_d = 1'b1;
+    if (pe_req_valid_i && pe_req_i.op == BMPLE) begin
+      is_bmpu_load_d = 1'b1;
       if (pe_req_i.is_weight)
         is_weight_d = 1'b1;
     end
@@ -445,7 +445,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
               // Follow the vrf_seq_byte, but without the vstart information
               automatic int unsigned vrf_seq_byte_cnt = axi_byte - lower_byte - axi_r_byte_pnt_q + vrf_word_byte_cnt_q;
               // And then shuffle it
-              automatic int unsigned vrf_byte = is_mpu_load_q ? vrf_seq_byte : shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.vtype.vsew);
+              automatic int unsigned vrf_byte = is_bmpu_load_q ? vrf_seq_byte : shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.vtype.vsew);
 
               // Is this byte a valid byte in the VRF word?
               // We compare vrf_seq_byte_cnt since vrf_seq_byte contains also the vstart contribution, while the issue_cnt_bytes
@@ -494,7 +494,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         result_queue_valid_d[result_queue_write_pnt_q] = {NrLanes{1'b1}};
 
         // Increase the VRF-write sequential counter
-        if (is_mpu_load_q) begin
+        if (is_bmpu_load_q) begin
           if ((seq_word_wr_offset_q + 1) % 4 == 0) begin
             seq_word_wr_offset_d = seq_word_wr_offset_q + 1 + 4;
           end else begin
@@ -640,7 +640,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       // Signal complete load
       load_complete_o = 1'b1;
 
-      is_mpu_load_d = 1'b0;
+      is_bmpu_load_d = 1'b0;
       is_weight_d   = 1'b0;
 
       // Update the commit counters and pointers
@@ -779,7 +779,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       first_result_queue_read_q     <= 1'b0;
       seq_word_wr_offset_q          <= '0;
       split_q                       <= '0;
-      is_mpu_load_q                 <= '0;
+      is_bmpu_load_q                 <= '0;
       is_weight_q                   <= '0;
     end else begin
       vinsn_running_q               <= vinsn_running_d;
@@ -798,7 +798,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       first_result_queue_read_q     <= first_result_queue_read_d;
       seq_word_wr_offset_q          <= seq_word_wr_offset_d;
       split_q                       <= split_d; 
-      is_mpu_load_q                 <= is_mpu_load_d;
+      is_bmpu_load_q                 <= is_bmpu_load_d;
       is_weight_q                   <= is_weight_d;
     end
   end

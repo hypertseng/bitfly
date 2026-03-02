@@ -31,8 +31,8 @@ add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group slide
 add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mask_b /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/i_operand_queue_mask_b/*
 add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mask_m /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/i_operand_queue_mask_m/*
 for {set queue 0}  {$queue < 4} {incr queue} {
-    add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mpu_act -group act[$queue] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/gen_mpu_act_queues[$queue]/i_mpu_act_queue/*
-    add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group mpu_wgt -group wgt[$queue] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/gen_mpu_wgt_queues[$queue]/i_mpu_wgt_queue/*
+    add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group bmpu_act -group act[$queue] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/gen_bmpu_act_queues[$queue]/i_bmpu_act_queue/*
+    add wave -noupdate -group Ara -group Lane[$1] -group operand_queues -group bmpu_wgt -group wgt[$queue] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/gen_bmpu_wgt_queues[$queue]/i_bmpu_wgt_queue/*
 }
 add wave -noupdate -group Ara -group Lane[$1] -group operand_queues /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_operand_queues/*
 
@@ -48,18 +48,18 @@ add wave -noupdate -group Ara -group Lane[$1] -group vmfpu -group simd_vdiv -gro
 add wave -noupdate -group Ara -group Lane[$1] -group vmfpu -group fpnew /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_vfus/i_vmfpu/fpu_gen/i_fpnew_bulk/*
 add wave -noupdate -group Ara -group Lane[$1] -group vmfpu /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_vfus/i_vmfpu/*
 
-add wave -noupdate -group Ara -group Lane[$1] -group mpu /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/*
-add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/*
+add wave -noupdate -group Ara -group Lane[$1] -group bmpu /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_bmpu/*
+add wave -noupdate -group Ara -group Lane[$1] -group bmpu -group sa /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_bmpu/u_sa/*
 for {set row 0}  {$row < 4} {incr row} {
     for {set col 0}  {$col < 4} {incr col} {
-        add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa -group tile[$row][$col] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/row_gen[$row]/col_gen[$col]/u_tile/*
-        add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa -group tile[$row][$col] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/row_gen[$row]/col_gen[$col]/u_tile/partial_sum_reg
+        add wave -noupdate -group Ara -group Lane[$1] -group bmpu -group sa -group pe[$row][$col] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_bmpu/u_sa/row_gen[$row]/col_gen[$col]/u_lbmac/*
+        add wave -noupdate -group Ara -group Lane[$1] -group bmpu -group sa -group pe[$row][$col] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_bmpu/u_sa/row_gen[$row]/col_gen[$col]/u_lbmac/partial_sum_reg
     }
 }
 for {set row 0}  {$row < 4} {incr row} {
     for {set col 0}  {$col < 4} {incr col} {
         for {set id 0}  {$id < 8} {incr id} {
-                    add wave -noupdate -group Ara -group Lane[$1] -group mpu -group sa -group tile[$row][$col] -group pe[$row][$col][$id] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_mpu/u_sa/row_gen[$row]/col_gen[$col]/u_tile/pe_array[$id]/u_pe/*
+                    add wave -noupdate -group Ara -group Lane[$1] -group bmpu -group sa -group pe[$row][$col] -group lbmac[$row][$col][$id] /ara_tb/dut/i_ara_soc/i_system/i_ara/gen_lanes[$1]/i_lane/i_bmpu/u_sa/row_gen[$row]/col_gen[$col]/u_pe/pe_array[$id]/u_lbmac/*
         }
     }
 }

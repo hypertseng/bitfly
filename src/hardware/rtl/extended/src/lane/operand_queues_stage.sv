@@ -58,13 +58,13 @@ module operand_queues_stage
     output logic [1:0] mask_operand_valid_o,
     input logic [1:0] mask_operand_ready_i,
     // SA 队列接口
-    output elen_t [3:0] mpu_act_operand_o,  // MPU 激活输入
-    output logic [3:0] mpu_act_operand_valid_o,
-    input logic [3:0] mpu_act_operand_ready_i,
+    output elen_t [3:0] bmpu_act_operand_o,  // MPU 激活输入
+    output logic [3:0] bmpu_act_operand_valid_o,
+    input logic [3:0] bmpu_act_operand_ready_i,
 
-    output elen_t [3:0] mpu_wgt_operand_o,        // MPU 权重输入
-    output logic  [3:0] mpu_wgt_operand_valid_o,
-    input  logic  [3:0] mpu_wgt_operand_ready_i
+    output elen_t [3:0] bmpu_wgt_operand_o,        // bmpu 权重输入
+    output logic  [3:0] bmpu_wgt_operand_valid_o,
+    input  logic  [3:0] bmpu_wgt_operand_ready_i
 );
 
   `include "common_cells/registers.svh"
@@ -347,64 +347,64 @@ module operand_queues_stage
 
   // SA激活值操作数队列f
   generate
-    for (genvar i = 0; i < 4; i++) begin : gen_mpu_act_queues
+    for (genvar i = 0; i < 4; i++) begin : gen_bmpu_act_queues
       // 共享队列实例
       operand_queue #(
-          .CmdBufDepth        (MpuInsnQueueDepth),
+          .CmdBufDepth        (BmpuInsnQueueDepth),
           .DataBufDepth       (5),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),
           .VLEN               (VLEN),
           .operand_queue_cmd_t(operand_queue_cmd_t)
-      ) i_mpu_act_queue (
+      ) i_bmpu_act_queue (
           .clk_i                    (clk_i),
           .rst_ni                   (rst_ni),
           .flush_i                  (1'b0),
           .lane_id_i                (lane_id_i),
           // 命令输入根据模式选择
-          .operand_queue_cmd_i      (operand_queue_cmd_i[MPUAct0+i]),
-          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[MPUAct0+i]),
+          .operand_queue_cmd_i      (operand_queue_cmd_i[BMPUAct0+i]),
+          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[BMPUAct0+i]),
           .cmd_pop_o                (),
           // 数据输入根据模式选择
-          .operand_i                (operand_i[MPUAct0+i]),
-          .operand_valid_i          (operand_valid_i[MPUAct0+i]),
-          .operand_issued_i         (operand_issued_i[MPUAct0+i]),
-          .operand_queue_ready_o    (operand_queue_ready_o[MPUAct0+i]),
+          .operand_i                (operand_i[BMPUAct0+i]),
+          .operand_valid_i          (operand_valid_i[BMPUAct0+i]),
+          .operand_issued_i         (operand_issued_i[BMPUAct0+i]),
+          .operand_queue_ready_o    (operand_queue_ready_o[BMPUAct0+i]),
           // 输出数据
-          .operand_o                (mpu_act_operand_o[i]),
+          .operand_o                (bmpu_act_operand_o[i]),
           .operand_target_fu_o      (  /* Unused */),
-          .operand_valid_o          (mpu_act_operand_valid_o[i]),
-          .operand_ready_i          (mpu_act_operand_ready_i[i])
+          .operand_valid_o          (bmpu_act_operand_valid_o[i]),
+          .operand_ready_i          (bmpu_act_operand_ready_i[i])
       );
     end
   endgenerate
 
   // SA权重队列
   generate
-    for (genvar i = 0; i < 4; i++) begin : gen_mpu_wgt_queues
+    for (genvar i = 0; i < 4; i++) begin : gen_bmpu_wgt_queues
       operand_queue #(
-          .CmdBufDepth        (MpuInsnQueueDepth),
+          .CmdBufDepth        (BmpuInsnQueueDepth),
           .DataBufDepth       (5),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),
           .VLEN               (VLEN),
           .operand_queue_cmd_t(operand_queue_cmd_t)
-      ) i_mpu_wgt_queue (
+      ) i_bmpu_wgt_queue (
           .clk_i                    (clk_i),
           .rst_ni                   (rst_ni),
           .flush_i                  (1'b0),
           .lane_id_i                (lane_id_i),
-          .operand_queue_cmd_i      (operand_queue_cmd_i[MPUWgt0+i]),
-          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[MPUWgt0+i]),
+          .operand_queue_cmd_i      (operand_queue_cmd_i[BMPUWgt0+i]),
+          .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[BMPUWgt0+i]),
           .cmd_pop_o                (),
-          .operand_i                (operand_i[MPUWgt0+i]),
-          .operand_valid_i          (operand_valid_i[MPUWgt0+i]),
-          .operand_issued_i         (operand_issued_i[MPUWgt0+i]),
-          .operand_queue_ready_o    (operand_queue_ready_o[MPUWgt0+i]),
-          .operand_o                (mpu_wgt_operand_o[i]),
+          .operand_i                (operand_i[BMPUWgt0+i]),
+          .operand_valid_i          (operand_valid_i[BMPUWgt0+i]),
+          .operand_issued_i         (operand_issued_i[BMPUWgt0+i]),
+          .operand_queue_ready_o    (operand_queue_ready_o[BMPUWgt0+i]),
+          .operand_o                (bmpu_wgt_operand_o[i]),
           .operand_target_fu_o      (  /* Unused */),
-          .operand_valid_o          (mpu_wgt_operand_valid_o[i]),
-          .operand_ready_i          (mpu_wgt_operand_ready_i[i])
+          .operand_valid_o          (bmpu_wgt_operand_valid_o[i]),
+          .operand_ready_i          (bmpu_wgt_operand_ready_i[i])
       );
     end
   endgenerate

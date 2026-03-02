@@ -158,10 +158,11 @@ module ara import ara_pkg::*; #(
     // Request token, for registration in the sequencer
     logic token;
 
-    logic [8:0]         k_dim;
-    logic               mpu_en;
+    logic [16:0]         k_dim;
+    logic [2:0]         prec;
+    logic               bmpu_en;
     logic               is_weight;
-    logic               mpu_output_en;
+    logic               bmpu_output_en;
     // elen_t              size;
   } ara_req_t;
 
@@ -203,9 +204,7 @@ module ara import ara_pkg::*; #(
   // Flush support for store exceptions
   logic lsu_ex_flush_lane, lsu_ex_flush_done;
   logic [NrLanes-1:0] lsu_ex_flush_stu;
-  // logic [8:0]         k_dim;
 
-  // assign k_dim = ara_req.k_dim;
 
   ara_dispatcher #(
     .CVA6Cfg           (CVA6Cfg           ),
@@ -263,7 +262,7 @@ module ara import ara_pkg::*; #(
   logic                            lsu_current_burst_exception;
   logic              [NrLanes-1:0] alu_vinsn_done;
   logic              [NrLanes-1:0] mfpu_vinsn_done;
-  logic              [NrLanes-1:0] mpu_insn_done;
+  logic              [NrLanes-1:0] bmpu_insn_done;
   // Interface with the operand requesters
   logic [NrVInsn-1:0][NrVInsn-1:0] global_hazard_table;
   // Ready for lane 0 (scalar operand fwd)
@@ -308,7 +307,7 @@ module ara import ara_pkg::*; #(
     .pe_resp_i             (pe_resp                  ),
     .alu_vinsn_done_i      (alu_vinsn_done[0]        ),
     .mfpu_vinsn_done_i     (mfpu_vinsn_done[0]       ),
-    .mpu_insn_done_i       (mpu_insn_done[0]         ),
+    .bmpu_insn_done_i       (bmpu_insn_done[0]         ),
     // Interface with the operand requesters
     .global_hazard_table_o (global_hazard_table      ),
     // Interface with the lane 0
@@ -409,7 +408,7 @@ module ara import ara_pkg::*; #(
       .pe_resp_o                       (pe_resp[lane]                       ),
       .alu_vinsn_done_o                (alu_vinsn_done[lane]                ),
       .mfpu_vinsn_done_o               (mfpu_vinsn_done[lane]               ),
-      .mpu_insn_done_o                 (mpu_insn_done[lane]                 ),
+      .bmpu_insn_done_o                 (bmpu_insn_done[lane]                 ),
       .global_hazard_table_i           (global_hazard_table                 ),
       // Interface with the slide unit
       .sldu_result_req_i               (sldu_result_req[lane]               ),

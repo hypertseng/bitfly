@@ -1,8 +1,8 @@
-module pe #(
+module lbmac #(
     parameter BIT_ACT    = 8,  // 激活值位宽（int8）
     parameter BIT_WEIGHT = 1   // 权值位宽（int1）
 ) (
-    input  logic        [ 7:0] weights,      // 8-bit 权重（1:保持原值，0:取反）
+    input  logic        [ 7:0] weights,      // 8-bit 权重
     input  logic        [63:0] activations,  // 64-bit 激活输入（8x int8）
     output logic signed [11:0] result        // 12-bit 有符号结果
 );
@@ -24,7 +24,7 @@ always_comb begin
   end
 end
   // ----------------------
-  // 树形累加结构（优化时序）
+  // 树形累加结构
   // ----------------------
   logic signed [10:0] sum_stage1[4];  // 第一级累加（11-bit）
   logic signed [11:0] sum_stage2[2];  // 第二级累加（12-bit）

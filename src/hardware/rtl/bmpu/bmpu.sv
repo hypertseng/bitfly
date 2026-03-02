@@ -1,4 +1,4 @@
-module mpu
+module bmpu
   import ara_pkg::*;
   import rvv_pkg::*;
   import cf_math_pkg::idx_width;
@@ -22,23 +22,23 @@ module mpu
     // Interface with the lane sequencer
     input  vfu_operation_t                          vfu_operation_i,
     input  logic                                    vfu_operation_valid_i,
-    output logic                                    mpu_ready_o,
-    output logic           [           NrVInsn-1:0] mpu_insn_done_o,
+    output logic                                    bmpu_ready_o,
+    output logic           [           NrVInsn-1:0] bmpu_insn_done_o,
     // Interface with the operand queues
-    input  elen_t          [   NrInputQueues - 1:0] mpu_act_operand_i,
-    input  logic           [   NrInputQueues - 1:0] mpu_act_operand_valid_i,
-    output logic           [   NrInputQueues - 1:0] mpu_act_operand_ready_o,
-    input  elen_t          [   NrInputQueues - 1:0] mpu_wgt_operand_i,
-    input  logic           [   NrInputQueues - 1:0] mpu_wgt_operand_valid_i,
-    output logic           [   NrInputQueues - 1:0] mpu_wgt_operand_ready_o,
+    input  elen_t          [   NrInputQueues - 1:0] bmpu_act_operand_i,
+    input  logic           [   NrInputQueues - 1:0] bmpu_act_operand_valid_i,
+    output logic           [   NrInputQueues - 1:0] bmpu_act_operand_ready_o,
+    input  elen_t          [   NrInputQueues - 1:0] bmpu_wgt_operand_i,
+    input  logic           [   NrInputQueues - 1:0] bmpu_wgt_operand_valid_i,
+    output logic           [   NrInputQueues - 1:0] bmpu_wgt_operand_ready_o,
     // Interface with the vector register file
-    output logic                                    mpu_result_req_o,
-    output vid_t           [                   NrResultQueues - 1:0] mpu_result_id_o,
-    output vaddr_t         [                   NrResultQueues - 1:0] mpu_result_addr_o,
-    output elen_t          [                   NrResultQueues - 1:0] mpu_result_wdata_o,
-    output strb_t          [                   NrResultQueues - 1:0] mpu_result_be_o,
-    input  logic                                    mpu_result_gnt_i,
-    output logic                                    mpu_output_en_o
+    output logic                                    bmpu_result_req_o,
+    output vid_t           [                   NrResultQueues - 1:0] bmpu_result_id_o,
+    output vaddr_t         [                   NrResultQueues - 1:0] bmpu_result_addr_o,
+    output elen_t          [                   NrResultQueues - 1:0] bmpu_result_wdata_o,
+    output strb_t          [                   NrResultQueues - 1:0] bmpu_result_be_o,
+    input  logic                                    bmpu_result_gnt_i,
+    output logic                                    bmpu_output_en_o
 );
 
   import cf_math_pkg::idx_width;
@@ -57,7 +57,7 @@ module mpu
   ////////////////////////////////
 
   // We store a certain number of in-flight vector instructions
-  localparam VInsnQueueDepth = MpuInsnQueueDepth;
+  localparam VInsnQueueDepth = BmpuInsnQueueDepth;
 
   struct packed {
     vfu_operation_t [VInsnQueueDepth-1:0] vinsn;
@@ -155,9 +155,10 @@ module mpu
     end
   end
 
-  logic mpu_valid;
-  logic [127:0] mpu_result [3:0];
-  logic [8:0] k_dim;
+  logic bmpu_valid;
+  logic [127:0] bmpu_result [3:0];
+  logic [16:0] k_dim;
+  logic [2:0] prec;
   logic sa_done_d, sa_done_q;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
@@ -176,12 +177,13 @@ module mpu
   ) u_sa (
       .clk_i            (clk_i),
       .rst_ni           (rst_ni),
-      .valid_i          (mpu_valid),
-      .output_en_i      (mpu_output_en_o),
-      .mpu_act_operand_i(mpu_act_operand_i),
-      .mpu_wgt_operand_i(mpu_wgt_operand_i),
+      .valid_i          (bmpu_valid),
+      .output_en_i      (bmpu_output_en_o),
+      .bmpu_act_operand_i(bmpu_act_operand_i),
+      .bmpu_wgt_operand_i(bmpu_wgt_operand_i),
       .k_dim_i          (k_dim),
-      .output_data_o    (mpu_result),
+      .prec_i           (prec),
+      .output_data_o    (bmpu_result),
       .sa_done_o        (sa_done_d)
   );
 
@@ -200,7 +202,7 @@ module mpu
   logic [8:0] element_cnt_issue;
   logic [8:0] element_cnt_commit;
 
-  always_comb begin : p_mpu
+  always_comb begin : p_bmpu
     // Maintain state
     vinsn_queue_d            = vinsn_queue_q;
     issue_cnt_d              = issue_cnt_q;
@@ -213,12 +215,12 @@ module mpu
     result_queue_cnt_d       = result_queue_cnt_q;
 
     // Inform our status to the lane controller
-    mpu_ready_o              = !vinsn_queue_full;
-    mpu_insn_done_o          = '0;
+    bmpu_ready_o              = !vinsn_queue_full;
+    bmpu_insn_done_o          = '0;
 
     // Do not acknowledge any operands
-    mpu_act_operand_ready_o  = '0;
-    mpu_wgt_operand_ready_o  = '0;
+    bmpu_act_operand_ready_o  = '0;
+    bmpu_wgt_operand_ready_o  = '0;
 
     // How many elements are we processing this cycle?
     issue_effective_eew      = unsigned'(vinsn_issue_q.vtype.vsew[1:0]);
@@ -229,8 +231,8 @@ module mpu
     element_cnt_buf_commit   = 8 * (1 << (unsigned'(EW64) - commit_effective_eew));
     element_cnt_commit       = {2'b0, element_cnt_buf_commit};
 
-    if (vinsn_issue_q.op == MPSE) begin
-      mpu_output_en_o = 1'b1;
+    if (vinsn_issue_q.op == BMPSE) begin
+      bmpu_output_en_o = 1'b1;
     end
 
     if (sa_done_q) begin  // sa computation done
@@ -261,23 +263,23 @@ module mpu
       // Do not accept operands if the result queue is full!
       if (!result_queue_full) begin
         // Do we have all the operands necessary for this instruction?
-        if ((|mpu_act_operand_valid_i) && (|mpu_wgt_operand_valid_i)) begin
+        if ((|bmpu_act_operand_valid_i) && (|bmpu_wgt_operand_valid_i)) begin
           // Issue the operation
-          mpu_valid = 1'b1;
+          bmpu_valid = 1'b1;
 
           // Acknowledge the operands of this instruction
-          mpu_act_operand_ready_o = '1;
-          mpu_wgt_operand_ready_o = '1;
+          bmpu_act_operand_ready_o = '1;
+          bmpu_wgt_operand_ready_o = '1;
         end
-        if (mpu_output_en_o) begin
+        if (bmpu_output_en_o) begin
           // How many elements are we committing with this word?
           automatic logic [8:0] element_cnt = element_cnt_issue;
 
           if (element_cnt > issue_cnt_q) element_cnt = issue_cnt_q;
           // Store the result in the result queue
           for (int unsigned i = 0; i < NrResultQueues / 2; i++) begin
-            result_queue_d[result_queue_write_pnt_q][i].wdata = mpu_result[i][63:0];
-            result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].wdata = mpu_result[i][127:64];
+            result_queue_d[result_queue_write_pnt_q][i].wdata = bmpu_result[i][63:0];
+            result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].wdata = bmpu_result[i][127:64];
             result_queue_d[result_queue_write_pnt_q][i].addr  = (k_dim * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew))) + i;
             result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].addr  = (k_dim * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew))) + i + (NrResultQueues / 2);
             result_queue_d[result_queue_write_pnt_q][i].id = vinsn_issue_q.id;
@@ -312,22 +314,22 @@ module mpu
     //  Write results into the VRF  //
     //////////////////////////////////
 
-    mpu_result_req_o = result_queue_valid_q[result_queue_read_pnt_q] && mpu_output_en_o;
+    bmpu_result_req_o = result_queue_valid_q[result_queue_read_pnt_q] && bmpu_output_en_o;
     for (int unsigned i = 0; i < NrResultQueues / 2; i++) begin
-      mpu_result_wdata_o[i] = result_queue_q[result_queue_read_pnt_q][i].wdata;
-      mpu_result_wdata_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].wdata;
-      mpu_result_addr_o[i] = result_queue_q[result_queue_read_pnt_q][i].addr;
-      mpu_result_addr_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].addr;
-      mpu_result_id_o[i] = result_queue_q[result_queue_read_pnt_q][i].id;
-      mpu_result_id_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].id;
-      mpu_result_be_o[i] = result_queue_q[result_queue_read_pnt_q][i].be;
-      mpu_result_be_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].be;
+      bmpu_result_wdata_o[i] = result_queue_q[result_queue_read_pnt_q][i].wdata;
+      bmpu_result_wdata_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].wdata;
+      bmpu_result_addr_o[i] = result_queue_q[result_queue_read_pnt_q][i].addr;
+      bmpu_result_addr_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].addr;
+      bmpu_result_id_o[i] = result_queue_q[result_queue_read_pnt_q][i].id;
+      bmpu_result_id_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].id;
+      bmpu_result_be_o[i] = result_queue_q[result_queue_read_pnt_q][i].be;
+      bmpu_result_be_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].be;
     end
 
 
     // Received a grant from the VRF.
     // Deactivate the request.
-    if (mpu_result_gnt_i) begin
+    if (bmpu_result_gnt_i) begin
       automatic logic [8:0] element_cnt = element_cnt_commit;
       result_queue_valid_d[result_queue_read_pnt_q] = 1'b0;
       result_queue_d[result_queue_read_pnt_q]       = '0;
@@ -358,18 +360,18 @@ module mpu
       if (vinsn_queue_d.commit_cnt != '0)
         commit_cnt_d = vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].vl;
 
-      mpu_insn_done_o[vinsn_commit.id] = 1'b1;
+      bmpu_insn_done_o[vinsn_commit.id] = 1'b1;
     end
 
     if (commit_cnt_q == '0) begin
-      mpu_output_en_o = 1'b0;
+      bmpu_output_en_o = 1'b0;
     end
 
     //////////////////////////////
     //  Accept new instruction  //
     //////////////////////////////
 
-    if (!vinsn_queue_full && vfu_operation_valid_i && (vfu_operation_i.vfu == MPU || vfu_operation_i.op == MPSE)) begin
+    if (!vinsn_queue_full && vfu_operation_valid_i && (vfu_operation_i.vfu == BMPU || vfu_operation_i.op == BMPSE)) begin
       vinsn_queue_d.vinsn[vinsn_queue_q.accept_pnt] = vfu_operation_i;
 
       // Initialize counters and alu state if the instruction queue was empty
@@ -379,26 +381,27 @@ module mpu
       if (vinsn_queue_d.commit_cnt == '0) commit_cnt_d = vfu_operation_i.vl;
 
       k_dim = vfu_operation_i.k_dim;
+      prec = vfu_operation_i.prec;
 
       // Bump pointers and counters of the vector instruction queue
       vinsn_queue_d.accept_pnt += 1;
       vinsn_queue_d.issue_cnt += 1;
       vinsn_queue_d.commit_cnt += 1;
 
-      if (vfu_operation_i.vfu == MPU) begin
-        mpu_output_en_o = 1'b0;
-        mpu_valid = 1'b0;
+      if (vfu_operation_i.vfu == BMPU) begin
+        bmpu_output_en_o = 1'b0;
+        bmpu_valid = 1'b0;
       end
     end
 
     if (sa_done_q) begin
       // Mark the vector instruction as being done
-      mpu_insn_done_o[vinsn_commit.id] = 1'b1;
-      mpu_valid = 1'b0;
+      bmpu_insn_done_o[vinsn_commit.id] = 1'b1;
+      bmpu_valid = 1'b0;
     end
 
 
-  end : p_mpu
+  end : p_bmpu
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin

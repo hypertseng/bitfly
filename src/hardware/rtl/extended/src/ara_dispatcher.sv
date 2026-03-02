@@ -181,7 +181,8 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
   riscv::instruction_t instr;
   assign instr = riscv::instruction_t'(acc_req_i.insn);
 
-  logic [8:0] k_dim_d, k_dim_q;
+  logic [16:0] k_dim_d, k_dim_q;
+  logic [2:0] prec_d , prec_q;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
@@ -201,6 +202,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
       reshuffle_eew_vd_q   <= rvv_pkg::EW8;
       pending_seg_mem_op_q <= 1'b0;
       k_dim_q              <= '0;
+      prec_q               <= '0;
     end else begin
       state_q              <= state_d;
       state_qq             <= state_q;
@@ -218,6 +220,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
       reshuffle_eew_vd_q   <= reshuffle_eew_vd_d;
       pending_seg_mem_op_q <= pending_seg_mem_op_d;
       k_dim_q              <= k_dim_d;
+      prec_q               <= prec_d;
     end
   end
 
@@ -420,6 +423,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
     acc_resp_o.resp_valid = 1'b0;
 
     k_dim_d = k_dim_q;
+    prec_d = prec_q;
 
     // fflags
     for (int lane = 0; lane < NrLanes; lane++) acc_resp_o.fflags |= fflags_ex_i[lane];
@@ -446,8 +450,8 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
     is_config            = 1'b0;
     ignore_zero_vl_check = 1'b0;
 
-    ara_req.mpu_en = 1'b0;
-    ara_req.mpu_output_en = 1'b0;
+    ara_req.bmpu_en = 1'b0;
+    ara_req.bmpu_output_en = 1'b0;
 
     // Saturation in any lane will raise vxsat flag
     csr_vxsat_d |= |vxsat_flag_i;
@@ -3580,7 +3584,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
             end
           end
 
-          // custom MPU instructions
+          // custom BMPU instructions
           riscv::OpcodeCustom0: begin
             // Instruction is of one of the RVV types
             automatic rvv_instruction_t insn = rvv_instruction_t'(instr.instr);
@@ -3589,7 +3593,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
 
             unique case (insn.custom0_type.func3)
               3'b010: begin // mple
-                ara_req.op = MPLE;
+                ara_req.op = BMPLE;
 
                 // The instruction is a load
                 is_vload = 1'b1;
@@ -3610,6 +3614,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 ara_req_valid     = 1'b1;
 
                 ara_req.k_dim = k_dim_q;
+                ara_req.prec = prec_q;
 
                 // Wait until the back-end answers to acknowledge those instructions
                 if ( ara_resp_valid ) begin
@@ -3639,12 +3644,12 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
 
               end
               3'b100: begin // mpse
-                ara_req.op = MPSE;
+                ara_req.op = BMPSE;
 
                 // The instruction is a store
                 is_vstore = 1'b1;
 
-                ara_req.mpu_output_en = 1'b1;
+                ara_req.bmpu_output_en = 1'b1;
 
                 // Wait before acknowledging this instruction
                 acc_resp_o.req_ready = 1'b0;
@@ -3658,6 +3663,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 ara_req.vtype.vsew = EW16;
 
                 ara_req.k_dim = k_dim_q;
+                ara_req.prec = prec_q;
 
                 // Wait until the back-end answers to acknowledge those instructions
                 if ( ara_resp_valid ) begin
@@ -3682,10 +3688,11 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
                 ara_req.vd      = insn.varith_type.rd;
                 ara_req.use_vd  = 1'b1;
                 acc_resp_o.resp_valid = 1'b1;
-                ara_req.op = MPMM;
+                ara_req.op = BMPMM;
                 ara_req_valid   = 1'b1;
-                ara_req.mpu_en = 1'b1;
+                ara_req.bmpu_en = 1'b1;
                 ara_req.k_dim = k_dim_q;
+                ara_req.prec = prec_q;
                 csr_vl_d = 4 * NrLanes * 4 * 8;
               end
               default: begin
@@ -3701,21 +3708,22 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
 
             // ara_req.vm = 1'b1;
 
-            ara_req.op = MPCFG;
+            ara_req.op = BMPCFG;
             //respond at the same cycle
             acc_resp_o.resp_valid = 1'b1;
 
             // csr_vtype_d.vsew = EW8;
-
-            k_dim_d = insn.custom1_type.uimm9;
-            ara_req.k_dim = insn.custom1_type.uimm9;
-            csr_vl_d = insn.custom1_type.uimm9 * 4 * NrLanes;
+            prec_d = insn.custom1_type.prec;
+            ara_req.prec = insn.custom1_type.prec;
+            k_dim_d = insn.custom1_type.kdim;
+            ara_req.k_dim = insn.custom1_type.kdim;
+            csr_vl_d = insn.custom1_type.kdim * 4 * NrLanes;
 
             is_config       = 1'b1;
 
-            acc_resp_o.result = insn.custom1_type.uimm9;;
+            acc_resp_o.result = insn.custom1_type.kdim;;
 
-            if (insn.custom1_type.uimm9 > 480) begin
+            if (insn.custom1_type.kdim > 480) begin
               illegal_insn = 1'b1;
             end
           end

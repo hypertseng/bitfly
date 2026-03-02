@@ -565,7 +565,7 @@ if {[catch {analyze -format sv \
         "$ROOT/include/rvv_pkg.sv" \
         "$ROOT/include/ara_pkg.sv" \
         "$ROOT/src/segment_sequencer.sv" \
-        "$ROOT/src/mpu/pe.sv" \
+        "$ROOT/src/bmpu/lbmac.sv" \
         "$ROOT/src/ctrl_registers.sv" \
         "$ROOT/src/cva6_accel_first_pass_decoder.sv" \
         "$ROOT/src/ara_dispatcher.sv" \
@@ -586,15 +586,15 @@ if {[catch {analyze -format sv \
         "$ROOT/src/vlsu/addrgen.sv" \
         "$ROOT/src/vlsu/vldu.sv" \
         "$ROOT/src/vlsu/vstu.sv" \
-        "$ROOT/src/mpu/tile.sv" \
+        "$ROOT/src/bmpu/pe.sv" \
         "$ROOT/src/lane/operand_queues_stage.sv" \
         "$ROOT/src/lane/valu.sv" \
         "$ROOT/src/lane/vmfpu.sv" \
         "$ROOT/src/lane/fixed_p_rounding.sv" \
         "$ROOT/src/vlsu/vlsu.sv" \
         "$ROOT/src/masku/masku.sv" \
-        "$ROOT/src/mpu/sa.sv" \
-        "$ROOT/src/mpu/mpu.sv" \
+        "$ROOT/src/bmpu/sa.sv" \
+        "$ROOT/src/bmpu/bmpu.sv" \
         "$ROOT/src/lane/vector_fus_stage.sv" \
         "$ROOT/src/lane/lane.sv" \
         "$ROOT/src/ara.sv" \

@@ -39,7 +39,7 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
     input  pe_resp_t            [NrPEs-1:0] pe_resp_i,
     input  logic                            alu_vinsn_done_i,
     input  logic                            mfpu_vinsn_done_i,
-    input  logic                            mpu_insn_done_i,
+    input  logic                            bmpu_insn_done_i,
     // Interface with the operand requesters
     output logic [NrVInsn-1:0][NrVInsn-1:0] global_hazard_table_o,
     // Only the slide unit can answer with a scalar response
@@ -247,9 +247,9 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
       [VSE:VSXE]           : vfu = VFU_StoreUnit;
       [VSLIDEUP:VSLIDEDOWN]: vfu = VFU_SlideUnit;
       [VMVXS:VFMVFS]       : vfu = VFU_None;
-      MPLE                 : vfu = VFU_LoadUnit;
-      MPSE                 : vfu = VFU_StoreUnit;
-      MPMM                 : vfu = MPU;
+      BMPLE                 : vfu = VFU_LoadUnit;
+      BMPSE                 : vfu = VFU_StoreUnit;
+      BMPMM                 : vfu = BMPU;
       default              : vfu = VFU_None;
     endcase
   endfunction : vfu
@@ -293,16 +293,16 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
       [VMVXS:VFMVFS]:
         for (int i = 0; i < NrVFUs; i++)
           if (i == VFU_None) target_vfus[i] = 1'b1;
-      MPLE:
+      BMPLE:
         for (int i = 0; i < NrVFUs; i++)
           if (i == VFU_LoadUnit) target_vfus[i] = 1'b1;
-      MPSE:
+      BMPSE:
         for (int i = 0; i < NrVFUs; i++)
-          if (i == VFU_StoreUnit || i == MPU) target_vfus[i] = 1'b1;
-      MPMM:
+          if (i == VFU_StoreUnit || i == BMPU) target_vfus[i] = 1'b1;
+      BMPMM:
         for (int i = 0; i < NrVFUs; i++)
-          if (i == MPU) target_vfus[i] = 1'b1;
-      MPCFG:
+          if (i == BMPU) target_vfus[i] = 1'b1;
+      BMPCFG:
         for (int i = 0; i < NrVFUs; i++)
           if (i == VFU_None) target_vfus[i] = 1'b1;
     endcase
@@ -321,7 +321,7 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
     VlduInsnQueueDepth,
     VstuInsnQueueDepth,
     NoneInsnQueueDepth,
-    MpuInsnQueueDepth
+    BmpuInsnQueueDepth
   };
 
   logic ara_req_token_d, ara_req_token_q;
@@ -488,9 +488,10 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
               hazard_vs1    : pe_req_d.hazard_vs1,
               hazard_vs2    : pe_req_d.hazard_vs2,
               k_dim         : ara_req_i.k_dim,
-              mpu_en        : ara_req_i.mpu_en,
+              prec          : ara_req_i.prec,
+              bmpu_en       : ara_req_i.bmpu_en,
               is_weight     : ara_req_i.is_weight,
-              mpu_output_en : ara_req_i.mpu_output_en,
+              bmpu_output_en: ara_req_i.bmpu_output_en,
               default       : '0
             };
 
@@ -664,7 +665,7 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
   assign insn_queue_done[VFU_StoreUnit] = |pe_resp_i[NrLanes+OffsetStore].vinsn_done;
   assign insn_queue_done[VFU_MaskUnit]  = |pe_resp_i[NrLanes+OffsetMask].vinsn_done;
   assign insn_queue_done[VFU_SlideUnit] = |pe_resp_i[NrLanes+OffsetSlide].vinsn_done;
-  assign insn_queue_done[MPU]           = mpu_insn_done_i;
+  assign insn_queue_done[BMPU]           = bmpu_insn_done_i;
   // Dummy counter, just for compatibility
   assign insn_queue_done[VFU_None]      = insn_queue_cnt_up[VFU_None];
 

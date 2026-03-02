@@ -1,4 +1,4 @@
-module tile #(
+module pe #(
     parameter BIT_ACT    = 8,   // 激活值位宽（int8）
     parameter BIT_WEIGHT = 1    // 权值位宽（int1）
 ) (
@@ -8,7 +8,7 @@ module tile #(
     input  logic         output_en,         // 输出使能信号
     input  logic [ 63:0] activations,       // 64-bit 激活输入（8x int8）
     input  logic [ 63:0] weights,           // 64-bit 权重输入（8x int1）
-    input  logic [127:0] input_output_reg,  // 来自其他 tile 的 output_reg 值
+    input  logic [127:0] input_output_reg,  // 来自其他 pe 的 output_reg 值
     output logic [ 63:0] weight_out,        // 权重寄存器输出
     output logic [ 63:0] activation_out,    // 激活寄存器输出
     output logic [127:0] output_out         // 输出寄存器输出（8x int8）
@@ -32,7 +32,7 @@ module tile #(
       foreach (partial_sum_reg[i]) partial_sum_reg[i] <= '0;
     end else begin
       if (output_en) begin
-        // 模式1：写入其他tile的输出值
+        // 模式1：写入其他pe的输出值
         output_reg <= input_output_reg;
       end else if (en) begin
         // 模式2：正常计算流程
@@ -69,13 +69,13 @@ module tile #(
   assign activation_out = activation_reg;  // 向右传递激活
   assign output_out     = output_reg;  // 向左传递输出
 
-  //--- PE阵列实例化（关键修复：权重索引对齐）---//
+  //--- lbmac阵列实例化---//
   generate
     for (genvar i = 0; i < 8; i++) begin : pe_array
-      pe #(
+      lbmac #(
           .BIT_ACT   (BIT_ACT),
           .BIT_WEIGHT(BIT_WEIGHT)
-      ) u_pe (
+      ) u_lbmac (
           .weights    (weights[i*8+:8]),  // 第i个8-bit段
           .activations(activations),      // 所有PE共享激活输入
           .result     (pe_outputs[i])     // 12-bit输出

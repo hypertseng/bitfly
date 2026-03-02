@@ -356,7 +356,7 @@ module addrgen import ara_pkg::*; import rvv_pkg::*; #(
           // Indexed: let the next stage take care of vstart
           VLXE, VSXE: vaddr_start = pe_req_q.scalar_op;
           // custom instructions
-          MPLE, MPSE: vaddr_start = lookahead_addr_e_q;
+          BMPLE, BMPSE: vaddr_start = lookahead_addr_e_q;
           default   : vaddr_start = '0;
         endcase // pe_req_q.op
 
@@ -368,7 +368,7 @@ module addrgen import ara_pkg::*; import rvv_pkg::*; #(
           vew     : pe_req_q.vtype.vsew[1:0],
           is_load : is_load(pe_req_q.op),
           // Unit-strided loads/stores trigger incremental AXI bursts.
-          is_burst: (pe_req_q.op inside {VLE, VSE, MPLE, MPSE}),
+          is_burst: (pe_req_q.op inside {VLE, VSE, BMPLE, BMPSE}),
           fault_only_first: pe_req_q.fault_only_first,
           vstart  : pe_req_q.vstart
         };

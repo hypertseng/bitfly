@@ -111,7 +111,7 @@ package ara_pkg;
   localparam int unsigned NoneInsnQueueDepth = 1;
   // Ara supports MaskuInsnQueueDepth = 1 only.
   localparam int unsigned MaskuInsnQueueDepth = 1;
-  localparam int unsigned MpuInsnQueueDepth = 4;
+  localparam int unsigned BmpuInsnQueueDepth = 4;
 
   ///////////////////
   //  Definitions  //
@@ -174,17 +174,17 @@ package ara_pkg;
     // Store instructions
     VSE, VSSE, VSXE,
     // custom instructions
-    MPCFG, MPLE, MPSE, MPMM
+    BMPCFG, BMPLE, BMPSE, BMPMM
   } ara_op_e;
 
   // Return true if op is a load operation
   function automatic logic is_load(ara_op_e op);
-    is_load = op inside {[VLE:VLXE], MPLE};
+    is_load = op inside {[VLE:VLXE], BMPLE};
   endfunction : is_load
 
   // Return true if op is a store operation
   function automatic logic is_store(ara_op_e op);
-    is_store = op inside {[VSE:VSXE], MPSE};
+    is_store = op inside {[VSE:VSXE], BMPSE};
   endfunction : is_store
 
   // Return true of op is either VCPOP or VFIRST
@@ -366,7 +366,7 @@ typedef struct packed {
   // cannot do so, therefore it is at the end of the enumeration.
   localparam int unsigned NrVFUs = 8;
   typedef enum logic [$clog2(NrVFUs)-1:0] {
-    VFU_Alu, VFU_MFpu, VFU_SlideUnit, VFU_MaskUnit, VFU_LoadUnit, VFU_StoreUnit, VFU_None, MPU
+    VFU_Alu, VFU_MFpu, VFU_SlideUnit, VFU_MaskUnit, VFU_LoadUnit, VFU_StoreUnit, VFU_None, BMPU
   } vfu_e;
 
   // Internally, each lane is treated as a processing element, between indexes
@@ -925,8 +925,8 @@ typedef struct packed {
   localparam int unsigned NrOperandQueues = 17;
   typedef enum logic [$clog2(NrOperandQueues)-1:0] {
     AluA, AluB, MulFPUA, MulFPUB, MulFPUC,
-    MPUAct0, MPUAct1, MPUAct2, MPUAct3,    // 4 个激活值操作数队列
-    MPUWgt0, MPUWgt1, MPUWgt2, MPUWgt3,        // 4 个激活值操作队列
+    BMPUAct0, BMPUAct1, BMPUAct2, BMPUAct3,    // 4 个激活值操作数队列
+    BMPUWgt0, BMPUWgt1, BMPUWgt2, BMPUWgt3,        // 4 个激活值操作队列
     MaskB, MaskM, StA, SlideAddrGenA
   } opqueue_e;
 

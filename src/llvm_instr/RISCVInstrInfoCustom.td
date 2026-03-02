@@ -6,17 +6,35 @@ def simm12_flag : Operand<XLenVT> {
   let PrintMethod = "printSImm12FlagOperand";
 }
 
-// U-Type指令模板 (mpcfg)
-class RVInstMPU<dag outs, dag ins, string opcodestr, string argstr>
-    : RVInstU<OPC_CUSTOM_1, outs, ins, opcodestr, argstr> {
-  bits<20> imm20;
-  let Inst{31-12} = imm20;    // 20-bit立即数
-  let Inst{11-7}  = 0;        // rd=0
-  let Inst{6-2}   = 0x0A;     // 特殊功能码
-  let Inst{1-0}   = 0x3;      // opcode固定后缀
+def BMPCFGImmAsmOperand : AsmOperandClass {
+  let Name = "BMPCFGImm";
+  let ParserMethod = "parseBMPCFGImm";
+  let RenderMethod = "addBMPCFGImmOperands";
+  let PredicateMethod = "isBMPCFGImm";
+  let DiagnosticType = "InvalidBMPCFGImm";
 }
 
-class RVInstMPLE<bits<3> funct3, dag outs, dag ins, 
+def bmpcfg_imm20 : Operand<XLenVT> {
+  let ParserMatchClass = BMPCFGImmAsmOperand;
+  let EncoderMethod = "getImmOpValue";
+  let DecoderMethod = "decodeUImmOperand<20>";
+  let PrintMethod = "printBMPCFGImm20";
+}
+
+class RVInstBMPU_CFG<dag outs, dag ins, string opcodestr, string argstr>
+    : RVInstU<OPC_CUSTOM_1, outs, ins, opcodestr, argstr> {
+
+  bits<20> imm20;
+
+  let Inst{31-12} = imm20;
+
+  let Inst{11-7}  = 0;      
+  let Inst{6-2}   = 0x0A;
+  let Inst{1-0}   = 0x3;
+}
+0000000 01101 00000 000 00000 0101011
+0000000 00001 11100 000 00000 0101011
+class RVInstBMPLE<bits<3> funct3, dag outs, dag ins, 
                 string opcodestr, string argstr>
     : RVInstIBase<funct3, OPC_CUSTOM_0, outs, ins, opcodestr, argstr> {
   
@@ -28,7 +46,7 @@ class RVInstMPLE<bits<3> funct3, dag outs, dag ins,
   let rd = 0;        // 目标寄存器固定为0
 }
 
-class RVInstMPSE<bits<3> funct3, dag outs, dag ins, 
+class RVInstBMPSE<bits<3> funct3, dag outs, dag ins, 
                string opcodestr, string argstr>
     : RVInstIBase<funct3, OPC_CUSTOM_0, outs, ins, opcodestr, argstr> {
   bits<12> imm12;
@@ -41,7 +59,7 @@ class RVInstMPSE<bits<3> funct3, dag outs, dag ins,
 }
 
 
-class RVInstMPMM<dag outs, dag ins>
+class RVInstBMPMM<dag outs, dag ins>
   : RVInst<outs, ins, "", "", [], InstFormatI> {
   bits<7> opcode;
   bits<3> funct3;
@@ -63,15 +81,23 @@ class RVInstMPMM<dag outs, dag ins>
 
 
 let hasSideEffects = 0 in {
-    // mpcfg指令 (U-Type)
-    def MCFG : RVInstMPU<(outs), (ins uimm20:$imm20), "mpcfg", "$imm20">, Sched<[WriteIALU]> {
-        let mayLoad = 0;
-        let mayStore = 0;
+    // bmpcfg指令 (U-Type)
+    def BMPCFG : RVInstBMPU_CFG<
+        (outs),
+        (ins bmpcfg_imm20:$imm),
+        "bmpcfg",
+        "$imm"
+    >, Sched<[WriteIALU]> {
+      let mayLoad = 0;
+      let mayStore = 0;
+
+      bits<20> imm;
+      let imm20 = imm;
     }
 
-    // mple指令 (I-Type)
-    def MPLE : RVInstMPLE<0b010, (outs), (ins GPRMem:$rs1, simm12_flag:$imm, uimm1:$isWeight),
-                          "mple", "${imm}(${rs1}), $isWeight"> {
+    // bmple指令 (I-Type)
+    def BMPLE : RVInstBMPLE<0b010, (outs), (ins GPRMem:$rs1, simm12_flag:$imm, uimm1:$isWeight),
+                          "bmple", "${imm}(${rs1}), $isWeight"> {
       // 寄存器字段位置
       let rd = 0;    // 目标寄存器固定为0
       
@@ -83,26 +109,26 @@ let hasSideEffects = 0 in {
       bits<11> imm;
       let Inst{31} = isWeight; // 手动分配最高位
       let Inst{30-20} = imm;   // 手动分配低11位
-      let DecoderMethod = "decodeMPLE"; // 指定解码函数
+      let DecoderMethod = "decodeBMPLE"; // 指定解码函数
     }
 
-    // mpse指令 (I-Type)
-    def MPSE : RVInstMPSE<0b100, (outs), (ins GPRMem:$rs1, simm12:$imm12),
-                        "mpse", "${imm12}(${rs1})"> {
+    // bmpse指令 (I-Type)
+    def BMPSE : RVInstBMPSE<0b100, (outs), (ins GPRMem:$rs1, simm12:$imm12),
+                        "bmpse", "${imm12}(${rs1})"> {
         let rd = 0;
         let mayLoad = 0;
         let mayStore = 1;
-        let DecoderMethod = "decodeMPSE"; // 指定解码函数
+        let DecoderMethod = "decodeBMPSE"; // 指定解码函数
     }
 
-    // // mpmm伪指令定义
-    def MPMM : RVInstMPMM<(outs), (ins)> {
+    // // bmpmm伪指令定义
+    def BMPMM : RVInstBMPMM<(outs), (ins)> {
         let mayLoad = 0;
         let mayStore = 0;
-        let AsmString = "mpmm"; // 汇编格式
+        let AsmString = "bmpmm"; // 汇编格式
     }
     
 }
 
-// 给 mpse 指令添加反汇编别名
-def : InstAlias<"mpse ${imm12}(${rs1})", (MPSE GPR:$rs1, simm12:$imm12)>;
+// 给 bmpse 指令添加反汇编别名
+def : InstAlias<"bmpse ${imm12}(${rs1})", (BMPSE GPR:$rs1, simm12:$imm12)>;

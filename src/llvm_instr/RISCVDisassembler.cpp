@@ -496,13 +496,13 @@ static DecodeStatus decodeCSSPushPopchk(MCInst &Inst, uint32_t Insn,
                                         uint64_t Address,
                                         const MCDisassembler *Decoder);
 
-static DecodeStatus decodeMPLE(MCInst &Inst, unsigned Insn, uint64_t Address,
+static DecodeStatus decodeBMPLE(MCInst &Inst, unsigned Insn, uint64_t Address,
                                const MCDisassembler *Decoder);
 
-static DecodeStatus decodeMPSE(MCInst &Inst, unsigned Insn, uint64_t Address,
+static DecodeStatus decodeBMPSE(MCInst &Inst, unsigned Insn, uint64_t Address,
                                const MCDisassembler *Decoder);
 
-static DecodeStatus decodeMPMM(MCInst &MI, uint32_t Insn, uint64_t Addr,
+static DecodeStatus decodeBMPMM(MCInst &MI, uint32_t Insn, uint64_t Addr,
                                const MCDisassembler *Decoder);
 
 #include "RISCVGenDisassemblerTables.inc"
@@ -904,9 +904,8 @@ DecodeStatus RISCVDisassembler::getInstruction(MCInst &MI, uint64_t &Size,
     return MCDisassembler::Fail;
 }
 
-// 修正后的decodeMPLE函数 (RISCVDisassembler.cpp)
-static DecodeStatus decodeMPLE(MCInst &Inst, uint32_t Insn, uint64_t Address,
-                               const MCDisassembler *Decoder)
+static DecodeStatus decodeBMPLE(MCInst &Inst, uint32_t Insn, uint64_t Address,
+                                const MCDisassembler *Decoder)
 {
     // 根据指令格式调整字段提取位置
     uint32_t Rs1 = fieldFromInstruction(Insn, 15, 5);    // rs1在15-19位
@@ -929,15 +928,15 @@ static DecodeStatus decodeMPLE(MCInst &Inst, uint32_t Insn, uint64_t Address,
     return MCDisassembler::Success;
 }
 
-static DecodeStatus decodeMPSE(MCInst &Inst, uint32_t Insn, uint64_t Address,
-                               const MCDisassembler *Decoder)
+static DecodeStatus decodeBMPSE(MCInst &Inst, uint32_t Insn, uint64_t Address,
+                                const MCDisassembler *Decoder)
 {
     // 根据指令格式调整字段提取位置
     uint32_t Rs1 = fieldFromInstruction(Insn, 15, 5);    // rs1在15-19位
     uint32_t imm = fieldFromInstruction(Insn, 20, 12);   // 立即数在20-31位
     uint32_t funct3 = fieldFromInstruction(Insn, 12, 3); // funct3在12-14位
 
-    // 验证funct3匹配（确保是MPSE指令）
+    // 验证funct3匹配（确保是BMPSE指令）
     if (funct3 != 0b100)
         return MCDisassembler::Fail;
 
@@ -948,13 +947,19 @@ static DecodeStatus decodeMPSE(MCInst &Inst, uint32_t Insn, uint64_t Address,
     return MCDisassembler::Success;
 }
 
-static DecodeStatus decodeMPMM(MCInst &MI, uint32_t Insn, uint64_t Addr,
-                               const MCDisassembler *Decoder)
+static DecodeStatus decodeBMPMM(MCInst &MI, uint32_t Insn, uint64_t Addr,
+                                const MCDisassembler *Decoder)
 {
     // 验证指令编码（与TableGen定义一致）
     if ((Insn & 0xFE00707F) != 0x0000200B)
         return MCDisassembler::Fail;
 
-    // MI.setOpcode(RISCV::MPMM);
+    // MI.setOpcode(RISCV::BMPMM);
     return MCDisassembler::Success;
+}
+
+static DecodeStatus decodeBMPCFGImm20(MCInst &Inst, uint32_t Imm,
+                                      uint64_t Address, const void *Decoder) {
+  Inst.addOperand(MCOperand::createImm(Imm));
+  return MCDisassembler::Success;
 }

@@ -35,7 +35,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
     input  logic                 [NrOperandQueues-1:0]    operand_request_ready_i,
     output logic                                          alu_vinsn_done_o,
     output logic                                          mfpu_vinsn_done_o,
-    output logic                                          mpu_insn_done_o,
+    output logic                                          bmpu_insn_done_o,
     // Interface with the Operand Queue (MaskB - for VRGATHER)
     input  logic                                          mask_b_cmd_pop_i,
     // Interface with the lane's VFUs
@@ -45,9 +45,9 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
     input  logic                 [NrVInsn-1:0]            alu_vinsn_done_i,
     input  logic                                          mfpu_ready_i,
     input  logic                 [NrVInsn-1:0]            mfpu_vinsn_done_i,
-    input  logic                                          mpu_ready_i,
-    input  logic                 [NrVInsn-1:0]            mpu_insn_done_i,
-    output logic                                          is_mpu_store_o,
+    input  logic                                          bmpu_ready_i,
+    input  logic                 [NrVInsn-1:0]            bmpu_insn_done_i,
+    output logic                                          is_bmpu_store_o,
 
     // Masku interface for vrgather/vcompress
     input  logic                                          masku_vrgat_req_valid_i,
@@ -96,7 +96,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
 
 
   always_comb begin
-    is_mpu_store_o = pe_req.op == MPSE;
+    is_bmpu_store_o = pe_req.op == BMPSE;
   end
 
   always_comb begin
@@ -260,7 +260,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
   logic           vfu_operation_valid_d;
 
   // Cut the path
-  logic alu_vinsn_done_d, mfpu_vinsn_done_d, mpu_insn_done_d;
+  logic alu_vinsn_done_d, mfpu_vinsn_done_d, bmpu_insn_done_d;
 
   // Returns true if the corresponding lane VFU is ready.
   function automatic logic vfu_ready(vfu_e vfu, logic alu_ready_i, logic mfpu_ready_i);
@@ -269,7 +269,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
       VFU_Alu,
       VFU_MaskUnit: vfu_ready = alu_ready_i;
       VFU_MFpu    : vfu_ready = mfpu_ready_i;
-      MPU         : vfu_ready = mpu_ready_i;
+      BMPU         : vfu_ready = bmpu_ready_i;
       default:;
     endcase
   endfunction : vfu_ready
@@ -282,10 +282,10 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
     pe_req_ready = 1'b1;
 
     // Loops that finished execution
-    vinsn_done_d         = alu_vinsn_done_i | mfpu_vinsn_done_i | mpu_insn_done_i;
+    vinsn_done_d         = alu_vinsn_done_i | mfpu_vinsn_done_i | bmpu_insn_done_i;
     alu_vinsn_done_d     = |alu_vinsn_done_i;
     mfpu_vinsn_done_d    = |mfpu_vinsn_done_i;
-    mpu_insn_done_d      = |mpu_insn_done_i;
+    bmpu_insn_done_d      = |bmpu_insn_done_i;
     pe_resp_o.vinsn_done = vinsn_done_q;
 
     // Make no requests to the operand requester
@@ -330,15 +330,15 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
           // VRGATHER/VCOMPRESS use the MaskB opqueue with non-traditional request scheme
           pe_req_ready = !(operand_request_valid_o[MaskB]) && ((vrgat_state_q == IDLE) && !masku_vrgat_req_valid_q);
         end
-        MPU : begin
-          pe_req_ready = !(operand_request_valid_o[MPUAct0] ||
-            operand_request_valid_o[MPUAct1] ||
-            operand_request_valid_o[MPUAct2] ||
-            operand_request_valid_o[MPUAct3] ||
-            operand_request_valid_o[MPUWgt0] ||
-            operand_request_valid_o[MPUWgt1] ||
-            operand_request_valid_o[MPUWgt2] ||
-            operand_request_valid_o[MPUWgt3]);
+        BMPU : begin
+          pe_req_ready = !(operand_request_valid_o[BMPUAct0] ||
+            operand_request_valid_o[BMPUAct1] ||
+            operand_request_valid_o[BMPUAct2] ||
+            operand_request_valid_o[BMPUAct3] ||
+            operand_request_valid_o[BMPUWgt0] ||
+            operand_request_valid_o[BMPUWgt1] ||
+            operand_request_valid_o[BMPUWgt2] ||
+            operand_request_valid_o[BMPUWgt3]);
         end
         default:;
       endcase
@@ -366,8 +366,9 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
         cvt_resize     : pe_req.cvt_resize,
         vtype          : pe_req.vtype,
         k_dim          : pe_req.k_dim,
-        mpu_en         : pe_req.mpu_en,
-        mpu_output_en  : pe_req.mpu_output_en,
+        prec           : pe_req.prec,
+        bmpu_en        : pe_req.bmpu_en,
+        bmpu_output_en : pe_req.bmpu_output_en,
         default        : '0
       };
       vfu_operation_d.vtype.vsew = pe_req.op inside {[VMFEQ:VMSGT]} ? pe_req.eew_vs2 : pe_req.vtype.vsew;
@@ -599,12 +600,12 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
           operand_request[StA] = '{
             id      : pe_req.id,
             vs      : pe_req.vs1,
-            eew     : (pe_req.op == MPSE) ? EW16 : pe_req.old_eew_vs1,
+            eew     : (pe_req.op == BMPSE) ? EW16 : pe_req.old_eew_vs1,
             conv    : pe_req.conversion_vs1,
             scale_vl: pe_req.scale_vl,
             vtype   : pe_req.vtype,
             vl      : vfu_operation_d.vl,
-            vstart  : (pe_req.op == MPSE) ? (pe_req.k_dim * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane : vfu_operation_d.vstart,
+            vstart  : (pe_req.op == BMPSE) ? (pe_req.k_dim * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane : vfu_operation_d.vstart,
             hazard  : pe_req.hazard_vs1 | pe_req.hazard_vd,
             target_fu : ALU_SLDU,
             cvt_resize: CVT_SAME,
@@ -957,9 +958,9 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
           };
           operand_request_push[MaskB] = 1'b1;
         end
-        MPU: begin
+        BMPU: begin
           for (int i = 0; i < 4; i++) begin
-            operand_request[MPUAct0 + i] = '{
+            operand_request[BMPUAct0 + i] = '{
                 id         : pe_req.id,
                 vs         : pe_req.vs1,
                 eew        : pe_req.eew_vs1,
@@ -975,11 +976,11 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
                 target_fu  : ALU_SLDU,
                 default    : '0
             };
-            operand_request_push[MPUAct0 + i] = 1'b1;
+            operand_request_push[BMPUAct0 + i] = 1'b1;
           end
 
           for (int i = 0; i < 4; i++) begin
-            operand_request[MPUWgt0 + i] = '{
+            operand_request[BMPUWgt0 + i] = '{
                 id         : pe_req.id,
                 vs         : pe_req.vs1,
                 eew        : pe_req.eew_vs1,
@@ -995,7 +996,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
                 target_fu  : ALU_SLDU,
                 default    : '0
             };
-            operand_request_push[MPUWgt0 + i] = 1'b1;
+            operand_request_push[BMPUWgt0 + i] = 1'b1;
           end
         end
         default:;
@@ -1029,7 +1030,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
 
       alu_vinsn_done_o  <= 1'b0;
       mfpu_vinsn_done_o <= 1'b0;
-      mpu_insn_done_o   <= 1'b0;
+      bmpu_insn_done_o   <= 1'b0;
 
       vrgat_state_q       <= IDLE;
       vrgat_cmd_req_cnt_q <= '0;
@@ -1042,7 +1043,7 @@ module lane_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::
 
       alu_vinsn_done_o  <= alu_vinsn_done_d;
       mfpu_vinsn_done_o <= mfpu_vinsn_done_d;
-      mpu_insn_done_o   <= mpu_insn_done_d;
+      bmpu_insn_done_o   <= bmpu_insn_done_d;
 
       vrgat_state_q       <= vrgat_state_d;
       vrgat_cmd_req_cnt_q <= vrgat_cmd_req_cnt_d;
