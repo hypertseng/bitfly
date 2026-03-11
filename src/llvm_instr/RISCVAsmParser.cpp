@@ -429,7 +429,7 @@ namespace
 
     struct BMPCFGImmOp
     {
-      unsigned Val; // [19:17]=prec, [16:0]=k
+      unsigned Val; // [24:22]=prec, [21:5]=k, [4:2]=mtile_code, [1:0]=ntile_code
     };
 
     SMLoc StartLoc, EndLoc;
@@ -4395,6 +4395,31 @@ ParseStatus RISCVAsmParser::parseBMPCFGImm(OperandVector &Operands)
   if (getParser().parseExpression(KExpr))
     return ParseStatus::Failure;
 
+  // Backward-compatible form: bmpcfg prec, k
+  // Extended form:          bmpcfg prec, k, mtile, ntile
+  int64_t MTile = 8;
+  int64_t NTile = 16;
+  if (getLexer().is(AsmToken::Comma))
+  {
+    (void)getParser().Lex();
+    const MCExpr *MTileExpr;
+    if (getParser().parseExpression(MTileExpr))
+      return ParseStatus::Failure;
+    if (getParser().parseComma())
+      return ParseStatus::Failure;
+    const MCExpr *NTileExpr;
+    if (getParser().parseExpression(NTileExpr))
+      return ParseStatus::Failure;
+
+    auto *MTileCE = dyn_cast<MCConstantExpr>(MTileExpr);
+    auto *NTileCE = dyn_cast<MCConstantExpr>(NTileExpr);
+    if (!MTileCE || !NTileCE)
+      return Error(S, "bmpcfg expects constant mtile/ntile immediates");
+
+    MTile = MTileCE->getValue();
+    NTile = NTileCE->getValue();
+  }
+
   auto *PrecCE = dyn_cast<MCConstantExpr>(PrecExpr);
   auto *KCE = dyn_cast<MCConstantExpr>(KExpr);
 
@@ -4410,7 +4435,55 @@ ParseStatus RISCVAsmParser::parseBMPCFGImm(OperandVector &Operands)
   if (K < 0 || K > 0x1FFFF)
     return Error(S, "k overflow");
 
-  unsigned Packed = (Prec << 17) | K;
+  unsigned MCode = 0;
+  switch (MTile)
+  {
+  case 8:
+    MCode = 0;
+    break;
+  case 12:
+    MCode = 1;
+    break;
+  case 16:
+    MCode = 2;
+    break;
+  case 20:
+    MCode = 3;
+    break;
+  case 24:
+    MCode = 4;
+    break;
+  case 28:
+    MCode = 5;
+    break;
+  case 32:
+    MCode = 6;
+    break;
+  default:
+    return Error(S, "mtile must be one of {8,12,16,20,24,28,32}");
+  }
+
+  unsigned NCode = 0;
+  switch (NTile)
+  {
+  case 16:
+    NCode = 0;
+    break;
+  case 32:
+    NCode = 1;
+    break;
+  case 48:
+    NCode = 2;
+    break;
+  case 64:
+    NCode = 3;
+    break;
+  default:
+    return Error(S, "ntile must be one of {16,32,48,64}");
+  }
+
+  unsigned Cfg5 = (MCode << 2) | NCode;
+  unsigned Packed = (Prec << 22) | (K << 5) | Cfg5;
 
   Operands.push_back(RISCVOperand::createBMPCFGImm(Packed, S, getLoc()));
 

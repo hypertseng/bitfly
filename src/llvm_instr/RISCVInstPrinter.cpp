@@ -369,13 +369,18 @@ void RISCVInstPrinter::printSImm12FlagOperand(const MCInst *MI, unsigned OpNo,
   OS << formatImm(imm11);
 }
 
-void RISCVInstPrinter::printBMPCFGImm20(const MCInst *MI, unsigned OpNo,
+void RISCVInstPrinter::printBMPCFGImm25(const MCInst *MI, unsigned OpNo,
                                         const MCSubtargetInfo &STI,
                                         raw_ostream &O)
 {
   int64_t Imm = MI->getOperand(OpNo).getImm();
-  int64_t Prec = (Imm >> 17) & 0x7;
-  int64_t K = Imm & 0x1FFFF;
+  int64_t Prec = (Imm >> 22) & 0x7;
+  int64_t K = (Imm >> 5) & 0x1FFFF;
+  int64_t MCode = (Imm >> 2) & 0x7;
+  int64_t NCode = Imm & 0x3;
 
-  O << Prec << ", " << K;
+  int64_t MTile = 8 + MCode * 4;
+  int64_t NTile = 16 + NCode * 16;
+
+  O << Prec << ", " << K << ", " << MTile << ", " << NTile;
 }

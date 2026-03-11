@@ -35,78 +35,81 @@ using namespace llvm;
 STATISTIC(MCNumEmitted, "Number of MC instructions emitted");
 STATISTIC(MCNumFixups, "Number of MC fixups created");
 
-namespace {
-class RISCVMCCodeEmitter : public MCCodeEmitter {
-  RISCVMCCodeEmitter(const RISCVMCCodeEmitter &) = delete;
-  void operator=(const RISCVMCCodeEmitter &) = delete;
-  MCContext &Ctx;
-  MCInstrInfo const &MCII;
+namespace
+{
+  class RISCVMCCodeEmitter : public MCCodeEmitter
+  {
+    RISCVMCCodeEmitter(const RISCVMCCodeEmitter &) = delete;
+    void operator=(const RISCVMCCodeEmitter &) = delete;
+    MCContext &Ctx;
+    MCInstrInfo const &MCII;
 
-public:
-  RISCVMCCodeEmitter(MCContext &ctx, MCInstrInfo const &MCII)
-      : Ctx(ctx), MCII(MCII) {}
+  public:
+    RISCVMCCodeEmitter(MCContext &ctx, MCInstrInfo const &MCII)
+        : Ctx(ctx), MCII(MCII) {}
 
-  ~RISCVMCCodeEmitter() override = default;
+    ~RISCVMCCodeEmitter() override = default;
 
-  void encodeInstruction(const MCInst &MI, SmallVectorImpl<char> &CB,
-                         SmallVectorImpl<MCFixup> &Fixups,
-                         const MCSubtargetInfo &STI) const override;
+    void encodeInstruction(const MCInst &MI, SmallVectorImpl<char> &CB,
+                           SmallVectorImpl<MCFixup> &Fixups,
+                           const MCSubtargetInfo &STI) const override;
 
-  void expandFunctionCall(const MCInst &MI, SmallVectorImpl<char> &CB,
-                          SmallVectorImpl<MCFixup> &Fixups,
-                          const MCSubtargetInfo &STI) const;
+    void expandFunctionCall(const MCInst &MI, SmallVectorImpl<char> &CB,
+                            SmallVectorImpl<MCFixup> &Fixups,
+                            const MCSubtargetInfo &STI) const;
 
-  void expandTLSDESCCall(const MCInst &MI, SmallVectorImpl<char> &CB,
-                         SmallVectorImpl<MCFixup> &Fixups,
-                         const MCSubtargetInfo &STI) const;
-
-  void expandAddTPRel(const MCInst &MI, SmallVectorImpl<char> &CB,
-                      SmallVectorImpl<MCFixup> &Fixups,
-                      const MCSubtargetInfo &STI) const;
-
-  void expandLongCondBr(const MCInst &MI, SmallVectorImpl<char> &CB,
-                        SmallVectorImpl<MCFixup> &Fixups,
-                        const MCSubtargetInfo &STI) const;
-
-  /// TableGen'erated function for getting the binary encoding for an
-  /// instruction.
-  uint64_t getBinaryCodeForInstr(const MCInst &MI,
-                                 SmallVectorImpl<MCFixup> &Fixups,
-                                 const MCSubtargetInfo &STI) const;
-
-  /// Return binary encoding of operand. If the machine operand requires
-  /// relocation, record the relocation and return zero.
-  uint64_t getMachineOpValue(const MCInst &MI, const MCOperand &MO,
-                             SmallVectorImpl<MCFixup> &Fixups,
-                             const MCSubtargetInfo &STI) const;
-
-  uint64_t getImmOpValueAsr1(const MCInst &MI, unsigned OpNo,
-                             SmallVectorImpl<MCFixup> &Fixups,
-                             const MCSubtargetInfo &STI) const;
-
-  uint64_t getImmOpValue(const MCInst &MI, unsigned OpNo,
-                         SmallVectorImpl<MCFixup> &Fixups,
-                         const MCSubtargetInfo &STI) const;
-
-  unsigned getVMaskReg(const MCInst &MI, unsigned OpNo,
-                       SmallVectorImpl<MCFixup> &Fixups,
-                       const MCSubtargetInfo &STI) const;
-
-  unsigned getRlistOpValue(const MCInst &MI, unsigned OpNo,
+    void expandTLSDESCCall(const MCInst &MI, SmallVectorImpl<char> &CB,
                            SmallVectorImpl<MCFixup> &Fixups,
                            const MCSubtargetInfo &STI) const;
 
-  unsigned getRegReg(const MCInst &MI, unsigned OpNo,
-                     SmallVectorImpl<MCFixup> &Fixups,
-                     const MCSubtargetInfo &STI) const;
-  uint64_t getBMPCFGImm20OpValue(const MCInst &MI, unsigned OpNo,
-                                 SmallVectorImpl<MCFixup> &Fixups,
-                                 const MCSubtargetInfo &STI) const;
-};
+    void expandAddTPRel(const MCInst &MI, SmallVectorImpl<char> &CB,
+                        SmallVectorImpl<MCFixup> &Fixups,
+                        const MCSubtargetInfo &STI) const;
+
+    void expandLongCondBr(const MCInst &MI, SmallVectorImpl<char> &CB,
+                          SmallVectorImpl<MCFixup> &Fixups,
+                          const MCSubtargetInfo &STI) const;
+
+    /// TableGen'erated function for getting the binary encoding for an
+    /// instruction.
+    uint64_t getBinaryCodeForInstr(const MCInst &MI,
+                                   SmallVectorImpl<MCFixup> &Fixups,
+                                   const MCSubtargetInfo &STI) const;
+
+    /// Return binary encoding of operand. If the machine operand requires
+    /// relocation, record the relocation and return zero.
+    uint64_t getMachineOpValue(const MCInst &MI, const MCOperand &MO,
+                               SmallVectorImpl<MCFixup> &Fixups,
+                               const MCSubtargetInfo &STI) const;
+
+    uint64_t getImmOpValueAsr1(const MCInst &MI, unsigned OpNo,
+                               SmallVectorImpl<MCFixup> &Fixups,
+                               const MCSubtargetInfo &STI) const;
+
+    uint64_t getImmOpValue(const MCInst &MI, unsigned OpNo,
+                           SmallVectorImpl<MCFixup> &Fixups,
+                           const MCSubtargetInfo &STI) const;
+
+    unsigned getVMaskReg(const MCInst &MI, unsigned OpNo,
+                         SmallVectorImpl<MCFixup> &Fixups,
+                         const MCSubtargetInfo &STI) const;
+
+    unsigned getRlistOpValue(const MCInst &MI, unsigned OpNo,
+                             SmallVectorImpl<MCFixup> &Fixups,
+                             const MCSubtargetInfo &STI) const;
+
+    unsigned getRegReg(const MCInst &MI, unsigned OpNo,
+                       SmallVectorImpl<MCFixup> &Fixups,
+                       const MCSubtargetInfo &STI) const;
+    uint64_t getBMPCFGImm25OpValue(const MCInst &MI, unsigned OpNo,
+                                   SmallVectorImpl<MCFixup> &Fixups,
+                                   const MCSubtargetInfo &STI) const;
+  };
 } // end anonymous namespace
 
 MCCodeEmitter *llvm::createRISCVMCCodeEmitter(const MCInstrInfo &MCII,
-                                              MCContext &Ctx) {
+                                              MCContext &Ctx)
+{
   return new RISCVMCCodeEmitter(Ctx, MCII);
 }
 
@@ -121,20 +124,28 @@ MCCodeEmitter *llvm::createRISCVMCCodeEmitter(const MCInstrInfo &MCII,
 void RISCVMCCodeEmitter::expandFunctionCall(const MCInst &MI,
                                             SmallVectorImpl<char> &CB,
                                             SmallVectorImpl<MCFixup> &Fixups,
-                                            const MCSubtargetInfo &STI) const {
+                                            const MCSubtargetInfo &STI) const
+{
   MCInst TmpInst;
   MCOperand Func;
   MCRegister Ra;
-  if (MI.getOpcode() == RISCV::PseudoTAIL) {
+  if (MI.getOpcode() == RISCV::PseudoTAIL)
+  {
     Func = MI.getOperand(0);
     Ra = RISCVII::getTailExpandUseRegNo(STI.getFeatureBits());
-  } else if (MI.getOpcode() == RISCV::PseudoCALLReg) {
+  }
+  else if (MI.getOpcode() == RISCV::PseudoCALLReg)
+  {
     Func = MI.getOperand(1);
     Ra = MI.getOperand(0).getReg();
-  } else if (MI.getOpcode() == RISCV::PseudoCALL) {
+  }
+  else if (MI.getOpcode() == RISCV::PseudoCALL)
+  {
     Func = MI.getOperand(0);
     Ra = RISCV::X1;
-  } else if (MI.getOpcode() == RISCV::PseudoJump) {
+  }
+  else if (MI.getOpcode() == RISCV::PseudoJump)
+  {
     Func = MI.getOperand(1);
     Ra = MI.getOperand(0).getReg();
   }
@@ -163,7 +174,8 @@ void RISCVMCCodeEmitter::expandFunctionCall(const MCInst &MI,
 void RISCVMCCodeEmitter::expandTLSDESCCall(const MCInst &MI,
                                            SmallVectorImpl<char> &CB,
                                            SmallVectorImpl<MCFixup> &Fixups,
-                                           const MCSubtargetInfo &STI) const {
+                                           const MCSubtargetInfo &STI) const
+{
   MCOperand SrcSymbol = MI.getOperand(3);
   assert(SrcSymbol.isExpr() &&
          "Expected expression as first input to TLSDESCCALL");
@@ -184,7 +196,8 @@ void RISCVMCCodeEmitter::expandTLSDESCCall(const MCInst &MI,
 void RISCVMCCodeEmitter::expandAddTPRel(const MCInst &MI,
                                         SmallVectorImpl<char> &CB,
                                         SmallVectorImpl<MCFixup> &Fixups,
-                                        const MCSubtargetInfo &STI) const {
+                                        const MCSubtargetInfo &STI) const
+{
   MCOperand DestReg = MI.getOperand(0);
   MCOperand SrcReg = MI.getOperand(1);
   MCOperand TPReg = MI.getOperand(2);
@@ -204,7 +217,8 @@ void RISCVMCCodeEmitter::expandAddTPRel(const MCInst &MI,
       0, Expr, MCFixupKind(RISCV::fixup_riscv_tprel_add), MI.getLoc()));
 
   // Emit fixup_riscv_relax for tprel_add where the relax feature is enabled.
-  if (STI.hasFeature(RISCV::FeatureRelax)) {
+  if (STI.hasFeature(RISCV::FeatureRelax))
+  {
     const MCConstantExpr *Dummy = MCConstantExpr::create(0, Ctx);
     Fixups.push_back(MCFixup::create(
         0, Dummy, MCFixupKind(RISCV::fixup_riscv_relax), MI.getLoc()));
@@ -219,8 +233,10 @@ void RISCVMCCodeEmitter::expandAddTPRel(const MCInst &MI,
   support::endian::write(CB, Binary, llvm::endianness::little);
 }
 
-static unsigned getInvertedBranchOp(unsigned BrOp) {
-  switch (BrOp) {
+static unsigned getInvertedBranchOp(unsigned BrOp)
+{
+  switch (BrOp)
+  {
   default:
     llvm_unreachable("Unexpected branch opcode!");
   case RISCV::PseudoLongBEQ:
@@ -243,7 +259,8 @@ static unsigned getInvertedBranchOp(unsigned BrOp) {
 void RISCVMCCodeEmitter::expandLongCondBr(const MCInst &MI,
                                           SmallVectorImpl<char> &CB,
                                           SmallVectorImpl<MCFixup> &Fixups,
-                                          const MCSubtargetInfo &STI) const {
+                                          const MCSubtargetInfo &STI) const
+{
   MCRegister SrcReg1 = MI.getOperand(0).getReg();
   MCRegister SrcReg2 = MI.getOperand(1).getReg();
   MCOperand SrcSymbol = MI.getOperand(2);
@@ -253,26 +270,33 @@ void RISCVMCCodeEmitter::expandLongCondBr(const MCInst &MI,
 
   bool UseCompressedBr = false;
   if (IsEqTest && (STI.hasFeature(RISCV::FeatureStdExtC) ||
-                   STI.hasFeature(RISCV::FeatureStdExtZca))) {
+                   STI.hasFeature(RISCV::FeatureStdExtZca)))
+  {
     if (RISCV::X8 <= SrcReg1.id() && SrcReg1.id() <= RISCV::X15 &&
-        SrcReg2.id() == RISCV::X0) {
+        SrcReg2.id() == RISCV::X0)
+    {
       UseCompressedBr = true;
-    } else if (RISCV::X8 <= SrcReg2.id() && SrcReg2.id() <= RISCV::X15 &&
-               SrcReg1.id() == RISCV::X0) {
+    }
+    else if (RISCV::X8 <= SrcReg2.id() && SrcReg2.id() <= RISCV::X15 &&
+             SrcReg1.id() == RISCV::X0)
+    {
       std::swap(SrcReg1, SrcReg2);
       UseCompressedBr = true;
     }
   }
 
   uint32_t Offset;
-  if (UseCompressedBr) {
+  if (UseCompressedBr)
+  {
     unsigned InvOpc =
         Opcode == RISCV::PseudoLongBNE ? RISCV::C_BEQZ : RISCV::C_BNEZ;
     MCInst TmpInst = MCInstBuilder(InvOpc).addReg(SrcReg1).addImm(6);
     uint16_t Binary = getBinaryCodeForInstr(TmpInst, Fixups, STI);
     support::endian::write<uint16_t>(CB, Binary, llvm::endianness::little);
     Offset = 2;
-  } else {
+  }
+  else
+  {
     unsigned InvOpc = getInvertedBranchOp(Opcode);
     MCInst TmpInst =
         MCInstBuilder(InvOpc).addReg(SrcReg1).addReg(SrcReg2).addImm(8);
@@ -293,7 +317,8 @@ void RISCVMCCodeEmitter::expandLongCondBr(const MCInst &MI,
   // Drop any fixup added so we can add the correct one.
   Fixups.resize(FixupStartIndex);
 
-  if (SrcSymbol.isExpr()) {
+  if (SrcSymbol.isExpr())
+  {
     Fixups.push_back(MCFixup::create(Offset, SrcSymbol.getExpr(),
                                      MCFixupKind(RISCV::fixup_riscv_jal),
                                      MI.getLoc()));
@@ -303,7 +328,8 @@ void RISCVMCCodeEmitter::expandLongCondBr(const MCInst &MI,
 void RISCVMCCodeEmitter::encodeInstruction(const MCInst &MI,
                                            SmallVectorImpl<char> &CB,
                                            SmallVectorImpl<MCFixup> &Fixups,
-                                           const MCSubtargetInfo &STI) const {
+                                           const MCSubtargetInfo &STI) const
+{
   const MCInstrDesc &Desc = MCII.get(MI.getOpcode());
   // Get byte count of instruction.
   unsigned Size = Desc.getSize();
@@ -311,7 +337,8 @@ void RISCVMCCodeEmitter::encodeInstruction(const MCInst &MI,
   // RISCVInstrInfo::getInstSizeInBytes expects that the total size of the
   // expanded instructions for each pseudo is correct in the Size field of the
   // tablegen definition for the pseudo.
-  switch (MI.getOpcode()) {
+  switch (MI.getOpcode())
+  {
   default:
     break;
   case RISCV::PseudoCALLReg:
@@ -340,20 +367,24 @@ void RISCVMCCodeEmitter::encodeInstruction(const MCInst &MI,
     return;
   }
 
-  switch (Size) {
+  switch (Size)
+  {
   default:
     llvm_unreachable("Unhandled encodeInstruction length!");
-  case 2: {
+  case 2:
+  {
     uint16_t Bits = getBinaryCodeForInstr(MI, Fixups, STI);
     support::endian::write<uint16_t>(CB, Bits, llvm::endianness::little);
     break;
   }
-  case 4: {
+  case 4:
+  {
     uint32_t Bits = getBinaryCodeForInstr(MI, Fixups, STI);
     support::endian::write(CB, Bits, llvm::endianness::little);
     break;
   }
-  case 6: {
+  case 6:
+  {
     uint64_t Bits = getBinaryCodeForInstr(MI, Fixups, STI) & 0xffff'ffff'ffffu;
     SmallVector<char, 8> Encoding;
     support::endian::write(Encoding, Bits, llvm::endianness::little);
@@ -363,7 +394,8 @@ void RISCVMCCodeEmitter::encodeInstruction(const MCInst &MI,
     CB.append(Encoding);
     break;
   }
-  case 8: {
+  case 8:
+  {
     uint64_t Bits = getBinaryCodeForInstr(MI, Fixups, STI);
     support::endian::write(CB, Bits, llvm::endianness::little);
     break;
@@ -376,7 +408,8 @@ void RISCVMCCodeEmitter::encodeInstruction(const MCInst &MI,
 uint64_t
 RISCVMCCodeEmitter::getMachineOpValue(const MCInst &MI, const MCOperand &MO,
                                       SmallVectorImpl<MCFixup> &Fixups,
-                                      const MCSubtargetInfo &STI) const {
+                                      const MCSubtargetInfo &STI) const
+{
 
   if (MO.isReg())
     return Ctx.getRegisterInfo()->getEncodingValue(MO.getReg());
@@ -391,10 +424,12 @@ RISCVMCCodeEmitter::getMachineOpValue(const MCInst &MI, const MCOperand &MO,
 uint64_t
 RISCVMCCodeEmitter::getImmOpValueAsr1(const MCInst &MI, unsigned OpNo,
                                       SmallVectorImpl<MCFixup> &Fixups,
-                                      const MCSubtargetInfo &STI) const {
+                                      const MCSubtargetInfo &STI) const
+{
   const MCOperand &MO = MI.getOperand(OpNo);
 
-  if (MO.isImm()) {
+  if (MO.isImm())
+  {
     uint64_t Res = MO.getImm();
     assert((Res & 1) == 0 && "LSB is non-zero");
     return Res >> 1;
@@ -404,17 +439,19 @@ RISCVMCCodeEmitter::getImmOpValueAsr1(const MCInst &MI, unsigned OpNo,
 }
 
 uint64_t
-RISCVMCCodeEmitter::getBMPCFGImm20OpValue(const MCInst &MI, unsigned OpNo,
+RISCVMCCodeEmitter::getBMPCFGImm25OpValue(const MCInst &MI, unsigned OpNo,
                                           SmallVectorImpl<MCFixup> &Fixups,
-                                          const MCSubtargetInfo &STI) const {
+                                          const MCSubtargetInfo &STI) const
+{
 
   int64_t Imm = MI.getOperand(OpNo).getImm();
-  return Imm & 0xFFFFF;
+  return Imm & 0x1FFFFFF;
 }
 
 uint64_t RISCVMCCodeEmitter::getImmOpValue(const MCInst &MI, unsigned OpNo,
                                            SmallVectorImpl<MCFixup> &Fixups,
-                                           const MCSubtargetInfo &STI) const {
+                                           const MCSubtargetInfo &STI) const
+{
   bool EnableRelax = STI.hasFeature(RISCV::FeatureRelax);
   const MCOperand &MO = MI.getOperand(OpNo);
 
@@ -431,10 +468,12 @@ uint64_t RISCVMCCodeEmitter::getImmOpValue(const MCInst &MI, unsigned OpNo,
   MCExpr::ExprKind Kind = Expr->getKind();
   RISCV::Fixups FixupKind = RISCV::fixup_riscv_invalid;
   bool RelaxCandidate = false;
-  if (Kind == MCExpr::Target) {
+  if (Kind == MCExpr::Target)
+  {
     const RISCVMCExpr *RVExpr = cast<RISCVMCExpr>(Expr);
 
-    switch (RVExpr->getKind()) {
+    switch (RVExpr->getKind())
+    {
     case RISCVMCExpr::VK_RISCV_None:
     case RISCVMCExpr::VK_RISCV_Invalid:
     case RISCVMCExpr::VK_RISCV_32_PCREL:
@@ -517,20 +556,31 @@ uint64_t RISCVMCCodeEmitter::getImmOpValue(const MCInst &MI, unsigned OpNo,
       FixupKind = RISCV::fixup_riscv_tlsdesc_call;
       break;
     }
-  } else if ((Kind == MCExpr::SymbolRef &&
-                 cast<MCSymbolRefExpr>(Expr)->getKind() ==
-                     MCSymbolRefExpr::VK_None) ||
-             Kind == MCExpr::Binary) {
+  }
+  else if ((Kind == MCExpr::SymbolRef &&
+            cast<MCSymbolRefExpr>(Expr)->getKind() ==
+                MCSymbolRefExpr::VK_None) ||
+           Kind == MCExpr::Binary)
+  {
     // FIXME: Sub kind binary exprs have chance of underflow.
-    if (MIFrm == RISCVII::InstFormatJ) {
+    if (MIFrm == RISCVII::InstFormatJ)
+    {
       FixupKind = RISCV::fixup_riscv_jal;
-    } else if (MIFrm == RISCVII::InstFormatB) {
+    }
+    else if (MIFrm == RISCVII::InstFormatB)
+    {
       FixupKind = RISCV::fixup_riscv_branch;
-    } else if (MIFrm == RISCVII::InstFormatCJ) {
+    }
+    else if (MIFrm == RISCVII::InstFormatCJ)
+    {
       FixupKind = RISCV::fixup_riscv_rvc_jump;
-    } else if (MIFrm == RISCVII::InstFormatCB) {
+    }
+    else if (MIFrm == RISCVII::InstFormatCB)
+    {
       FixupKind = RISCV::fixup_riscv_rvc_branch;
-    } else if (MIFrm == RISCVII::InstFormatI) {
+    }
+    else if (MIFrm == RISCVII::InstFormatI)
+    {
       FixupKind = RISCV::fixup_riscv_12_i;
     }
   }
@@ -544,11 +594,12 @@ uint64_t RISCVMCCodeEmitter::getImmOpValue(const MCInst &MI, unsigned OpNo,
   // Ensure an R_RISCV_RELAX relocation will be emitted if linker relaxation is
   // enabled and the current fixup will result in a relocation that may be
   // relaxed.
-  if (EnableRelax && RelaxCandidate) {
+  if (EnableRelax && RelaxCandidate)
+  {
     const MCConstantExpr *Dummy = MCConstantExpr::create(0, Ctx);
     Fixups.push_back(
-    MCFixup::create(0, Dummy, MCFixupKind(RISCV::fixup_riscv_relax),
-                    MI.getLoc()));
+        MCFixup::create(0, Dummy, MCFixupKind(RISCV::fixup_riscv_relax),
+                        MI.getLoc()));
     ++MCNumFixups;
   }
 
@@ -557,11 +608,13 @@ uint64_t RISCVMCCodeEmitter::getImmOpValue(const MCInst &MI, unsigned OpNo,
 
 unsigned RISCVMCCodeEmitter::getVMaskReg(const MCInst &MI, unsigned OpNo,
                                          SmallVectorImpl<MCFixup> &Fixups,
-                                         const MCSubtargetInfo &STI) const {
+                                         const MCSubtargetInfo &STI) const
+{
   MCOperand MO = MI.getOperand(OpNo);
   assert(MO.isReg() && "Expected a register.");
 
-  switch (MO.getReg()) {
+  switch (MO.getReg())
+  {
   default:
     llvm_unreachable("Invalid mask register.");
   case RISCV::V0:
@@ -573,7 +626,8 @@ unsigned RISCVMCCodeEmitter::getVMaskReg(const MCInst &MI, unsigned OpNo,
 
 unsigned RISCVMCCodeEmitter::getRlistOpValue(const MCInst &MI, unsigned OpNo,
                                              SmallVectorImpl<MCFixup> &Fixups,
-                                             const MCSubtargetInfo &STI) const {
+                                             const MCSubtargetInfo &STI) const
+{
   const MCOperand &MO = MI.getOperand(OpNo);
   assert(MO.isImm() && "Rlist operand must be immediate");
   auto Imm = MO.getImm();
@@ -583,7 +637,8 @@ unsigned RISCVMCCodeEmitter::getRlistOpValue(const MCInst &MI, unsigned OpNo,
 
 unsigned RISCVMCCodeEmitter::getRegReg(const MCInst &MI, unsigned OpNo,
                                        SmallVectorImpl<MCFixup> &Fixups,
-                                       const MCSubtargetInfo &STI) const {
+                                       const MCSubtargetInfo &STI) const
+{
   const MCOperand &MO = MI.getOperand(OpNo);
   const MCOperand &MO1 = MI.getOperand(OpNo + 1);
   assert(MO.isReg() && MO1.isReg() && "Expected registers.");
@@ -593,6 +648,5 @@ unsigned RISCVMCCodeEmitter::getRegReg(const MCInst &MI, unsigned OpNo,
 
   return Op | Op1 << 5;
 }
-
 
 #include "RISCVGenMCCodeEmitter.inc"

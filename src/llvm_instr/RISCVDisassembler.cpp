@@ -497,13 +497,16 @@ static DecodeStatus decodeCSSPushPopchk(MCInst &Inst, uint32_t Insn,
                                         const MCDisassembler *Decoder);
 
 static DecodeStatus decodeBMPLE(MCInst &Inst, unsigned Insn, uint64_t Address,
-                               const MCDisassembler *Decoder);
+                                const MCDisassembler *Decoder);
 
 static DecodeStatus decodeBMPSE(MCInst &Inst, unsigned Insn, uint64_t Address,
-                               const MCDisassembler *Decoder);
+                                const MCDisassembler *Decoder);
 
 static DecodeStatus decodeBMPMM(MCInst &MI, uint32_t Insn, uint64_t Addr,
-                               const MCDisassembler *Decoder);
+                                const MCDisassembler *Decoder);
+
+static DecodeStatus decodeBMPCFGImm25(MCInst &Inst, uint32_t Imm,
+                                      uint64_t Address, const void *Decoder);
 
 #include "RISCVGenDisassemblerTables.inc"
 
@@ -958,8 +961,9 @@ static DecodeStatus decodeBMPMM(MCInst &MI, uint32_t Insn, uint64_t Addr,
     return MCDisassembler::Success;
 }
 
-static DecodeStatus decodeBMPCFGImm20(MCInst &Inst, uint32_t Imm,
-                                      uint64_t Address, const void *Decoder) {
-  Inst.addOperand(MCOperand::createImm(Imm));
-  return MCDisassembler::Success;
+static DecodeStatus decodeBMPCFGImm25(MCInst &Inst, uint32_t Imm,
+                                      uint64_t Address, const void *Decoder)
+{
+    Inst.addOperand(MCOperand::createImm(Imm));
+    return MCDisassembler::Success;
 }

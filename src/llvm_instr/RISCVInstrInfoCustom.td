@@ -14,26 +14,24 @@ def BMPCFGImmAsmOperand : AsmOperandClass {
   let DiagnosticType = "InvalidBMPCFGImm";
 }
 
-def bmpcfg_imm20 : Operand<XLenVT> {
+def bmpcfg_imm25 : Operand<XLenVT> {
   let ParserMatchClass = BMPCFGImmAsmOperand;
-  let EncoderMethod = "getImmOpValue";
-  let DecoderMethod = "decodeUImmOperand<20>";
-  let PrintMethod = "printBMPCFGImm20";
+  let EncoderMethod = "getBMPCFGImm25OpValue";
+  let DecoderMethod = "decodeBMPCFGImm25";
+  let PrintMethod = "printBMPCFGImm25";
 }
 
 class RVInstBMPU_CFG<dag outs, dag ins, string opcodestr, string argstr>
     : RVInstU<OPC_CUSTOM_1, outs, ins, opcodestr, argstr> {
 
-  bits<20> imm20;
+  bits<25> cfg25;
 
-  let Inst{31-12} = imm20;
+  let Inst{31-12} = cfg25{24-5};
 
-  let Inst{11-7}  = 0;      
+  let Inst{11-7}  = cfg25{4-0};
   let Inst{6-2}   = 0x0A;
   let Inst{1-0}   = 0x3;
 }
-0000000 01101 00000 000 00000 0101011
-0000000 00001 11100 000 00000 0101011
 class RVInstBMPLE<bits<3> funct3, dag outs, dag ins, 
                 string opcodestr, string argstr>
     : RVInstIBase<funct3, OPC_CUSTOM_0, outs, ins, opcodestr, argstr> {
@@ -84,15 +82,15 @@ let hasSideEffects = 0 in {
     // bmpcfg指令 (U-Type)
     def BMPCFG : RVInstBMPU_CFG<
         (outs),
-        (ins bmpcfg_imm20:$imm),
+        (ins bmpcfg_imm25:$cfg),
         "bmpcfg",
-        "$imm"
+        "$cfg"
     >, Sched<[WriteIALU]> {
       let mayLoad = 0;
       let mayStore = 0;
 
-      bits<20> imm;
-      let imm20 = imm;
+      bits<25> cfg;
+      let cfg25 = cfg;
     }
 
     // bmple指令 (I-Type)

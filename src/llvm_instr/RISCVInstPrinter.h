@@ -80,7 +80,7 @@ namespace llvm
     void printSImm12FlagOperand(const MCInst *MI, unsigned OpNo,
                                 const MCSubtargetInfo &STI, raw_ostream &OS);
 
-    void printBMPCFGImm20(const MCInst *MI, unsigned OpNo,
+    void printBMPCFGImm25(const MCInst *MI, unsigned OpNo,
                           const MCSubtargetInfo &STI,
                           raw_ostream &O);
   };
