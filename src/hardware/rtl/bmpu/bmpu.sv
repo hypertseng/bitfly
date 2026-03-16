@@ -497,7 +497,8 @@ module bmpu
     //////////////////////////////
 
 `ifndef SYNTHESIS
-    if (1'b1 && vfu_operation_valid_i && (lane_id_i == 0)) begin
+    if (1'b1 && vfu_operation_valid_i && (lane_id_i == 0) &&
+        (vfu_operation_i.bmpu_en || vfu_operation_i.op == BMPSE)) begin
       $display("[%0t][BMPU] in_valid op=%0d vfu=%0d bmpu_en=%0b out_en=%0b vl=%0d id=%0d queue_full=%0b",
                $time, vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.bmpu_en,
                vfu_operation_i.bmpu_output_en, vfu_operation_i.vl, vfu_operation_i.id, vinsn_queue_full);

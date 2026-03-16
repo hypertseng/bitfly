@@ -25,8 +25,6 @@ extern "C"
                                      unsigned long int N,
                                      const binary_exec_cfg_t *exec_cfg);
 
-    // debug / profiling counter
-    extern int64_t mixed_compute_time;
 
 #ifdef __cplusplus
 }

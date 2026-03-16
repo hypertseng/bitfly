@@ -1,5 +1,5 @@
-#ifndef _BMPMM_DATA_DECLS_H_
-#define _BMPMM_DATA_DECLS_H_
+#ifndef BMPMM_DATA_DECLS_H
+#define BMPMM_DATA_DECLS_H
 
 /*
  * Central place to declare which pre-generated data blobs should be
@@ -46,4 +46,4 @@ DECLARE_KERNEL_DATA(case4)
 DECLARE_KERNEL_DATA(case5)
 #define HAS_KERNEL_DATA_CASE5 1
 
-#endif /* _BMPMM_DATA_DECLS_H_ */
+#endif
