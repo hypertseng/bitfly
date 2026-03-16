@@ -356,12 +356,8 @@ module lane_sequencer
         BMPU: begin
           pe_req_ready = !(operand_request_valid_o[BMPUAct0] ||
             operand_request_valid_o[BMPUAct1] ||
-            operand_request_valid_o[BMPUAct2] ||
-            operand_request_valid_o[BMPUAct3] ||
             operand_request_valid_o[BMPUWgt0] ||
-            operand_request_valid_o[BMPUWgt1] ||
-            operand_request_valid_o[BMPUWgt2] ||
-            operand_request_valid_o[BMPUWgt3]);
+            operand_request_valid_o[BMPUWgt1]);
         end
         default: ;
       endcase
@@ -396,6 +392,8 @@ module lane_sequencer
           prec           : pe_req.prec,
           mtile          : pe_req.mtile,
           ntile          : pe_req.ntile,
+          gm             : pe_req.gm,
+          gn             : pe_req.gn,
           group_g        : pe_req.group_g,
           bmpu_en        : pe_req.bmpu_en,
           is_weight      : pe_req.is_weight,

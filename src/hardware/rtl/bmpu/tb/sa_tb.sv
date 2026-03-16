@@ -11,8 +11,8 @@ module sa_tb;
   import ara_pkg::*;
   import rvv_pkg::*;
 
-  localparam int ROWS = 4;
-  localparam int COLS = 4;
+  localparam int ROWS = 2;
+  localparam int COLS = 2;
 
   logic clk_i;
   logic rst_ni;

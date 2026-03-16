@@ -34,7 +34,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     localparam type                   strb_t          = logic [DataWidth/8-1:0], // Byte-strobe type
     // vl_csr type
     localparam type                   vlen_t          = logic [$clog2(VLEN+1)-1:0],
-    localparam int           unsigned NrBmpuResultQueues = 8
+    localparam int           unsigned NrBmpuResultQueues = 4
   ) (
     input  logic                                           clk_i,
     input  logic                                           rst_ni,
@@ -186,6 +186,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     logic [16:0]        k_dim;
     logic [5:0]         mtile;
     logic [6:0]         ntile;
+    logic [2:0]         gm;
+    logic [2:0]         gn;
     logic [2:0]         group_g;
     logic               bmpu_en;
     logic               is_weight;
@@ -481,16 +483,16 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic sldu_addrgen_operand_opqueues_valid;
 
   // SA 输入输出信号
-  elen_t [3:0] bmpu_act_operand, bmpu_wgt_operand, bmpu_output_data;
-  elen_t [3:0] bmpu_act_operand_masked, bmpu_wgt_operand_masked;
-  logic  [3:0] bmpu_act_operand_valid, bmpu_wgt_operand_valid, bmpu_output_valid;
-  logic  [3:0] bmpu_act_operand_ready, bmpu_wgt_operand_ready, bmpu_output_ready;
+  elen_t [1:0] bmpu_act_operand, bmpu_wgt_operand, bmpu_output_data;
+  elen_t [1:0] bmpu_act_operand_masked, bmpu_wgt_operand_masked;
+  logic  [1:0] bmpu_act_operand_valid, bmpu_wgt_operand_valid, bmpu_output_valid;
+  logic  [1:0] bmpu_act_operand_ready, bmpu_wgt_operand_ready, bmpu_output_ready;
   elen_t stu_operand_from_queue;
   logic  stu_operand_valid_from_queue;
   logic  stu_operand_ready_from_queue;
 
   always_comb begin
-    for (int i = 0; i < 4; i++) begin
+    for (int i = 0; i < 2; i++) begin
       bmpu_act_operand_masked[i] = bmpu_act_operand_valid[i] ? bmpu_act_operand[i] : '0;
       bmpu_wgt_operand_masked[i] = bmpu_wgt_operand_valid[i] ? bmpu_wgt_operand[i] : '0;
     end
@@ -498,7 +500,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
 
 `ifndef SYNTHESIS
   always_ff @(posedge clk_i) begin
-    if (1'b0 && (lane_id_i == '0)) begin
+    if (1'b1 && (lane_id_i == '0)) begin
       if (vrf_operand_valid[BMPUAct0] || vrf_operand_valid[BMPUAct1]
           || vrf_operand_valid[BMPUWgt0] || vrf_operand_valid[BMPUWgt1]) begin
         $display("[%0t][LANE][lane%0d] vrf_valid act=%b%b wgt=%b%b",

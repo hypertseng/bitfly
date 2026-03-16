@@ -21,7 +21,7 @@ module operand_requester
     // Dependant parameters. DO NOT CHANGE!
     localparam type strb_t = logic [$bits(elen_t)/8-1:0],
     localparam type vlen_t = logic [$clog2(VLEN+1)-1:0],
-    localparam int unsigned NrBmpuResultQueues = 8
+    localparam int unsigned NrBmpuResultQueues = 4
 ) (
     input logic clk_i,
     input logic rst_ni,
@@ -249,7 +249,7 @@ module operand_requester
   // Masters 0 to NrOperandQueues-1 correspond to the operand queues.
   // The remaining four masters correspond to the ALU, the MFPU, the MASKU, the VLDU, and the SLDU.
   localparam NrGlobalMasters = 5;
-  localparam NrBmpuOutQueues = 8;
+  localparam NrBmpuOutQueues = NrBmpuResultQueues;
   localparam NrMasters = NrOperandQueues + NrGlobalMasters + NrBmpuOutQueues;
   localparam logic [idx_width(NrBanks)-1:0] BmpuBankHalf = NrBanks / 2;
 

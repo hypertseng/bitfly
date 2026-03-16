@@ -1,6 +1,6 @@
 module lbmac #(
     parameter BIT_ACT    = 8,  // 激活值位宽（int8）
-    parameter BIT_WEIGHT = 1   // 权值位宽（int1）
+    parameter BIT_WEIGHT = 1   // 单个bit-plane宽度；1/2/4bit通过prec_i分多拍处理
 ) (
   input  logic        [ 1:0] mode_i,       // 00:bipolar(1bit), 01:unsigned plane, 10:signed plane
     input  logic        [ 7:0] weights,      // 8-bit 权重

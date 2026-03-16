@@ -191,6 +191,8 @@ module ara_dispatcher
   logic [2:0] prec_d, prec_q;
   logic [5:0] mtile_d, mtile_q;
   logic [6:0] ntile_d, ntile_q;
+  logic [2:0] gm_d, gm_q;
+  logic [2:0] gn_d, gn_q;
   logic [2:0] group_g_d, group_g_q;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
@@ -214,6 +216,8 @@ module ara_dispatcher
       prec_q               <= '0;
       mtile_q              <= 6'd8;
       ntile_q              <= 7'd16;
+      gm_q                 <= 3'd1;
+      gn_q                 <= 3'd1;
       group_g_q            <= 3'd1;
     end else begin
       state_q              <= state_d;
@@ -235,6 +239,8 @@ module ara_dispatcher
       prec_q               <= prec_d;
       mtile_q              <= mtile_d;
       ntile_q              <= ntile_d;
+      gm_q                 <= gm_d;
+      gn_q                 <= gn_d;
       group_g_q            <= group_g_d;
     end
   end
@@ -3748,13 +3754,16 @@ module ara_dispatcher
                 // The instruction is a load
                 is_vload = 1'b1;
 
+                ara_req.vstart      = '0;
+                ara_req.vtype.vsew  = EW8;
                 if (insn.instr[31] == 1'b1) begin
                   ara_req.is_weight = 1'b1;
-                  csr_vl_d = k_dim_q * 4 * NrLanes * bmp_planes;
+                  ara_req.vl        = k_dim_q * 4 * NrLanes * bmp_planes;
                 end else begin
                   ara_req.is_weight = 1'b0;
-                  csr_vl_d = k_dim_q * 4 * NrLanes;
+                  ara_req.vl        = k_dim_q * 4 * NrLanes;
                 end
+                csr_vl_d = ara_req.vl;
 
                 // Wait before acknowledging this instruction
                 acc_resp_o.req_ready = 1'b0;
@@ -3769,7 +3778,16 @@ module ara_dispatcher
                 ara_req.prec         = prec_q;
                 ara_req.mtile        = mtile_q;
                 ara_req.ntile        = ntile_q;
+                ara_req.gm           = gm_q;
+                ara_req.gn           = gn_q;
                 ara_req.group_g      = group_g_q;
+
+`ifndef SYNTHESIS
+                if (1'b1) begin
+                  $display("[%0t][DISP] BMPLE weight=%0b prec=%0d k=%0d vl=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b resp_valid=%0b",
+                           $time, ara_req.is_weight, prec_q, k_dim_q, ara_req.vl, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i, ara_resp_valid);
+                end
+`endif
 
                 // Wait until the back-end answers to acknowledge those instructions
                 if (ara_resp_valid) begin
@@ -3823,8 +3841,17 @@ module ara_dispatcher
                 ara_req.prec = prec_q;
                 ara_req.mtile = mtile_q;
                 ara_req.ntile = ntile_q;
+                ara_req.gm = gm_q;
+                ara_req.gn = gn_q;
                 ara_req.group_g = group_g_q;
                 csr_vl_d = mtile_q * ntile_q;
+
+`ifndef SYNTHESIS
+                if (1'b1) begin
+                  $display("[%0t][DISP] BMPSE prec=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b resp_valid=%0b",
+                           $time, prec_q, mtile_q, ntile_q, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i, ara_resp_valid);
+                end
+`endif
 
                 // Wait until the back-end answers to acknowledge those instructions
                 if (ara_resp_valid) begin
@@ -3848,7 +3875,11 @@ module ara_dispatcher
                 ara_req.use_vs2       = 1'b1;
                 ara_req.vd            = insn.varith_type.rd;
                 ara_req.use_vd        = 1'b1;
-                acc_resp_o.resp_valid = 1'b1;
+                ara_req.vstart        = '0;
+                ara_req.vtype.vsew    = EW16;
+                ara_req.vl            = mtile_q * ntile_q;
+                acc_resp_o.req_ready  = 1'b0;
+                acc_resp_o.resp_valid = 1'b0;
                 ara_req.op            = BMPMM;
                 ara_req_valid         = 1'b1;
                 ara_req.bmpu_en       = 1'b1;
@@ -3856,8 +3887,23 @@ module ara_dispatcher
                 ara_req.prec          = prec_q;
                 ara_req.mtile         = mtile_q;
                 ara_req.ntile         = ntile_q;
+                ara_req.gm            = gm_q;
+                ara_req.gn            = gn_q;
                 ara_req.group_g       = group_g_q;
-                csr_vl_d              = mtile_q * ntile_q;
+                csr_vl_d              = ara_req.vl;
+
+`ifndef SYNTHESIS
+                if (1'b1) begin
+                  $display("[%0t][DISP] BMPMM prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b",
+                           $time, prec_q, k_dim_q, mtile_q, ntile_q, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i);
+                end
+`endif
+
+                if (ara_req_ready_i) begin
+                  acc_resp_o.req_ready  = 1'b1;
+                  acc_resp_o.resp_valid = 1'b1;
+                  ara_req_valid         = 1'b0;
+                end
               end
               default: begin
                 // Trigger an illegal instruction
@@ -3876,7 +3922,9 @@ module ara_dispatcher
             // ara_req.vm = 1'b1;
 
             ara_req.op = BMPCFG;
-            //respond at the same cycle
+            // BMPCFG is handled locally in the dispatcher state and should
+            // retire immediately without waiting for a backend response.
+            acc_resp_o.req_ready = 1'b1;
             acc_resp_o.resp_valid = 1'b1;
 
             bmptile_illegal = 1'b0;
@@ -3910,22 +3958,42 @@ module ara_dispatcher
               illegal_insn = 1'b1;
             end else begin
               // csr_vtype_d.vsew = EW8;
-              prec_d = insn.custom1_type.prec;
-              ara_req.prec = insn.custom1_type.prec;
-              k_dim_d = {4'b0, insn.custom1_type.kdim};
-              ara_req.k_dim = {4'b0, insn.custom1_type.kdim};
-              mtile_d = mtile_dec;
-              ntile_d = ntile_dec;
-              ara_req.mtile = mtile_dec;
-              ara_req.ntile = ntile_dec;
-              group_g_d = ({1'b0, insn.custom1_type.gm_code} + 3'd1)
-                        * ({1'b0, insn.custom1_type.gn_code} + 3'd1);
-              ara_req.group_g = group_g_d;
-              csr_vl_d = {4'b0, insn.custom1_type.kdim} * 4 * NrLanes;
+              automatic logic [2:0] gm_dec;
+              automatic logic [2:0] gn_dec;
+              automatic logic [5:0] group_total;
 
-              is_config = 1'b1;
+              gm_dec = {1'b0, insn.custom1_type.gm_code} + 3'd1;
+              gn_dec = {1'b0, insn.custom1_type.gn_code} + 3'd1;
+              group_total = gm_dec * gn_dec;
 
-              acc_resp_o.result = {4'b0, insn.custom1_type.kdim};
+              if ((group_total * mtile_dec * ntile_dec) > 11'd1024) begin
+                illegal_insn = 1'b1;
+              end else begin
+                prec_d = insn.custom1_type.prec;
+                ara_req.prec = insn.custom1_type.prec;
+                k_dim_d = {4'b0, insn.custom1_type.kdim};
+                ara_req.k_dim = {4'b0, insn.custom1_type.kdim};
+                mtile_d = mtile_dec;
+                ntile_d = ntile_dec;
+                gm_d = gm_dec;
+                gn_d = gn_dec;
+                ara_req.mtile = mtile_dec;
+                ara_req.ntile = ntile_dec;
+                ara_req.gm = gm_dec;
+                ara_req.gn = gn_dec;
+                group_g_d = group_total[2:0];
+                ara_req.group_g = group_total[2:0];
+                csr_vl_d = {4'b0, insn.custom1_type.kdim} * 4 * NrLanes;
+
+                is_config = 1'b1;
+
+                acc_resp_o.result = {4'b0, insn.custom1_type.kdim};
+`ifndef SYNTHESIS
+                $display("[%0t][DISP] BMPCFG prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b req_ready_i=%0b resp_valid=%0b",
+                         $time, insn.custom1_type.prec, {4'b0, insn.custom1_type.kdim}, mtile_dec, ntile_dec, gm_dec, gn_dec, group_total[2:0], ara_req_valid, ara_req_ready_i, acc_resp_o.resp_valid);
+`endif
+              end
+
             end
 
             // if (insn.custom1_type.kdim > 480 || insn.custom1_type.prec > 3) begin

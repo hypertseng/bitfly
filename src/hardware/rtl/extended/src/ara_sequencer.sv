@@ -491,6 +491,9 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
               prec          : ara_req_i.prec,
               mtile         : ara_req_i.mtile,
               ntile         : ara_req_i.ntile,
+              gm            : ara_req_i.gm,
+              gn            : ara_req_i.gn,
+              group_g       : ara_req_i.group_g,
               bmpu_en       : ara_req_i.bmpu_en,
               is_weight     : ara_req_i.is_weight,
               bmpu_output_en: ara_req_i.bmpu_output_en,
@@ -512,6 +515,11 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
               ara_req_ready_o = 1'b0;
               pe_req_valid_d  = 1'b0;
             end else begin
+`ifndef SYNTHESIS
+              if (ara_req_i.op == BMPCFG) begin
+                $display("[%0t][SEQ] accept BMPCFG vl=%0d k=%0d prec=%0d gm=%0d gn=%0d group=%0d", $time, ara_req_i.vl, ara_req_i.k_dim, ara_req_i.prec, ara_req_i.gm, ara_req_i.gn, ara_req_i.group_g);
+              end
+`endif
               // Acknowledge instruction
               ara_req_ready_o = 1'b1;
 

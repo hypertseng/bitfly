@@ -13,8 +13,8 @@ module bmpu
     localparam int unsigned StrbWidth       = DataWidth / 8,
     localparam type         strb_t          = logic         [     StrbWidth-1:0],
     localparam type         vlen_t          = logic         [$clog2(VLEN+1)-1:0],
-    localparam int unsigned NrInputQueues  = 4,
-    localparam int unsigned NrResultQueues  = 8
+    localparam int unsigned NrInputQueues  = 2,
+    localparam int unsigned NrResultQueues  = 4
 ) (
     input  logic                                    clk_i,
     input  logic                                    rst_ni,
@@ -134,7 +134,7 @@ module bmpu
   } payload_t;
 
   // Result queue
-  payload_t [ResultQueueDepth-1:0][7:0] result_queue_d, result_queue_q;
+  payload_t [ResultQueueDepth-1:0][NrResultQueues-1:0] result_queue_d, result_queue_q;
   logic [ResultQueueDepth-1:0] result_queue_valid_d, result_queue_valid_q;
   // We need two pointers in the result queue. One pointer to indicate with `payload_t` we are
   // currently writing into (write_pnt), and one pointer to indicate which `payload_t` we are
@@ -167,45 +167,82 @@ module bmpu
     end
   end
 
+  localparam int unsigned MaxBmpuContexts   = 8;
+  localparam int unsigned MaxBmpuGroupElems = 1024;
+  localparam int unsigned CtxIdxWidth       = (MaxBmpuContexts <= 1) ? 1 : $clog2(MaxBmpuContexts);
+
   logic bmpu_valid;
   logic bmpu_clear;
+  logic sa_ctx_clear;
   logic compute_active_d, compute_active_q;
-  logic [127:0] bmpu_result [3:0];
+  logic epoch_active_d, epoch_active_q;
+  logic first_k_round_d, first_k_round_q;
+  logic [127:0] bmpu_result [NrInputQueues-1:0];
   logic [16:0] k_dim_d, k_dim_q;
   logic [2:0] prec_d, prec_q;
+  logic [2:0] gm_d, gm_q, gn_d, gn_q;
+  logic [3:0] ctx_count_d, ctx_count_q;
+  logic [2:0] compute_ai_d, compute_ai_q, compute_wi_d, compute_wi_q;
+  logic [2:0] store_ai_d, store_ai_q, store_wi_d, store_wi_q;
+  logic [CtxIdxWidth-1:0] sa_compute_ctx_id, sa_output_ctx_id;
   logic sa_done_d, sa_done_q;
+
+  assign sa_compute_ctx_id = compute_ai_q * gn_q + compute_wi_q;
+  assign sa_output_ctx_id  = store_ai_q * gn_q + store_wi_q;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
-      sa_done_q <= 1'b0;
+      sa_done_q        <= 1'b0;
       compute_active_q <= 1'b0;
-      k_dim_q <= '0;
-      prec_q <= '0;
+      epoch_active_q   <= 1'b0;
+      first_k_round_q  <= 1'b1;
+      k_dim_q          <= '0;
+      prec_q           <= '0;
+      gm_q             <= 3'd1;
+      gn_q             <= 3'd1;
+      ctx_count_q      <= 4'd1;
+      compute_ai_q     <= '0;
+      compute_wi_q     <= '0;
+      store_ai_q       <= '0;
+      store_wi_q       <= '0;
     end else begin
-      sa_done_q <= sa_done_d;
+      sa_done_q        <= sa_done_d;
       compute_active_q <= compute_active_d;
-      k_dim_q <= k_dim_d;
-      prec_q <= prec_d;
+      epoch_active_q   <= epoch_active_d;
+      first_k_round_q  <= first_k_round_d;
+      k_dim_q          <= k_dim_d;
+      prec_q           <= prec_d;
+      gm_q             <= gm_d;
+      gn_q             <= gn_d;
+      ctx_count_q      <= ctx_count_d;
+      compute_ai_q     <= compute_ai_d;
+      compute_wi_q     <= compute_wi_d;
+      store_ai_q       <= store_ai_d;
+      store_wi_q       <= store_wi_d;
     end
   end
 
   sa #(
-      .ROWS      (4),
-      .COLS      (4),
+      .ROWS      (NrInputQueues),
+      .COLS      (NrInputQueues),
       .BIT_ACT   (8),
-      .BIT_WEIGHT(1)
+      .BIT_WEIGHT(1),
+      .CTX_MAX   (MaxBmpuContexts)
   ) u_sa (
-      .clk_i            (clk_i),
-      .rst_ni           (rst_ni),
-      .valid_i          (bmpu_valid),
-      .clear_i          (bmpu_clear),
-      .output_en_i      (bmpu_output_en_o),
+      .clk_i             (clk_i),
+      .rst_ni            (rst_ni),
+      .valid_i           (bmpu_valid),
+      .clear_i           (bmpu_clear),
+      .ctx_clear_i       (sa_ctx_clear),
+      .ctx_id_i          (sa_compute_ctx_id),
+      .output_ctx_id_i   (sa_output_ctx_id),
+      .output_en_i       (bmpu_output_en_o),
       .bmpu_act_operand_i(bmpu_act_operand_i),
       .bmpu_wgt_operand_i(bmpu_wgt_operand_i),
-      .k_dim_i          (k_dim_q),
-      .prec_i           (prec_q),
-      .output_data_o    (bmpu_result),
-      .sa_done_o        (sa_done_d)
+      .k_dim_i           (k_dim_q),
+      .prec_i            (prec_q),
+      .output_data_o     (bmpu_result),
+      .sa_done_o         (sa_done_d)
   );
 
   ///////////////
@@ -230,6 +267,15 @@ module bmpu
     commit_cnt_d             = commit_cnt_q;
     k_dim_d                  = k_dim_q;
     prec_d                   = prec_q;
+    gm_d                     = gm_q;
+    gn_d                     = gn_q;
+    ctx_count_d              = ctx_count_q;
+    compute_ai_d             = compute_ai_q;
+    compute_wi_d             = compute_wi_q;
+    store_ai_d               = store_ai_q;
+    store_wi_d               = store_wi_q;
+    epoch_active_d           = epoch_active_q;
+    first_k_round_d          = first_k_round_q;
 
     result_queue_d           = result_queue_q;
     result_queue_valid_d     = result_queue_valid_q;
@@ -243,6 +289,7 @@ module bmpu
     bmpu_insn_done_o          = '0;
     bmpu_valid                = 1'b0;
     bmpu_clear                = 1'b0;
+    sa_ctx_clear              = 1'b0;
     bmpu_output_en_o          = 1'b0;
     compute_active_d          = compute_active_q;
 
@@ -266,7 +313,7 @@ module bmpu
 
     if (sa_done_q) begin  // sa computation done
 `ifndef SYNTHESIS
-      if (1'b0 && (lane_id_i == 0)) begin
+      if (1'b1 && (lane_id_i == 0)) begin
         $display("[%0t][BMPU] sa_done commit_id=%0d issue_cnt=%0d commit_cnt=%0d output_en=%0b", $time,
                  vinsn_commit.id, issue_cnt_q, commit_cnt_q, bmpu_output_en_o);
       end
@@ -294,13 +341,13 @@ module bmpu
     ////////////////////////////////////////
     //  Write data into the result queue  //
     ////////////////////////////////////////
-    if (vinsn_issue_valid) begin
+    if (!sa_done_q && vinsn_issue_valid) begin
       // Do not accept operands if the result queue is full!
       if (!result_queue_full) begin
         if (vinsn_issue_q.op == BMPSE) begin
           bmpu_valid = 1'b1;
 `ifndef SYNTHESIS
-          if (1'b0 && (lane_id_i == 0)) begin
+          if (1'b1 && (lane_id_i == 0)) begin
             $display("[%0t][BMPU] issue op=%0d id=%0d vl=%0d k_dim=%0d prec=%0d output_en=%0b", $time,
                      vinsn_issue_q.op, vinsn_issue_q.id, issue_cnt_q, k_dim_q, prec_q, bmpu_output_en_o);
           end
@@ -308,14 +355,20 @@ module bmpu
         end else begin
           if ((|bmpu_act_operand_valid_i) && (|bmpu_wgt_operand_valid_i)) begin
 `ifndef SYNTHESIS
-            if (1'b0 && (lane_id_i == 0)) begin
+            if (1'b1 && (lane_id_i == 0)) begin
               $display("[%0t][BMPU] issue op=%0d id=%0d vl=%0d k_dim=%0d prec=%0d output_en=%0b", $time,
                        vinsn_issue_q.op, vinsn_issue_q.id, issue_cnt_q, k_dim_q, prec_q, bmpu_output_en_o);
             end
 `endif
-            if (!compute_active_q) begin
-              bmpu_clear = 1'b1;
+            if (!epoch_active_q) begin
+              epoch_active_d  = 1'b1;
+              first_k_round_d = 1'b1;
+              compute_ai_d    = '0;
+              compute_wi_d    = '0;
+              store_ai_d      = '0;
+              store_wi_d      = '0;
             end
+            sa_ctx_clear = !epoch_active_q || first_k_round_q;
             compute_active_d = 1'b1;
 
             // Acknowledge the operands of this instruction
@@ -419,6 +472,23 @@ module bmpu
       if (vinsn_queue_d.commit_cnt != '0)
         commit_cnt_d = vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].vl;
 
+      if (vinsn_commit.op == BMPSE) begin
+        if (store_wi_q + 3'd1 < gn_q) begin
+          store_wi_d = store_wi_q + 3'd1;
+        end else begin
+          store_wi_d = '0;
+          if (store_ai_q + 3'd1 < gm_q) begin
+            store_ai_d = store_ai_q + 3'd1;
+          end else begin
+            store_ai_d     = '0;
+            epoch_active_d = 1'b0;
+            first_k_round_d = 1'b1;
+            compute_ai_d   = '0;
+            compute_wi_d   = '0;
+          end
+        end
+      end
+
       bmpu_insn_done_o[vinsn_commit.id] = 1'b1;
     end
 
@@ -426,9 +496,17 @@ module bmpu
     //  Accept new instruction  //
     //////////////////////////////
 
-    if (!vinsn_queue_full && vfu_operation_valid_i && (vfu_operation_i.vfu == BMPU || vfu_operation_i.op == BMPSE)) begin
 `ifndef SYNTHESIS
-      if (1'b0 && (lane_id_i == 0)) begin
+    if (1'b1 && vfu_operation_valid_i && (lane_id_i == 0)) begin
+      $display("[%0t][BMPU] in_valid op=%0d vfu=%0d bmpu_en=%0b out_en=%0b vl=%0d id=%0d queue_full=%0b",
+               $time, vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.bmpu_en,
+               vfu_operation_i.bmpu_output_en, vfu_operation_i.vl, vfu_operation_i.id, vinsn_queue_full);
+    end
+`endif
+    if (!vinsn_queue_full && vfu_operation_valid_i &&
+        (vfu_operation_i.bmpu_en || vfu_operation_i.op == BMPSE)) begin
+`ifndef SYNTHESIS
+      if (1'b1 && (lane_id_i == 0)) begin
         $display("[%0t][BMPU] accept op=%0d vfu=%0d id=%0d vl=%0d out_en_in=%0b", $time,
                  vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.id, vfu_operation_i.vl,
                  vfu_operation_i.bmpu_output_en);
@@ -442,8 +520,11 @@ module bmpu
       end
       if (vinsn_queue_d.commit_cnt == '0) commit_cnt_d = vfu_operation_i.vl;
 
-      k_dim_d = vfu_operation_i.k_dim;
-      prec_d = vfu_operation_i.prec;
+      k_dim_d     = vfu_operation_i.k_dim;
+      prec_d      = vfu_operation_i.prec;
+      gm_d        = vfu_operation_i.gm;
+      gn_d        = vfu_operation_i.gn;
+      ctx_count_d = vfu_operation_i.group_g;
 
       // Bump pointers and counters of the vector instruction queue
       vinsn_queue_d.accept_pnt += 1;
@@ -461,6 +542,18 @@ module bmpu
       bmpu_insn_done_o[vinsn_commit.id] = 1'b1;
       compute_active_d = 1'b0;
       bmpu_valid = 1'b0;
+
+      if (compute_ai_q + 3'd1 < gm_q) begin
+        compute_ai_d = compute_ai_q + 3'd1;
+      end else begin
+        compute_ai_d = '0;
+        if (compute_wi_q + 3'd1 < gn_q) begin
+          compute_wi_d = compute_wi_q + 3'd1;
+        end else begin
+          compute_wi_d = '0;
+          if (first_k_round_q) first_k_round_d = 1'b0;
+        end
+      end
     end
 
 

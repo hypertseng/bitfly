@@ -58,13 +58,13 @@ module operand_queues_stage
     output logic [1:0] mask_operand_valid_o,
     input logic [1:0] mask_operand_ready_i,
     // SA 队列接口
-    output elen_t [3:0] bmpu_act_operand_o,  // MPU 激活输入
-    output logic [3:0] bmpu_act_operand_valid_o,
-    input logic [3:0] bmpu_act_operand_ready_i,
+    output elen_t [1:0] bmpu_act_operand_o,
+    output logic [1:0] bmpu_act_operand_valid_o,
+    input logic [1:0] bmpu_act_operand_ready_i,
 
-    output elen_t [3:0] bmpu_wgt_operand_o,        // bmpu 权重输入
-    output logic  [3:0] bmpu_wgt_operand_valid_o,
-    input  logic  [3:0] bmpu_wgt_operand_ready_i
+    output elen_t [1:0] bmpu_wgt_operand_o,
+    output logic  [1:0] bmpu_wgt_operand_valid_o,
+    input  logic  [1:0] bmpu_wgt_operand_ready_i
 );
 
   `include "common_cells/registers.svh"
@@ -347,7 +347,7 @@ module operand_queues_stage
 
   // SA激活值操作数队列f
   generate
-    for (genvar i = 0; i < 4; i++) begin : gen_bmpu_act_queues
+    for (genvar i = 0; i < 2; i++) begin : gen_bmpu_act_queues
       // 共享队列实例
       operand_queue #(
           .CmdBufDepth        (BmpuInsnQueueDepth),
@@ -381,7 +381,7 @@ module operand_queues_stage
 
   // SA权重队列
   generate
-    for (genvar i = 0; i < 4; i++) begin : gen_bmpu_wgt_queues
+    for (genvar i = 0; i < 2; i++) begin : gen_bmpu_wgt_queues
       operand_queue #(
           .CmdBufDepth        (BmpuInsnQueueDepth),
           .DataBufDepth       (5),
