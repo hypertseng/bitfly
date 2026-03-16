@@ -1,12 +1,13 @@
 module sa import ara_pkg::*; import rvv_pkg::*; #(
-    parameter ROWS       = 4,  // 阵列行数
-    parameter COLS       = 4,  // 阵列列数
+    parameter ROWS       = 2,  // 阵列行数
+    parameter COLS       = 2,  // 阵列列数
     parameter BIT_ACT    = 8,  // 激活值位宽（int8）
     parameter BIT_WEIGHT = 1   // 权值位宽（int1）
 ) (
     input  logic        clk_i,
     input  logic        rst_ni,
     input  logic        valid_i,
+  input  logic        clear_i,
     // input  logic        en,                 // 全局使能
     input  logic        output_en_i,          // 输出使能
     // 输入数据接口（支持参数化类型 elen_t）
@@ -43,21 +44,22 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   // ----------------------
   logic [15:0] cycle_cnt;
   logic [15:0] compute_cycles;
+  logic [15:0] compute_last;
   logic [2:0]  planes;
   logic [15:0] cycle_eff;
+  logic [2:0]  plane_idx;
+  logic        in_k_stage;
+  logic [2:0]  shift_amt_sa;
+  logic [1:0]  lbmac_mode_sa;
 
   // 根据 prec_i 决定当前指令使用的 bit-plane 数量
-  // 这里假设：
-  // 0: 1bit (binary)
-  // 1: 2bit（例如 int2 / ternary）
-  // 2: 3bit
-  // 3: 4bit
+  // 0: 1bit(binary), 1: ternary, 2: int2, 3: int4
   // 其他编码退化为 1bit
   always_comb begin
     unique case (prec_i)
       3'd0: planes = 3'd1;
       3'd1: planes = 3'd2;
-      3'd2: planes = 3'd3;
+      3'd2: planes = 3'd2;
       3'd3: planes = 3'd4;
       default: planes = 3'd1;
     endcase
@@ -68,13 +70,16 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     // 多精度时，同一个 K-slice 会串行处理多个 bit-plane，因此在中间
     // K 相关的阶段乘以 planes。
     compute_cycles = ROWS - 1 + (k_dim_i / BIT_ACT) * planes + COLS;
+    compute_last   = (compute_cycles == 0) ? 16'd0 : (compute_cycles - 16'd1);
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       cycle_cnt <= 0;
+    end else if (clear_i) begin
+      cycle_cnt <= 0;
     end else if (valid_i) begin
-      if (cycle_cnt < compute_cycles) begin
+      if (cycle_cnt < compute_last) begin
         cycle_cnt <= cycle_cnt + 1;
       end else begin
         cycle_cnt <= 1'b0;
@@ -84,7 +89,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     end
   end
 
-  assign sa_done_o = (cycle_cnt == compute_cycles);
+  assign sa_done_o = valid_i && (cycle_cnt == compute_last);
 
   // 为了在不改变原有空间波动行为的前提下插入 bit-plane 的时间复用，
   // 我们将当前 cycle_cnt 映射到一个“等效”的 cycle_eff：
@@ -128,6 +133,55 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     end
   end
 
+  // ----------------------
+  // Bit-plane shift and lbmac mode generation
+  // ----------------------
+  always_comb begin
+    // 判断当前是否在 K 相关阶段
+    in_k_stage = (cycle_cnt >= (ROWS - 1))
+                && (cycle_cnt < (ROWS - 1 + (k_dim_i / BIT_ACT) * planes));
+
+    if (in_k_stage) begin
+      plane_idx = (cycle_cnt - (ROWS - 1)) % planes;
+    end else begin
+      plane_idx = '0;
+    end
+
+    // lbmac mode: 00=binary, 01=unsigned plane(+1/0), 10=signed plane(-1/0)
+    if (!in_k_stage) begin
+      shift_amt_sa = '0;
+      lbmac_mode_sa = 2'b00;
+    end else begin
+      unique case (prec_i)
+        3'd0: begin
+          // binary: 单拍，+1/-1
+          shift_amt_sa = '0;
+          lbmac_mode_sa = 2'b00;
+        end
+        3'd1: begin
+          // ternary {-1,0,+1}:
+          // plane0: +1/0, plane1: -1/0，二者都不移位
+          shift_amt_sa = '0;
+          lbmac_mode_sa = (plane_idx == 3'd0) ? 2'b01 : 2'b10;
+        end
+        3'd2: begin
+          // int2 (2's complement): low plane <<0, sign plane <<1
+          shift_amt_sa = plane_idx;
+          lbmac_mode_sa = (plane_idx == 3'd1) ? 2'b10 : 2'b01;
+        end
+        3'd3: begin
+          // int4 (2's complement): plane0..2 unsigned, plane3 signed
+          shift_amt_sa = plane_idx;
+          lbmac_mode_sa = (plane_idx == 3'd3) ? 2'b10 : 2'b01;
+        end
+        default: begin
+          shift_amt_sa = '0;
+          lbmac_mode_sa = 2'b00;
+        end
+      endcase
+    end
+  end
+
   // logic output_en_d, output_en_q;
 
   generate
@@ -140,9 +194,12 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
             .clk             (clk_i),
             .rst_n           (rst_ni),
             .en              (valid_i),
+          .clear_i         (clear_i),
             .output_en       (output_en_i),
             .activations     ((j == 0) ? act_in[i] : act_reg[i][j-1]),
             .weights         ((i == 0) ? wgt_in[j] : weight_reg[i-1][j]),
+            .shift_amt_i     (shift_amt_sa),
+            .lbmac_mode_i    (lbmac_mode_sa),
             .input_output_reg((j == COLS-1) ? '0 : output_reg[i][j+1]),
             .activation_out  (act_reg[i][j]),
             .weight_out      (weight_reg[i][j]),
@@ -158,11 +215,8 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
 
   always_comb begin
     output_data_o = '{default:'0};  // 初始化输出数据为0
-    // 仅在输出使能时更新输出数据
-    if (output_en_i) begin
-      for (int i = 0; i < ROWS; i++) begin
-        output_data_o[i] = output_reg[i][0];
-      end
+    for (int i = 0; i < ROWS; i++) begin
+      output_data_o[i] = output_reg[i][0];
     end
   end
 

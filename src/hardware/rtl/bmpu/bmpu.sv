@@ -22,6 +22,8 @@ module bmpu
     // Interface with the lane sequencer
     input  vfu_operation_t                          vfu_operation_i,
     input  logic                                    vfu_operation_valid_i,
+    input  logic                                    bmpu_prefetch_ready_i,
+    input  logic                                    bmpu_weight_load_i,
     output logic                                    bmpu_ready_o,
     output logic           [           NrVInsn-1:0] bmpu_insn_done_o,
     // Interface with the operand queues
@@ -31,6 +33,9 @@ module bmpu
     input  elen_t          [   NrInputQueues - 1:0] bmpu_wgt_operand_i,
     input  logic           [   NrInputQueues - 1:0] bmpu_wgt_operand_valid_i,
     output logic           [   NrInputQueues - 1:0] bmpu_wgt_operand_ready_o,
+    output elen_t                                   bmpu_store_data_o,
+    output logic                                    bmpu_store_valid_o,
+    input  logic                                    bmpu_store_ready_i,
     // Interface with the vector register file
     output logic                                    bmpu_result_req_o,
     output vid_t           [                   NrResultQueues - 1:0] bmpu_result_id_o,
@@ -38,11 +43,15 @@ module bmpu
     output elen_t          [                   NrResultQueues - 1:0] bmpu_result_wdata_o,
     output strb_t          [                   NrResultQueues - 1:0] bmpu_result_be_o,
     input  logic                                    bmpu_result_gnt_i,
+    output logic                                    bmpu_compute_busy_o,
     output logic                                    bmpu_output_en_o
 );
 
   import cf_math_pkg::idx_width;
   `include "common_cells/registers.svh"
+
+  logic unused_bmpu_side_inputs;
+  assign unused_bmpu_side_inputs = bmpu_prefetch_ready_i ^ bmpu_weight_load_i;
 
   /////////////
   // Lane ID //
@@ -126,14 +135,15 @@ module bmpu
 
   // Result queue
   payload_t [ResultQueueDepth-1:0][7:0] result_queue_d, result_queue_q;
-  logic [ResultQueueDepth-1:0][7:0] result_queue_valid_d, result_queue_valid_q;
+  logic [ResultQueueDepth-1:0] result_queue_valid_d, result_queue_valid_q;
   // We need two pointers in the result queue. One pointer to indicate with `payload_t` we are
   // currently writing into (write_pnt), and one pointer to indicate which `payload_t` we are
   // currently reading from and writing into the lanes (read_pnt).
-  logic [idx_width(ResultQueueDepth)-1:0][7:0] result_queue_write_pnt_d, result_queue_write_pnt_q;
-  logic [idx_width(ResultQueueDepth)-1:0][7:0] result_queue_read_pnt_d, result_queue_read_pnt_q;
+  logic [idx_width(ResultQueueDepth)-1:0] result_queue_write_pnt_d, result_queue_write_pnt_q;
+  logic [idx_width(ResultQueueDepth)-1:0] result_queue_read_pnt_d, result_queue_read_pnt_q;
   // We need to count how many valid elements are there in this result queue.
   logic [idx_width(ResultQueueDepth):0] result_queue_cnt_d, result_queue_cnt_q;
+  logic [$clog2(NrResultQueues)-1:0] store_word_pnt_d, store_word_pnt_q;
 
   // Is the result queue full?
   logic result_queue_full;
@@ -146,26 +156,36 @@ module bmpu
       result_queue_write_pnt_q <= '0;
       result_queue_read_pnt_q  <= '0;
       result_queue_cnt_q       <= '0;
+      store_word_pnt_q         <= '0;
     end else begin
       result_queue_q           <= result_queue_d;
       result_queue_valid_q     <= result_queue_valid_d;
       result_queue_write_pnt_q <= result_queue_write_pnt_d;
       result_queue_read_pnt_q  <= result_queue_read_pnt_d;
       result_queue_cnt_q       <= result_queue_cnt_d;
+      store_word_pnt_q         <= store_word_pnt_d;
     end
   end
 
   logic bmpu_valid;
+  logic bmpu_clear;
+  logic compute_active_d, compute_active_q;
   logic [127:0] bmpu_result [3:0];
-  logic [16:0] k_dim;
-  logic [2:0] prec;
+  logic [16:0] k_dim_d, k_dim_q;
+  logic [2:0] prec_d, prec_q;
   logic sa_done_d, sa_done_q;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       sa_done_q <= 1'b0;
+      compute_active_q <= 1'b0;
+      k_dim_q <= '0;
+      prec_q <= '0;
     end else begin
       sa_done_q <= sa_done_d;
+      compute_active_q <= compute_active_d;
+      k_dim_q <= k_dim_d;
+      prec_q <= prec_d;
     end
   end
 
@@ -178,11 +198,12 @@ module bmpu
       .clk_i            (clk_i),
       .rst_ni           (rst_ni),
       .valid_i          (bmpu_valid),
+      .clear_i          (bmpu_clear),
       .output_en_i      (bmpu_output_en_o),
       .bmpu_act_operand_i(bmpu_act_operand_i),
       .bmpu_wgt_operand_i(bmpu_wgt_operand_i),
-      .k_dim_i          (k_dim),
-      .prec_i           (prec),
+      .k_dim_i          (k_dim_q),
+      .prec_i           (prec_q),
       .output_data_o    (bmpu_result),
       .sa_done_o        (sa_done_d)
   );
@@ -207,16 +228,23 @@ module bmpu
     vinsn_queue_d            = vinsn_queue_q;
     issue_cnt_d              = issue_cnt_q;
     commit_cnt_d             = commit_cnt_q;
+    k_dim_d                  = k_dim_q;
+    prec_d                   = prec_q;
 
     result_queue_d           = result_queue_q;
     result_queue_valid_d     = result_queue_valid_q;
     result_queue_read_pnt_d  = result_queue_read_pnt_q;
     result_queue_write_pnt_d = result_queue_write_pnt_q;
     result_queue_cnt_d       = result_queue_cnt_q;
+    store_word_pnt_d         = store_word_pnt_q;
 
     // Inform our status to the lane controller
     bmpu_ready_o              = !vinsn_queue_full;
     bmpu_insn_done_o          = '0;
+    bmpu_valid                = 1'b0;
+    bmpu_clear                = 1'b0;
+    bmpu_output_en_o          = 1'b0;
+    compute_active_d          = compute_active_q;
 
     // Do not acknowledge any operands
     bmpu_act_operand_ready_o  = '0;
@@ -231,11 +259,18 @@ module bmpu
     element_cnt_buf_commit   = 8 * (1 << (unsigned'(EW64) - commit_effective_eew));
     element_cnt_commit       = {2'b0, element_cnt_buf_commit};
 
-    if (vinsn_issue_q.op == BMPSE) begin
+    if ((vinsn_issue_valid && (vinsn_issue_q.op == BMPSE)) ||
+        (vinsn_commit_valid && (vinsn_commit.op == BMPSE))) begin
       bmpu_output_en_o = 1'b1;
     end
 
     if (sa_done_q) begin  // sa computation done
+`ifndef SYNTHESIS
+      if (1'b0 && (lane_id_i == 0)) begin
+        $display("[%0t][BMPU] sa_done commit_id=%0d issue_cnt=%0d commit_cnt=%0d output_en=%0b", $time,
+                 vinsn_commit.id, issue_cnt_q, commit_cnt_q, bmpu_output_en_o);
+      end
+`endif
       // We have finished the computation of the micro-operations of this vector instruction
       // issue
       vinsn_queue_d.issue_cnt -= 1;
@@ -262,16 +297,37 @@ module bmpu
     if (vinsn_issue_valid) begin
       // Do not accept operands if the result queue is full!
       if (!result_queue_full) begin
-        // Do we have all the operands necessary for this instruction?
-        if ((|bmpu_act_operand_valid_i) && (|bmpu_wgt_operand_valid_i)) begin
-          // Issue the operation
+        if (vinsn_issue_q.op == BMPSE) begin
           bmpu_valid = 1'b1;
+`ifndef SYNTHESIS
+          if (1'b0 && (lane_id_i == 0)) begin
+            $display("[%0t][BMPU] issue op=%0d id=%0d vl=%0d k_dim=%0d prec=%0d output_en=%0b", $time,
+                     vinsn_issue_q.op, vinsn_issue_q.id, issue_cnt_q, k_dim_q, prec_q, bmpu_output_en_o);
+          end
+`endif
+        end else begin
+          if ((|bmpu_act_operand_valid_i) && (|bmpu_wgt_operand_valid_i)) begin
+`ifndef SYNTHESIS
+            if (1'b0 && (lane_id_i == 0)) begin
+              $display("[%0t][BMPU] issue op=%0d id=%0d vl=%0d k_dim=%0d prec=%0d output_en=%0b", $time,
+                       vinsn_issue_q.op, vinsn_issue_q.id, issue_cnt_q, k_dim_q, prec_q, bmpu_output_en_o);
+            end
+`endif
+            if (!compute_active_q) begin
+              bmpu_clear = 1'b1;
+            end
+            compute_active_d = 1'b1;
 
-          // Acknowledge the operands of this instruction
-          bmpu_act_operand_ready_o = '1;
-          bmpu_wgt_operand_ready_o = '1;
+            // Acknowledge the operands of this instruction
+            bmpu_act_operand_ready_o = '1;
+            bmpu_wgt_operand_ready_o = '1;
+          end
+
+          if (compute_active_q || ((|bmpu_act_operand_valid_i) && (|bmpu_wgt_operand_valid_i))) begin
+            bmpu_valid = 1'b1;
+          end
         end
-        if (bmpu_output_en_o) begin
+        if (bmpu_valid && bmpu_output_en_o) begin
           // How many elements are we committing with this word?
           automatic logic [8:0] element_cnt = element_cnt_issue;
 
@@ -280,8 +336,8 @@ module bmpu
           for (int unsigned i = 0; i < NrResultQueues / 2; i++) begin
             result_queue_d[result_queue_write_pnt_q][i].wdata = bmpu_result[i][63:0];
             result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].wdata = bmpu_result[i][127:64];
-            result_queue_d[result_queue_write_pnt_q][i].addr  = (k_dim * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew))) + i;
-            result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].addr  = (k_dim * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew))) + i + (NrResultQueues / 2);
+            result_queue_d[result_queue_write_pnt_q][i].addr  = (k_dim_q * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew))) + i;
+            result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].addr  = (k_dim_q * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew))) + i + (NrResultQueues / 2);
             result_queue_d[result_queue_write_pnt_q][i].id = vinsn_issue_q.id;
             result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].id = vinsn_issue_q.id;
             result_queue_d[result_queue_write_pnt_q][i].be = '1;
@@ -310,42 +366,45 @@ module bmpu
       end
     end
 
-    //////////////////////////////////
-    //  Write results into the VRF  //
-    //////////////////////////////////
+    ////////////////////////////////////////
+    //  Stream results into the Store Unit  //
+    ////////////////////////////////////////
 
-    bmpu_result_req_o = result_queue_valid_q[result_queue_read_pnt_q] && bmpu_output_en_o;
+    bmpu_result_req_o = 1'b0;
     for (int unsigned i = 0; i < NrResultQueues / 2; i++) begin
-      bmpu_result_wdata_o[i] = result_queue_q[result_queue_read_pnt_q][i].wdata;
-      bmpu_result_wdata_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].wdata;
-      bmpu_result_addr_o[i] = result_queue_q[result_queue_read_pnt_q][i].addr;
-      bmpu_result_addr_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].addr;
-      bmpu_result_id_o[i] = result_queue_q[result_queue_read_pnt_q][i].id;
-      bmpu_result_id_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].id;
-      bmpu_result_be_o[i] = result_queue_q[result_queue_read_pnt_q][i].be;
-      bmpu_result_be_o[i + (NrResultQueues / 2)] = result_queue_q[result_queue_read_pnt_q][i + (NrResultQueues / 2)].be;
+      bmpu_result_wdata_o[i] = '0;
+      bmpu_result_wdata_o[i + (NrResultQueues / 2)] = '0;
+      bmpu_result_addr_o[i] = '0;
+      bmpu_result_addr_o[i + (NrResultQueues / 2)] = '0;
+      bmpu_result_id_o[i] = '0;
+      bmpu_result_id_o[i + (NrResultQueues / 2)] = '0;
+      bmpu_result_be_o[i] = '0;
+      bmpu_result_be_o[i + (NrResultQueues / 2)] = '0;
     end
 
+    bmpu_store_valid_o = result_queue_valid_q[result_queue_read_pnt_q] &&
+                         vinsn_commit_valid && (vinsn_commit.op == BMPSE);
+    bmpu_store_data_o  = result_queue_q[result_queue_read_pnt_q][store_word_pnt_q].wdata;
 
-    // Received a grant from the VRF.
-    // Deactivate the request.
-    if (bmpu_result_gnt_i) begin
+    if (bmpu_store_valid_o && bmpu_store_ready_i) begin
       automatic logic [8:0] element_cnt = element_cnt_commit;
-      result_queue_valid_d[result_queue_read_pnt_q] = 1'b0;
-      result_queue_d[result_queue_read_pnt_q]       = '0;
+      if (store_word_pnt_q == NrResultQueues - 1) begin
+        result_queue_valid_d[result_queue_read_pnt_q] = 1'b0;
+        result_queue_d[result_queue_read_pnt_q]       = '0;
+        store_word_pnt_d = '0;
 
-      // Increment the read pointer
-      if (result_queue_read_pnt_q == ResultQueueDepth - 1) result_queue_read_pnt_d = 0;
-      else result_queue_read_pnt_d = result_queue_read_pnt_q + 1;
+        if (result_queue_read_pnt_q == ResultQueueDepth - 1) result_queue_read_pnt_d = 0;
+        else result_queue_read_pnt_d = result_queue_read_pnt_q + 1;
 
-      // Decrement the counter of results waiting to be written
-      result_queue_cnt_d -= 1;
+        result_queue_cnt_d -= 1;
 
-      // Decrement the counter of remaining vector elements waiting to be written
-      if (commit_cnt_q < element_cnt) begin
-        commit_cnt_d = '0;
+        if (commit_cnt_q < element_cnt) begin
+          commit_cnt_d = '0;
+        end else begin
+          commit_cnt_d = commit_cnt_q - element_cnt;
+        end
       end else begin
-        commit_cnt_d = commit_cnt_q - element_cnt;
+        store_word_pnt_d = store_word_pnt_q + 1'b1;
       end
     end
 
@@ -363,15 +422,18 @@ module bmpu
       bmpu_insn_done_o[vinsn_commit.id] = 1'b1;
     end
 
-    if (commit_cnt_q == '0) begin
-      bmpu_output_en_o = 1'b0;
-    end
-
     //////////////////////////////
     //  Accept new instruction  //
     //////////////////////////////
 
     if (!vinsn_queue_full && vfu_operation_valid_i && (vfu_operation_i.vfu == BMPU || vfu_operation_i.op == BMPSE)) begin
+`ifndef SYNTHESIS
+      if (1'b0 && (lane_id_i == 0)) begin
+        $display("[%0t][BMPU] accept op=%0d vfu=%0d id=%0d vl=%0d out_en_in=%0b", $time,
+                 vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.id, vfu_operation_i.vl,
+                 vfu_operation_i.bmpu_output_en);
+      end
+`endif
       vinsn_queue_d.vinsn[vinsn_queue_q.accept_pnt] = vfu_operation_i;
 
       // Initialize counters and alu state if the instruction queue was empty
@@ -380,8 +442,8 @@ module bmpu
       end
       if (vinsn_queue_d.commit_cnt == '0) commit_cnt_d = vfu_operation_i.vl;
 
-      k_dim = vfu_operation_i.k_dim;
-      prec = vfu_operation_i.prec;
+      k_dim_d = vfu_operation_i.k_dim;
+      prec_d = vfu_operation_i.prec;
 
       // Bump pointers and counters of the vector instruction queue
       vinsn_queue_d.accept_pnt += 1;
@@ -397,11 +459,14 @@ module bmpu
     if (sa_done_q) begin
       // Mark the vector instruction as being done
       bmpu_insn_done_o[vinsn_commit.id] = 1'b1;
+      compute_active_d = 1'b0;
       bmpu_valid = 1'b0;
     end
 
 
   end : p_bmpu
+
+  assign bmpu_compute_busy_o = bmpu_valid | (vinsn_queue_q.issue_cnt != '0) | (vinsn_queue_q.commit_cnt != '0);
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin

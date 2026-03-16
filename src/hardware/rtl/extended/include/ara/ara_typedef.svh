@@ -8,15 +8,15 @@
 // hierarchical verilation.
 
 typedef struct packed {
-  vid_t id; // ID of the vector instruction
+  vid_t id;  // ID of the vector instruction
 
-  ara_op_e op; // Operation
+  ara_op_e op;  // Operation
 
   // Mask vector register operand
   logic vm;
   rvv_pkg::vew_e eew_vmask;
 
-  vfu_e vfu; // VFU responsible for handling this instruction
+  vfu_e vfu;  // VFU responsible for handling this instruction
 
   // Rescale vl taking into account the new and old EEW
   logic scale_vl;
@@ -45,14 +45,14 @@ typedef struct packed {
 
   // Scalar operand
   elen_t scalar_op;
-  logic use_scalar_op;
+  logic  use_scalar_op;
 
   // If asserted: vs2 is kept in MulFPU opqueue C, and vd_op in MulFPU A
   logic swap_vs2_vd_op;
 
   // 2nd scalar operand: stride for constant-strided vector load/stores
   elen_t stride;
-  logic is_stride_np2;
+  logic  is_stride_np2;
 
   // Destination vector register
   logic [4:0] vd;
@@ -81,10 +81,14 @@ typedef struct packed {
   logic [NrVInsn-1:0] hazard_vm;
   logic [NrVInsn-1:0] hazard_vd;
 
-  logic [8:0]         k_dim;
-  logic               bmpu_en;
-  logic               is_weight;
-  logic               bmpu_output_en;
+  logic [8:0] k_dim;
+  logic [2:0] prec;
+  logic [5:0] mtile;
+  logic [6:0] ntile;
+  logic [2:0] group_g;
+  logic       bmpu_en;
+  logic       is_weight;
+  logic       bmpu_output_en;
   // elen_t              size;
 } pe_req_t;
 

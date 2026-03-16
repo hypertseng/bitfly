@@ -23,79 +23,82 @@ module operand_requester
     localparam type vlen_t = logic [$clog2(VLEN+1)-1:0],
     localparam int unsigned NrBmpuResultQueues = 8
 ) (
-    input  logic                                                    clk_i,
-    input  logic                                                    rst_ni,
+    input logic clk_i,
+    input logic rst_ni,
+    input logic [cf_math_pkg::idx_width(NrLanes)-1:0] lane_id_i,
     // Interface with the main sequencer
-    input  logic                 [        NrVInsn-1:0][NrVInsn-1:0] global_hazard_table_i,
+    input logic [NrVInsn-1:0][NrVInsn-1:0] global_hazard_table_i,
     // Interface with the lane sequencer
-    input  operand_request_cmd_t [NrOperandQueues-1:0]              operand_request_i,
-    input  logic                 [NrOperandQueues-1:0]              operand_request_valid_i,
-    output logic                 [NrOperandQueues-1:0]              operand_request_ready_o,
+    input operand_request_cmd_t [NrOperandQueues-1:0] operand_request_i,
+    input logic [NrOperandQueues-1:0] operand_request_valid_i,
+    output logic [NrOperandQueues-1:0] operand_request_ready_o,
     // Support for store exception flush
-    input  logic                                                    lsu_ex_flush_i,
-    output logic                                                    lsu_ex_flush_o,
+    input logic lsu_ex_flush_i,
+    output logic lsu_ex_flush_o,
     // Interface with the VRF
-    output logic                 [        NrBanks-1:0]              vrf_req_o,
-    output vaddr_t               [        NrBanks-1:0]              vrf_addr_o,
-    output logic                 [        NrBanks-1:0]              vrf_wen_o,
-    output elen_t                [        NrBanks-1:0]              vrf_wdata_o,
-    output strb_t                [        NrBanks-1:0]              vrf_be_o,
-    output opqueue_e             [        NrBanks-1:0]              vrf_tgt_opqueue_o,
+    output logic [NrBanks-1:0] vrf_req_o,
+    output vaddr_t [NrBanks-1:0] vrf_addr_o,
+    output logic [NrBanks-1:0] vrf_wen_o,
+    output elen_t [NrBanks-1:0] vrf_wdata_o,
+    output strb_t [NrBanks-1:0] vrf_be_o,
+    output opqueue_e [NrBanks-1:0] vrf_tgt_opqueue_o,
     // Interface with the operand queues
-    input  logic                 [NrOperandQueues-1:0]              operand_queue_ready_i,
-    output logic                 [NrOperandQueues-1:0]              operand_issued_o,
-    output operand_queue_cmd_t   [NrOperandQueues-1:0]              operand_queue_cmd_o,
-    output logic                 [NrOperandQueues-1:0]              operand_queue_cmd_valid_o,
+    input logic [NrOperandQueues-1:0] operand_queue_ready_i,
+    output logic [NrOperandQueues-1:0] operand_issued_o,
+    output operand_queue_cmd_t [NrOperandQueues-1:0] operand_queue_cmd_o,
+    output logic [NrOperandQueues-1:0] operand_queue_cmd_valid_o,
     // Interface with the VFUs
     // ALU
-    input  logic                                                    alu_result_req_i,
-    input  vid_t                                                    alu_result_id_i,
-    input  vaddr_t                                                  alu_result_addr_i,
-    input  elen_t                                                   alu_result_wdata_i,
-    input  strb_t                                                   alu_result_be_i,
-    output logic                                                    alu_result_gnt_o,
+    input logic alu_result_req_i,
+    input vid_t alu_result_id_i,
+    input vaddr_t alu_result_addr_i,
+    input elen_t alu_result_wdata_i,
+    input strb_t alu_result_be_i,
+    output logic alu_result_gnt_o,
     // Multiplier/FPU
-    input  logic                                                    mfpu_result_req_i,
-    input  vid_t                                                    mfpu_result_id_i,
-    input  vaddr_t                                                  mfpu_result_addr_i,
-    input  elen_t                                                   mfpu_result_wdata_i,
-    input  strb_t                                                   mfpu_result_be_i,
-    output logic                                                    mfpu_result_gnt_o,
+    input logic mfpu_result_req_i,
+    input vid_t mfpu_result_id_i,
+    input vaddr_t mfpu_result_addr_i,
+    input elen_t mfpu_result_wdata_i,
+    input strb_t mfpu_result_be_i,
+    output logic mfpu_result_gnt_o,
     // Mask unit
-    input  logic                                                    masku_result_req_i,
-    input  vid_t                                                    masku_result_id_i,
-    input  vaddr_t                                                  masku_result_addr_i,
-    input  elen_t                                                   masku_result_wdata_i,
-    input  strb_t                                                   masku_result_be_i,
-    output logic                                                    masku_result_gnt_o,
-    output logic                                                    masku_result_final_gnt_o,
+    input logic masku_result_req_i,
+    input vid_t masku_result_id_i,
+    input vaddr_t masku_result_addr_i,
+    input elen_t masku_result_wdata_i,
+    input strb_t masku_result_be_i,
+    output logic masku_result_gnt_o,
+    output logic masku_result_final_gnt_o,
     // Slide unit
-    input  logic                                                    sldu_result_req_i,
-    input  vid_t                                                    sldu_result_id_i,
-    input  vaddr_t                                                  sldu_result_addr_i,
-    input  elen_t                                                   sldu_result_wdata_i,
-    input  strb_t                                                   sldu_result_be_i,
-    output logic                                                    sldu_result_gnt_o,
-    output logic                                                    sldu_result_final_gnt_o,
+    input logic sldu_result_req_i,
+    input vid_t sldu_result_id_i,
+    input vaddr_t sldu_result_addr_i,
+    input elen_t sldu_result_wdata_i,
+    input strb_t sldu_result_be_i,
+    output logic sldu_result_gnt_o,
+    output logic sldu_result_final_gnt_o,
     // Load unit
-    input  logic                                                    ldu_result_req_i,
-    input  vid_t                                                    ldu_result_id_i,
-    input  vaddr_t                                                  ldu_result_addr_i,
-    input  elen_t                                                   ldu_result_wdata_i,
-    input  strb_t                                                   ldu_result_be_i,
-    output logic                                                    ldu_result_gnt_o,
-    output logic                                                    ldu_result_final_gnt_o,
+    input logic ldu_result_req_i,
+    input vid_t ldu_result_id_i,
+    input vaddr_t ldu_result_addr_i,
+    input elen_t ldu_result_wdata_i,
+    input strb_t ldu_result_be_i,
+    output logic ldu_result_gnt_o,
+    output logic ldu_result_final_gnt_o,
     // BMPU
-    input  logic                                                    bmpu_result_req_i,
-    input  vid_t                 [NrBmpuResultQueues-1:0]            bmpu_result_id_i,
-    input  vaddr_t               [NrBmpuResultQueues-1:0]            bmpu_result_addr_i,
-    input  elen_t                [NrBmpuResultQueues-1:0]            bmpu_result_wdata_i,
-    input  strb_t                [NrBmpuResultQueues-1:0]            bmpu_result_be_i,
-    output logic                                                    bmpu_result_gnt_o,
+    input logic bmpu_result_req_i,
+    input vid_t [NrBmpuResultQueues-1:0] bmpu_result_id_i,
+    input vaddr_t [NrBmpuResultQueues-1:0] bmpu_result_addr_i,
+    input elen_t [NrBmpuResultQueues-1:0] bmpu_result_wdata_i,
+    input strb_t [NrBmpuResultQueues-1:0] bmpu_result_be_i,
+    output logic bmpu_result_gnt_o,
 
-    input  logic                                                    bmpu_en_i,
-    input  logic                                                    bmpu_output_en_i,
-    input  logic                                                    is_bmpu_store_i
+    input logic               bmpu_en_i,
+    input logic               bmpu_output_en_i,
+    input logic               is_bmpu_store_i,
+    input logic               is_bmpu_load_i,
+    input logic [NrVInsn-1:0] is_bmpu_load_vinsn_i
 );
 
   import cf_math_pkg::idx_width;
@@ -203,6 +206,7 @@ module operand_requester
 
   // Instruction wrote a result
   logic [NrVInsn-1:0] vinsn_result_written_d, vinsn_result_written_q;
+  logic [NrBmpuResultQueues-1:0] bmpu_result_granted_d, bmpu_result_granted_q;
 
   always_comb begin
     vinsn_result_written_d = '0;
@@ -213,16 +217,20 @@ module operand_requester
     vinsn_result_written_d[masku_result_id] |= masku_result_gnt;
     vinsn_result_written_d[ldu_result_id] |= ldu_result_gnt;
     vinsn_result_written_d[sldu_result_id] |= sldu_result_gnt;
-    vinsn_result_written_d[bmpu_result_id_i] |= bmpu_result_gnt_o;
+    for (int i = 0; i < NrBmpuResultQueues; i++) begin
+      vinsn_result_written_d[bmpu_result_id_i[i]] |= bmpu_result_gnt_o;
+    end
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin : p_vinsn_result_written_ff
     if (!rst_ni) begin
       vinsn_result_written_q <= '0;
       lsu_ex_flush_o <= 1'b0;
+      bmpu_result_granted_q <= '0;
     end else begin
       vinsn_result_written_q <= vinsn_result_written_d;
       lsu_ex_flush_o <= lsu_ex_flush_i;
+      bmpu_result_granted_q <= bmpu_result_granted_d;
     end
   end
 
@@ -243,6 +251,7 @@ module operand_requester
   localparam NrGlobalMasters = 5;
   localparam NrBmpuOutQueues = 8;
   localparam NrMasters = NrOperandQueues + NrGlobalMasters + NrBmpuOutQueues;
+  localparam logic [idx_width(NrBanks)-1:0] BmpuBankHalf = NrBanks / 2;
 
   typedef struct packed {
     vaddr_t addr;
@@ -252,11 +261,12 @@ module operand_requester
     opqueue_e opqueue;
   } payload_t;
 
-  logic       [        NrBanks-1:0]             [NrOperandQueues-1:0]  lane_operand_req;
-  logic       [NrOperandQueues-1:0]             [        NrBanks-1:0]  lane_operand_req_transposed;
-  logic       [        NrBanks-1:0]             [NrGlobalMasters+NrBmpuOutQueues-1:0]  ext_operand_req;
-  logic       [        NrBanks-1:0]             [      NrMasters-1:0]  operand_gnt;
-  payload_t [                      NrMasters-1:0                     ] operand_payload;
+  logic [NrBanks-1:0][NrOperandQueues-1:0] lane_operand_req;
+  logic [NrOperandQueues-1:0][NrBanks-1:0] lane_operand_req_transposed;
+  logic [NrBanks-1:0][NrGlobalMasters+NrBmpuOutQueues-1:0] ext_operand_req;
+  logic [NrBanks-1:0][NrMasters-1:0] operand_gnt;
+  payload_t [NrMasters-1:0] operand_payload;
+  logic [NrBmpuResultQueues-1:0] bmpu_result_gnt_vec;
 
   // Metadata required to request all elements of this vector operand
   typedef struct packed {
@@ -287,14 +297,39 @@ module operand_requester
   end
 
   logic bmpu_output_en_d, bmpu_output_en_q;
+  logic                            bmpu_en_prev_q;
+  logic   [idx_width(NrBanks)-1:0] bmpu_bank_base_q;
+  logic   [idx_width(NrBanks)-1:0] bmpu_prefetch_base;
+  logic   [idx_width(NrBanks)-1:0] ldu_result_bank_mapped;
+  vaddr_t                          ldu_result_addr_mapped;
 
-  assign bmpu_output_en_d = bmpu_output_en_i;
+  assign bmpu_output_en_d   = bmpu_output_en_i;
+  assign bmpu_prefetch_base = bmpu_bank_base_q ^ BmpuBankHalf;
+
+  always_comb begin : p_ldu_bmpu_bank_map
+    ldu_result_addr_mapped = ldu_result_addr;
+    ldu_result_bank_mapped = ldu_result_addr[idx_width(NrBanks)-1:0];
+
+    if (is_bmpu_load_vinsn_i[ldu_result_id]) begin
+      ldu_result_bank_mapped = ldu_result_addr[idx_width(NrBanks)-1:0] + bmpu_prefetch_base;
+      ldu_result_addr_mapped[idx_width(NrBanks)-1:0] = ldu_result_bank_mapped;
+    end
+  end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin : p_bmpu_output_en_ff
     if (!rst_ni) begin
       bmpu_output_en_q <= 1'b0;
+      bmpu_en_prev_q   <= 1'b0;
+      bmpu_bank_base_q <= '0;
     end else begin
       bmpu_output_en_q <= bmpu_output_en_d;
+      bmpu_en_prev_q   <= bmpu_en_i;
+
+      // Toggle compute bank-set on each BMPMM start pulse (ping-pong 0..3 / 4..7)
+      if (bmpu_en_i && !bmpu_en_prev_q) begin
+        if (bmpu_bank_base_q == '0) bmpu_bank_base_q <= BmpuBankHalf;
+        else bmpu_bank_base_q <= '0;
+      end
     end
   end
 
@@ -310,13 +345,11 @@ module operand_requester
     logic stall;
     assign stall = (
       |(requester_metadata_q.hazard & ~(
-          vinsn_result_written_q &
-          (~{NrVInsn{requester_metadata_q.is_widening}} | requester_metadata_q.waw_hazard_counter)
+        vinsn_result_written_q &
+        (~{NrVInsn{requester_metadata_q.is_widening}} | requester_metadata_q.waw_hazard_counter)
       ))
       ) || (
-          (bmpu_en_i === 1'b1 && requester_metadata_q.hazard)
-      ) || (
-          (requester_index == 15) && ((bmpu_output_en_q === 1'b1)||(bmpu_output_en_d === 1'b1))
+        (requester_index == 15) && ((bmpu_output_en_q === 1'b1)||(bmpu_output_en_d === 1'b1))
       );
 
     // Did we get a grant?
@@ -341,6 +374,7 @@ module operand_requester
       automatic elen_t               vstart_byte;
       automatic elen_t               vector_body_len_byte;
       automatic elen_t               scaled_vector_len_elements;
+      automatic vaddr_t              bmpu_bank_addr_init;
 
       // Bank we are currently requesting
       automatic int                  bank = requester_metadata_q.addr[idx_width(NrBanks)-1:0];
@@ -382,14 +416,24 @@ module operand_requester
       // Address of the vstart element of the vector in the VRF
       // This vstart is NOT the architectural one and was modified in the lane
       // sequencer to provide the correct start address
-      vrf_addr = is_bmpu_store_i ? operand_request_i[requester_index].vstart : vaddr(operand_request_i[requester_index].vs, NrLanes, VLEN) +
+      vrf_addr = is_bmpu_store_i ? (operand_request_i[requester_index].vstart + bmpu_bank_base_q) : vaddr(
+          operand_request_i[requester_index].vs, NrLanes, VLEN) +
           (operand_request_i[requester_index].vstart >>
            (unsigned'(EW64) - unsigned'(operand_request_i[requester_index].eew)));
+
+      unique case (requester_index)
+        BMPUAct0: bmpu_bank_addr_init = bmpu_bank_base_q;
+        BMPUAct1: bmpu_bank_addr_init = bmpu_bank_base_q + 1;
+        BMPUWgt0: bmpu_bank_addr_init = bmpu_bank_base_q + 2;
+        BMPUWgt1: bmpu_bank_addr_init = bmpu_bank_base_q + 3;
+        default:  bmpu_bank_addr_init = requester_index - 5;
+      endcase
 
       // Init helper variables
       requester_metadata_tmp = '{
           id          : operand_request_i[requester_index].id,
-          addr        : (requester_index > 4 && requester_index < 13) ? requester_index - 5 : vrf_addr,
+          addr        : (requester_index > 4 && requester_index < 13) ? bmpu_bank_addr_init :
+              vrf_addr,
           len         : effective_vector_body_length,
           vew         : operand_request_i[requester_index].eew,
           hazard      : operand_request_i[requester_index].hazard,
@@ -438,6 +482,15 @@ module operand_requester
             end : zero_vl
 
             request_cnt_d = '0;
+
+`ifndef SYNTHESIS
+            if (1'b0 && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt3)) begin
+              $display("[%0t][OPREQ][lane%0d] accept q=%0d id=%0d len=%0d addr=%0d vew=%0d", $time,
+                       lane_id_i, requester_index, operand_request_i[requester_index].id,
+                       requester_metadata_tmp.len, requester_metadata_tmp.addr,
+                       operand_request_i[requester_index].eew);
+            end
+`endif
           end : op_req_valid
         end : state_q_IDLE
 
@@ -462,6 +515,13 @@ module operand_requester
 
             // Received a grant.
             if (|operand_requester_gnt) begin : op_req_grant
+`ifndef SYNTHESIS
+              if (1'b0 && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt3)) begin
+                $display("[%0t][OPREQ][lane%0d] grant q=%0d bank=%0d addr=%0d len_before=%0d",
+                         $time, lane_id_i, requester_index, bank, requester_metadata_q.addr,
+                         requester_metadata_q.len);
+              end
+`endif
               // Bump the address pointer
               if (requester_index > 4 && requester_index < 13) begin
                 requester_metadata_d.addr = requester_metadata_q.addr + 4'b1000;
@@ -490,7 +550,7 @@ module operand_requester
             end : op_req_grant
 
             // Finished requesting all the elements
-            
+
             if (requester_metadata_d.len == '0) begin
               state_d = IDLE;
               request_cnt_d = '0;
@@ -565,6 +625,8 @@ module operand_requester
 
   // Remember whether the VFUs are trying to write something to the VRF
   always_comb begin
+    bmpu_result_granted_d = bmpu_result_granted_q;
+
     // Default assignment
     for (int bank = 0; bank < NrBanks; bank++) begin
       ext_operand_req[bank][VFU_Alu]       = 1'b0;
@@ -573,7 +635,7 @@ module operand_requester
       ext_operand_req[bank][VFU_SlideUnit] = 1'b0;
       ext_operand_req[bank][VFU_LoadUnit]  = 1'b0;
       for (int i = 0; i < NrBmpuResultQueues; i++) begin
-        ext_operand_req[bank][i + NrGlobalMasters] = 1'b0;
+        ext_operand_req[bank][i+NrGlobalMasters] = 1'b0;
       end
     end
 
@@ -611,7 +673,7 @@ module operand_requester
         default: '0
     };
     operand_payload[NrOperandQueues+VFU_LoadUnit] = '{
-        addr   : ldu_result_addr >> $clog2(NrBanks),
+        addr   : ldu_result_addr_mapped >> $clog2(NrBanks),
         wen    : 1'b1,
         wdata  : ldu_result_wdata,
         be     : ldu_result_be,
@@ -620,26 +682,28 @@ module operand_requester
     };
     if (bmpu_output_en_q) begin
       for (int i = 0; i < NrBmpuResultQueues; i++) begin
-        operand_payload[NrOperandQueues + NrGlobalMasters + i].addr   = bmpu_result_addr_i[i] >> $clog2(NrBanks);
-        operand_payload[NrOperandQueues + NrGlobalMasters + i].wen    = 1'b1;
-        operand_payload[NrOperandQueues + NrGlobalMasters + i].wdata  = bmpu_result_wdata_i[i];
-        operand_payload[NrOperandQueues + NrGlobalMasters + i].be     = bmpu_result_be_i[i];
-        if (i <  NrBmpuResultQueues / 2) begin
-          operand_payload[NrOperandQueues + NrGlobalMasters + i].opqueue = opqueue_e'(BMPUAct0 + i);
+        operand_payload[NrOperandQueues+NrGlobalMasters+i].addr = bmpu_result_addr_i[i] >>
+            $clog2(NrBanks);
+        operand_payload[NrOperandQueues+NrGlobalMasters+i].wen = 1'b1;
+        operand_payload[NrOperandQueues+NrGlobalMasters+i].wdata = bmpu_result_wdata_i[i];
+        operand_payload[NrOperandQueues+NrGlobalMasters+i].be = bmpu_result_be_i[i];
+        if (i < NrBmpuResultQueues / 2) begin
+          operand_payload[NrOperandQueues+NrGlobalMasters+i].opqueue = opqueue_e'(BMPUAct0 + i);
         end else begin
           operand_payload[NrOperandQueues + NrGlobalMasters + i].opqueue = opqueue_e'(BMPUWgt0 + (i - NrBmpuResultQueues / 2));
         end
       end
     end
-    
+
     // Store their request value
     ext_operand_req[alu_result_addr_i[idx_width(NrBanks)-1:0]][VFU_Alu] = alu_result_req_i;
     ext_operand_req[mfpu_result_addr_i[idx_width(NrBanks)-1:0]][VFU_MFpu] = mfpu_result_req_i;
     ext_operand_req[masku_result_addr[idx_width(NrBanks)-1:0]][VFU_MaskUnit] = masku_result_req;
     ext_operand_req[sldu_result_addr[idx_width(NrBanks)-1:0]][VFU_SlideUnit] = sldu_result_req;
-    ext_operand_req[ldu_result_addr[idx_width(NrBanks)-1:0]][VFU_LoadUnit] = ldu_result_req;
+    ext_operand_req[ldu_result_bank_mapped][VFU_LoadUnit] = ldu_result_req;
     for (int i = 0; i < NrBmpuResultQueues; i++) begin
-      ext_operand_req[bmpu_result_addr_i[i][idx_width(NrBanks)-1:0]][i + NrGlobalMasters] = bmpu_result_req_i;
+      ext_operand_req[bmpu_result_addr_i[i][idx_width(NrBanks)-1:0]][i+NrGlobalMasters] =
+          bmpu_result_req_i && !bmpu_result_granted_q[i];
     end
 
     // Generate the grant signals
@@ -649,13 +713,26 @@ module operand_requester
     sldu_result_gnt = 1'b0;
     ldu_result_gnt = 1'b0;
     bmpu_result_gnt_o = 1'b0;
+    bmpu_result_gnt_vec = '0;
     for (int bank = 0; bank < NrBanks; bank++) begin
       alu_result_gnt_o  = alu_result_gnt_o | operand_gnt[bank][NrOperandQueues + VFU_Alu];
       mfpu_result_gnt_o = mfpu_result_gnt_o | operand_gnt[bank][NrOperandQueues + VFU_MFpu];
       masku_result_gnt  = masku_result_gnt | operand_gnt[bank][NrOperandQueues + VFU_MaskUnit];
       sldu_result_gnt   = sldu_result_gnt | operand_gnt[bank][NrOperandQueues + VFU_SlideUnit];
       ldu_result_gnt    = ldu_result_gnt | operand_gnt[bank][NrOperandQueues + VFU_LoadUnit];
-      bmpu_result_gnt_o  = bmpu_result_gnt_o | operand_gnt[bank][NrOperandQueues + NrGlobalMasters+1] | operand_gnt[bank][NrOperandQueues + NrGlobalMasters+2] | operand_gnt[bank][NrOperandQueues + NrGlobalMasters+3];
+      for (int i = 0; i < NrBmpuResultQueues; i++) begin
+        bmpu_result_gnt_vec[i] |= operand_gnt[bank][NrOperandQueues+NrGlobalMasters+i];
+      end
+    end
+    if (bmpu_result_req_i) begin
+      automatic logic [NrBmpuResultQueues-1:0] bmpu_granted_acc;
+      bmpu_granted_acc  = bmpu_result_granted_q | bmpu_result_gnt_vec;
+      bmpu_result_gnt_o = &bmpu_granted_acc;
+      if (bmpu_result_gnt_o) bmpu_result_granted_d = '0;
+      else bmpu_result_granted_d = bmpu_granted_acc;
+    end else begin
+      bmpu_result_gnt_o = 1'b0;
+      bmpu_result_granted_d = '0;
     end
   end
 
@@ -666,7 +743,7 @@ module operand_requester
     logic payload_hp_req;
     logic payload_hp_gnt;
     rr_arb_tree #(
-        .NumIn    (unsigned'(BMPUWgt3) - unsigned'(AluA) + 1 + unsigned'(VFU_MFpu) - unsigned'(VFU_Alu) + 1 + NrBmpuOutQueues),
+        .NumIn    (unsigned'(BMPUWgt3) - unsigned'(AluA) + 1 + unsigned'(VFU_MFpu) - unsigned'(VFU_Alu) + 1),
         .DataWidth($bits(payload_t)),
         .AxiVldRdy(1'b0)
     ) i_hp_vrf_arbiter (
@@ -676,14 +753,12 @@ module operand_requester
         .rr_i('0),
         .data_i({
           operand_payload[BMPUWgt3:AluA],
-          operand_payload[NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu],
-          operand_payload[NrOperandQueues+NrGlobalMasters+NrBmpuOutQueues-1:NrOperandQueues+NrGlobalMasters]
+          operand_payload[NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu]
         }),
-        .req_i({lane_operand_req[bank][BMPUWgt3:AluA], ext_operand_req[bank][VFU_MFpu:VFU_Alu], ext_operand_req[bank][NrGlobalMasters+NrBmpuOutQueues-1:NrGlobalMasters]}),
+        .req_i({lane_operand_req[bank][BMPUWgt3:AluA], ext_operand_req[bank][VFU_MFpu:VFU_Alu]}),
         .gnt_o({
           operand_gnt[bank][BMPUWgt3:AluA],
-          operand_gnt[bank][NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu],
-          operand_gnt[bank][NrOperandQueues+NrGlobalMasters+NrBmpuOutQueues-1:NrOperandQueues+NrGlobalMasters]
+          operand_gnt[bank][NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu]
         }),
         .data_o(payload_hp),
         .idx_o(  /* Unused */),
@@ -696,7 +771,7 @@ module operand_requester
     logic payload_lp_req;
     logic payload_lp_gnt;
     rr_arb_tree #(
-        .NumIn(unsigned'(SlideAddrGenA)- unsigned'(MaskB) + 1 + unsigned'(VFU_LoadUnit) - unsigned'(VFU_SlideUnit) + 1),
+        .NumIn(unsigned'(SlideAddrGenA)- unsigned'(MaskB) + 1 + unsigned'(VFU_LoadUnit) - unsigned'(VFU_SlideUnit) + 1 + NrBmpuOutQueues),
         .DataWidth($bits(payload_t)),
         .AxiVldRdy(1'b0)
     ) i_lp_vrf_arbiter (
@@ -706,15 +781,18 @@ module operand_requester
         .rr_i('0),
         .data_i({
           operand_payload[SlideAddrGenA:MaskB],
-          operand_payload[NrOperandQueues+VFU_LoadUnit:NrOperandQueues+VFU_SlideUnit]
+          operand_payload[NrOperandQueues+VFU_LoadUnit:NrOperandQueues+VFU_SlideUnit],
+          operand_payload[NrOperandQueues+NrGlobalMasters+NrBmpuOutQueues-1:NrOperandQueues+NrGlobalMasters]
         }),
         .req_i({
           lane_operand_req[bank][SlideAddrGenA:MaskB],
-          ext_operand_req[bank][VFU_LoadUnit:VFU_SlideUnit]
+          ext_operand_req[bank][VFU_LoadUnit:VFU_SlideUnit],
+          ext_operand_req[bank][NrGlobalMasters+NrBmpuOutQueues-1:NrGlobalMasters]
         }),
         .gnt_o({
           operand_gnt[bank][SlideAddrGenA:MaskB],
-          operand_gnt[bank][NrOperandQueues+VFU_LoadUnit:NrOperandQueues+VFU_SlideUnit]
+          operand_gnt[bank][NrOperandQueues+VFU_LoadUnit:NrOperandQueues+VFU_SlideUnit],
+          operand_gnt[bank][NrOperandQueues+NrGlobalMasters+NrBmpuOutQueues-1:NrOperandQueues+NrGlobalMasters]
         }),
         .data_o(payload_lp),
         .idx_o(  /* Unused */),

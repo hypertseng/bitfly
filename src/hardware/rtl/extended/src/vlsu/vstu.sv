@@ -244,6 +244,10 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
 
   logic is_bmpu_store_d, is_bmpu_store_q;
 
+`ifndef SYNTHESIS
+  logic [15:0] dbg_b_wait_cycles_q;
+`endif
+
   always_comb begin: p_vstu
     // NOTE: these are out here only for debug visibility, they could go in p_vldu as automatic variables
     vrf_seq_byte = '0;
@@ -550,6 +554,9 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       stu_current_burst_exception_o <= 1'b0;
 
       is_bmpu_store_q <= 1'b0;
+    `ifndef SYNTHESIS
+      dbg_b_wait_cycles_q <= '0;
+    `endif
     end else begin
       vinsn_running_q   <= vinsn_running_d;
       issue_cnt_bytes_q <= issue_cnt_bytes_d;
@@ -569,6 +576,39 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       stu_current_burst_exception_o <= stu_current_burst_exception_d;
 
       is_bmpu_store_q <= is_bmpu_store_d;
+`ifndef SYNTHESIS
+      if (1'b0 && !is_bmpu_store_q && is_bmpu_store_d) begin
+        $display("[%0t][VSTU] bmpu store armed: commit_cnt=%0d issue_cnt=%0d",
+                 $time, vinsn_queue_d.commit_cnt, vinsn_queue_d.issue_cnt);
+      end
+
+      if (1'b0 && is_bmpu_store_q && (vinsn_queue_q.commit_cnt != '0) && !axi_b_valid_i) begin
+        dbg_b_wait_cycles_q <= dbg_b_wait_cycles_q + 16'd1;
+        if (dbg_b_wait_cycles_q == 16'd63 || dbg_b_wait_cycles_q == 16'd255) begin
+          $display("[%0t][VSTU] waiting B: issue_cnt=%0d commit_cnt=%0d issue_pnt=%0d commit_pnt=%0d issue_valid=%0b stu_valid=%b axi_w_valid=%0b axi_w_ready=%0b addrgen_valid=%0b addrgen_is_load=%0b addrgen_ex=%0b len=%0d",
+                   $time,
+                   vinsn_queue_q.issue_cnt,
+                   vinsn_queue_q.commit_cnt,
+                   vinsn_queue_q.issue_pnt,
+                   vinsn_queue_q.commit_pnt,
+                   vinsn_issue_valid,
+                   stu_operand_valid,
+                   axi_w_valid_o,
+                   axi_w_ready_i,
+                   axi_addrgen_req_valid_i,
+                   axi_addrgen_req_i.is_load,
+                   axi_addrgen_req_i.is_exception,
+                   axi_addrgen_req_i.len);
+        end
+      end else begin
+        dbg_b_wait_cycles_q <= '0;
+      end
+
+      if (1'b0 && axi_b_valid_i && (vinsn_queue_q.issue_pnt != vinsn_queue_q.commit_pnt)) begin
+        $display("[%0t][VSTU] B complete: id=%0d commit_cnt->%0d",
+                 $time, vinsn_commit.id, vinsn_queue_d.commit_cnt);
+      end
+`endif
     end
   end
 

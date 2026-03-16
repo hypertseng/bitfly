@@ -489,6 +489,8 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
               hazard_vs2    : pe_req_d.hazard_vs2,
               k_dim         : ara_req_i.k_dim,
               prec          : ara_req_i.prec,
+              mtile         : ara_req_i.mtile,
+              ntile         : ara_req_i.ntile,
               bmpu_en       : ara_req_i.bmpu_en,
               is_weight     : ara_req_i.is_weight,
               bmpu_output_en: ara_req_i.bmpu_output_en,

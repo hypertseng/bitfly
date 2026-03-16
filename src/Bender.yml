@@ -32,7 +32,7 @@ sources:
     # Sources
     # Level 0
     - hardware/src/segment_sequencer.sv
-    - hardware/src/mpu/pe.sv
+    - hardware/src/bmpu/lbmac.sv
     # Level 1
     - hardware/src/ctrl_registers.sv
     - hardware/src/cva6_accel_first_pass_decoder.sv
@@ -54,7 +54,7 @@ sources:
     - hardware/src/vlsu/addrgen.sv
     - hardware/src/vlsu/vldu.sv
     - hardware/src/vlsu/vstu.sv
-    - hardware/src/mpu/tile.sv
+    - hardware/src/bmpu/pe.sv
     # Level 2
     - hardware/src/lane/operand_queues_stage.sv
     - hardware/src/lane/valu.sv
@@ -62,9 +62,9 @@ sources:
     - hardware/src/lane/fixed_p_rounding.sv
     - hardware/src/vlsu/vlsu.sv
     - hardware/src/masku/masku.sv
-    - hardware/src/mpu/sa.sv
+    - hardware/src/bmpu/sa.sv
     # Level 3
-    - hardware/src/mpu/mpu.sv
+    - hardware/src/bmpu/bmpu.sv
     - hardware/src/lane/vector_fus_stage.sv
     # Level 4
     - hardware/src/lane/lane.sv

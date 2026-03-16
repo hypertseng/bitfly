@@ -1,6 +1,6 @@
 rsync -av ./apps/ ../ara/apps/
 rsync -av ./hardware/rtl/extended/* ../ara/hardware/
-rsync -av ./hardware/rtl/mpu/* ../ara/hardware/src/mpu/
+rsync -av ./hardware/rtl/bmpu/* ../ara/hardware/src/bmpu/
 rsync -av ./Bender.yml ../ara/
 cd ../ara/hardware/
 

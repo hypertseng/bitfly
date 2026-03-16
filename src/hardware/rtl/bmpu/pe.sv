@@ -5,9 +5,12 @@ module pe #(
     input  logic         clk,
     input  logic         rst_n,
     input  logic         en,
+    input  logic         clear_i,
     input  logic         output_en,         // 输出使能信号
     input  logic [ 63:0] activations,       // 64-bit 激活输入（8x int8）
     input  logic [ 63:0] weights,           // 64-bit 权重输入（8x int1）
+    input  logic [ 2:0]  shift_amt_i,       // 当前 bit-plane 的位权移位
+    input  logic [ 1:0]  lbmac_mode_i,      // lbmac 计算模式
     input  logic [127:0] input_output_reg,  // 来自其他 pe 的 output_reg 值
     output logic [ 63:0] weight_out,        // 权重寄存器输出
     output logic [ 63:0] activation_out,    // 激活寄存器输出
@@ -17,7 +20,7 @@ module pe #(
   //--- 寄存器定义 ---//
   logic [63:0] activation_reg;  // 激活寄存器
   logic [63:0] weight_reg;  // 权重寄存器（8x 8-bit）
-  logic signed [16:0] partial_sum_reg[8];  // 累加寄存器（17-bit）
+  logic signed [20:0] partial_sum_reg[8];  // 累加寄存器（21-bit for multi-precision）
   logic [127:0] output_reg;  // 输出寄存器（8x int16）
 
   //--- PE输出接口 ---//
@@ -30,35 +33,45 @@ module pe #(
       weight_reg     <= '0;
       output_reg     <= '0;
       foreach (partial_sum_reg[i]) partial_sum_reg[i] <= '0;
+    end else if (clear_i) begin
+      activation_reg <= '0;
+      weight_reg     <= '0;
+      output_reg     <= '0;
+      foreach (partial_sum_reg[i]) partial_sum_reg[i] <= '0;
     end else begin
-      if (output_en) begin
-        // 模式1：写入其他pe的输出值
-        output_reg <= input_output_reg;
-      end else if (en) begin
+      if (en) begin
         // 模式2：正常计算流程
         activation_reg <= activations;  // 激活向右传递
         weight_reg     <= weights;  // 权重向下传递
 
-        // 累加逻辑：PE输出与当前累加值相加
+        // 累加逻辑：对每个 lbmac 输出按对应的位权进行移位后累加
         foreach (partial_sum_reg[i]) begin
-          partial_sum_reg[i] <= partial_sum_reg[i] + pe_outputs[i];
-        end
+          automatic logic signed [20:0] next_sum;
+          automatic logic signed [15:0] local_sat;
+          automatic logic signed [15:0] casc_in;
+          automatic logic signed [16:0] casc_sum;
 
-        // 饱和处理：必须在时序逻辑中更新输出寄存器！
-        foreach (partial_sum_reg[i]) begin
-          logic signed [15:0] saturated;
-          automatic logic signed [16:0] current_sum = partial_sum_reg[i];
+          next_sum = partial_sum_reg[i] + ($signed(pe_outputs[i]) <<< shift_amt_i);
+          partial_sum_reg[i] <= next_sum;
 
-          // 比较时使用 17-bit 的阈值
-          if (current_sum > 17'sd32767) begin
-            saturated = 16'sh7FFF;  // 最大值 32767
-          end else if (current_sum < -17'sd32768) begin
-            saturated = 16'sh8000;  // 最小值 -32768
+          if (next_sum > 21'sd32767) begin
+            local_sat = 16'sh7FFF;  // 最大值 32767
+          end else if (next_sum < -21'sd32768) begin
+            local_sat = 16'sh8000;  // 最小值 -32768
           end else begin
-            saturated = current_sum[15:0];  // 直接截断低16位
+            local_sat = next_sum[15:0];
           end
 
-          output_reg[i*16+:16] <= saturated;
+          casc_in = $signed(input_output_reg[i*16+:16]);
+          // output_en=1 时输出本地结果；否则与右侧 PE 累加实现级联归并。
+          casc_sum = output_en ? $signed(local_sat) : ($signed(local_sat) + casc_in);
+          if (casc_sum > 17'sd32767) begin
+            output_reg[i*16+:16] <= 16'sh7FFF;
+          end else if (casc_sum < -17'sd32768) begin
+            output_reg[i*16+:16] <= 16'sh8000;
+          end else begin
+            output_reg[i*16+:16] <= casc_sum[15:0];
+          end
         end
       end
     end
@@ -76,6 +89,7 @@ module pe #(
           .BIT_ACT   (BIT_ACT),
           .BIT_WEIGHT(BIT_WEIGHT)
       ) u_lbmac (
+          .mode_i     (lbmac_mode_i),
           .weights    (weights[i*8+:8]),  // 第i个8-bit段
           .activations(activations),      // 所有PE共享激活输入
           .result     (pe_outputs[i])     // 12-bit输出

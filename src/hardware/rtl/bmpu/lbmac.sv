@@ -2,6 +2,7 @@ module lbmac #(
     parameter BIT_ACT    = 8,  // 激活值位宽（int8）
     parameter BIT_WEIGHT = 1   // 权值位宽（int1）
 ) (
+  input  logic        [ 1:0] mode_i,       // 00:bipolar(1bit), 01:unsigned plane, 10:signed plane
     input  logic        [ 7:0] weights,      // 8-bit 权重
     input  logic        [63:0] activations,  // 64-bit 激活输入（8x int8）
     output logic signed [11:0] result        // 12-bit 有符号结果
@@ -20,7 +21,12 @@ always_comb begin
     act = activations[((7 - i) * 8) +: 8];
     neg = -act;  //防止 -(-128) 溢出
 
-    weighted_activations[i] = weights[i] ? act : neg;
+    unique case (mode_i)
+      2'b00: weighted_activations[i] = weights[i] ? act : neg;      // binary: +1 / -1
+      2'b01: weighted_activations[i] = weights[i] ? act : 9'sd0;    // unsigned plane: +1 / 0
+      2'b10: weighted_activations[i] = weights[i] ? neg : 9'sd0;    // signed plane: -1 / 0
+      default: weighted_activations[i] = 9'sd0;
+    endcase
   end
 end
   // ----------------------

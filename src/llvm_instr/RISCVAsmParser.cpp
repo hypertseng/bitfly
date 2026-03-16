@@ -429,7 +429,7 @@ namespace
 
     struct BMPCFGImmOp
     {
-      unsigned Val; // [24:22]=prec, [21:5]=k, [4:2]=mtile_code, [1:0]=ntile_code
+      unsigned Val; // [24:22]=prec, [21:5]=kdim17(encoded), [4:2]=mtile_code, [1:0]=ntile_code
     };
 
     SMLoc StartLoc, EndLoc;
@@ -4396,9 +4396,17 @@ ParseStatus RISCVAsmParser::parseBMPCFGImm(OperandVector &Operands)
     return ParseStatus::Failure;
 
   // Backward-compatible form: bmpcfg prec, k
-  // Extended form:          bmpcfg prec, k, mtile, ntile
+  // Extended forms:
+  //   bmpcfg prec, k, mtile, ntile
+  //   bmpcfg prec, k, mtile, ntile, gm, gn
+  // Encoded kdim17 layout:
+  //   kdim17[16:15] = gm_code (gm = gm_code + 1)
+  //   kdim17[14:13] = gn_code (gn = gn_code + 1)
+  //   kdim17[12:0]  = k_low13
   int64_t MTile = 8;
   int64_t NTile = 16;
+  int64_t GM = 1;
+  int64_t GN = 1;
   if (getLexer().is(AsmToken::Comma))
   {
     (void)getParser().Lex();
@@ -4418,6 +4426,27 @@ ParseStatus RISCVAsmParser::parseBMPCFGImm(OperandVector &Operands)
 
     MTile = MTileCE->getValue();
     NTile = NTileCE->getValue();
+
+    if (getLexer().is(AsmToken::Comma))
+    {
+      (void)getParser().Lex();
+      const MCExpr *GMExpr;
+      if (getParser().parseExpression(GMExpr))
+        return ParseStatus::Failure;
+      if (getParser().parseComma())
+        return ParseStatus::Failure;
+      const MCExpr *GNExpr;
+      if (getParser().parseExpression(GNExpr))
+        return ParseStatus::Failure;
+
+      auto *GMCE = dyn_cast<MCConstantExpr>(GMExpr);
+      auto *GNCE = dyn_cast<MCConstantExpr>(GNExpr);
+      if (!GMCE || !GNCE)
+        return Error(S, "bmpcfg expects constant gm/gn immediates");
+
+      GM = GMCE->getValue();
+      GN = GNCE->getValue();
+    }
   }
 
   auto *PrecCE = dyn_cast<MCConstantExpr>(PrecExpr);
@@ -4432,8 +4461,14 @@ ParseStatus RISCVAsmParser::parseBMPCFGImm(OperandVector &Operands)
   if (Prec < 0 || Prec > 7)
     return Error(S, "precision must be 3-bit");
 
-  if (K < 0 || K > 0x1FFFF)
-    return Error(S, "k overflow");
+  if (K < 0 || K > 0x1FFF)
+    return Error(S, "k overflow (max 8191 with gm/gn encoding)");
+
+  if (GM < 1 || GM > 4)
+    return Error(S, "gm must be in [1,4]");
+
+  if (GN < 1 || GN > 4)
+    return Error(S, "gn must be in [1,4]");
 
   unsigned MCode = 0;
   switch (MTile)
@@ -4482,8 +4517,12 @@ ParseStatus RISCVAsmParser::parseBMPCFGImm(OperandVector &Operands)
     return Error(S, "ntile must be one of {16,32,48,64}");
   }
 
+  unsigned GMCode = static_cast<unsigned>(GM - 1);
+  unsigned GNCode = static_cast<unsigned>(GN - 1);
+  unsigned KEnc = (GMCode << 15) | (GNCode << 13) | static_cast<unsigned>(K);
+
   unsigned Cfg5 = (MCode << 2) | NCode;
-  unsigned Packed = (Prec << 22) | (K << 5) | Cfg5;
+  unsigned Packed = (Prec << 22) | (KEnc << 5) | Cfg5;
 
   Operands.push_back(RISCVOperand::createBMPCFGImm(Packed, S, getLoc()));
 

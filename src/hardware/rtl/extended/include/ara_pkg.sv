@@ -113,6 +113,16 @@ package ara_pkg;
   localparam int unsigned MaskuInsnQueueDepth = 1;
   localparam int unsigned BmpuInsnQueueDepth = 4;
 
+  // BMPU local reuse storage model:
+  // - L1 working set: 16x16 int16 = 4096 bits
+  // - Unified pool visible to software scheduling: 8192 bits
+  // Software may spend this budget on hardware-side reuse (larger tile) or
+  // g-level grouped reuse (activation/weight reuse), as long as total usage fits.
+  localparam int unsigned BmpuL1CacheBits      = 4096;
+  localparam int unsigned BmpuUnifiedCacheBits = 8192;
+  localparam int unsigned BmpuBaseTileM        = 8;
+  localparam int unsigned BmpuBaseTileN        = 16;
+
   ///////////////////
   //  Definitions  //
   ///////////////////

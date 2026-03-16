@@ -184,7 +184,11 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     vlen_t vstart;
     rvv_pkg::vtype_t vtype;
     logic [16:0]        k_dim;
+    logic [5:0]         mtile;
+    logic [6:0]         ntile;
+    logic [2:0]         group_g;
     logic               bmpu_en;
+    logic               is_weight;
     logic               bmpu_output_en;
     logic [2:0]         prec;
   } vfu_operation_t;
@@ -227,6 +231,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic                 [NrVInsn-1:0]         mfpu_vinsn_done;
   logic                                       bmpu_ready;
   logic                 [NrVInsn-1:0]         bmpu_insn_done;
+  logic                                       bmpu_compute_busy;
   // Interface with the MaskB operand queue (VRGATHER/VCOMPRESS)
   logic                                       mask_b_cmd_pop_d, mask_b_cmd_pop_q;
   `FF(mask_b_cmd_pop_q, mask_b_cmd_pop_d, 1'b0, clk_i, rst_ni);
@@ -242,7 +247,11 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   assign pe_req    = pe_req_i;
   assign pe_resp_o = pe_resp;
 
-  logic bmpu_en, bmpu_output_en, is_bmpu_store;
+  logic bmpu_en, bmpu_output_en, is_bmpu_store, is_bmpu_load;
+  logic bmpu_weight_load_pulse;
+  logic bmpu_prefetch_ready;
+  logic [NrVInsn-1:0] is_bmpu_load_vinsn;
+  assign bmpu_prefetch_ready = ~(|is_bmpu_load_vinsn);
 
   lane_sequencer #(
     .NrLanes              (NrLanes              ),
@@ -271,6 +280,9 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .mfpu_vinsn_done_o      (mfpu_vinsn_done_o    ),
     .bmpu_insn_done_o        (bmpu_insn_done_o      ),
     .is_bmpu_store_o         (is_bmpu_store         ),
+    .is_bmpu_load_o          (is_bmpu_load          ),
+    .is_bmpu_load_vinsn_o    (is_bmpu_load_vinsn    ),
+    .bmpu_weight_load_pulse_o(bmpu_weight_load_pulse),
     // Interface with the Operand Queue
     .mask_b_cmd_pop_i       (mask_b_cmd_pop_q     ),
     // Interface with the VFUs
@@ -326,6 +338,9 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   elen_t               [NrBmpuResultQueues-1:0]bmpu_result_wdata;
   strb_t               [NrBmpuResultQueues-1:0]bmpu_result_be;
   logic                                       bmpu_result_gnt;
+  elen_t                                      bmpu_store_data;
+  logic                                       bmpu_store_valid;
+  logic                                       bmpu_store_ready;
   // To the slide unit (reductions)
   logic                                       sldu_result_gnt_opqueues;
   // Support for store exception flush
@@ -342,6 +357,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   ) i_operand_requester (
     .clk_i                    (clk_i                   ),
     .rst_ni                   (rst_ni                  ),
+    .lane_id_i                (lane_id_i               ),
     // Interface with the main sequencer
     .global_hazard_table_i    (global_hazard_table_i   ),
     // Interface with the lane sequencer
@@ -411,7 +427,9 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .bmpu_result_gnt_o         (bmpu_result_gnt          ),
     .bmpu_en_i                 (bmpu_en                  ),
     .bmpu_output_en_i          (bmpu_output_en           ),
-    .is_bmpu_store_i           (is_bmpu_store            )
+    .is_bmpu_store_i           (is_bmpu_store            ),
+    .is_bmpu_load_i            (is_bmpu_load             ),
+    .is_bmpu_load_vinsn_i      (is_bmpu_load_vinsn       )
   );
 
   ////////////////////////////
@@ -464,9 +482,43 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
 
   // SA 输入输出信号
   elen_t [3:0] bmpu_act_operand, bmpu_wgt_operand, bmpu_output_data;
+  elen_t [3:0] bmpu_act_operand_masked, bmpu_wgt_operand_masked;
   logic  [3:0] bmpu_act_operand_valid, bmpu_wgt_operand_valid, bmpu_output_valid;
   logic  [3:0] bmpu_act_operand_ready, bmpu_wgt_operand_ready, bmpu_output_ready;
+  elen_t stu_operand_from_queue;
+  logic  stu_operand_valid_from_queue;
+  logic  stu_operand_ready_from_queue;
 
+  always_comb begin
+    for (int i = 0; i < 4; i++) begin
+      bmpu_act_operand_masked[i] = bmpu_act_operand_valid[i] ? bmpu_act_operand[i] : '0;
+      bmpu_wgt_operand_masked[i] = bmpu_wgt_operand_valid[i] ? bmpu_wgt_operand[i] : '0;
+    end
+  end
+
+`ifndef SYNTHESIS
+  always_ff @(posedge clk_i) begin
+    if (1'b0 && (lane_id_i == '0)) begin
+      if (vrf_operand_valid[BMPUAct0] || vrf_operand_valid[BMPUAct1]
+          || vrf_operand_valid[BMPUWgt0] || vrf_operand_valid[BMPUWgt1]) begin
+        $display("[%0t][LANE][lane%0d] vrf_valid act=%b%b wgt=%b%b",
+                 $time,
+                 lane_id_i,
+                 vrf_operand_valid[BMPUAct1],
+                 vrf_operand_valid[BMPUAct0],
+                 vrf_operand_valid[BMPUWgt1],
+                 vrf_operand_valid[BMPUWgt0]);
+      end
+      if ((|bmpu_act_operand_valid[1:0]) || (|bmpu_wgt_operand_valid[1:0])) begin
+        $display("[%0t][LANE][lane%0d] opq_valid act=%b wgt=%b",
+                 $time,
+                 lane_id_i,
+                 bmpu_act_operand_valid[1:0],
+                 bmpu_wgt_operand_valid[1:0]);
+      end
+    end
+  end
+`endif
 
   operand_queues_stage #(
     .NrLanes            (NrLanes            ),
@@ -502,9 +554,9 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .mfpu_operand_valid_o             (mfpu_operand_valid                 ),
     .mfpu_operand_ready_i             (mfpu_operand_ready                 ),
     // Store Unit
-    .stu_operand_o                    (stu_operand_o                      ),
-    .stu_operand_valid_o              (stu_operand_valid_o                ),
-    .stu_operand_ready_i              (stu_operand_ready_i                ),
+    .stu_operand_o                    (stu_operand_from_queue             ),
+    .stu_operand_valid_o              (stu_operand_valid_from_queue       ),
+    .stu_operand_ready_i              (stu_operand_ready_from_queue       ),
     // Address Generation Unit
     .sldu_addrgen_operand_o           (sldu_addrgen_operand_opqueues      ),
     .sldu_addrgen_operand_target_fu_o (sldu_addrgen_operand_target_fu     ),
@@ -522,6 +574,13 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .bmpu_wgt_operand_valid_o           (bmpu_wgt_operand_valid               ),
     .bmpu_wgt_operand_ready_i           (bmpu_wgt_operand_ready               )
   );
+
+  // Route STU write-data to BMPU whenever BMPU has pending store beats. Using
+  // bmpu_store_valid avoids relying on transient instruction decode state.
+  assign stu_operand_o = bmpu_store_valid ? bmpu_store_data : stu_operand_from_queue;
+  assign stu_operand_valid_o = bmpu_store_valid ? 1'b1 : stu_operand_valid_from_queue;
+  assign bmpu_store_ready = bmpu_store_valid && stu_operand_ready_i;
+  assign stu_operand_ready_from_queue = !bmpu_store_valid && stu_operand_ready_i;
 
   ///////////////////////////////
   //  Vector Functional Units  //
@@ -618,15 +677,20 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     // Interface with the lane sequencer
     .vfu_operation_i      (vfu_operation                  ),
     .vfu_operation_valid_i(vfu_operation_valid            ),
+    .bmpu_prefetch_ready_i(bmpu_prefetch_ready            ),
+    .bmpu_weight_load_i    (bmpu_weight_load_pulse        ),
     .bmpu_ready_o          (bmpu_ready                      ),
     .bmpu_insn_done_o     (bmpu_insn_done                 ),
     // Interface with the operand queues
-    .bmpu_act_operand_i        (bmpu_act_operand                    ),
+    .bmpu_act_operand_i        (bmpu_act_operand_masked             ),
     .bmpu_act_operand_valid_i  (bmpu_act_operand_valid              ),
     .bmpu_act_operand_ready_o  (bmpu_act_operand_ready              ),
-    .bmpu_wgt_operand_i        (bmpu_wgt_operand                    ),
+    .bmpu_wgt_operand_i        (bmpu_wgt_operand_masked             ),
     .bmpu_wgt_operand_valid_i  (bmpu_wgt_operand_valid              ),
     .bmpu_wgt_operand_ready_o  (bmpu_wgt_operand_ready              ),
+    .bmpu_store_data_o         (bmpu_store_data                     ),
+    .bmpu_store_valid_o        (bmpu_store_valid                    ),
+    .bmpu_store_ready_i        (bmpu_store_ready                    ),
     // Interface with the vector register file
     .bmpu_result_req_o     (bmpu_result_req                 ),
     .bmpu_result_addr_o    (bmpu_result_addr                ),
@@ -634,6 +698,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .bmpu_result_wdata_o   (bmpu_result_wdata               ),
     .bmpu_result_be_o      (bmpu_result_be                  ),
     .bmpu_result_gnt_i     (bmpu_result_gnt                 ),
+    .bmpu_compute_busy_o   (bmpu_compute_busy               ),
     .bmpu_output_en_o      (bmpu_output_en                  )
   );
 
@@ -741,14 +806,9 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
       default: sldu_addrgen_mux_sel = MUX_OPQUEUE_SEL;
     endcase
 
-    if (pe_req.op == BMPMM) begin
-      bmpu_en = 1'b1;
-    end
-    if (bmpu_insn_done) begin
-      bmpu_en = 1'b0;
-    end
-
   end
+
+  assign bmpu_en = bmpu_compute_busy;
 
   // Stream MUX to select the transmitter
   stream_mux #(
