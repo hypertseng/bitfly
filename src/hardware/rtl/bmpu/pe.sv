@@ -16,7 +16,7 @@ module pe #(
     input  logic [63:0]           weights,
     input  logic [2:0]            shift_amt_i,
     input  logic [1:0]            lbmac_mode_i,
-    input  logic [127:0]          input_output_reg,
+    input  logic [127:0]          input_output_compute_reg,
     output logic [63:0]           weight_out,
     output logic [63:0]           activation_out,
     output logic [127:0]          output_out,
@@ -26,23 +26,42 @@ module pe #(
   logic [63:0] activation_reg;
   logic [63:0] weight_reg;
   logic signed [20:0] partial_sum_reg [CTX_MAX-1:0][8];
-  logic [127:0]       output_reg      [CTX_MAX-1:0];
+  logic [127:0]       output_reg_compute;
   logic signed [11:0] pe_outputs[8];
+
+  function automatic logic signed [15:0] sat21_to_s16(input logic signed [20:0] value);
+    if (value > 21'sd32767) begin
+      sat21_to_s16 = 16'sh7FFF;
+    end else if (value < -21'sd32768) begin
+      sat21_to_s16 = 16'sh8000;
+    end else begin
+      sat21_to_s16 = value[15:0];
+    end
+  endfunction
+
+  function automatic logic signed [15:0] sat17_to_s16(input logic signed [16:0] value);
+    if (value > 17'sd32767) begin
+      sat17_to_s16 = 16'sh7FFF;
+    end else if (value < -17'sd32768) begin
+      sat17_to_s16 = 16'sh8000;
+    end else begin
+      sat17_to_s16 = value[15:0];
+    end
+  endfunction
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      activation_reg <= '0;
-      weight_reg     <= '0;
-      foreach (output_reg[c]) output_reg[c] <= '0;
+      activation_reg      <= '0;
+      weight_reg          <= '0;
+      output_reg_compute  <= '0;
       foreach (partial_sum_reg[c, i]) partial_sum_reg[c][i] <= '0;
     end else if (clear_i) begin
-      activation_reg <= '0;
-      weight_reg     <= '0;
-      foreach (output_reg[c]) output_reg[c] <= '0;
+      activation_reg      <= '0;
+      weight_reg          <= '0;
+      output_reg_compute  <= '0;
       foreach (partial_sum_reg[c, i]) partial_sum_reg[c][i] <= '0;
     end else begin
       if (ctx_clear_i) begin
-        output_reg[ctx_id_i] <= '0;
         foreach (partial_sum_reg[ctx_id_i, i]) partial_sum_reg[ctx_id_i][i] <= '0;
       end
 
@@ -59,34 +78,27 @@ module pe #(
 
           accum_base = ctx_clear_i ? '0 : partial_sum_reg[ctx_id_i][i];
           next_sum   = accum_base + ($signed(pe_outputs[i]) <<< shift_amt_i);
+          local_sat  = sat21_to_s16(next_sum);
+          casc_in    = $signed(input_output_compute_reg[i*16+:16]);
+          casc_sum   = output_en ? $signed(local_sat) : ($signed(local_sat) + casc_in);
+
           partial_sum_reg[ctx_id_i][i] <= next_sum;
-
-          if (next_sum > 21'sd32767) begin
-            local_sat = 16'sh7FFF;
-          end else if (next_sum < -21'sd32768) begin
-            local_sat = 16'sh8000;
-          end else begin
-            local_sat = next_sum[15:0];
-          end
-
-          casc_in = $signed(input_output_reg[i*16+:16]);
-          casc_sum = output_en ? $signed(local_sat) : ($signed(local_sat) + casc_in);
-          if (casc_sum > 17'sd32767) begin
-            output_reg[ctx_id_i][i*16+:16] <= 16'sh7FFF;
-          end else if (casc_sum < -17'sd32768) begin
-            output_reg[ctx_id_i][i*16+:16] <= 16'sh8000;
-          end else begin
-            output_reg[ctx_id_i][i*16+:16] <= casc_sum[15:0];
-          end
+          output_reg_compute[i*16+:16] <= sat17_to_s16(casc_sum);
         end
       end
     end
   end
 
-  assign weight_out         = weight_reg;
-  assign activation_out     = activation_reg;
-  assign output_out         = output_reg[ctx_id_i];
-  assign output_selected_o  = output_reg[output_ctx_id_i];
+  always_comb begin
+    output_selected_o = '0;
+    foreach (partial_sum_reg[output_ctx_id_i, i]) begin
+      output_selected_o[i*16+:16] = sat21_to_s16(partial_sum_reg[output_ctx_id_i][i]);
+    end
+  end
+
+  assign weight_out      = weight_reg;
+  assign activation_out  = activation_reg;
+  assign output_out      = output_reg_compute;
 
   generate
     for (genvar i = 0; i < 8; i++) begin : pe_array

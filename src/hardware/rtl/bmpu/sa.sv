@@ -4,7 +4,8 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     parameter int unsigned BIT_ACT    = 8,
     parameter int unsigned BIT_WEIGHT = 1,
     parameter int unsigned CTX_MAX    = 8,
-    localparam int unsigned CTX_IDX_W = (CTX_MAX <= 1) ? 1 : $clog2(CTX_MAX)
+    localparam int unsigned CTX_IDX_W = (CTX_MAX <= 1) ? 1 : $clog2(CTX_MAX),
+    localparam int unsigned COL_IDX_W = (COLS <= 1) ? 1 : $clog2(COLS)
 ) (
     input  logic                   clk_i,
     input  logic                   rst_ni,
@@ -13,6 +14,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     input  logic                   ctx_clear_i,
     input  logic [CTX_IDX_W-1:0]   ctx_id_i,
     input  logic [CTX_IDX_W-1:0]   output_ctx_id_i,
+    input  logic [COL_IDX_W-1:0]   output_col_id_i,
     input  logic                   output_en_i,
     input  elen_t [ROWS-1:0]       bmpu_act_operand_i,
     input  elen_t [COLS-1:0]       bmpu_wgt_operand_i,
@@ -147,23 +149,23 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
             .BIT_WEIGHT(BIT_WEIGHT),
             .CTX_MAX   (CTX_MAX)
         ) u_pe (
-            .clk              (clk_i),
-            .rst_n            (rst_ni),
-            .en               (valid_i),
-            .clear_i          (clear_i),
-            .ctx_clear_i      (ctx_clear_i),
-            .ctx_id_i         (ctx_id_i),
-            .output_ctx_id_i  (output_ctx_id_i),
-            .output_en        (output_en_i),
-            .activations      ((j == 0) ? act_in[i] : act_reg[i][j-1]),
-            .weights          ((i == 0) ? wgt_in[j] : weight_reg[i-1][j]),
-            .shift_amt_i      (shift_amt_sa),
-            .lbmac_mode_i     (lbmac_mode_sa),
-            .input_output_reg ((j == COLS-1) ? '0 : output_reg_compute[i][j+1]),
-            .activation_out   (act_reg[i][j]),
-            .weight_out       (weight_reg[i][j]),
-            .output_out       (output_reg_compute[i][j]),
-            .output_selected_o(output_reg_selected[i][j])
+            .clk                      (clk_i),
+            .rst_n                    (rst_ni),
+            .en                       (valid_i),
+            .clear_i                  (clear_i),
+            .ctx_clear_i              (ctx_clear_i),
+            .ctx_id_i                 (ctx_id_i),
+            .output_ctx_id_i          (output_ctx_id_i),
+            .output_en                (output_en_i),
+            .activations              ((j == 0) ? act_in[i] : act_reg[i][j-1]),
+            .weights                  ((i == 0) ? wgt_in[j] : weight_reg[i-1][j]),
+            .shift_amt_i              (shift_amt_sa),
+            .lbmac_mode_i             (lbmac_mode_sa),
+            .input_output_compute_reg ((j == COLS-1) ? '0 : output_reg_compute[i][j+1]),
+            .activation_out           (act_reg[i][j]),
+            .weight_out               (weight_reg[i][j]),
+            .output_out               (output_reg_compute[i][j]),
+            .output_selected_o        (output_reg_selected[i][j])
         );
       end
     end
@@ -172,7 +174,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   always_comb begin
     output_data_o = '{default:'0};
     for (int i = 0; i < ROWS; i++) begin
-      output_data_o[i] = output_reg_selected[i][0];
+      output_data_o[i] = output_reg_selected[i][output_col_id_i];
     end
   end
 endmodule

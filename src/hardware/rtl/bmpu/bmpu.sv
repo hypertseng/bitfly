@@ -177,6 +177,7 @@ module bmpu
   logic compute_active_d, compute_active_q;
   logic epoch_active_d, epoch_active_q;
   logic first_k_round_d, first_k_round_q;
+  logic [127:0] sa_result [NrInputQueues-1:0];
   logic [127:0] bmpu_result [NrInputQueues-1:0];
   logic [16:0] k_dim_d, k_dim_q;
   logic [2:0] prec_d, prec_q;
@@ -184,6 +185,7 @@ module bmpu
   logic [3:0] ctx_count_d, ctx_count_q;
   logic [2:0] compute_ai_d, compute_ai_q, compute_wi_d, compute_wi_q;
   logic [2:0] store_ai_d, store_ai_q, store_wi_d, store_wi_q;
+  logic [0:0] store_col_d, store_col_q;
   logic [CtxIdxWidth-1:0] sa_compute_ctx_id, sa_output_ctx_id;
   logic sa_done_d, sa_done_q;
 
@@ -205,6 +207,7 @@ module bmpu
       compute_wi_q     <= '0;
       store_ai_q       <= '0;
       store_wi_q       <= '0;
+      store_col_q      <= '0;
     end else begin
       sa_done_q        <= sa_done_d;
       compute_active_q <= compute_active_d;
@@ -219,6 +222,7 @@ module bmpu
       compute_wi_q     <= compute_wi_d;
       store_ai_q       <= store_ai_d;
       store_wi_q       <= store_wi_d;
+      store_col_q      <= store_col_d;
     end
   end
 
@@ -236,12 +240,13 @@ module bmpu
       .ctx_clear_i       (sa_ctx_clear),
       .ctx_id_i          (sa_compute_ctx_id),
       .output_ctx_id_i   (sa_output_ctx_id),
+      .output_col_id_i   (store_col_q),
       .output_en_i       (bmpu_output_en_o),
       .bmpu_act_operand_i(bmpu_act_operand_i),
       .bmpu_wgt_operand_i(bmpu_wgt_operand_i),
       .k_dim_i           (k_dim_q),
       .prec_i            (prec_q),
-      .output_data_o     (bmpu_result),
+      .output_data_o     (sa_result),
       .sa_done_o         (sa_done_d)
   );
 
@@ -274,6 +279,7 @@ module bmpu
     compute_wi_d             = compute_wi_q;
     store_ai_d               = store_ai_q;
     store_wi_d               = store_wi_q;
+    store_col_d              = store_col_q;
     epoch_active_d           = epoch_active_q;
     first_k_round_d          = first_k_round_q;
 
@@ -286,6 +292,7 @@ module bmpu
 
     // Inform our status to the lane controller
     bmpu_ready_o              = !vinsn_queue_full;
+
     bmpu_insn_done_o          = '0;
     bmpu_valid                = 1'b0;
     bmpu_clear                = 1'b0;
@@ -299,11 +306,11 @@ module bmpu
 
     // How many elements are we processing this cycle?
     issue_effective_eew      = unsigned'(vinsn_issue_q.vtype.vsew[1:0]);
-    element_cnt_buf_issue    = 8 * (1 << (unsigned'(EW64) - issue_effective_eew));
+    element_cnt_buf_issue    = NrResultQueues * (1 << (unsigned'(EW64) - issue_effective_eew));
     element_cnt_issue        = {2'b0, element_cnt_buf_issue};
 
     commit_effective_eew     = unsigned'(vinsn_commit.vtype.vsew[1:0]);
-    element_cnt_buf_commit   = 8 * (1 << (unsigned'(EW64) - commit_effective_eew));
+    element_cnt_buf_commit   = NrResultQueues * (1 << (unsigned'(EW64) - commit_effective_eew));
     element_cnt_commit       = {2'b0, element_cnt_buf_commit};
 
     if ((vinsn_issue_valid && (vinsn_issue_q.op == BMPSE)) ||
@@ -311,9 +318,14 @@ module bmpu
       bmpu_output_en_o = 1'b1;
     end
 
+
+    for (int unsigned i = 0; i < NrInputQueues; i++) begin
+      bmpu_result[i] = sa_result[i];
+    end
+
     if (sa_done_q) begin  // sa computation done
-`ifndef SYNTHESIS
-      if (1'b1 && (lane_id_i == 0)) begin
+`ifdef BMPMM_DEBUG
+      if (lane_id_i == 0) begin
         $display("[%0t][BMPU] sa_done commit_id=%0d issue_cnt=%0d commit_cnt=%0d output_en=%0b", $time,
                  vinsn_commit.id, issue_cnt_q, commit_cnt_q, bmpu_output_en_o);
       end
@@ -346,16 +358,16 @@ module bmpu
       if (!result_queue_full) begin
         if (vinsn_issue_q.op == BMPSE) begin
           bmpu_valid = 1'b1;
-`ifndef SYNTHESIS
-          if (1'b1 && (lane_id_i == 0)) begin
+`ifdef BMPMM_DEBUG
+          if (lane_id_i == 0) begin
             $display("[%0t][BMPU] issue op=%0d id=%0d vl=%0d k_dim=%0d prec=%0d output_en=%0b", $time,
                      vinsn_issue_q.op, vinsn_issue_q.id, issue_cnt_q, k_dim_q, prec_q, bmpu_output_en_o);
           end
 `endif
         end else begin
           if ((|bmpu_act_operand_valid_i) && (|bmpu_wgt_operand_valid_i)) begin
-`ifndef SYNTHESIS
-            if (1'b1 && (lane_id_i == 0)) begin
+`ifdef BMPMM_DEBUG
+            if (lane_id_i == 0) begin
               $display("[%0t][BMPU] issue op=%0d id=%0d vl=%0d k_dim=%0d prec=%0d output_en=%0b", $time,
                        vinsn_issue_q.op, vinsn_issue_q.id, issue_cnt_q, k_dim_q, prec_q, bmpu_output_en_o);
             end
@@ -367,6 +379,7 @@ module bmpu
               compute_wi_d    = '0;
               store_ai_d      = '0;
               store_wi_d      = '0;
+              store_col_d     = '0;
             end
             sa_ctx_clear = !epoch_active_q || first_k_round_q;
             compute_active_d = 1'b1;
@@ -395,6 +408,11 @@ module bmpu
             result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].id = vinsn_issue_q.id;
             result_queue_d[result_queue_write_pnt_q][i].be = '1;
             result_queue_d[result_queue_write_pnt_q][i + (NrResultQueues / 2)].be = '1;
+          end
+
+          if (vinsn_issue_q.op == BMPSE) begin
+            if (store_col_q + 1'b1 < NrInputQueues) store_col_d = store_col_q + 1'b1;
+            else store_col_d = '0;
           end
 
           // Bump pointers and counters of the result queue
@@ -477,6 +495,7 @@ module bmpu
           store_wi_d = store_wi_q + 3'd1;
         end else begin
           store_wi_d = '0;
+          store_col_d = '0;
           if (store_ai_q + 3'd1 < gm_q) begin
             store_ai_d = store_ai_q + 3'd1;
           end else begin
@@ -496,8 +515,8 @@ module bmpu
     //  Accept new instruction  //
     //////////////////////////////
 
-`ifndef SYNTHESIS
-    if (1'b1 && vfu_operation_valid_i && (lane_id_i == 0) &&
+`ifdef BMPMM_DEBUG
+    if (vfu_operation_valid_i && (lane_id_i == 0) &&
         (vfu_operation_i.bmpu_en || vfu_operation_i.op == BMPSE)) begin
       $display("[%0t][BMPU] in_valid op=%0d vfu=%0d bmpu_en=%0b out_en=%0b vl=%0d id=%0d queue_full=%0b",
                $time, vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.bmpu_en,
@@ -506,8 +525,8 @@ module bmpu
 `endif
     if (!vinsn_queue_full && vfu_operation_valid_i &&
         (vfu_operation_i.bmpu_en || vfu_operation_i.op == BMPSE)) begin
-`ifndef SYNTHESIS
-      if (1'b1 && (lane_id_i == 0)) begin
+`ifdef BMPMM_DEBUG
+      if (lane_id_i == 0) begin
         $display("[%0t][BMPU] accept op=%0d vfu=%0d id=%0d vl=%0d out_en_in=%0b", $time,
                  vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.id, vfu_operation_i.vl,
                  vfu_operation_i.bmpu_output_en);
