@@ -19,10 +19,14 @@ extern "C"
         int16_t *result_torch;
     } KernelData;
 
-#define DECLARE_KERNEL_DATA(K)          \
+#define DECLARE_KERNEL_DATA(K)             \
     extern int8_t activation_lp_##K[];  \
     extern int8_t weight_lp_##K[];      \
-    extern int16_t result_lp_##K[];
+    extern int16_t result_lp_##K[];     \
+    extern int8_t activation_hp_##K[];  \
+    extern int8_t weight_hp_##K[];      \
+    extern int16_t result_hp_##K[];     \
+    extern int16_t result_torch_##K[];
 
 #define DECLARE_KERNEL_DATA_SQUARE(s)         \
     extern int8_t activation_lp_square_##s[]; \
@@ -38,6 +42,10 @@ extern "C"
         int8_t *activation_lp;
         int8_t *weight_lp;
         int16_t *result_lp;
+        int8_t *activation_hp;
+        int8_t *weight_hp;
+        int16_t *result_hp;
+        int16_t *result_torch;
     } BenchKernelData;
 
     KernelData get_kernel_data(int x);

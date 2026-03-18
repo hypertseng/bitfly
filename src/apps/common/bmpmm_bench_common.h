@@ -15,6 +15,9 @@ typedef struct
 
 typedef struct
 {
+    const char *scale;
+    const char *model;
+    const char *layer;
     unsigned long M;
     unsigned long N;
     unsigned long K;
@@ -27,17 +30,5 @@ typedef struct
     int8_t *weight_lp;
     int16_t *result_lp;
 } bmpmm_bench_data_t;
-
-#define BMPMM_DEFINE_BENCH_CASES_G(var_name, prec_value, ktile_value, gm_0_3, gn_0_3, gm_4, gn_4) \
-    static const bmpmm_bench_case_t var_name[5] = { \
-        {128UL, 128UL, 896UL,  {8UL, 64UL, (ktile_value), (gm_0_3), (gn_0_3), (prec_value)}}, \
-        {128UL, 256UL, 640UL,  {8UL, 64UL, (ktile_value), (gm_0_3), (gn_0_3), (prec_value)}}, \
-        {128UL, 256UL, 1536UL, {8UL, 64UL, (ktile_value), (gm_0_3), (gn_0_3), (prec_value)}}, \
-        {128UL, 256UL, 2048UL, {8UL, 64UL, (ktile_value), (gm_0_3), (gn_0_3), (prec_value)}}, \
-        {128UL, 320UL, 960UL,  {8UL, 64UL, (ktile_value), (gm_4), (gn_4), (prec_value)}}, \
-    }
-
-#define BMPMM_DEFINE_BENCH_CASES(var_name, prec_value, ktile_value) \
-    BMPMM_DEFINE_BENCH_CASES_G(var_name, prec_value, ktile_value, 1UL, 2UL, 2UL, 1UL)
 
 #endif

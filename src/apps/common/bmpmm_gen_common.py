@@ -173,9 +173,13 @@ def build_bench_case_dataset(lines, name, m_dim, n_dim, k_dim, prec):
     emit_quad_symbol(lines, f"activation_lp_{name}", pack_activations_lp(A))
     emit_quad_symbol(lines, f"weight_lp_{name}", pack_weights_bitplanes(W, weight_bits))
     emit_int16_col_major(lines, f"result_lp_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
+    emit_int8_row_major(lines, f"activation_hp_{name}", A)
+    emit_int8_row_major(lines, f"weight_hp_{name}", W)
+    emit_int16_row_major(lines, f"result_hp_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
+    emit_int16_row_major(lines, f"result_torch_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
 
 
-def generate_lowp_dataset(prec, square_sizes=(32,)):
+def generate_lowp_dataset(prec, square_sizes=(32,), model_filter=None):
     lines = [".section .l2,\"aw\",@progbits", f"/* auto-generated, seed={SEED}, prec={prec} */"]
     for s in square_sizes:
         build_square_dataset(lines, s, prec)
