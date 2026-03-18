@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 BUILD_DIR="$ROOT_DIR/build/lbmac_tb"
 SRC_BMPU="$ROOT_DIR/src/hardware/rtl/bmpu"
 TB_CPP="$SRC_BMPU/tb/lbmac_tb_main.cpp"

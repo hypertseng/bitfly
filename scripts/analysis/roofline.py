@@ -10,17 +10,17 @@ plt.rcParams.update({
     "text.usetex": False,
     "font.family": "serif",
     "font.serif": ["Times New Roman", "DejaVu Serif", "Liberation Serif", "serif"],
-    "font.size": 10,
-    "axes.titlesize": 11,
-    "axes.labelsize": 11,
-    "xtick.labelsize": 10,
-    "ytick.labelsize": 10,
-    "legend.fontsize": 8.0,
+    "font.size": 16,
+    "axes.titlesize": 17,
+    "axes.labelsize": 18,
+    "xtick.labelsize": 15,
+    "ytick.labelsize": 15,
+    "legend.fontsize": 13,
     "legend.frameon": True,
     "legend.edgecolor": "#666666",
-    "axes.linewidth": 1.1,
+    "axes.linewidth": 1.4,
     "axes.grid": True,
-    "grid.linewidth": 0.38,
+    "grid.linewidth": 0.5,
     "grid.linestyle": ":",
     "grid.color": "#C7CCD3",
     "grid.alpha": 0.58,
@@ -28,7 +28,7 @@ plt.rcParams.update({
     "ytick.direction": "in",
     "xtick.minor.visible": True,
     "ytick.minor.visible": True,
-    "savefig.dpi": 300,
+    "savefig.dpi": 320,
 })
 
 
@@ -102,16 +102,14 @@ def ceil_div(x, y):
     return (x + y - 1) // y
 
 
-def actual_upgraded_point(cfg, prec):
-    # Implementation-aware model following bmpmm_operator_template.h:
-    # for mg -> ng -> kt -> wi -> ai:
-    #   load_w()
-    #   load_a()
-    #   bmpmm()
-    # and stores happen after the full K sweep of one (mg, ng) group.
+def design_projection_point(cfg, prec):
+    # Architecture-aware design-space projection used in the motivation section.
+    # The purpose is not to claim post-implementation performance, but to show
+    # how candidate tile-group configurations would move the operating point
+    # under the target BitFly execution principles.
     #
-    # This model only keeps constraints that are explicit in the software
-    # template and RTL:
+    # We only keep deterministic constraints that are explicit in the current
+    # software template and RTL:
     # - bmpmm_template.h executes mg -> ng -> kt -> wi -> ai in program order.
     # - bmpu.sv advances compute_ai / compute_wi sequentially, so gm*gn contexts
     #   are not executed in parallel.
@@ -233,7 +231,7 @@ def line_label(ax, x, y, text, color, dx=6, dy=0, fs=7.9):
         color=color,
         va="center",
         ha="left",
-        bbox=dict(boxstyle="round,pad=0.11", fc="white", ec="none", alpha=0.8),
+        bbox=dict(boxstyle="round,pad=0.14", fc="white", ec="none", alpha=0.82),
     )
 
 
@@ -257,11 +255,11 @@ def annotate_cfg(ax, point, text, rank):
         xy=(x, y),
         xytext=(dx, dy),
         textcoords="offset points",
-        fontsize=6.5,
+        fontsize=11.6,
         color="#303030",
         ha=ha,
-        arrowprops=dict(arrowstyle="-", lw=0.55, color="#8A8A8A", shrinkA=2, shrinkB=3),
-        bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="#D8D8D8", alpha=0.92),
+        arrowprops=dict(arrowstyle="-", lw=1.0, color="#8A8A8A", shrinkA=2, shrinkB=3),
+        bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="#D8D8D8", alpha=0.95),
     )
 
 
@@ -287,19 +285,11 @@ def bounded_ylim(pts, x_min, x_max, peak):
     return y_min, y_max
 
 
-def main():
-    fig = plt.figure(figsize=(13.6, 6.2))
-    gs = fig.add_gridspec(1, 2, width_ratios=[0.94, 1.08], wspace=0.24)
-    ax1 = fig.add_subplot(gs[0, 0])
-    right_gs = gs[0, 1].subgridspec(3, 1, hspace=0.15)
-    ax2_list = [fig.add_subplot(right_gs[i, 0]) for i in range(3)]
+def draw_conceptual_panel(ax1):
     oi_x = np.logspace(np.log10(0.25), np.log10(128), 1200)
     style_axis(ax1)
-    for ax in ax2_list:
-        style_axis(ax)
-
-    ax1.plot(oi_x, oi_x * 8.0, color="#C3C7CE", linestyle="-.", linewidth=1.5)
-    ax1.plot(oi_x, oi_x * 12.0, color="#8B9199", linestyle="-.", linewidth=1.6)
+    ax1.plot(oi_x, oi_x * 6.0, color="#C3C7CE", linestyle="-.", linewidth=1.5)
+    ax1.plot(oi_x, oi_x * 10.0, color="#8B9199", linestyle="-.", linewidth=1.6)
     ax1.plot(oi_x, oi_x * AXI_BW_BYTES_PER_CYCLE, color="#111111", linestyle="-.", linewidth=1.9)
     ax1.plot(oi_x, roof(oi_x, RVV_INT8_PEAK_MAC), color="#6F6F6F", linestyle="--", linewidth=1.8)
     for prec in PRECISIONS:
@@ -311,27 +301,27 @@ def main():
         "reuse": (13.5, 130.0),
         "final": (24.0, 250.0),
     }
-    ax1.scatter([concept_pts["rvv"][0]], [concept_pts["rvv"][1]], s=82, marker="o", facecolor="white", edgecolor="#5A5A5A", linewidth=1.3, zorder=5)
-    ax1.scatter([concept_pts["base"][0]], [concept_pts["base"][1]], s=84, marker="o", facecolor="#A5A5A5", edgecolor="#A5A5A5", linewidth=1.1, zorder=5)
-    ax1.scatter([concept_pts["reuse"][0]], [concept_pts["reuse"][1]], s=88, marker="D", facecolor="#8A7394", edgecolor="#8A7394", linewidth=1.1, zorder=5)
-    ax1.scatter([concept_pts["final"][0]], [concept_pts["final"][1]], s=92, marker="s", facecolor="#D95B59", edgecolor="#D95B59", linewidth=1.1, zorder=5)
-    ax1.annotate("", xy=concept_pts["reuse"], xytext=concept_pts["base"], arrowprops=dict(arrowstyle="->", lw=1.2, color="#8A7394"))
-    ax1.annotate("", xy=concept_pts["final"], xytext=concept_pts["reuse"], arrowprops=dict(arrowstyle="->", lw=1.2, color="#D95B59"))
+    ax1.scatter([concept_pts["rvv"][0]], [concept_pts["rvv"][1]], s=180, marker="o", facecolor="white", edgecolor="#5A5A5A", linewidth=2.0, zorder=5)
+    ax1.scatter([concept_pts["base"][0]], [concept_pts["base"][1]], s=186, marker="o", facecolor="#A5A5A5", edgecolor="#A5A5A5", linewidth=1.8, zorder=5)
+    ax1.scatter([concept_pts["reuse"][0]], [concept_pts["reuse"][1]], s=194, marker="D", facecolor="#8A7394", edgecolor="#8A7394", linewidth=1.8, zorder=5)
+    ax1.scatter([concept_pts["final"][0]], [concept_pts["final"][1]], s=202, marker="s", facecolor="#D95B59", edgecolor="#D95B59", linewidth=1.8, zorder=5)
+    ax1.annotate("", xy=concept_pts["reuse"], xytext=concept_pts["base"], arrowprops=dict(arrowstyle="->", lw=2.0, color="#8A7394"))
+    ax1.annotate("", xy=concept_pts["final"], xytext=concept_pts["reuse"], arrowprops=dict(arrowstyle="->", lw=2.0, color="#D95B59"))
 
     for text, xy, offset, color in [
-        ("RVV low-bit\nceiling", concept_pts["rvv"], (-12, -24), "#5A5A5A"),
+        ("RVV low-bit\nceiling", concept_pts["rvv"], (-34, -40), "#5A5A5A"),
         ("Baseline accelerator", concept_pts["base"], (10, -2), "#666666"),
         ("+ grouped reuse", concept_pts["reuse"], (12, -2), "#8A7394"),
         ("+ overlap optimizations", concept_pts["final"], (14, -2), "#D95B59"),
     ]:
-        ax1.annotate(text, xy=xy, xytext=offset, textcoords="offset points", fontsize=7.9, color=color)
+        ax1.annotate(text, xy=xy, xytext=offset, textcoords="offset points", fontsize=13.8, color=color)
 
     ax1.text(
         0.05,
         0.95,
         "Conceptual roofline used before the implementation section",
         transform=ax1.transAxes,
-        fontsize=7.7,
+        fontsize=12.5,
         va="top",
         ha="left",
         bbox=dict(boxstyle="round,pad=0.16", fc="white", ec="#D0D0D0", alpha=0.92),
@@ -345,126 +335,186 @@ def main():
     ax1.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: f"{y:g}"))
     ax1.set_xlabel(r"Operational Intensity (MACs / Byte)", weight="bold")
     ax1.set_ylabel(r"Attained Performance (MACs / cycle)", weight="bold")
-    ax1.set_title("(a) Conceptual Roofline", weight="bold", pad=9)
-    line_label(ax1, 1.0, 8.0, "memory roof (baseline)", "#9CA2AB", dy=10, fs=7.2)
-    line_label(ax1, 1.55, 12.0 * 1.55, "memory roof (+ reuse)", "#6E7680", dy=-2, fs=7.2)
-    line_label(ax1, 2.2, AXI_BW_BYTES_PER_CYCLE * 2.2, "memory roof (+ overlap)", "#111111", dy=8, fs=7.2)
-    line_label(ax1, 4.35, RVV_INT8_PEAK_MAC, "RVV ceiling", "#666666", dy=-18, fs=7.2)
-    line_label(ax1, 14.2, rtl_compute_peak(PRECISIONS[0]), "W4A8 roof", PRECISIONS[0]["color"], dy=-1, fs=7.2)
-    line_label(ax1, 14.2, rtl_compute_peak(PRECISIONS[1]), "W2A8 roof", PRECISIONS[1]["color"], dy=-1, fs=7.2)
-    line_label(ax1, 19.2, rtl_compute_peak(PRECISIONS[2]), "W1A8 roof", PRECISIONS[2]["color"], dy=0, fs=7.2)
+    ax1.set_title("(a) Conceptual Roofline", weight="bold", pad=12)
+    line_label(ax1, 1.0, 6.0, "memory roof (baseline)", "#9CA2AB", dy=16, fs=12.5)
+    line_label(ax1, 1.7, 10.0 * 1.7, "memory roof (+ reuse)", "#6E7680", dy=-4, fs=12.5)
+    line_label(ax1, 2.05, AXI_BW_BYTES_PER_CYCLE * 2.05, "memory roof (+ overlap)", "#111111", dy=16, fs=12.5)
+    line_label(ax1, 5.15, RVV_INT8_PEAK_MAC, "RVV ceiling", "#666666", dy=-30, fs=12.5)
+    line_label(ax1, 14.2, rtl_compute_peak(PRECISIONS[0]), "W4A8 roof", PRECISIONS[0]["color"], dy=-1, fs=12.5)
+    line_label(ax1, 14.2, rtl_compute_peak(PRECISIONS[1]), "W2A8 roof", PRECISIONS[1]["color"], dy=-1, fs=12.5)
+    line_label(ax1, 19.2, rtl_compute_peak(PRECISIONS[2]), "W1A8 roof", PRECISIONS[2]["color"], dy=0, fs=12.5)
 
-    cfgs = enumerate_configs()
-    all_points = []
+def draw_motivation_projection_panel(ax):
+    oi_x = np.logspace(np.log10(0.8), np.log10(80), 1200)
+    style_axis(ax)
+    ax.plot(oi_x, oi_x * AXI_BW_BYTES_PER_CYCLE, color="#111111", linestyle="-.", linewidth=1.9)
     for prec in PRECISIONS:
-        for cfg in cfgs:
-            oi, perf, compute_bound = actual_upgraded_point(cfg, prec)
-            all_points.append({"cfg": cfg, "oi": oi, "perf": perf, "compute_bound": compute_bound, "reuse": cfg[2] * cfg[3], "prec": prec})
+        ax.hlines(rtl_compute_peak(prec), oi_x.min(), oi_x.max(), colors=prec["color"], linewidth=1.55, linestyle=":")
 
-    for idx, (ax, prec) in enumerate(zip(ax2_list, PRECISIONS)):
+    stages = [
+        {"name": "Compute-only\nscaling", "pts": [(8.5, 38), (10.5, 72), (13.0, 120)], "color": "#8E8E8E", "marker": "o"},
+        {"name": "Reuse-aware\ntiling", "pts": [(14.0, 48), (18.0, 88), (24.0, 145)], "color": "#7A6C9D", "marker": "D"},
+        {"name": "BitFly target\nregion", "pts": [(21.0, 56), (28.0, 105), (39.0, 175)], "color": "#D95B59", "marker": "s"},
+    ]
+    for stage in stages:
+        xs = [p[0] for p in stage["pts"]]
+        ys = [p[1] for p in stage["pts"]]
+        ax.plot(xs, ys, color=stage["color"], linewidth=1.6, alpha=0.9)
+        ax.scatter(xs, ys, s=145, marker=stage["marker"], facecolor=stage["color"], edgecolor=stage["color"], zorder=4)
+        ax.annotate(stage["name"], xy=(xs[-1], ys[-1]), xytext=(10, 0), textcoords="offset points",
+                    fontsize=12.2, color=stage["color"], va="center")
+
+    for prec, pt in zip(PRECISIONS, [(39.0, 56), (39.0, 105), (39.0, 175)]):
+        ax.annotate(prec["name"], xy=pt, xytext=(0, -18), textcoords="offset points",
+                    fontsize=11.0, color=prec["color"], ha="center")
+
+    ax.text(
+        0.04,
+        0.95,
+        "Architecture-aware projection used to guide BitFly design",
+        transform=ax.transAxes,
+        fontsize=11.2,
+        va="top",
+        ha="left",
+        bbox=dict(boxstyle="round,pad=0.16", fc="white", ec="#D0D0D0", alpha=0.92),
+    )
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlim(0.8, 80)
+    ax.set_ylim(24, 260)
+    ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: f"{y:g}"))
+    ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: f"{y:g}"))
+    ax.set_xlabel(r"Operational Intensity (MACs / Byte)", weight="bold")
+    ax.set_ylabel(r"Attained Performance (MACs / cycle)", weight="bold")
+    ax.set_title("(b) Architecture-Aware Design Projection", weight="bold", pad=12)
+    line_label(ax, 1.0, AXI_BW_BYTES_PER_CYCLE * 1.0, "memory roof", "#111111", dy=8, fs=12.0)
+    line_label(ax, 1.0, rtl_compute_peak(PRECISIONS[0]), "W4A8 roof", PRECISIONS[0]["color"], dy=8, fs=12.0)
+    line_label(ax, 1.0, rtl_compute_peak(PRECISIONS[1]), "W2A8 roof", PRECISIONS[1]["color"], dy=8, fs=12.0)
+    line_label(ax, 1.0, rtl_compute_peak(PRECISIONS[2]), "W1A8 roof", PRECISIONS[2]["color"], dy=8, fs=12.0)
+
+
+def gather_projection_points():
+    cfgs = enumerate_configs()
+    out = []
+    for prec in PRECISIONS:
         pts = []
         for cfg in cfgs:
-            oi, perf, compute_bound = actual_upgraded_point(cfg, prec)
+            oi, perf, compute_bound = design_projection_point(cfg, prec)
             pts.append({"cfg": cfg, "oi": oi, "perf": perf, "compute_bound": compute_bound, "reuse": cfg[2] * cfg[3]})
+        out.append((prec, pts))
+    return out
 
-        frontier, frontier_reps = representative_frontier(pts)
-        frontier_cfgs = {p["cfg"] for p in frontier}
-        frontier_x = [p["oi"] for p in frontier]
-        frontier_y = [p["perf"] for p in frontier]
-        x_min, x_max = nice_bounds([p["oi"] for p in pts], lower_pad=0.9, upper_pad=1.18)
-        y_min, y_max = bounded_ylim(pts, x_min, x_max, rtl_compute_peak(prec))
-        oi_x_impl = np.logspace(np.log10(x_min), np.log10(x_max), 800)
 
-        ax.plot(oi_x_impl, oi_x_impl * AXI_BW_BYTES_PER_CYCLE, color="#111111", linestyle="-.", linewidth=1.8)
-        ax.hlines(rtl_compute_peak(prec), oi_x_impl.min(), oi_x_impl.max(), colors=prec["color"], linewidth=1.55, linestyle=":")
-        ax.plot(frontier_x, frontier_y, color=prec["color"], linewidth=1.3, alpha=0.9, zorder=3)
+def draw_projection_subplot(ax, prec, pts, shared_ylabel=False):
+    style_axis(ax)
 
-        for p in pts:
-            is_frontier = p["cfg"] in frontier_cfgs
-            size = 33 + 8 * np.log2(p["reuse"])
-            ax.scatter(
-                [p["oi"]],
-                [p["perf"]],
-                s=size,
-                marker=prec["marker"],
-                facecolor=REUSE_COLORS[p["reuse"]] if is_frontier else "white",
-                edgecolor=REUSE_COLORS[p["reuse"]],
-                linewidth=1.4 if is_frontier else 0.9,
-                alpha=0.96 if is_frontier else 0.58,
-                zorder=5 if is_frontier else 2,
-            )
+    frontier, frontier_reps = representative_frontier(pts)
+    frontier_cfgs = {p["cfg"] for p in frontier}
+    frontier_x = [p["oi"] for p in frontier]
+    frontier_y = [p["perf"] for p in frontier]
+    x_min, x_max = nice_bounds([p["oi"] for p in pts], lower_pad=0.9, upper_pad=1.18)
+    y_min, y_max = bounded_ylim(pts, x_min, x_max, rtl_compute_peak(prec))
+    oi_x_impl = np.logspace(np.log10(x_min), np.log10(x_max), 800)
 
-        for rank, p in enumerate(frontier_reps):
-            annotate_cfg(ax, p, cfg_label(p["cfg"]), rank)
+    ax.plot(oi_x_impl, oi_x_impl * AXI_BW_BYTES_PER_CYCLE, color="#111111", linestyle="-.", linewidth=1.8)
+    ax.hlines(rtl_compute_peak(prec), oi_x_impl.min(), oi_x_impl.max(), colors=prec["color"], linewidth=1.55, linestyle=":")
+    ax.plot(frontier_x, frontier_y, color=prec["color"], linewidth=1.3, alpha=0.9, zorder=3)
 
-        ax.text(
-            0.02,
-            0.93,
-            f"{PRECISION_LABELS[prec['name']]} implemented roofline",
-            transform=ax.transAxes,
-            fontsize=8.0,
-            va="top",
-            ha="left",
-            color=prec["color"],
-            bbox=dict(boxstyle="round,pad=0.14", fc="white", ec="#D0D0D0", alpha=0.92),
+    for p in pts:
+        is_frontier = p["cfg"] in frontier_cfgs
+        size = 120 + 28 * np.log2(p["reuse"])
+        ax.scatter(
+            [p["oi"]],
+            [p["perf"]],
+            s=size,
+            marker=prec["marker"],
+            facecolor=REUSE_COLORS[p["reuse"]] if is_frontier else "white",
+            edgecolor=REUSE_COLORS[p["reuse"]],
+            linewidth=1.4 if is_frontier else 0.9,
+            alpha=0.96 if is_frontier else 0.58,
+            zorder=5 if is_frontier else 2,
         )
-        ax.set_xscale("log")
-        ax.set_yscale("log")
-        ax.set_xlim(x_min, x_max)
-        ax.set_ylim(y_min, y_max)
-        ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: f"{y:g}"))
-        ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: f"{y:g}"))
-        if idx < 2:
-            ax.tick_params(labelbottom=False)
-        if idx == 1:
-            ax.set_ylabel(r"Attained Performance (MACs / cycle)", weight="bold")
-        line_label(ax, x_min * 1.03, AXI_BW_BYTES_PER_CYCLE * x_min * 1.03, "memory roof", "#111111", dy=5, fs=7.0)
-        line_label(ax, x_min * 1.03, rtl_compute_peak(prec), "compute roof", prec["color"], dy=5, fs=7.0)
 
-    ax2_list[0].set_title("(b) Implemented Roofline Under Actual Architectural Optimizations", weight="bold", pad=8)
-    ax2_list[-1].set_xlabel(r"Operational Intensity (MACs / Byte)", weight="bold")
+    for rank, p in enumerate(frontier_reps):
+        annotate_cfg(ax, p, cfg_label(p["cfg"]), rank)
 
-    ax2_list[0].text(
-        0.98,
+    ax.text(
+        0.02,
         0.93,
+        f"{PRECISION_LABELS[prec['name']]} design projection",
+        transform=ax.transAxes,
+        fontsize=13.6,
+        va="top",
+        ha="left",
+        color=prec["color"],
+        bbox=dict(boxstyle="round,pad=0.14", fc="white", ec="#D0D0D0", alpha=0.92),
+    )
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlim(x_min, x_max)
+    ax.set_ylim(y_min, y_max)
+    ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: f"{y:g}"))
+    ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: f"{y:g}"))
+    if shared_ylabel:
+        ax.set_ylabel(r"Attained Performance (MACs / cycle)", weight="bold")
+    ax.set_xlabel(r"Operational Intensity (MACs / Byte)", weight="bold")
+    line_label(ax, x_min * 1.03, AXI_BW_BYTES_PER_CYCLE * x_min * 1.03, "memory roof", "#111111", dy=8, fs=12.0)
+    line_label(ax, x_min * 1.03, rtl_compute_peak(prec), "compute roof", prec["color"], dy=8, fs=12.0)
+
+
+def save_motivation_figure():
+    fig = plt.figure(figsize=(18.8, 6.7))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 0.96], wspace=0.2)
+    ax_left = fig.add_subplot(gs[0, 0])
+    ax_right = fig.add_subplot(gs[0, 1])
+    draw_conceptual_panel(ax_left)
+    draw_motivation_projection_panel(ax_right)
+    fig.suptitle("Roofline Motivation for BitFly", y=0.975, fontsize=20.0, fontweight="bold")
+    fig.subplots_adjust(top=0.86, bottom=0.14, left=0.055, right=0.97)
+    fig.savefig("roofline_motivation.png", bbox_inches="tight", pad_inches=0.03)
+    fig.savefig("roofline_motivation.pdf", bbox_inches="tight", pad_inches=0.03)
+
+
+def save_design_projection_figure():
+    data = gather_projection_points()
+    fig, axes = plt.subplots(1, 3, figsize=(24, 7.2), gridspec_kw={"wspace": 0.16})
+    for idx, ((prec, pts), ax) in enumerate(zip(data, axes)):
+        draw_projection_subplot(ax, prec, pts, shared_ylabel=(idx == 0))
+    axes[1].set_title("Architecture-Aware Design-Space Projection", weight="bold", pad=10)
+    axes[2].text(
+        0.97,
+        0.965,
         "\n".join([
-            r"Shape: $(128, 8192, 2048)$",
+            r"Target shape: $(128, 8192, 2048)$",
             r"$m_t n_t g_m g_n \times 16 = 16384$",
+            "Architecture-aware projection",
             "Filled: Pareto frontier",
             "Hollow: dominated design",
         ]),
-        transform=ax2_list[0].transAxes,
-        fontsize=7.1,
+        transform=axes[2].transAxes,
+        fontsize=10.2,
         va="top",
         ha="right",
-        bbox=dict(boxstyle="round,pad=0.16", fc="white", ec="#D0D0D0", alpha=0.92),
+        bbox=dict(boxstyle="round,pad=0.14", fc="white", ec="#D0D0D0", alpha=0.9),
     )
-
     reuse_handles = [
-        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=REUSE_COLORS[1], markeredgecolor=REUSE_COLORS[1], markersize=7, label="gm*gn = 1"),
-        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=REUSE_COLORS[2], markeredgecolor=REUSE_COLORS[2], markersize=7, label="gm*gn = 2"),
-        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=REUSE_COLORS[4], markeredgecolor=REUSE_COLORS[4], markersize=7, label="gm*gn = 4"),
-        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=REUSE_COLORS[8], markeredgecolor=REUSE_COLORS[8], markersize=7, label="gm*gn = 8"),
+        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=REUSE_COLORS[1], markeredgecolor=REUSE_COLORS[1], markersize=11, label="gm*gn = 1"),
+        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=REUSE_COLORS[2], markeredgecolor=REUSE_COLORS[2], markersize=11, label="gm*gn = 2"),
+        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=REUSE_COLORS[4], markeredgecolor=REUSE_COLORS[4], markersize=11, label="gm*gn = 4"),
+        plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=REUSE_COLORS[8], markeredgecolor=REUSE_COLORS[8], markersize=11, label="gm*gn = 8"),
     ]
-    ax2_list[-1].legend(
-        handles=reuse_handles,
-        loc="upper left",
-        bbox_to_anchor=(1.01, 0.52),
-        ncol=1,
-        facecolor="#F8F8F8",
-        edgecolor="#DFDFDF",
-        framealpha=0.94,
-        title=r"Reuse Level ($g_m g_n$)",
-        borderaxespad=0.0,
-    )
+    axes[2].legend(handles=reuse_handles, loc="lower right", ncol=2, framealpha=0.94, title=r"Reuse Level ($g_m g_n$)")
+    fig.suptitle("BitFly Design-Space Projection Under Target Architectural Constraints", y=0.99, fontsize=20.0, fontweight="bold")
+    fig.subplots_adjust(top=0.87, bottom=0.14, left=0.055, right=0.985)
+    fig.savefig("roofline_design_projection.png", bbox_inches="tight", pad_inches=0.03)
+    fig.savefig("roofline_design_projection.pdf", bbox_inches="tight", pad_inches=0.03)
 
-    fig.suptitle("Roofline Analysis of Low-bit Mixed-precision Execution", y=0.982, fontsize=12.4, fontweight="bold")
-    fig.subplots_adjust(top=0.86, bottom=0.14, left=0.07, right=0.92)
-    fig.savefig("roofline_bitfly_arch_model.png")
-    fig.savefig("roofline_bitfly_arch_model.pdf")
 
-    print(f"Enumerated configs: {len(cfgs)}")
-    print("Saved architecture-aware roofline figures: roofline_bitfly_arch_model.[png|pdf]")
+def main():
+    save_motivation_figure()
+    save_design_projection_figure()
+    print(f"Enumerated configs: {len(enumerate_configs())}")
+    print("Saved figures: roofline_motivation.[png|pdf], roofline_design_projection.[png|pdf]")
 
 
 if __name__ == "__main__":

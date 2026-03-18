@@ -1,10 +1,11 @@
 import struct
+from pathlib import Path
 
 VOCAB_SIZE = 32000
-INPUT_PATH = "/home/data/zzx/workspace/QLoMA/src/apps/llama2/tokenizer.bin"
-OUTPUT_PATH = (
-    "/home/data/zzx/workspace/QLoMA/src/apps/llama2/tokenizer_data.h"
-)
+SCRIPT_DIR = Path(__file__).resolve().parent
+APP_DIR = SCRIPT_DIR.parent
+INPUT_PATH = APP_DIR / "tokenizer.bin"
+OUTPUT_PATH = APP_DIR / "tokenizer_data.h"
 
 with open(INPUT_PATH, "rb") as f:
     max_token_length = struct.unpack("i", f.read(4))[0]
@@ -19,7 +20,7 @@ with open(INPUT_PATH, "rb") as f:
         scores.append(score)
         length = struct.unpack("i", f.read(4))[0]
         token = f.read(length)
-        data += token + b"\x00"  # 添加 null terminator
+        data += token + b"\x00"
         lengths.append(length)
         offsets.append(offset)
         offset += length + 1

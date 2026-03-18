@@ -3,7 +3,7 @@
 ## Main Directories
 
 - `ara/`: executable research platform based on Ara
-- `src/`: QLoMA-side source of truth for overlays and custom RTL/app sources
+- `src/`: bitfly-side source of truth for overlays and custom RTL/app sources
 - `scripts/`: automation, analysis, and debug tools
 - `docs/`: workflow notes and experiment-facing documentation
 - `tmp/`: generated logs and run outputs
@@ -11,7 +11,7 @@
 
 ## Source Ownership
 
-When developing new QLoMA features:
+When developing new bitfly features:
 
 - edit persistent project logic under `src/` when the source is meant to be synced into Ara
 - edit `ara/` directly when you intentionally want to change the working Ara tree

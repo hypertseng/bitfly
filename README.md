@@ -1,11 +1,11 @@
-# QLoMA
+# bitfly
 
-QLoMA extends the Ara vector coprocessor stack with custom BMPMM-style instructions, RTL support, and benchmarking flows for LLM-oriented mixed-precision GEMM evaluation.
+bitfly extends the Ara vector coprocessor stack with custom BMPMM-style instructions, RTL support, and benchmarking flows for LLM-oriented mixed-precision GEMM evaluation.
 
 ## Repository Layout
 
 - `ara/`: primary Ara-based hardware, apps, toolchain, and simulation flow
-- `src/`: QLoMA-specific source overlays that are synced into `ara/`
+- `src/`: bitfly-specific source overlays that are synced into `ara/`
 - `scripts/`: categorized automation, debug, and analysis utilities
 - `docs/`: experiment workflow and repository guides
 - `tmp/`: generated logs and benchmark outputs, ignored by Git
@@ -37,12 +37,12 @@ Ara-specific prerequisites are documented in `ara/DEPENDENCIES.md`.
 Clone and initialize submodules:
 
 ```bash
-git clone --recursive <repo-url> QLoMA
-cd QLoMA
+git clone --recursive <repo-url> bitfly
+cd bitfly
 git submodule update --init --recursive
 ```
 
-Sync the QLoMA LLVM/custom-instruction overlays into Ara:
+Sync the bitfly LLVM/custom-instruction overlays into Ara:
 
 ```bash
 cp -f src/instr/RISCVAsmParser.cpp ara/toolchain/riscv-llvm/llvm/lib/Target/RISCV/AsmParser/
@@ -134,21 +134,9 @@ scripts/run_model_split_apps.sh --help
 Common examples:
 
 ```bash
-# Build and run all selected apps
 scripts/benchmarks/run_model_split_apps.sh --mode all --build-jobs 16 --parallel 5 --batch-size 5
-
-# Reuse existing binaries and Verilator build, only run apps
 scripts/benchmarks/run_model_split_apps.sh --mode run --no-rebuild-apps --no-verilate --parallel 5 --batch-size 5
-
-# Run only one app
-scripts/benchmarks/run_model_split_apps.sh \
-  --mode run \
-  --apps bmpmm_INT2_gemma3_270m \
-  --parallel 1 \
-  --batch-size 1 \
-  --log-root tmp/model_app_runs/single_check_int2
-
-# Run only one precision across all models and both implementations
+scripts/benchmarks/run_model_split_apps.sh --mode run --apps bmpmm_INT2_gemma3_270m --parallel 1 --batch-size 1 --log-root tmp/model_app_runs/single_check_int2
 scripts/benchmarks/run_model_split_apps.sh --mode all --precisions INT4 --parallel 5 --batch-size 5
 ```
 

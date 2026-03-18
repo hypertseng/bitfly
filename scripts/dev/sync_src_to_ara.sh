@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SRC_DIR="$ROOT_DIR/src"
 ARA_DIR="$ROOT_DIR/ara"
 PATCH_DIR_DEFAULT="$ROOT_DIR/patches/local"
 TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
-PATCH_FILE_DEFAULT="$PATCH_DIR_DEFAULT/qloma_sync_${TIMESTAMP}.patch"
+PATCH_FILE_DEFAULT="$PATCH_DIR_DEFAULT/bitfly_sync_${TIMESTAMP}.patch"
 
 DO_SYNC=1
 DO_PATCH=1
@@ -15,55 +15,33 @@ PATCH_FILE="$PATCH_FILE_DEFAULT"
 LLVM_DST=""
 
 usage() {
-  cat <<'EOF'
+  cat <<'EOF2'
 Usage: scripts/sync_src_to_ara.sh [options]
 
 Options:
   --no-sync            Skip rsync step
   --no-patch           Skip patch generation
   --no-status          Skip final git status output
-  --patch-file <path>  Output patch path (default: patches/local/qloma_sync_<ts>.patch)
+  --patch-file <path>  Output patch path (default: patches/local/bitfly_sync_<ts>.patch)
   --llvm-dst <path>    Optional destination root for src/llvm_instr sync
   -h, --help           Show this help
 
 What this script does:
-  1) Syncs selected QLoMA src modifications into ara workspace
+  1) Syncs selected bitfly src modifications into ara workspace
   2) Generates a patch from ara repo changes (includes untracked files)
   3) Prints concise status summary
-EOF
+EOF2
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --no-sync)
-      DO_SYNC=0
-      shift
-      ;;
-    --no-patch)
-      DO_PATCH=0
-      shift
-      ;;
-    --no-status)
-      DO_STATUS=0
-      shift
-      ;;
-    --patch-file)
-      PATCH_FILE="$2"
-      shift 2
-      ;;
-    --llvm-dst)
-      LLVM_DST="$2"
-      shift 2
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *)
-      echo "[ERROR] Unknown option: $1" >&2
-      usage
-      exit 1
-      ;;
+    --no-sync) DO_SYNC=0; shift ;;
+    --no-patch) DO_PATCH=0; shift ;;
+    --no-status) DO_STATUS=0; shift ;;
+    --patch-file) PATCH_FILE="$2"; shift 2 ;;
+    --llvm-dst) LLVM_DST="$2"; shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "[ERROR] Unknown option: $1" >&2; usage; exit 1 ;;
   esac
 done
 
@@ -104,7 +82,6 @@ if [[ "$DO_PATCH" -eq 1 ]]; then
   mkdir -p "$(dirname "$PATCH_FILE")"
   : > "$PATCH_FILE"
 
-  # Tracked modifications under synced trees
   git -C "$ARA_DIR" --no-pager diff --binary -- \
     hardware/src/bmpu \
     hardware/src \
@@ -112,7 +89,6 @@ if [[ "$DO_PATCH" -eq 1 ]]; then
     apps \
     >> "$PATCH_FILE"
 
-  # Untracked files under synced trees
   while IFS= read -r rel; do
     (
       cd "$ARA_DIR"
