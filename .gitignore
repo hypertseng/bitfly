@@ -1,0 +1,18 @@
+# Build outputs
+/build/
+
+# Temporary experiment outputs
+/tmp/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor / local notes
+.vscode/
+function.md
+
+# Generated analysis artifacts
+roofline_bitfly_arch_model.pdf
+roofline_bitfly_arch_model.png

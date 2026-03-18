@@ -1,51 +1,48 @@
 # QLoMA
 
-**QLoMA** is an academic research project built on top of the Ara vector coprocessor for the CVA6 core. It extends the open‑source Ara infrastructure with custom RISC‑V instructions, a modified LLVM backend, and an RTL design tuned for large language model accelerators. The repository contains both the software toolchain and hardware descriptions necessary to build, simulate and deploy the system.
+QLoMA extends the Ara vector coprocessor stack with custom BMPMM-style instructions, RTL support, and benchmarking flows for LLM-oriented mixed-precision GEMM evaluation.
 
-> 📌 This README is intended to provide a comprehensive walkthrough for newcomers and reviewers of top‑tier conferences. For more details about Ara itself consult `ara/README.md` and the sub‑directory documentation.
+## Repository Layout
 
----
+- `ara/`: primary Ara-based hardware, apps, toolchain, and simulation flow
+- `src/`: QLoMA-specific source overlays that are synced into `ara/`
+- `scripts/`: categorized automation, debug, and analysis utilities
+- `docs/`: experiment workflow and repository guides
+- `tmp/`: generated logs and benchmark outputs, ignored by Git
+- `build/`: local temporary build directories, ignored by Git
 
-## ✅ Dependencies
+Detailed guides:
 
-Before you begin, make sure the following tools are installed on your host machine:
+- `docs/repo_guide.md`
+- `docs/benchmark_workflow.md`
+- `scripts/README.md`
+- `ara/README.md`
+- `ara/apps/README.md`
+- `ara/config/README.md`
 
-- **GNU make**, **gcc/g++ (≥7.2)** – used to build the toolchain and simulators.
-- **Git** (with submodule support)
-- **Python 3** (some auxiliary scripts in `scripts/`)
-- **Verilator** (≥4.0) for RTL simulation
-- **Spike** RISC‑V ISA simulator (built from sources below)
-- **Questasim** (optional, for waveform‑accurate simulation and verification)
-- **gtkwave** (optional, for inspecting `.fst` waveforms)
+## Environment
 
-Additional dependencies required by Ara are listed in `ara/DEPENDENCIES.md`.
+Recommended host setup:
 
----
+- `git` with submodules
+- `make`, `gcc/g++`, `python3`
+- `Verilator`
+- optional: `QuestaSim`, `gtkwave`
+- Conda environment `bitfly`
 
-## 🚀 Getting Started
+Ara-specific prerequisites are documented in `ara/DEPENDENCIES.md`.
 
-### 1. Clone the repository
+## Initial Setup
+
+Clone and initialize submodules:
 
 ```bash
 git clone --recursive <repo-url> QLoMA
 cd QLoMA
-```
-
-If you already have a clone without submodules:
-
-```bash
 git submodule update --init --recursive
 ```
 
-To sync submodule URLs after a remote change:
-
-```bash
-git submodule sync --recursive
-```
-
-### 2. Copy custom instruction sources
-
-The project modifies the Ara LLVM backend; before building, the custom files in `src/instr/` must overwrite the stock files in the Ara toolchain:
+Sync the QLoMA LLVM/custom-instruction overlays into Ara:
 
 ```bash
 cp -f src/instr/RISCVAsmParser.cpp ara/toolchain/riscv-llvm/llvm/lib/Target/RISCV/AsmParser/
@@ -57,118 +54,54 @@ cp -f src/instr/RISCVInstrInfo.td ara/toolchain/riscv-llvm/llvm/lib/Target/RISCV
 cp -f src/instr/RISCVMCCodeEmitter.cpp ara/toolchain/riscv-llvm/llvm/lib/Target/RISCV/MCTargetDesc/
 ```
 
-### 3. Build the QLoMA software components
+Build the software side if needed:
 
 ```bash
 cd src
 sh compile.sh
 ```
 
-This script invokes the modified LLVM/Clang, assembles the custom ISA support, and produces the user binaries located under `ara/apps/bin`.
+## Ara Build and Simulation
 
----
-
-## 🔧 Toolchain Setup
-
-The Ara project comes with helper Makefile targets for building a compatible RISC‑V toolchain and simulator.
-
-From the top level of the workspace run:
-
-```bash
-# Build LLVM with vector‑extension support
-make toolchain-llvm
-
-# Build the Spike ISA simulator (required for software emulation)
-# use static linking if you encounter library issues
-make riscv-isa-sim LDFLAGS="-static-libstdc++"
-
-# Build Verilator (used by the hardware flow)
-make verilator
-```
-
-> ⚠️ Older GCC versions (7.2.0) are known to work reliably when compiling Spike.
-
----
-
-## 🧩 Configuration
-
-Ara’s parameters live in the `ara/config/` tree. See `ara/config/README.md` for a complete explanation of available configurations (number of lanes, memory sizes, etc.).
-
-You can select a configuration by prefixing your `make` command with:
-
-```bash
-export ARA_CONFIGURATION=chosen_config
-# or
-make config=chosen_config <target>
-```
-
----
-
-## 🛠 Building and Running Applications
-
-All example programs and benchmarks reside in `ara/apps`.
-
-```bash
-cd ara/apps
-# compile the hello_world example
-make bin/hello_world
-```
-
----
-
-## 🖥 RTL Simulation & Verification
-
-### Hardware dependencies
-
-Ara uses [Bender](https://github.com/lowRISC/bender) to manage third‑party IPs. To install dependencies:
+Typical Ara hardware setup:
 
 ```bash
 cd ara/hardware
-make checkout          # fetch all IPs
+make checkout
+make apply-patches
+make verilate
+make simv app=hello_world
 ```
 
-If IPs are re‑checked out, re‑apply the following patches once:
-
-```bash
-make apply-patches     # only needed once per checkout
-```
-
-
-The typical simulation command from the hardware directory:
+Console / Questa-style flow:
 
 ```bash
 cd ara/hardware
-make compile            # synthesize design for ModelSim
-make sim app=hello_world # run simulation with hello_world loaded
-make simc                # run in console (no GUI)
+make compile
+make sim app=hello_world
+make simc app=hello_world
 ```
 
-### Verilator Flow
+## Script Layout
 
-```bash
-cd ara/hardware
-make apply-patches       # once
-make verilate            # build C++ model
-make simv app=hello_world  # run Verilator model
-make riscv_tests_simv     # run the unit-testbench
-```
+The top-level script tree is now organized by use case:
 
-Trace files in `fst` format are produced by adding `trace=1` to any of the above targets. Open them with `gtkwave`.
+- `scripts/benchmarks/`: batch benchmark runners and shape utilities
+- `scripts/analysis/`: roofline and design-space analysis
+- `scripts/debug/`: module-level debug launchers
+- `scripts/dev/`: source sync and maintenance helpers
 
-### Model-Split Benchmark Runner
+Backward-compatible wrapper paths are still available under `scripts/`.
 
-For LLM GEMM benchmarking, this repository now supports a **model-split app layout**: each app contains only the linear-layer GEMM shapes of **one model** and **one backend**. This keeps generated `data.S` files much smaller and reduces compile time significantly.
+## Model-Split Benchmark Apps
 
-Current benchmark app naming follows:
+The benchmark flow is organized as one app per:
 
-- `bmpmm_binary_<model>`
-- `rvv_binary_<model>`
-- `bmpmm_INT2_<model>`
-- `rvv_INT2_<model>`
-- `bmpmm_INT4_<model>`
-- `rvv_INT4_<model>`
+- model
+- precision (`binary`, `INT2`, `INT4`)
+- implementation (`bmpmm`, `rvv`)
 
-where `<model>` is one of:
+Current model tags:
 
 - `gemma3_270m`
 - `qwen25_05b`
@@ -176,110 +109,80 @@ where `<model>` is one of:
 - `qwen25_15b`
 - `gemma2_2b`
 
-A helper script is provided to build and run these apps concurrently or in batches:
+Example app names:
+
+- `bmpmm_binary_gemma3_270m`
+- `bmpmm_INT2_opt_13b`
+- `rvv_INT4_gemma2_2b`
+
+This split keeps each generated `data.S` small enough to compile and simulate efficiently.
+
+## Batch Runner
+
+Primary entry:
+
+```bash
+scripts/benchmarks/run_model_split_apps.sh --help
+```
+
+Legacy-compatible entry:
 
 ```bash
 scripts/run_model_split_apps.sh --help
 ```
 
-Typical usage:
+Common examples:
 
 ```bash
-# Build all selected apps, build the Verilator model, then run them
-scripts/run_model_split_apps.sh --mode all --build-jobs 16 --parallel 8 --batch-size 8
+# Build and run all selected apps
+scripts/benchmarks/run_model_split_apps.sh --mode all --build-jobs 16 --parallel 5 --batch-size 5
 
-# Only run a subset of models
-scripts/run_model_split_apps.sh --mode run --models gemma3_270m,opt_13b --parallel 6
+# Reuse existing binaries and Verilator build, only run apps
+scripts/benchmarks/run_model_split_apps.sh --mode run --no-rebuild-apps --no-verilate --parallel 5 --batch-size 5
 
-# Only run one precision across all models
-scripts/run_model_split_apps.sh --mode all --precisions INT2 --parallel 10
+# Run only one app
+scripts/benchmarks/run_model_split_apps.sh \
+  --mode run \
+  --apps bmpmm_INT2_gemma3_270m \
+  --parallel 1 \
+  --batch-size 1 \
+  --log-root tmp/model_app_runs/single_check_int2
 
-# Only run BMPMM implementations
-scripts/run_model_split_apps.sh --mode run --impls bmpmm --parallel 10
-
-# Run explicit app names
-scripts/run_model_split_apps.sh \
-  --apps bmpmm_INT2_gemma3_270m,rvv_INT2_gemma3_270m \
-  --parallel 2
+# Run only one precision across all models and both implementations
+scripts/benchmarks/run_model_split_apps.sh --mode all --precisions INT4 --parallel 5 --batch-size 5
 ```
 
-Supported options:
+Key options:
 
-- `--mode <all|build|run>`: build only, run only, or do both
-- `--build-jobs <N>`: parallelism for `make -C ara/apps` and `make -C ara/hardware verilate`
-- `--parallel <N>`: number of concurrent `make simv` jobs per batch
-- `--batch-size <N>`: split the selected app list into batches
-- `--models <csv>`: choose a subset of model tags
-- `--precisions <csv>`: choose from `binary,INT2,INT4`
-- `--impls <csv>`: choose from `bmpmm,rvv`
-- `--apps <csv>`: explicit app list, overriding model/precision/impl filters
-- `--no-verilate`: skip rebuilding the Verilator model
-- `--trace`: run `simv` with `trace=1`
+- `--mode <all|build|run>`
+- `--build-jobs <N>`
+- `--parallel <N>`
+- `--batch-size <N>`
+- `--models <csv>`
+- `--precisions <csv>`
+- `--impls <csv>`
+- `--apps <csv>`
+- `--log-root <dir>`
+- `--no-verilate`
+- `--no-rebuild-apps`
+- `--trace`
+- `--extra-make-args <string>`
 
-Logs and summaries are written to:
+Outputs are written under `tmp/model_app_runs/<run_name>/`:
 
-- `tmp/model_app_runs/<timestamp>/apps.txt`: selected app list
-- `tmp/model_app_runs/<timestamp>/runner.log`: runner progress log
-- `tmp/model_app_runs/<timestamp>/summary.csv`: pass/fail summary with timestamps
-- `tmp/model_app_runs/<timestamp>/batch_XX/<app>.log`: per-app simulation log
+- `apps.txt`
+- `runner.log`
+- `summary.csv`
+- `batch_XX/<app>.log`
 
-Recommended settings on a multi-core server:
+## Repo Hygiene
 
-- Use `--build-jobs 16` for compilation
-- Start with `--parallel 8` or `--parallel 12` for `simv`
-- For all 30 benchmark apps, use `--batch-size 8` or `--batch-size 12` to keep resource usage stable
+This repository intentionally ignores generated files such as:
 
-If the Verilator model has already been built, you can skip that step with:
+- benchmark logs under `tmp/`
+- local build products under `build/`
+- generated `data.S` and Spike objects under `ara/apps/`
+- Python cache directories
+- local editor settings
 
-```bash
-scripts/run_model_split_apps.sh --mode run --no-verilate --parallel 8
-```
-
-### Ideal Dispatcher Mode
-
-For performance experiments where only Ara and memory are modeled, enable the ideal dispatcher:
-
-```bash
-cd ara/apps
-make bin/<program>.ideal      # generate vector trace
-cd ara/hardware
-make sim app=<program> ideal_dispatcher=1
-```
-
----
-
-## 💾 Deployment Notes
-
-### DRAM Configuration
-
-To increase the L2 memory size change `L2NumWords` in `ara/hardware/src/ara_soc.sv` and rebuild.
-
----
-
-## 📄 License & Contact
-
-This project is released under the [Apache‑2.0 license](LICENSE). Please cite the accompanying paper when using QLoMA in your research.
-
-For questions or contributions, open an issue or pull request on the repository.
-
----
-
-*Last updated: March 1, 2026*
-
-
-
-进行多精度tiling搜索，分别针对1、2、4位精度进行搜索：
-for b in 1 2 4; do
-  (
-    python scripts/tilling_search.py \
-      --shapes-csv tmp/llm_gemm_shapes.csv \
-      --buffer-bits 16384 \
-      --prec-bits "$b" \
-      --out-best-csv "tmp/best_config_per_shape_b${b}.csv" \
-      --out-anchor-csv "tmp/best_config_b${b}.csv" \
-      --progress-every-shapes 50 \
-      --jobs 16 \
-      --chunksize 8
-  ) &
-done
-wait
+For experiment presentation guidance, see `docs/benchmark_workflow.md`.

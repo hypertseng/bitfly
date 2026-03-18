@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec "$SCRIPT_DIR/dev/sync_src_to_ara.sh" "$@"
+exec "$SCRIPT_DIR/debug/run_lbmac_tb.sh" "$@"
