@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import LinearSegmentedColormap, Normalize
 from matplotlib.patches import Patch
 from matplotlib.ticker import FuncFormatter
 
@@ -38,224 +39,237 @@ def format_latency(value, _):
     return f"{value / 1000:.2f}s" if value >= 1000 else f"{value:.0f}ms"
 
 
-def hex_to_rgb(color):
-    color = color.lstrip("#")
-    return tuple(int(color[i : i + 2], 16) / 255.0 for i in (0, 2, 4))
-
-
-def label_color(fill_hex):
-    r, g, b = hex_to_rgb(fill_hex)
-    luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
-    return "#1f1f1f" if luminance > 0.62 else "white"
-
-
 models = ["15M", "42M", "110M"]
 components = ["matmul", "softmax", "rmsnorm", "else"]
-mode_specs = [
-    ("rvv", "ARA", rvv_cycles, -1),
-    ("mixed", "BitFly", mixed_cycles, 1),
-]
+component_labels = {
+    "matmul": "MatMul",
+    "softmax": "Softmax",
+    "rmsnorm": "RMSNorm",
+    "else": "Other",
+}
+mode_specs = [("rvv", "ARA", rvv_cycles), ("mixed", "BitFly", mixed_cycles)]
 
 latency_data = {
     mode: {comp: cycles_to_ms(cycle_map[comp], freq_rvv if mode == "rvv" else freq_mixed) for comp in components}
-    for mode, _, cycle_map, _ in mode_specs
+    for mode, _, cycle_map in mode_specs
 }
 
 totals = {
     mode: [sum(latency_data[mode][comp][i] for comp in components) for i in range(len(models))]
-    for mode, _, _, _ in mode_specs
+    for mode, _, _ in mode_specs
 }
 
-ratios = {
+shares = {
     mode: [
-        {comp: latency_data[mode][comp][i] / totals[mode][i] for comp in components}
+        {comp: latency_data[mode][comp][i] / totals[mode][i] * 100 for comp in components}
         for i in range(len(models))
     ]
-    for mode, _, _, _ in mode_specs
-}
-
-colors = {
-    "matmul": "#2F5C8A",
-    "softmax": "#D97B2D",
-    "rmsnorm": "#3F8F6B",
-    "else": "#8A6FB3",
+    for mode, _, _ in mode_specs
 }
 
 plt.rcParams.update(
     {
         "font.family": "sans-serif",
         "font.sans-serif": ["DejaVu Sans", "Arial", "Helvetica"],
-        "font.size": 17,
-        "axes.titlesize": 21,
-        "axes.labelsize": 19,
-        "xtick.labelsize": 17,
-        "ytick.labelsize": 16,
-        "legend.fontsize": 15,
-        "axes.linewidth": 0.9,
+        "font.size": 12,
+        "axes.titlesize": 14.5,
+        "axes.labelsize": 14.2,
+        "xtick.labelsize": 12.2,
+        "ytick.labelsize": 12.2,
+        "legend.fontsize": 11.5,
+        "axes.linewidth": 0.85,
         "savefig.dpi": 300,
         "savefig.bbox": "tight",
-        "hatch.linewidth": 1.0,
     }
 )
 
-x = np.arange(len(models)) * 1.35
-width = 0.34
-
-fig, ax = plt.subplots(figsize=(20, 8))
-fig.patch.set_facecolor("white")
-ax.set_facecolor("#FBFBFD")
-
-for spine in ("top", "right"):
-    ax.spines[spine].set_visible(False)
-for spine in ("left", "bottom"):
-    ax.spines[spine].set_color("#AAB4C3")
-
-ax.grid(axis="y", color="#D7DEE8", linestyle=(0, (3, 3)), linewidth=0.8, alpha=0.9)
-ax.set_axisbelow(True)
-
 max_total = max(max(v) for v in totals.values())
+mode_colors = {
+    "rvv": {"face": "#DCE3EC", "edge": "#95A3B8", "text": "#334155"},
+    "mixed": {"face": "#1F4E79", "edge": "#163A5A", "text": "white"},
+}
 
-for mode, mode_label, _, direction in mode_specs:
-    x_pos = x + direction * width / 2
-    bottom = np.zeros(len(models))
+display_order = [2, 1, 0]
+group_centers = np.arange(len(display_order)) * 1.78
+pair_offset = 0.24
+bar_height = 0.34
+row_specs = []
+row_positions = {}
 
-    for comp in components:
-        values = np.array(latency_data[mode][comp])
-        bars = ax.bar(
-            x_pos,
-            values,
-            width,
-            bottom=bottom,
-            color=colors[comp],
-            alpha=0.97 if mode == "rvv" else 0.88,
-            edgecolor="white",
-            linewidth=1.1,
-            hatch="////" if mode == "mixed" else None,
-            zorder=3,
-        )
+for center, model_idx in zip(group_centers, display_order):
+    for mode, label, _ in mode_specs:
+        y = center - pair_offset if mode == "rvv" else center + pair_offset
+        row_specs.append((model_idx, mode, label))
+        row_positions[(model_idx, mode)] = y
 
-        for i, bar in enumerate(bars):
-            ratio = ratios[mode][i][comp]
-            height = values[i]
-            center_y = bottom[i] + height / 2
+fig = plt.figure(figsize=(12.8, 4.55))
+fig.patch.set_facecolor("white")
+gs = fig.add_gridspec(1, 2, width_ratios=[1.42, 1.0], wspace=0.025)
+ax_bar = fig.add_subplot(gs[0, 0])
+ax_share = fig.add_subplot(gs[0, 1], sharey=ax_bar)
 
-            if ratio >= 0.08 and height >= max_total * 0.035:
-                ax.text(
-                    bar.get_x() + bar.get_width() / 2,
-                    center_y,
-                    f"{ratio * 100:.0f}%",
-                    ha="center",
-                    va="center",
-                    fontsize=13.5,
-                    fontweight="bold",
-                    color=label_color(colors[comp]),
-                    zorder=5,
-                )
-            elif ratio >= 0.04:
-                ax.text(
-                    bar.get_x() + bar.get_width() / 2,
-                    bottom[i] + height + max_total * 0.012,
-                    f"{ratio * 100:.0f}%",
-                    ha="center",
-                    va="bottom",
-                    fontsize=11.5,
-                    color="#4E5968",
-                    zorder=5,
-                )
+for ax in (ax_bar, ax_share):
+    ax.set_facecolor("white")
+    for spine in ("top", "right"):
+        ax.spines[spine].set_visible(False)
+    ax.spines["left"].set_color("#D2DAE4")
+    ax.spines["bottom"].set_color("#D2DAE4")
 
-        bottom += values
+for idx, center in enumerate(group_centers):
+    if idx % 2 == 0:
+        for ax in (ax_bar, ax_share):
+            ax.axhspan(center - 0.58, center + 0.58, color="#F8FAFC", zorder=0)
 
-    for i, total in enumerate(totals[mode]):
-        ax.text(
-            x_pos[i],
-            total + max_total * 0.018,
-            f"{total:.1f} ms",
-            ha="center",
-            va="bottom",
-            fontsize=14.5,
-            fontweight="bold",
-            color="#202633",
-        )
-        ax.text(
-            x_pos[i],
-            -max_total * 0.055,
-            mode_label,
-            ha="center",
-            va="top",
-            fontsize=13,
-            color="#4E5968",
-            fontweight="bold",
-        )
+for divider in (group_centers[:-1] + group_centers[1:]) / 2:
+    ax_bar.axhline(divider, color="#E6EBF2", linewidth=0.9, zorder=1)
+    ax_share.axhline(divider, color="#E6EBF2", linewidth=0.9, zorder=1)
 
-for i, model in enumerate(models):
-    speedup = totals["rvv"][i] / totals["mixed"][i]
-    top_y = max(totals["rvv"][i], totals["mixed"][i]) + max_total * 0.09
-    ax.plot(
-        [x[i] - width / 2, x[i] + width / 2],
-        [top_y, top_y],
-        color="#C33D3D",
-        linewidth=1.6,
-        solid_capstyle="round",
-        zorder=4,
+ax_bar.grid(axis="x", color="#E6EDF5", linestyle=(0, (2, 4)), linewidth=0.8)
+ax_bar.set_axisbelow(True)
+
+for model_idx, mode, label in row_specs:
+    y = row_positions[(model_idx, mode)]
+    total = totals[mode][model_idx]
+    style = mode_colors[mode]
+
+    ax_bar.barh(
+        y,
+        total,
+        height=bar_height,
+        color=style["face"],
+        edgecolor=style["edge"],
+        linewidth=1.0,
+        zorder=3,
     )
-    ax.text(
-        x[i],
-        top_y + max_total * 0.012,
-        f"{speedup:.1f}x faster",
-        ha="center",
-        va="bottom",
-        fontsize=13.5,
+    ax_bar.text(
+        total + max_total * 0.02,
+        y,
+        f"{total:.1f} ms",
+        ha="left",
+        va="center",
+        fontsize=10.9,
         fontweight="bold",
-        color="#C33D3D",
-        bbox=dict(
-            boxstyle="round,pad=0.25",
-            facecolor="#FFF5F5",
-            edgecolor="#E7B3B3",
-            linewidth=0.8,
-        ),
+        color="#1F2937",
         zorder=5,
     )
 
-ax.set_xlabel("Model Size", labelpad=12)
-ax.set_ylabel("Inference Latency", labelpad=10)
-ax.set_xticks(x)
-ax.set_xticklabels(models, fontweight="bold")
-ax.yaxis.set_major_formatter(FuncFormatter(format_latency))
+speedup_x = max_total * 1.19
+for center, model_idx in zip(group_centers, display_order):
+    speedup = totals["rvv"][model_idx] / totals["mixed"][model_idx]
+    ax_bar.text(
+        speedup_x,
+        center,
+        f"{speedup:.1f}x speedup",
+        ha="center",
+        va="center",
+        fontsize=10.5,
+        fontweight="bold",
+        color="#C84C3A",
+        bbox=dict(
+            boxstyle="round,pad=0.22",
+            facecolor="#FFF7F4",
+            edgecolor="#F1C5BD",
+            linewidth=0.9,
+        ),
+        zorder=6,
+    )
 
-ax.set_ylim(-max_total * 0.09, max_total * 1.17)
-ax.tick_params(axis="x", length=0)
-ax.tick_params(axis="y", colors="#4E5968")
+yticks = [row_positions[(model_idx, mode)] for model_idx, mode, _ in row_specs]
+ylabels = [label for _, _, label in row_specs]
+ax_bar.set_yticks(yticks)
+ax_bar.set_yticklabels(ylabels, fontweight="bold", color="#475467")
+ax_bar.tick_params(axis="y", length=0, pad=8)
+ax_bar.tick_params(axis="x", length=0, colors="#5B6878")
+ax_bar.set_xlim(0, max_total * 1.34)
+ax_bar.xaxis.set_major_formatter(FuncFormatter(format_latency))
+ax_bar.set_xlabel("End-to-End Latency", labelpad=8)
+ax_bar.set_title("Total Latency", loc="left", pad=12, fontweight="bold", color="#111827")
 
-component_legend = [
-    Patch(facecolor=colors[comp], edgecolor="none", label=comp.upper()) for comp in components
-]
-mode_legend = [
-    Patch(facecolor="#C9D1DB", edgecolor="#7D8896", label="ARA", linewidth=0.9),
-    Patch(facecolor="#C9D1DB", edgecolor="#7D8896", hatch="////", label="BitFly", linewidth=0.9),
-]
+for center, model_idx in zip(group_centers, display_order):
+    ax_bar.text(
+        -0.18,
+        center,
+        models[model_idx],
+        transform=ax_bar.get_yaxis_transform(),
+        ha="right",
+        va="center",
+        fontsize=12.2,
+        fontweight="bold",
+        color="#111827",
+    )
 
-legend_top = ax.legend(
-    handles=component_legend,
-    loc="upper left",
-    bbox_to_anchor=(0.0, 1.10),
-    ncol=4,
-    frameon=False,
-    handlelength=1.2,
-    columnspacing=1.0,
+ax_bar.text(
+    -0.18,
+    1.025,
+    "Model",
+    transform=ax_bar.transAxes,
+    ha="right",
+    va="bottom",
+    fontsize=10.8,
+    fontweight="bold",
+    color="#667085",
 )
-ax.add_artist(legend_top)
-
-ax.legend(
-    handles=mode_legend,
-    loc="upper right",
-    bbox_to_anchor=(1.0, 1.10),
-    ncol=2,
-    frameon=False,
-    handlelength=1.8,
-    columnspacing=1.2,
+ax_bar.text(
+    -0.015,
+    1.025,
+    "System",
+    transform=ax_bar.transAxes,
+    ha="right",
+    va="bottom",
+    fontsize=10.8,
+    fontweight="bold",
+    color="#667085",
 )
 
-plt.subplots_adjust(left=0.11, right=0.98, top=0.83, bottom=0.18)
+share_cmap = LinearSegmentedColormap.from_list(
+    "share_map",
+    ["#F5F9FD", "#D6E6F3", "#95BAD8", "#4A79A8", "#1F4E79"],
+)
+share_norm = Normalize(vmin=0, vmax=85)
+
+for x_idx, comp in enumerate(components):
+    for model_idx, mode, _ in row_specs:
+        y = row_positions[(model_idx, mode)]
+        share = shares[mode][model_idx][comp]
+        cell = plt.Rectangle(
+            (x_idx - 0.5, y - bar_height / 2),
+            1.0,
+            bar_height,
+            facecolor=share_cmap(share_norm(share)),
+            edgecolor="white",
+            linewidth=1.2,
+            zorder=3,
+        )
+        ax_share.add_patch(cell)
+        ax_share.text(
+            x_idx,
+            y,
+            f"{share:.0f}%",
+            ha="center",
+            va="center",
+            fontsize=10.3,
+            fontweight="bold",
+            color="white" if share >= 45 else "#233143",
+            zorder=4,
+        )
+
+for boundary in np.arange(len(components) + 1) - 0.5:
+    ax_share.axvline(boundary, color="#E6EBF2", linewidth=0.9, zorder=1)
+
+ax_share.set_xlim(-0.5, len(components) - 0.5)
+ax_share.set_xticks(np.arange(len(components)))
+ax_share.set_xticklabels([component_labels[comp] for comp in components], fontweight="bold")
+ax_share.tick_params(axis="x", top=True, labeltop=True, bottom=False, labelbottom=False, length=0, pad=6)
+ax_share.tick_params(axis="y", left=False, labelleft=False)
+ax_share.spines["left"].set_visible(False)
+ax_share.set_title("Operator Share (%)", loc="left", pad=12, fontweight="bold", color="#111827")
+
+lower_limit = group_centers[-1] + 0.62
+upper_limit = -0.62
+ax_bar.set_ylim(lower_limit, upper_limit)
+ax_share.set_ylim(lower_limit, upper_limit)
+
+plt.subplots_adjust(left=0.16, right=0.985, top=0.84, bottom=0.16)
 
 plt.savefig("latency_breakdown.pdf", format="pdf")
 plt.savefig("latency_breakdown.png", format="png", dpi=600)

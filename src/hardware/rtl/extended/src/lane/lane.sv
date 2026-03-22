@@ -329,6 +329,27 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
                                (vfu_operation_valid && (vfu_operation.op != BMPSE));
   end
 
+`ifndef SYNTHESIS
+  always_ff @(posedge clk_i) begin
+    if (rst_ni && lane_id_i == '0) begin
+      if (vfu_operation_valid && (vfu_operation.op == BMPSE)) begin
+        $display("[%0t][LANE_BMPSE_VFU] pend_q=%0b pend_d=%0b bmpu_ready=%0b vl=%0d id=%0d",
+                 $time, bmpu_store_pending_q, bmpu_store_pending_d, bmpu_ready,
+                 vfu_operation.vl, vfu_operation.id);
+      end
+      if (bmpu_store_pending_q || bmpu_store_pending_d) begin
+        $display("[%0t][LANE_BMPSE_PEND] pend_q=%0b pend_d=%0b send_valid=%0b send_op=%0d send_id=%0d ready=%0b",
+                 $time, bmpu_store_pending_q, bmpu_store_pending_d, bmpu_vfu_operation_valid,
+                 bmpu_vfu_operation.op, bmpu_vfu_operation.id, bmpu_ready);
+      end
+      if (bmpu_vfu_operation_valid && (bmpu_vfu_operation.op == BMPSE)) begin
+        $display("[%0t][LANE_BMPSE_2BMPU] valid=%0b id=%0d ready=%0b pend_q=%0b",
+                 $time, bmpu_vfu_operation_valid, bmpu_vfu_operation.id, bmpu_ready, bmpu_store_pending_q);
+      end
+    end
+  end
+`endif
+
   /////////////////////////
   //  Operand Requester  //
   /////////////////////////
