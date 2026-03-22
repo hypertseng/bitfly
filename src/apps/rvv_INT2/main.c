@@ -40,7 +40,6 @@ int main()
         printf("\n------------------------------------------------------------\n");
         printf("[rvv_INT2] case%d layer=%s shape=(%lu,%lu,%lu)\n", i+1, sc->layer, sc->M, sc->N, sc->K);
 
-        memset(data.result_hp, 0, (size_t)sc->M * (size_t)sc->N * sizeof(int16_t));
         vector_compute_time = 0;
         start_timer();
         vector_int2_matmul(data.result_hp, data.activation_hp, data.weight_hp, sc->M, sc->K, sc->N);

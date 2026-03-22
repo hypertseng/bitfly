@@ -7,6 +7,7 @@ module pe #(
     input  logic                  clk,
     input  logic                  rst_n,
     input  logic                  en,
+    input  logic                  mac_en_i,
     input  logic                  clear_i,
     input  logic                  ctx_clear_i,
     input  logic [CTX_IDX_W-1:0]  ctx_id_i,
@@ -17,6 +18,8 @@ module pe #(
     input  logic [2:0]            shift_amt_i,
     input  logic [1:0]            lbmac_mode_i,
     input  logic [127:0]          input_output_compute_reg,
+    input  logic                  act_hold_i,
+    input  logic                  wgt_hold_i,
     output logic [63:0]           weight_out,
     output logic [63:0]           activation_out,
     output logic [127:0]          output_out,
@@ -25,6 +28,8 @@ module pe #(
 
   logic [63:0] activation_reg;
   logic [63:0] weight_reg;
+  logic [63:0] activation_compute;
+  logic [63:0] weight_compute;
   logic signed [20:0] partial_sum_reg [CTX_MAX-1:0][8];
   logic [127:0]       output_reg_compute;
   logic signed [11:0] pe_outputs[8];
@@ -66,24 +71,22 @@ module pe #(
       end
 
       if (en) begin
-        activation_reg <= activations;
-        weight_reg     <= weights;
+        if (!act_hold_i) activation_reg <= activations;
+        if (!wgt_hold_i) weight_reg     <= weights;
 
-        foreach (partial_sum_reg[ctx_id_i, i]) begin
-          automatic logic signed [20:0] accum_base;
-          automatic logic signed [20:0] next_sum;
-          automatic logic signed [15:0] local_sat;
-          automatic logic signed [15:0] casc_in;
-          automatic logic signed [16:0] casc_sum;
+        if (mac_en_i) begin
+          foreach (partial_sum_reg[ctx_id_i, i]) begin
+            automatic logic signed [20:0] accum_base;
+            automatic logic signed [20:0] next_sum;
+            automatic logic signed [15:0] local_sat;
 
-          accum_base = ctx_clear_i ? '0 : partial_sum_reg[ctx_id_i][i];
-          next_sum   = accum_base + ($signed(pe_outputs[i]) <<< shift_amt_i);
-          local_sat  = sat21_to_s16(next_sum);
-          casc_in    = $signed(input_output_compute_reg[i*16+:16]);
-          casc_sum   = output_en ? $signed(local_sat) : ($signed(local_sat) + casc_in);
+            accum_base = ctx_clear_i ? '0 : partial_sum_reg[ctx_id_i][i];
+            next_sum   = accum_base + ($signed(pe_outputs[i]) <<< shift_amt_i);
+            local_sat  = sat21_to_s16(next_sum);
 
-          partial_sum_reg[ctx_id_i][i] <= next_sum;
-          output_reg_compute[i*16+:16] <= sat17_to_s16(casc_sum);
+            partial_sum_reg[ctx_id_i][i] <= next_sum;
+            output_reg_compute[i*16+:16] <= local_sat;
+          end
         end
       end
     end
@@ -96,6 +99,9 @@ module pe #(
     end
   end
 
+  assign activation_compute = act_hold_i ? activation_reg : activations;
+  assign weight_compute     = wgt_hold_i ? weight_reg : weights;
+
   assign weight_out      = weight_reg;
   assign activation_out  = activation_reg;
   assign output_out      = output_reg_compute;
@@ -107,8 +113,8 @@ module pe #(
           .BIT_WEIGHT(BIT_WEIGHT)
       ) u_lbmac (
           .mode_i     (lbmac_mode_i),
-          .weights    (weights[i*8+:8]),
-          .activations(activations),
+          .weights    (weight_compute[i*8+:8]),
+          .activations(activation_compute),
           .result     (pe_outputs[i])
       );
     end

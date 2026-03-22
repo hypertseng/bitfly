@@ -122,6 +122,21 @@ def emit_int16_row_major(lines, name, array, align="NR_LANES*4"):
         lines.append("    .word " + ", ".join(f"0x{int(v):08x}" for v in words[i : i + 8]))
 
 
+def emit_case_aliases(lines, alias_name, target_name):
+    symbol_stems = [
+        "activation_lp",
+        "weight_lp",
+        "result_lp",
+        "activation_hp",
+        "weight_hp",
+        "result_hp",
+        "result_torch",
+    ]
+    lines.append(f"/* alias {alias_name} -> {target_name} */")
+    for stem in symbol_stems:
+        lines.append(f".global {stem}_{alias_name}")
+        lines.append(f".set {stem}_{alias_name}, {stem}_{target_name}")
+
 def emit_int8_row_major(lines, name, array, align="NR_LANES*4"):
     flat = np.asarray(array, dtype=np.int8).flatten()
     pad = (4 - len(flat) % 4) % 4
@@ -242,13 +257,19 @@ def main():
     for s in args.sizes:
         build_square_dataset(lines, s)
     bench_cases = [case for case in MODEL_LAYER_CASES if MODEL_FILTER is None or case["model"] == MODEL_FILTER]
+    unique_case_by_shape = {}
     for index, case in enumerate(bench_cases, start=1):
         name = f"case{index}"
         scale = case["scale"]
         model = case["model"]
         layer = case["layer"]
         m_dim, n_dim, k_dim = case["M"], case["N"], case["K"]
+        shape_key = (m_dim, n_dim, k_dim)
         lines.append(f"/* model={model}, scale={scale}, layer={layer} */")
+        if MODEL_FILTER is not None and shape_key in unique_case_by_shape:
+            emit_case_aliases(lines, name, unique_case_by_shape[shape_key])
+            continue
+        unique_case_by_shape[shape_key] = name
         build_top_shape_dataset(lines, name, m_dim, n_dim, k_dim)
 
     text = "\n".join(lines) + "\n"

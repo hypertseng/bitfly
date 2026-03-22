@@ -487,10 +487,26 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         // Trigger the request signal
         result_queue_valid_d[result_queue_write_pnt_q] = {NrLanes{1'b1}};
 
+`ifndef SYNTHESIS
+        if (issue_is_bmpu_load && (seq_word_wr_offset_q >= 48)) begin
+          $display("[%0t][VLDU_BMPLE] weight=%0b seq_off=%0d addr0=%0d addr1=%0d addr2=%0d addr3=%0d data0=%h data1=%h data2=%h data3=%h",
+                   $time, issue_is_weight, seq_word_wr_offset_q,
+                   result_queue_d[result_queue_write_pnt_q][0].addr,
+                   result_queue_d[result_queue_write_pnt_q][1].addr,
+                   result_queue_d[result_queue_write_pnt_q][2].addr,
+                   result_queue_d[result_queue_write_pnt_q][3].addr,
+                   result_queue_d[result_queue_write_pnt_q][0].wdata,
+                   result_queue_d[result_queue_write_pnt_q][1].wdata,
+                   result_queue_d[result_queue_write_pnt_q][2].wdata,
+                   result_queue_d[result_queue_write_pnt_q][3].wdata);
+        end
+`endif
         // Increase the VRF-write sequential counter
         if (issue_is_bmpu_load) begin
-          if ((seq_word_wr_offset_q + 1) % 4 == 0) begin
-            seq_word_wr_offset_d = seq_word_wr_offset_q + 1 + 4;
+          automatic vlen_t bmpu_slot_base;
+          bmpu_slot_base = issue_is_weight ? 2 : 0;
+          if (((seq_word_wr_offset_q + 1 - bmpu_slot_base) % 2) == 0) begin
+            seq_word_wr_offset_d = seq_word_wr_offset_q + 1 + 6;
           end else begin
             seq_word_wr_offset_d = seq_word_wr_offset_q + 1;
           end
@@ -562,7 +578,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
           vrf_word_byte_cnt_d  = '0;
           if (vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].op == BMPLE &&
               vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].is_weight) begin
-            seq_word_wr_offset_d = 4;
+            seq_word_wr_offset_d = 2;
           end else begin
             seq_word_wr_offset_d = '0;
           end
@@ -746,7 +762,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         vrf_word_start_byte  = pe_req_i.vstart[$clog2(8*NrLanes)-1:0] << pe_req_i.vtype.vsew;
         vrf_word_byte_pnt_d  = {1'b0, vrf_word_start_byte[$clog2(8*NrLanes)-1:0]};
         vrf_word_byte_cnt_d  = '0;
-        seq_word_wr_offset_d = (pe_req_i.op == BMPLE && pe_req_i.is_weight) ? 4 : 0;
+        seq_word_wr_offset_d = (pe_req_i.op == BMPLE && pe_req_i.is_weight) ? 2 : 0;
         split_d              = '0;
         // The first payload byte width for this vload
         first_payload_byte_d = (NrLanes * DataWidthB) - vrf_word_start_byte[$clog2(8*NrLanes)-1:0];

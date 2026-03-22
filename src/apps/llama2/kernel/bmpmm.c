@@ -5,11 +5,11 @@
 #define DEFINE_KERNEL(K_VAL)                                                               \
     void mixed_precision_matmul_##K_VAL(int16_t *result, const int8_t *a, const int8_t *w) \
     {                                                                                      \
-        asm volatile("mpcfg " #K_VAL "\n\t");                                              \
-        asm volatile("mple 0(%0), a\n\t" ::"r"(a) : "memory");                             \
-        asm volatile("mple 0(%0), w\n\t" ::"r"(w) : "memory");                             \
-        asm volatile("mpmm\n\t" ::);                                                       \
-        asm volatile("mpse 0(%0)\n\t" ::"r"(result) : "memory");                           \
+        asm volatile("bmpcfg " #K_VAL "\n\t");                                              \
+        asm volatile("bmple 0(%0), a\n\t" ::"r"(a) : "memory");                             \
+        asm volatile("bmple 0(%0), w\n\t" ::"r"(w) : "memory");                             \
+        asm volatile("bmpmm\n\t" ::);                                                       \
+        asm volatile("bmpse 0(%0)\n\t" ::"r"(result) : "memory");                           \
     }
 
 // // 实例化你需要的 K 值

@@ -21,6 +21,8 @@ int main()
     printf("[rvv_binary] precision=binary\n");
     const char *current_model = 0;
     int64_t rvv_model_cycles = 0;
+    bmpmm_runtime_cache_entry_t runtime_cache[BMPMM_RUNTIME_CACHE_CAP] = {0};
+    int runtime_cache_count = 0;
     for (int i = 0; i < BMPMM_BENCH_CASE_COUNT; ++i)
     {
         const bmpmm_bench_case_t *sc = &kBenchCases[i];
@@ -40,13 +42,25 @@ int main()
         printf("\n------------------------------------------------------------\n");
         printf("[rvv_binary] case%d layer=%s shape=(%lu,%lu,%lu)\n", i + 1, sc->layer, sc->M, sc->N, sc->K);
 
-        memset(data.result_hp, 0, (size_t)sc->M * (size_t)sc->N * sizeof(int16_t));
+        bmpmm_runtime_cache_entry_t *cached = bmpmm_runtime_cache_lookup(runtime_cache, runtime_cache_count, sc, 0);
+        if (cached)
+        {
+            rvv_model_cycles += cached->runtime;
+            printf("[rvv_binary] duplicate_shape_skip case%d reuse_case%d\n", i + 1, cached->first_case_index + 1);
+            printf("[rvv_binary] rvv_runtime=%ld rvv_compute=%ld\n", (long)cached->runtime, (long)cached->aux_cycles);
+            printf("[rvv_binary] sample rvv={{%d, %d, %d, %d}}\n",
+                   cached->sample[0], cached->sample[1], cached->sample[2], cached->sample[3]);
+            continue;
+        }
+
         vector_compute_time = 0;
         start_timer();
         vector_int8_matmul(data.result_hp, data.activation_hp, data.weight_hp, sc->M, sc->K, sc->N);
         stop_timer();
         int64_t rvv_runtime = get_timer();
         rvv_model_cycles += rvv_runtime;
+        bmpmm_runtime_cache_store(runtime_cache, &runtime_cache_count, BMPMM_RUNTIME_CACHE_CAP,
+                                  sc, i, rvv_runtime, vector_compute_time, data.result_hp);
         printf("[rvv_binary] rvv_runtime=%ld rvv_compute=%ld\n", (long)rvv_runtime, (long)vector_compute_time);
         printf("[rvv_binary] sample rvv={{%d, %d, %d, %d}}\n", data.result_hp[0], data.result_hp[1], data.result_hp[2], data.result_hp[3]);
     }

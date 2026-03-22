@@ -183,6 +183,9 @@ module ara_dispatcher
   logic [2:0] reshuffle_req_d, reshuffle_req_q;
   // Segment memory operations end or ongoing?
   logic seg_mem_op_end, pending_seg_mem_op_d, pending_seg_mem_op_q;
+  logic bmp_issue_pending_d, bmp_issue_pending_q;
+  logic [2:0] bmp_issue_func3_d, bmp_issue_func3_q;
+  logic [CVA6Cfg.TRANS_ID_BITS-1:0] bmp_issue_trans_id_d, bmp_issue_trans_id_q;
   // Easily handle the riscv incoming instruction
   riscv::instruction_t instr;
   assign instr = riscv::instruction_t'(acc_req_i.insn);
@@ -212,6 +215,9 @@ module ara_dispatcher
       reshuffle_eew_vs2_q  <= rvv_pkg::EW8;
       reshuffle_eew_vd_q   <= rvv_pkg::EW8;
       pending_seg_mem_op_q <= 1'b0;
+      bmp_issue_pending_q  <= 1'b0;
+      bmp_issue_func3_q    <= '0;
+      bmp_issue_trans_id_q <= '0;
       k_dim_q              <= '0;
       prec_q               <= '0;
       mtile_q              <= 6'd8;
@@ -235,6 +241,9 @@ module ara_dispatcher
       reshuffle_eew_vs2_q  <= reshuffle_eew_vs2_d;
       reshuffle_eew_vd_q   <= reshuffle_eew_vd_d;
       pending_seg_mem_op_q <= pending_seg_mem_op_d;
+      bmp_issue_pending_q  <= bmp_issue_pending_d;
+      bmp_issue_func3_q    <= bmp_issue_func3_d;
+      bmp_issue_trans_id_q <= bmp_issue_trans_id_d;
       k_dim_q              <= k_dim_d;
       prec_q               <= prec_d;
       mtile_q              <= mtile_d;
@@ -401,6 +410,7 @@ module ara_dispatcher
     reshuffle_eew_vd_d = reshuffle_eew_vd_q;
 
     pending_seg_mem_op_d = pending_seg_mem_op_q;
+    bmp_issue_pending_d = bmp_issue_pending_q;
 
     rs_lmul_cnt_d = '0;
     rs_lmul_cnt_limit_d = '0;
@@ -441,6 +451,8 @@ module ara_dispatcher
     acc_resp_o.req_ready = 1'b0;
     acc_resp_o.resp_valid = 1'b0;
 
+    bmp_issue_func3_d = bmp_issue_func3_q;
+    bmp_issue_trans_id_d = bmp_issue_trans_id_q;
     k_dim_d = k_dim_q;
     prec_d = prec_q;
     mtile_d = mtile_q;
@@ -3758,10 +3770,10 @@ module ara_dispatcher
                 ara_req.vtype.vsew  = EW8;
                 if (insn.instr[31] == 1'b1) begin
                   ara_req.is_weight = 1'b1;
-                  ara_req.vl        = k_dim_q * 4 * NrLanes * bmp_planes;
+                  ara_req.vl        = k_dim_q * bmp_planes * (ntile_q >> 1);
                 end else begin
                   ara_req.is_weight = 1'b0;
-                  ara_req.vl        = k_dim_q * 4 * NrLanes;
+                  ara_req.vl        = k_dim_q * mtile_q;
                 end
                 csr_vl_d = ara_req.vl;
 
@@ -3783,7 +3795,7 @@ module ara_dispatcher
                 ara_req.group_g      = group_g_q;
 
 `ifndef SYNTHESIS
-                if (1'b1) begin
+                if (1'b0) begin
                   $display("[%0t][DISP] BMPLE weight=%0b prec=%0d k=%0d vl=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b resp_valid=%0b",
                            $time, ara_req.is_weight, prec_q, k_dim_q, ara_req.vl, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i, ara_resp_valid);
                 end
@@ -3834,7 +3846,7 @@ module ara_dispatcher
                 ara_req_valid = 1'b1;
 
                 ara_req.vtype.vsew = EW16;
-                ara_req.vl = mtile_q * ntile_q;
+                ara_req.vl = 8 * 16;
                 ara_req.vstart = '0;
 
                 ara_req.k_dim = k_dim_q;
@@ -3844,10 +3856,10 @@ module ara_dispatcher
                 ara_req.gm = gm_q;
                 ara_req.gn = gn_q;
                 ara_req.group_g = group_g_q;
-                csr_vl_d = mtile_q * ntile_q;
+                csr_vl_d = 8 * 16;
 
 `ifndef SYNTHESIS
-                if (1'b1) begin
+                if (1'b0) begin
                   $display("[%0t][DISP] BMPSE prec=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b resp_valid=%0b",
                            $time, prec_q, mtile_q, ntile_q, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i, ara_resp_valid);
                 end
@@ -3893,16 +3905,19 @@ module ara_dispatcher
                 csr_vl_d              = ara_req.vl;
 
 `ifndef SYNTHESIS
-                if (1'b1) begin
+                if (1'b0) begin
                   $display("[%0t][DISP] BMPMM prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b",
                            $time, prec_q, k_dim_q, mtile_q, ntile_q, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i);
                 end
 `endif
 
+                // For BMPMM, acknowledge the issue request immediately, then send the completion response on the next cycle.
                 if (ara_req_ready_i) begin
                   acc_resp_o.req_ready  = 1'b1;
-                  acc_resp_o.resp_valid = 1'b1;
-                  ara_req_valid         = 1'b0;
+                  acc_resp_o.resp_valid = 1'b0;
+                end else begin
+                  acc_resp_o.req_ready  = 1'b0;
+                  acc_resp_o.resp_valid = 1'b0;
                 end
               end
               default: begin
@@ -4032,45 +4047,49 @@ module ara_dispatcher
       if (ara_req_valid && !acc_resp_o.exception.valid) begin
         automatic rvv_instruction_t insn = rvv_instruction_t'(instr.instr);
 
-        // Is the instruction an in-lane one and could it be subject to reshuffling?
-        in_lane_op = ara_req.op inside {[VADD:VMERGE]} || ara_req.op inside {[VREDSUM:VMSBC]} ||
-                     ara_req.op inside {[VMANDNOT:VMXNOR]} || ara_req.op inside {VSLIDEUP, VSLIDEDOWN};
-        // Annotate which registers need a reshuffle -> |vs1|vs2|vd|
-        // Optimization: reshuffle vs1 and vs2 only if the operation is strictly in-lane
-        // Optimization: reshuffle vd only if we are not overwriting the whole vector register!
-        // During a vstore, if vstart > 0, reshuffle immediately not to complicate operand fetch stage
-        reshuffle_req_d = {
-          ara_req.use_vs1 && (ara_req.eew_vs1    != eew_q[ara_req.vs1]) && eew_valid_q[ara_req.vs1] && (in_lane_op || (is_vstore && (csr_vstart_q != '0))),
-          ara_req.use_vs2 && (ara_req.eew_vs2    != eew_q[ara_req.vs2]) && eew_valid_q[ara_req.vs2] && in_lane_op,
-          ara_req.use_vd  && (ara_req.vtype.vsew != eew_q[ara_req.vd ]) && eew_valid_q[ara_req.vd ] && !(csr_vstart_q == 0 && (csr_vl_q == ((VLENB << ara_req.emul[1:0]) >> ara_req.vtype.vsew)))
-        };
-        // Mask out requests if they refer to the same register!
-        reshuffle_req_d &= {
-          (insn.varith_type.rs1 != insn.varith_type.rs2) && (insn.varith_type.rs1 != insn.varith_type.rd),
-          (insn.varith_type.rs2 != insn.varith_type.rd),
-          1'b1
-        };
+        if (ara_req.op inside {BMPLE, BMPMM, BMPSE}) begin
+          reshuffle_req_d = '0;
+        end else begin
+          // Is the instruction an in-lane one and could it be subject to reshuffling?
+          in_lane_op = ara_req.op inside {[VADD:VMERGE]} || ara_req.op inside {[VREDSUM:VMSBC]} ||
+                       ara_req.op inside {[VMANDNOT:VMXNOR]} || ara_req.op inside {VSLIDEUP, VSLIDEDOWN};
+          // Annotate which registers need a reshuffle -> |vs1|vs2|vd|
+          // Optimization: reshuffle vs1 and vs2 only if the operation is strictly in-lane
+          // Optimization: reshuffle vd only if we are not overwriting the whole vector register!
+          // During a vstore, if vstart > 0, reshuffle immediately not to complicate operand fetch stage
+          reshuffle_req_d = {
+            ara_req.use_vs1 && (ara_req.eew_vs1    != eew_q[ara_req.vs1]) && eew_valid_q[ara_req.vs1] && (in_lane_op || (is_vstore && (csr_vstart_q != '0))),
+            ara_req.use_vs2 && (ara_req.eew_vs2    != eew_q[ara_req.vs2]) && eew_valid_q[ara_req.vs2] && in_lane_op,
+            ara_req.use_vd  && (ara_req.vtype.vsew != eew_q[ara_req.vd ]) && eew_valid_q[ara_req.vd ] && !(csr_vstart_q == 0 && (csr_vl_q == ((VLENB << ara_req.emul[1:0]) >> ara_req.vtype.vsew)))
+          };
+          // Mask out requests if they refer to the same register!
+          reshuffle_req_d &= {
+            (insn.varith_type.rs1 != insn.varith_type.rs2) && (insn.varith_type.rs1 != insn.varith_type.rd),
+            (insn.varith_type.rs2 != insn.varith_type.rd),
+            1'b1
+          };
 
-        // Prepare the information to reshuffle the vector registers during the next cycles
-        // Reshuffle in the following order: vd, v2, v1. The order is arbitrary.
-        unique casez (reshuffle_req_d)
-          3'b??1: begin
-            eew_old_buffer_d = eew_q[insn.vmem_type.rd];
-            eew_new_buffer_d = ara_req.vtype.vsew;
-            vs_buffer_d      = insn.varith_type.rd;
-          end
-          3'b?10: begin
-            eew_old_buffer_d = eew_q[insn.vmem_type.rs2];
-            eew_new_buffer_d = ara_req.eew_vs2;
-            vs_buffer_d      = insn.varith_type.rs2;
-          end
-          3'b100: begin
-            eew_old_buffer_d = is_vstore ? eew_q[insn.vmem_type.rd] : eew_q[insn.vmem_type.rs1];
-            eew_new_buffer_d = ara_req.eew_vs1;
-            vs_buffer_d      = is_vstore ? insn.vmem_type.rd : insn.varith_type.rs1;
-          end
-          default: ;
-        endcase
+          // Prepare the information to reshuffle the vector registers during the next cycles
+          // Reshuffle in the following order: vd, v2, v1. The order is arbitrary.
+          unique casez (reshuffle_req_d)
+            3'b??1: begin
+              eew_old_buffer_d = eew_q[insn.vmem_type.rd];
+              eew_new_buffer_d = ara_req.vtype.vsew;
+              vs_buffer_d      = insn.varith_type.rd;
+            end
+            3'b?10: begin
+              eew_old_buffer_d = eew_q[insn.vmem_type.rs2];
+              eew_new_buffer_d = ara_req.eew_vs2;
+              vs_buffer_d      = insn.varith_type.rs2;
+            end
+            3'b100: begin
+              eew_old_buffer_d = is_vstore ? eew_q[insn.vmem_type.rd] : eew_q[insn.varith_type.rs1];
+              eew_new_buffer_d = ara_req.eew_vs1;
+              vs_buffer_d      = is_vstore ? insn.vmem_type.rd : insn.varith_type.rs1;
+            end
+            default: ;
+          endcase
+        end
       end
 
       // Reshuffle if at least one of the three registers needs a reshuffle
@@ -4139,6 +4158,16 @@ module ara_dispatcher
 
     // Any valid non-config instruction is a NOP if vl == 0, with some exceptions,
     // e.g. whole vector memory operations / whole vector register move
+    if (is_decoding && ara_req_valid && ara_req_ready_i && (ara_req.op inside {BMPLE, BMPMM, BMPSE})) begin
+      bmp_issue_pending_d  = 1'b1;
+      unique case (ara_req.op)
+        BMPLE: bmp_issue_func3_d = 3'b010;
+        BMPSE: bmp_issue_func3_d = 3'b100;
+        default: bmp_issue_func3_d = 3'b110;
+      endcase
+      bmp_issue_trans_id_d = acc_req_i.trans_id;
+    end
+
     if (is_decoding && (csr_vstart_q >= csr_vl_q || null_vslideup) && !is_config &&
       !ignore_zero_vl_check && !acc_resp_o.exception.valid) begin
       // If we are acknowledging a memory operation, we must tell Ariane that the memory
@@ -4151,6 +4180,25 @@ module ara_dispatcher
       load_zero_vl          = is_vload;
       store_zero_vl         = is_vstore;
     end
+
+    if (bmp_issue_pending_q) begin
+      ara_req_valid       = 1'b0;
+      acc_resp_o.trans_id = bmp_issue_trans_id_q;
+      if (bmp_issue_func3_q == 3'b110) begin
+        acc_resp_o.req_ready  = 1'b1;
+        acc_resp_o.resp_valid = 1'b1;
+        bmp_issue_pending_d   = 1'b0;
+`ifndef SYNTHESIS
+        $display("[%0t][DISP_BMPMM_ACK] trans_id=%0d req_ready=1 resp_valid=1",
+                 $time, bmp_issue_trans_id_q);
+`endif
+      end else if ((bmp_issue_func3_q inside {3'b010, 3'b100}) && ara_resp_valid) begin
+        acc_resp_o.req_ready  = 1'b1;
+        acc_resp_o.resp_valid = 1'b1;
+        bmp_issue_pending_d   = 1'b0;
+      end
+    end
+
 
     // Reset vstart to zero for successful vector instructions
     // Corner cases:
@@ -4167,7 +4215,7 @@ module ara_dispatcher
     acc_resp_o.store_complete = store_zero_vl | store_complete_q;
 
     // The token must change at every new instruction
-    ara_req.token = (ara_req_valid_o && ara_req_ready_i) ? ~ara_req_o.token : ara_req_o.token;
+    ara_req.token = (ara_req_valid && ara_req_ready_i) ? ~ara_req_o.token : ara_req_o.token;
   end : p_decoder
 
 endmodule : ara_dispatcher

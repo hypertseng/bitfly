@@ -140,6 +140,32 @@ scripts/benchmarks/run_model_split_apps.sh --mode run --apps bmpmm_INT2_gemma3_2
 scripts/benchmarks/run_model_split_apps.sh --mode all --precisions INT4 --parallel 5 --batch-size 5
 ```
 
+Recommended long-running background launch:
+
+```bash
+LOG_ROOT=tmp/model_app_runs/formal_30apps_$(date +%Y%m%d_%H%M%S)
+mkdir -p "$LOG_ROOT"
+nohup /bin/bash -lc '
+  source /data2/zzx/data/miniconda3/etc/profile.d/conda.sh &&
+  conda activate bitfly &&
+  cd /data2/zzx/data/workspace/bitfly &&
+  scripts/benchmarks/run_model_split_apps.sh     --mode run     --no-rebuild-apps     --no-verilate     --parallel 5     --batch-size 5     --log-root '"$LOG_ROOT"'
+' > "$LOG_ROOT/launch.log" 2>&1 &
+```
+
+Recommended monitoring commands:
+
+```bash
+tail -f "$LOG_ROOT/runner.log"
+tail -f "$LOG_ROOT/batch_00/<app>.log"
+```
+
+Note:
+
+- `runner.log` only shows batch-level progress and app completion
+- per-app logs may first show ELF loading / `Program header...` lines before the app's own `printf` output appears
+- that early loader phase is normal and does not mean the app is stuck
+
 Key options:
 
 - `--mode <all|build|run>`

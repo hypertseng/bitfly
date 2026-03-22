@@ -348,15 +348,22 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
             vrf_seq_byte = axi_byte - lower_byte + vrf_pnt_q;
             // Follow the vrf_seq_byte, but without the vstart information
             vrf_seq_byte_cnt = axi_byte - lower_byte + vrf_cnt_q;
-            // And then shuffle it
-            vrf_byte     = is_bmpu_store_q ? vrf_seq_byte : shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.old_eew_vs1);
-
             // Is this byte a valid byte in the VRF word?
             if (vrf_seq_byte_cnt < issue_cnt_bytes_q) begin
-              // At which lane, and what is the byte offset in that lane, of the byte vrf_byte?
-              automatic int unsigned vrf_offset = vrf_byte[2:0];
-              // automatic logic [$clog2(NrLanes)-1:0] vrf_lane = (vrf_byte >> 3) + vinsn_issue_q.vstart[idx_width(NrLanes)-1:0];
-              automatic int unsigned vrf_lane = (vrf_byte >> 3);
+              automatic int unsigned vrf_offset;
+              automatic int unsigned vrf_lane;
+              if (is_bmpu_store_q) begin
+                automatic int unsigned bmpu_local_byte = axi_byte - lower_byte;
+                automatic int unsigned bmpu_elem = bmpu_local_byte >> 1;
+                automatic int unsigned bmpu_col  = bmpu_elem / (2 * NrLanes);
+                automatic int unsigned bmpu_row  = bmpu_elem % (2 * NrLanes);
+                vrf_lane   = bmpu_row >> 1;
+                vrf_offset = (bmpu_col << 2) + ((bmpu_row & 1) << 1) + (bmpu_local_byte & 1);
+              end else begin
+                vrf_byte   = shuffle_index(vrf_seq_byte, NrLanes, vinsn_issue_q.old_eew_vs1);
+                vrf_offset = vrf_byte[2:0];
+                vrf_lane   = (vrf_byte >> 3);
+              end
 
               // Copy data
               axi_w_o.data[8*axi_byte +: 8] = stu_operand[vrf_lane][8*vrf_offset +: 8];
@@ -577,7 +584,7 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
 
       is_bmpu_store_q <= is_bmpu_store_d;
 `ifndef SYNTHESIS
-      if (1'b0 && !is_bmpu_store_q && is_bmpu_store_d) begin
+      if (!is_bmpu_store_q && is_bmpu_store_d) begin
         $display("[%0t][VSTU] bmpu store armed: commit_cnt=%0d issue_cnt=%0d",
                  $time, vinsn_queue_d.commit_cnt, vinsn_queue_d.issue_cnt);
       end

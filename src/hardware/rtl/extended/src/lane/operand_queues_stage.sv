@@ -409,4 +409,30 @@ module operand_queues_stage
     end
   endgenerate
 
+`ifndef SYNTHESIS
+  always_ff @(posedge clk_i) begin
+    if (1'b0 && rst_ni && (lane_id_i == '0) &&
+        (bmpu_act_operand_valid_o != '0 || bmpu_wgt_operand_valid_o != '0 ||
+         operand_issued_i[BMPUAct0] || operand_issued_i[BMPUAct1] ||
+         operand_issued_i[BMPUWgt0] || operand_issued_i[BMPUWgt1])) begin
+      $display("[%0t][OPQ_BMPU][lane%0d] in_v=%b%b%b%b in_d=%h/%h/%h/%h issued=%b%b%b%b out_v=%b%b%b%b out_d=%h/%h/%h/%h out_r=%b%b%b%b qready=%b%b%b%b",
+               $time, lane_id_i,
+               operand_valid_i[BMPUAct0], operand_valid_i[BMPUAct1],
+               operand_valid_i[BMPUWgt0], operand_valid_i[BMPUWgt1],
+               operand_i[BMPUAct0], operand_i[BMPUAct1],
+               operand_i[BMPUWgt0], operand_i[BMPUWgt1],
+               operand_issued_i[BMPUAct0], operand_issued_i[BMPUAct1],
+               operand_issued_i[BMPUWgt0], operand_issued_i[BMPUWgt1],
+               bmpu_act_operand_valid_o[0], bmpu_act_operand_valid_o[1],
+               bmpu_wgt_operand_valid_o[0], bmpu_wgt_operand_valid_o[1],
+               bmpu_act_operand_o[0], bmpu_act_operand_o[1],
+               bmpu_wgt_operand_o[0], bmpu_wgt_operand_o[1],
+               bmpu_act_operand_ready_i[0], bmpu_act_operand_ready_i[1],
+               bmpu_wgt_operand_ready_i[0], bmpu_wgt_operand_ready_i[1],
+               operand_queue_ready_o[BMPUAct0], operand_queue_ready_o[BMPUAct1],
+               operand_queue_ready_o[BMPUWgt0], operand_queue_ready_o[BMPUWgt1]);
+    end
+  end
+`endif
+
 endmodule : operand_queues_stage

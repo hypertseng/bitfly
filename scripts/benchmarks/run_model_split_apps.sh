@@ -16,6 +16,8 @@ BATCH_SIZE=6
 RUN_VERILATE=1
 REBUILD_APPS=1
 TRACE=0
+HEARTBEAT_SEC=60
+POLL_SEC=5
 LOG_ROOT=""
 MODELS_CSV=""
 PRECS_CSV=""
@@ -40,6 +42,8 @@ Options:
   --no-verilate                skip 'make -C ara/hardware verilate'
   --no-rebuild-apps            skip rebuilding app binaries
   --trace                      pass trace=1 to hardware make
+  --heartbeat-sec <N>          runner heartbeat interval, default: 60
+  --poll-sec <N>               runner poll interval, default: 5
   --extra-make-args <string>   extra args appended to hardware make
   -h, --help                   show help
 
@@ -63,6 +67,8 @@ while [[ $# -gt 0 ]]; do
     --no-verilate) RUN_VERILATE=0; shift ;;
     --no-rebuild-apps) REBUILD_APPS=0; shift ;;
     --trace) TRACE=1; shift ;;
+    --heartbeat-sec) HEARTBEAT_SEC="$2"; shift 2 ;;
+    --poll-sec) POLL_SEC="$2"; shift 2 ;;
     --extra-make-args) EXTRA_MAKE_ARGS="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage; exit 1 ;;
@@ -190,7 +196,9 @@ run_one_app() {
   local logfile="$2"
   local start_epoch end_epoch duration rc status
   start_epoch=$(date +%s)
+  log "START $app logfile=$logfile"
   activate_env
+  set +e
   if [[ "$TRACE" -eq 1 ]]; then
     stdbuf -oL -eL make -C "$HW_DIR" simv app="$app" trace=1 $EXTRA_MAKE_ARGS >"$logfile" 2>&1
     rc=$?
@@ -198,6 +206,7 @@ run_one_app() {
     stdbuf -oL -eL make -C "$HW_DIR" simv app="$app" $EXTRA_MAKE_ARGS >"$logfile" 2>&1
     rc=$?
   fi
+  set -e
   end_epoch=$(date +%s)
   duration=$((end_epoch - start_epoch))
 
@@ -208,6 +217,13 @@ run_one_app() {
 
   printf '%s,%s,%s,%s\n' "$app" "$status" "$duration" "$logfile" >> "$SUMMARY_CSV"
   echo "$status $app ${duration}s $logfile" | tee -a "$RUNNER_LOG"
+  if [[ "$rc" -ne 0 ]]; then
+    {
+      echo "----- FAIL tail: $app -----"
+      tail -n 40 "$logfile" 2>/dev/null || true
+      echo "----- end FAIL tail: $app -----"
+    } >> "$RUNNER_LOG"
+  fi
   return 0
 }
 
@@ -216,19 +232,67 @@ run_batch() {
   shift
   local -a apps=("$@")
   local batch_dir="$LOG_ROOT/$batch_name"
+  local -a active_pids=() active_apps=() active_starts=()
+  local last_heartbeat now pid app idx age msg
   mkdir -p "$batch_dir"
   log "Running $batch_name with ${#apps[@]} apps, parallel=$PARALLEL"
+  last_heartbeat=$(date +%s)
 
-  local running=0
+  reap_finished() {
+    local -a keep_pids=() keep_apps=() keep_starts=()
+    for idx in "${!active_pids[@]}"; do
+      pid="${active_pids[$idx]}"
+      if kill -0 "$pid" 2>/dev/null; then
+        keep_pids+=("$pid")
+        keep_apps+=("${active_apps[$idx]}")
+        keep_starts+=("${active_starts[$idx]}")
+      else
+        wait "$pid" || true
+      fi
+    done
+    active_pids=("${keep_pids[@]}")
+    active_apps=("${keep_apps[@]}")
+    active_starts=("${keep_starts[@]}")
+  }
+
+  emit_heartbeat() {
+    if (( ${#active_pids[@]} == 0 )); then
+      return 0
+    fi
+    now=$(date +%s)
+    if (( now - last_heartbeat < HEARTBEAT_SEC )); then
+      return 0
+    fi
+    msg="Heartbeat $batch_name: ${#active_pids[@]} running"
+    for idx in "${!active_pids[@]}"; do
+      age=$((now - ${active_starts[$idx]}))
+      msg+=" | ${active_apps[$idx]}(${age}s)"
+    done
+    log "$msg"
+    last_heartbeat=$now
+  }
+
   for app in "${apps[@]}"; do
     run_one_app "$app" "$batch_dir/${app}.log" &
-    running=$((running + 1))
-    if (( running >= PARALLEL )); then
-      wait -n || true
-      running=$((running - 1))
-    fi
+    pid=$!
+    active_pids+=("$pid")
+    active_apps+=("$app")
+    active_starts+=("$(date +%s)")
+    log "LAUNCH $batch_name app=$app pid=$pid logfile=$batch_dir/${app}.log"
+    while (( ${#active_pids[@]} >= PARALLEL )); do
+      sleep "$POLL_SEC"
+      reap_finished
+      emit_heartbeat
+    done
   done
-  wait || true
+
+  while (( ${#active_pids[@]} > 0 )); do
+    sleep "$POLL_SEC"
+    reap_finished
+    emit_heartbeat
+  done
+
+  log "Completed $batch_name"
 }
 
 main() {

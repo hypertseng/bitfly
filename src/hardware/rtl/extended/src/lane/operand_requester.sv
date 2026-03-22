@@ -278,6 +278,14 @@ module operand_requester
     vlen_t  len;
     // Element width
     vew_e   vew;
+    logic   bmpu_replay_en;
+    logic [2:0] bmpu_self_blocks;
+    logic [2:0] bmpu_repeat_blocks;
+    vlen_t      bmpu_block_words;
+    logic [2:0] bmpu_self_idx;
+    logic [2:0] bmpu_repeat_idx;
+    vlen_t      bmpu_word_idx;
+    vaddr_t     bmpu_base_addr;
 
     // Hazards between vector instructions
     logic [NrVInsn-1:0] hazard;
@@ -298,12 +306,16 @@ module operand_requester
 
   logic bmpu_output_en_d, bmpu_output_en_q;
   logic                            bmpu_en_prev_q;
+  logic                            bmpu_compute_req;
   logic   [idx_width(NrBanks)-1:0] bmpu_bank_base_q;
+  logic   [idx_width(NrBanks)-1:0] bmpu_bank_base_eff;
   logic   [idx_width(NrBanks)-1:0] bmpu_prefetch_base;
   logic   [idx_width(NrBanks)-1:0] ldu_result_bank_mapped;
   vaddr_t                          ldu_result_addr_mapped;
 
   assign bmpu_output_en_d   = bmpu_output_en_i;
+  assign bmpu_compute_req   = operand_request_valid_i[BMPUAct0] || operand_request_valid_i[BMPUWgt0];
+  assign bmpu_bank_base_eff = (bmpu_compute_req && !bmpu_en_prev_q) ? (bmpu_bank_base_q ^ BmpuBankHalf) : bmpu_bank_base_q;
   assign bmpu_prefetch_base = bmpu_bank_base_q ^ BmpuBankHalf;
 
   always_comb begin : p_ldu_bmpu_bank_map
@@ -323,10 +335,10 @@ module operand_requester
       bmpu_bank_base_q <= '0;
     end else begin
       bmpu_output_en_q <= bmpu_output_en_d;
-      bmpu_en_prev_q   <= bmpu_en_i;
+      bmpu_en_prev_q   <= bmpu_compute_req;
 
-      // Toggle compute bank-set on each BMPMM start pulse (ping-pong 0..3 / 4..7)
-      if (bmpu_en_i && !bmpu_en_prev_q) begin
+      // Toggle compute bank-set on each new BMPMM operand-request pulse (ping-pong 0..3 / 4..7)
+      if (bmpu_compute_req && !bmpu_en_prev_q) begin
         if (bmpu_bank_base_q == '0) bmpu_bank_base_q <= BmpuBankHalf;
         else bmpu_bank_base_q <= '0;
       end
@@ -416,28 +428,36 @@ module operand_requester
       // Address of the vstart element of the vector in the VRF
       // This vstart is NOT the architectural one and was modified in the lane
       // sequencer to provide the correct start address
-      vrf_addr = is_bmpu_store_i ? (operand_request_i[requester_index].vstart + bmpu_bank_base_q) : vaddr(
+      vrf_addr = is_bmpu_store_i ? (operand_request_i[requester_index].vstart + bmpu_bank_base_eff) : vaddr(
           operand_request_i[requester_index].vs, NrLanes, VLEN) +
           (operand_request_i[requester_index].vstart >>
            (unsigned'(EW64) - unsigned'(operand_request_i[requester_index].eew)));
 
       unique case (requester_index)
-        BMPUAct0: bmpu_bank_addr_init = bmpu_bank_base_q;
-        BMPUAct1: bmpu_bank_addr_init = bmpu_bank_base_q + 1;
-        BMPUWgt0: bmpu_bank_addr_init = bmpu_bank_base_q + 2;
-        BMPUWgt1: bmpu_bank_addr_init = bmpu_bank_base_q + 3;
+        BMPUAct0: bmpu_bank_addr_init = bmpu_bank_base_eff;
+        BMPUAct1: bmpu_bank_addr_init = bmpu_bank_base_eff + 1;
+        BMPUWgt0: bmpu_bank_addr_init = bmpu_bank_base_eff + 2;
+        BMPUWgt1: bmpu_bank_addr_init = bmpu_bank_base_eff + 3;
         default:  bmpu_bank_addr_init = requester_index - 5;
       endcase
 
       // Init helper variables
       requester_metadata_tmp = '{
-          id          : operand_request_i[requester_index].id,
-          addr        : (requester_index > 4 && requester_index < 13) ? bmpu_bank_addr_init :
+          id                : operand_request_i[requester_index].id,
+          addr              : (requester_index > 4 && requester_index < 13) ? bmpu_bank_addr_init :
               vrf_addr,
-          len         : effective_vector_body_length,
-          vew         : operand_request_i[requester_index].eew,
-          hazard      : operand_request_i[requester_index].hazard,
-          is_widening : operand_request_i[requester_index].cvt_resize == CVT_WIDE,
+          len               : effective_vector_body_length,
+          vew               : operand_request_i[requester_index].eew,
+          bmpu_replay_en    : operand_request_i[requester_index].bmpu_replay_en,
+          bmpu_self_blocks  : operand_request_i[requester_index].bmpu_self_blocks,
+          bmpu_repeat_blocks: operand_request_i[requester_index].bmpu_repeat_blocks,
+          bmpu_block_words  : operand_request_i[requester_index].bmpu_block_words,
+          bmpu_self_idx     : '0,
+          bmpu_repeat_idx   : '0,
+          bmpu_word_idx     : '0,
+          bmpu_base_addr    : (requester_index > 4 && requester_index < 13) ? bmpu_bank_addr_init : vrf_addr,
+          hazard            : operand_request_i[requester_index].hazard,
+          is_widening       : operand_request_i[requester_index].cvt_resize == CVT_WIDE,
           default: '0
       };
       operand_queue_cmd_tmp = '{
@@ -522,17 +542,64 @@ module operand_requester
                          requester_metadata_q.len);
               end
 `endif
+`ifndef SYNTHESIS
+              if ((lane_id_i == '0) && ((requester_index == BMPUAct0) || (requester_index == BMPUAct1)) &&
+                  ((requester_metadata_q.addr >> $clog2(NrBanks)) < 10)) begin
+                $display("[%0t][OPREQ_BMPU][lane%0d] q=%0d bank=%0d row=%0d addr=%0d req_cnt=%0d len=%0d replay=%0b self=%0d repeat=%0d word=%0d",
+                         $time, lane_id_i, requester_index, bank,
+                         requester_metadata_q.addr >> $clog2(NrBanks), requester_metadata_q.addr,
+                         request_cnt_q, requester_metadata_q.len, requester_metadata_q.bmpu_replay_en,
+                         requester_metadata_q.bmpu_self_idx, requester_metadata_q.bmpu_repeat_idx, requester_metadata_q.bmpu_word_idx);
+              end
+`endif
               // Bump the address pointer
               if (requester_index > 4 && requester_index < 13) begin
-                requester_metadata_d.addr = requester_metadata_q.addr + 4'b1000;
-                if (requester_index < 9) begin
-                  if (request_cnt_q < requester_index - 5) begin
-                    requester_metadata_d.addr = requester_metadata_q.addr;
+                automatic int unsigned startup_delay;
+                startup_delay = (requester_index < 9) ? (requester_index - 5) : (requester_index - 9);
+                if (request_cnt_q < startup_delay) begin
+                  requester_metadata_d.addr = requester_metadata_q.addr;
+                end else if (requester_metadata_q.bmpu_replay_en) begin
+                  automatic int unsigned next_self_idx;
+                  automatic int unsigned next_repeat_idx;
+                  automatic int unsigned next_word_idx;
+                  automatic int unsigned row_base_words;
+                  next_self_idx   = requester_metadata_q.bmpu_self_idx;
+                  next_repeat_idx = requester_metadata_q.bmpu_repeat_idx;
+                  next_word_idx   = requester_metadata_q.bmpu_word_idx;
+
+                  if ((requester_metadata_q.bmpu_word_idx + 1) < requester_metadata_q.bmpu_block_words) begin
+                    next_word_idx = requester_metadata_q.bmpu_word_idx + 1;
+                  end else begin
+                    next_word_idx = 0;
+                    if (requester_index < 9) begin
+                      if ((requester_metadata_q.bmpu_repeat_idx + 1) < requester_metadata_q.bmpu_repeat_blocks) begin
+                        next_repeat_idx = requester_metadata_q.bmpu_repeat_idx + 1;
+                      end else begin
+                        next_repeat_idx = 0;
+                        if ((requester_metadata_q.bmpu_self_idx + 1) < requester_metadata_q.bmpu_self_blocks) begin
+                          next_self_idx = requester_metadata_q.bmpu_self_idx + 1;
+                        end
+                      end
+                    end else begin
+                      if ((requester_metadata_q.bmpu_self_idx + 1) < requester_metadata_q.bmpu_self_blocks) begin
+                        next_self_idx = requester_metadata_q.bmpu_self_idx + 1;
+                      end else begin
+                        next_self_idx = 0;
+                        if ((requester_metadata_q.bmpu_repeat_idx + 1) < requester_metadata_q.bmpu_repeat_blocks) begin
+                          next_repeat_idx = requester_metadata_q.bmpu_repeat_idx + 1;
+                        end
+                      end
+                    end
                   end
+
+                  requester_metadata_d.bmpu_self_idx   = next_self_idx[2:0];
+                  requester_metadata_d.bmpu_repeat_idx = next_repeat_idx[2:0];
+                  requester_metadata_d.bmpu_word_idx   = vlen_t'(next_word_idx);
+                  row_base_words = next_self_idx * requester_metadata_q.bmpu_block_words;
+                  requester_metadata_d.addr = requester_metadata_q.bmpu_base_addr +
+                      vaddr_t'((row_base_words + next_word_idx) << $clog2(NrBanks));
                 end else begin
-                  if (request_cnt_q < requester_index - 9) begin
-                    requester_metadata_d.addr = requester_metadata_q.addr;
-                  end
+                  requester_metadata_d.addr = requester_metadata_q.addr + 4'b1000;
                 end
               end else begin
                 requester_metadata_d.addr = requester_metadata_q.addr + 1'b1;
@@ -724,6 +791,21 @@ module operand_requester
         bmpu_result_gnt_vec[i] |= operand_gnt[bank][NrOperandQueues+NrGlobalMasters+i];
       end
     end
+`ifndef SYNTHESIS
+    if (1'b0 && (lane_id_i == '0) && ldu_result_req && is_bmpu_load_vinsn_i[ldu_result_id] &&
+        ((ldu_result_addr >> $clog2(NrBanks)) < 8)) begin
+      $display("[%0t][LDU2BMPU][lane%0d] id=%0d raw_addr=%0d raw_bank=%0d raw_row=%0d map_bank=%0d map_row=%0d gnt=%0b be=%h data=%h",
+               $time, lane_id_i, ldu_result_id,
+               ldu_result_addr,
+               ldu_result_addr[idx_width(NrBanks)-1:0],
+               ldu_result_addr >> $clog2(NrBanks),
+               ldu_result_bank_mapped,
+               ldu_result_addr_mapped >> $clog2(NrBanks),
+               ldu_result_gnt,
+               ldu_result_be,
+               ldu_result_wdata);
+    end
+`endif
     if (bmpu_result_req_i) begin
       automatic logic [NrBmpuResultQueues-1:0] bmpu_granted_acc;
       bmpu_granted_acc  = bmpu_result_granted_q | bmpu_result_gnt_vec;
@@ -825,6 +907,27 @@ module operand_requester
         .req_o(vrf_req_o[bank]),
         .gnt_i(vrf_req_o[bank])  // Acknowledge it directly
     );
+
+`ifndef SYNTHESIS
+    if ((bank == 4) || (bank == 5)) begin : gen_bmpu_bank_dbg
+      always_ff @(posedge clk_i) begin
+        if (rst_ni && (lane_id_i == '0) && vrf_req_o[bank] && vrf_wen_o[bank]) begin
+          $display("[%0t][OPREQ_VRF_WR][lane%0d] bank=%0d addr=%0d data=%h be=%h hp_req=%0b lp_req=%0b alu=%0b mfpu=%0b load=%0b slide=%0b mask=%0b bmpu_out=%b%b%b%b",
+                   $time, lane_id_i, bank, vrf_addr_o[bank], vrf_wdata_o[bank], vrf_be_o[bank],
+                   payload_hp_req, payload_lp_req,
+                   ext_operand_req[bank][VFU_Alu],
+                   ext_operand_req[bank][VFU_MFpu],
+                   ext_operand_req[bank][VFU_LoadUnit],
+                   ext_operand_req[bank][VFU_SlideUnit],
+                   ext_operand_req[bank][VFU_MaskUnit],
+                   ext_operand_req[bank][NrGlobalMasters+3],
+                   ext_operand_req[bank][NrGlobalMasters+2],
+                   ext_operand_req[bank][NrGlobalMasters+1],
+                   ext_operand_req[bank][NrGlobalMasters+0]);
+        end
+      end
+    end
+`endif
   end : gen_vrf_arbiters
 
 endmodule : operand_requester

@@ -148,7 +148,6 @@ int validate_mixed_cfg(int M, int K, int N)
     printf("[mixed-cfg] cfg: mt=%lu nt=%lu kt=%lu gm=%lu gn=%lu p=%lu\n",
            cfg.mtile, cfg.ntile, cfg.ktile, cfg.gm, cfg.gn, cfg.prec);
 
-    memset(data.result_lp, 0, (size_t)M * (size_t)N * sizeof(int16_t));
     if (!binary_mixed_matmul_with_cfg(data.result_lp, data.activation_lp, data.weight_lp,
                                       (unsigned long)M, (unsigned long)K, (unsigned long)N,
                                       &cfg))

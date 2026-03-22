@@ -1037,28 +1037,43 @@ module lane_sequencer
           operand_request_push[MaskB] = 1'b1;
         end
         BMPU: begin
-          automatic logic [2:0] bmp_planes;
+          logic [2:0] bmp_planes;
+          logic [3:0] m_block_count;
+          logic [3:0] n_block_count;
+          logic [16:0] act_block_words;
+          logic [16:0] wgt_block_words;
           bmp_planes = bmp_planes_from_prec(pe_req.prec);
+          m_block_count = pe_req.mtile >> 3;
+          n_block_count = pe_req.ntile >> 4;
+          if (m_block_count == '0) m_block_count = 4'd1;
+          if (n_block_count == '0) n_block_count = 4'd1;
+          act_block_words = pe_req.k_dim >> 3;
+          wgt_block_words = (pe_req.k_dim * bmp_planes) >> 3;
+          if (act_block_words == '0) act_block_words = 1;
+          if (wgt_block_words == '0) wgt_block_words = 1;
 
           for (int i = 0; i < 2; i++) begin
             operand_request[BMPUAct0+i] = '{
-                id         : pe_req.id,
-                vs         : pe_req.vs1,
-                eew        : pe_req.eew_vs1,
-                conv       : pe_req.conversion_vs1,
-                scale_vl   : pe_req.scale_vl,
-                cvt_resize : pe_req.cvt_resize,
-                vtype      : pe_req.vtype,
-                // vl         : pe_req.k_dim + (i << 3) + (1 >> (EW64 - pe_req.eew_vs1)), // + (1 >> (EW64 - pe_req.eew_vs1) 多一个cycle为了tile的output输出
-                vl         :
-                pe_req.k_dim
+                id                : pe_req.id,
+                vs                : pe_req.vs1,
+                eew               : pe_req.eew_vs1,
+                conv              : pe_req.conversion_vs1,
+                scale_vl          : pe_req.scale_vl,
+                cvt_resize        : pe_req.cvt_resize,
+                vtype             : pe_req.vtype,
+                vl                :
+                (pe_req.k_dim * m_block_count * n_block_count)
                 + (
                 i << 3
                 ),
-                vstart     : vfu_operation_d.vstart,
-                hazard     : pe_req.hazard_vs1 | pe_req.hazard_vd,
-                is_reduct  : 0,
-                target_fu  : ALU_SLDU,
+                vstart            : vfu_operation_d.vstart,
+                bmpu_replay_en    : (m_block_count != 4'd1) || (n_block_count != 4'd1),
+                bmpu_self_blocks  : m_block_count[2:0],
+                bmpu_repeat_blocks: n_block_count[2:0],
+                bmpu_block_words  : act_block_words,
+                hazard            : pe_req.hazard_vs1 | pe_req.hazard_vd,
+                is_reduct         : 0,
+                target_fu         : ALU_SLDU,
                 default: '0
             };
             operand_request_push[BMPUAct0+i] = 1'b1;
@@ -1066,25 +1081,26 @@ module lane_sequencer
 
           for (int i = 0; i < 2; i++) begin
             operand_request[BMPUWgt0+i] = '{
-                id         : pe_req.id,
-                vs         : pe_req.vs2,
-                eew        : pe_req.eew_vs2,
-                conv       : pe_req.conversion_vs2,
-                scale_vl   : pe_req.scale_vl,
-                cvt_resize : pe_req.cvt_resize,
-                vtype      : pe_req.vtype,
-                // Weight bit-planes are laid out contiguously: depth = planes * D.
-                vl         :
-                pe_req.k_dim
-                *
-                bmp_planes
+                id                : pe_req.id,
+                vs                : pe_req.vs2,
+                eew               : pe_req.eew_vs2,
+                conv              : pe_req.conversion_vs2,
+                scale_vl          : pe_req.scale_vl,
+                cvt_resize        : pe_req.cvt_resize,
+                vtype             : pe_req.vtype,
+                vl                :
+                (pe_req.k_dim * bmp_planes * n_block_count * m_block_count)
                 + (
                 i << 3
                 ),
-                vstart     : vfu_operation_d.vstart,
-                hazard     : pe_req.hazard_vs2 | pe_req.hazard_vd,
-                is_reduct  : 0,
-                target_fu  : ALU_SLDU,
+                vstart            : vfu_operation_d.vstart,
+                bmpu_replay_en    : (m_block_count != 4'd1) || (n_block_count != 4'd1),
+                bmpu_self_blocks  : n_block_count[2:0],
+                bmpu_repeat_blocks: m_block_count[2:0],
+                bmpu_block_words  : wgt_block_words,
+                hazard            : pe_req.hazard_vs2 | pe_req.hazard_vd,
+                is_reduct         : 0,
+                target_fu         : ALU_SLDU,
                 default: '0
             };
             operand_request_push[BMPUWgt0+i] = 1'b1;
@@ -1111,6 +1127,15 @@ module lane_sequencer
     end
   end : sequencer
 
+`ifndef SYNTHESIS
+  always_ff @(posedge clk_i) begin
+    if (rst_ni && pe_req_valid && (pe_req.op == BMPSE)) begin
+      $display("[%0t][LSEQ_BMPSE][lane%0d] ready=%0b running=%0b vfu_valid=%0b vl=%0d vfu=%0d bmpu_ready=%0b st_busy=%0b m_busy=%0b",
+               $time, lane_id_i, pe_req_ready, vinsn_running_d[pe_req.id], vfu_operation_valid_d, vfu_operation_d.vl, vfu_operation_d.vfu, bmpu_ready_i, operand_request_valid_o[StA], operand_request_valid_o[MaskM]);
+    end
+  end
+`endif
+
   always_ff @(posedge clk_i or negedge rst_ni) begin : p_sequencer_ff
     if (!rst_ni) begin
       vinsn_done_q          <= '0;
@@ -1135,6 +1160,12 @@ module lane_sequencer
       alu_vinsn_done_o      <= alu_vinsn_done_d;
       mfpu_vinsn_done_o     <= mfpu_vinsn_done_d;
       bmpu_insn_done_o      <= bmpu_insn_done_d;
+`ifndef SYNTHESIS
+      if (lane_id_i == '0 && (|bmpu_insn_done_i || bmpu_insn_done_d || bmpu_insn_done_o)) begin
+        $display("[%0t][LSEQ_BMPU_DONE] in=%b d=%0b q=%0b pe_req_valid=%0b pe_req_vfu=%0d pe_req_id=%0d",
+                 $time, bmpu_insn_done_i, bmpu_insn_done_d, bmpu_insn_done_o, pe_req_valid_i, pe_req_i.vfu, pe_req_i.id);
+      end
+`endif
 
       vrgat_state_q         <= vrgat_state_d;
       vrgat_cmd_req_cnt_q   <= vrgat_cmd_req_cnt_d;

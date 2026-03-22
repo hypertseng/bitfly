@@ -1,91 +1,205 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "runtime.h"
+#include "util.h"
 #include <stdint.h>
 #include <string.h>
-#include <assert.h>
 
-#define TM 16
-#define TK 480
+#ifdef SPIKE
+#include <stdio.h>
+#elif defined ARA_LINUX
+#include <stdio.h>
+#else
+#include "printf.h"
+#endif
 
-void pack_activation(const int8_t *array, int M, int K, int8_t *out) {
-    const int tm = (M + TM - 1) / TM;
-    const int tk = (K > TK) ? ((K + TK - 1) / TK) : 1;
+#include "../common/bmpmm_bench_common.h"
+#include "../common/bmpmm_lowp_mixed_common.h"
+#include "kernel/data.h"
+#include "kernel/bench_cases.h"
 
-    for (int i = 0; i < tm; ++i) {
-        const int m_start = i * TM;
-        const int rows = (M - m_start < TM) ? (M - m_start) : TM;
+static unsigned long min_ul(unsigned long a, unsigned long b)
+{
+    return (a < b) ? a : b;
+}
 
-        for (int j = 0; j < tk; ++j) {
-            const int k_start = j * TK;
-            const int k_len = (K - k_start < TK) ? (K - k_start) : TK;
-            const int chunk_count = (k_len + 7) / 8;  // 每个chunk是64位（8个int8）
+static void unpack_packed_tiles_to_col_major(int16_t *dst, const int16_t *src,
+                                             unsigned long M, unsigned long N,
+                                             unsigned long mtile, unsigned long ntile)
+{
+    const unsigned long m_tiles = (M + mtile - 1) / mtile;
+    const unsigned long n_tiles = (N + ntile - 1) / ntile;
+    const unsigned long tile_elems = mtile * ntile;
 
-            const int64_t *block_in = (const int64_t *)(array + m_start * K + k_start * rows);
-            int64_t *out_block      = (int64_t *)(out   + m_start * K + k_start * rows);
-
-            const int row_stride_in  = chunk_count;  // 每行有多少chunk
-            const int row_stride_out = rows;         // 每列间距
-
-            int row = 0;
-            for (; row + 7 < rows; row += 8) {
-                const int64_t *row_ptr[8];
-                int64_t *col_ptr[8];
-                for (int r = 0; r < 8; ++r) {
-                    row_ptr[r] = block_in + (row + r) * row_stride_in;
-                    col_ptr[r] = out_block + (row + r);
+    for (unsigned long n_tile = 0; n_tile < n_tiles; ++n_tile)
+    {
+        const unsigned long n0 = n_tile * ntile;
+        const unsigned long n_valid = min_ul(ntile, N - n0);
+        for (unsigned long m_tile = 0; m_tile < m_tiles; ++m_tile)
+        {
+            const unsigned long m0 = m_tile * mtile;
+            const unsigned long m_valid = min_ul(mtile, M - m0);
+            const unsigned long tile_idx = n_tile * m_tiles + m_tile;
+            const int16_t *tile = src + tile_idx * tile_elems;
+            for (unsigned long n_local = 0; n_local < n_valid; ++n_local)
+            {
+                for (unsigned long m_local = 0; m_local < m_valid; ++m_local)
+                {
+                    dst[(n0 + n_local) * M + (m0 + m_local)] =
+                        tile[n_local * mtile + m_local];
                 }
-                __asm__ volatile (
-                    "vsetvli t0, %[cnt], e64, m1, ta, ma\n\t"
-                    "vle64.v v0, (%[in0])\n\t"
-                    "vle64.v v1, (%[in1])\n\t"
-                    "vle64.v v2, (%[in2])\n\t"
-                    "vle64.v v3, (%[in3])\n\t"
-                    "vle64.v v4, (%[in4])\n\t"
-                    "vle64.v v5, (%[in5])\n\t"
-                    "vle64.v v6, (%[in6])\n\t"
-                    "vle64.v v7, (%[in7])\n\t"
-
-                    "vsse64.v v0, (%[out0]), %[stride]\n\t"
-                    "vsse64.v v1, (%[out1]), %[stride]\n\t"
-                    "vsse64.v v2, (%[out2]), %[stride]\n\t"
-                    "vsse64.v v3, (%[out3]), %[stride]\n\t"
-                    "vsse64.v v4, (%[out4]), %[stride]\n\t"
-                    "vsse64.v v5, (%[out5]), %[stride]\n\t"
-                    "vsse64.v v6, (%[out6]), %[stride]\n\t"
-                    "vsse64.v v7, (%[out7]), %[stride]\n\t"
-                    :
-                    : [cnt] "r"(chunk_count),
-                      [in0] "r"(row_ptr[0]), [in1] "r"(row_ptr[1]),
-                      [in2] "r"(row_ptr[2]), [in3] "r"(row_ptr[3]),
-                      [in4] "r"(row_ptr[4]), [in5] "r"(row_ptr[5]),
-                      [in6] "r"(row_ptr[6]), [in7] "r"(row_ptr[7]),
-                      [out0] "r"(col_ptr[0]), [out1] "r"(col_ptr[1]),
-                      [out2] "r"(col_ptr[2]), [out3] "r"(col_ptr[3]),
-                      [out4] "r"(col_ptr[4]), [out5] "r"(col_ptr[5]),
-                      [out6] "r"(col_ptr[6]), [out7] "r"(col_ptr[7]),
-                      [stride] "r"(row_stride_out * 8)
-                    : "t0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "memory"
-                );
-            }
-
-            // 处理剩余行（< 8）
-            for (; row < rows; ++row) {
-                const int64_t *row_ptr = block_in + row * row_stride_in;
-                int64_t *col_ptr       = out_block + row;
-
-                __asm__ volatile (
-                    "vsetvli t0, %[cnt], e64, m1, ta, ma\n\t"
-                    "vle64.v v0, (%[in])\n\t"
-                    "vsse64.v v0, (%[out]), %[stride]\n\t"
-                    :
-                    : [cnt] "r"(chunk_count),
-                      [in] "r"(row_ptr),
-                      [out] "r"(col_ptr),
-                      [stride] "r"(row_stride_out * 8)
-                    : "t0", "v0", "memory"
-                );
             }
         }
     }
 }
 
+static int compare_col_major(const int16_t *got, const int16_t *expect,
+                             unsigned long M, unsigned long N)
+{
+    int mismatches = 0;
+    int nonzero = 0;
+    const unsigned long total = M * N;
+    for (unsigned long idx = 0; idx < total; ++idx)
+        if (got[idx] != 0)
+            ++nonzero;
+    printf("[mytest] raw_nonzero=%d/%d\n", nonzero, (int)total);
+    printf("[mytest] raw_head={");
+    for (unsigned long idx = 0; idx < 16 && idx < total; ++idx)
+        printf(idx == 15 || idx + 1 == total ? "%d" : "%d, ", got[idx]);
+    printf("}\n");
+    printf("[mytest] col_nz={");
+    for (unsigned long n = 0; n < 8 && n < N; ++n)
+    {
+        int col_nz = 0;
+        for (unsigned long m = 0; m < M; ++m)
+            if (got[n * M + m] != 0)
+                ++col_nz;
+        printf(n == 7 || n + 1 == N ? "%d" : "%d, ", col_nz);
+    }
+    printf("}\n");
+    printf("[mytest] row_nz={");
+    for (unsigned long m = 0; m < 16 && m < M; ++m)
+    {
+        int row_nz = 0;
+        for (unsigned long n = 0; n < N; ++n)
+            if (got[n * M + m] != 0)
+                ++row_nz;
+        printf(m == 15 || m + 1 == M ? "%d" : "%d, ", row_nz);
+    }
+    printf("}\n");
+    printf("[mytest] nz_pos={");
+    int nz_dumped = 0;
+    for (unsigned long n = 0; n < N && nz_dumped < 32; ++n)
+    {
+        for (unsigned long m = 0; m < M && nz_dumped < 32; ++m)
+        {
+            if (got[n * M + m] != 0)
+            {
+                printf(nz_dumped == 31 ? "(%d,%d)" : "(%d,%d), ", (int)m, (int)n);
+                ++nz_dumped;
+            }
+        }
+    }
+    printf("}\n");
+    for (unsigned long dbg_n = 0; dbg_n < 4 && dbg_n < N; ++dbg_n)
+    {
+        printf("[mytest] col%d_rows={", (int)dbg_n);
+        int dumped = 0;
+        for (unsigned long m = 0; m < M && dumped < 40; ++m)
+        {
+            if (got[dbg_n * M + m] != 0)
+            {
+                printf(dumped == 39 ? "%d" : "%d, ", (int)m);
+                ++dumped;
+            }
+        }
+        printf("}\n");
+    }
+    for (unsigned long n = 0; n < N; ++n)
+    {
+        for (unsigned long m = 0; m < M; ++m)
+        {
+            unsigned long idx = n * M + m;
+            if (got[idx] != expect[idx])
+            {
+                if (mismatches < 16)
+                {
+                    printf("[mytest] mismatch at (m=%d,n=%d): got %d expect %d\n",
+                           (int)m, (int)n, got[idx], expect[idx]);
+                }
+                ++mismatches;
+            }
+        }
+    }
+    return mismatches;
+}
+
+int main()
+{
+    int failures = 0;
+    printf("[mytest] low-bit mixed-precision correctness check\n");
+
+    for (int i = 0; i < BMPMM_BENCH_CASE_COUNT; ++i)
+    {
+        const bmpmm_bench_case_t *sc = &kBenchCases[i];
+        BenchKernelData data = get_bench_kernel_data(i);
+
+        printf("\n------------------------------------------------------------\n");
+        printf("[mytest] case%d name=%s shape=(%lu,%lu,%lu), cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu)\n",
+               i + 1, sc->layer, sc->M, sc->N, sc->K,
+               sc->cfg.mtile, sc->cfg.ntile, sc->cfg.ktile,
+               sc->cfg.gm, sc->cfg.gn, sc->cfg.prec);
+
+        start_timer();
+        int ok = bmpmm_lowp_mixed_matmul_with_cfg("mytest",
+                                                  data.result_hp,
+                                                  data.activation_lp,
+                                                  data.weight_lp,
+                                                  sc->M,
+                                                  sc->K,
+                                                  sc->N,
+                                                  &sc->cfg,
+                                                  0);
+        stop_timer();
+        if (!ok)
+        {
+            printf("[mytest] ERROR: execution failed for %s\n", sc->layer);
+            ++failures;
+            continue;
+        }
+
+        printf("[mytest][DBG] unpack_begin %s\n", sc->layer);
+        unpack_packed_tiles_to_col_major(data.result_lp,
+                                         data.result_hp,
+                                         sc->M,
+                                         sc->N,
+                                         sc->cfg.mtile,
+                                         sc->cfg.ntile);
+        printf("[mytest][DBG] unpack_done %s\n", sc->layer);
+
+        printf("[mytest][DBG] compare_begin %s\n", sc->layer);
+        int mismatches = compare_col_major(data.result_lp, data.result_torch, sc->M, sc->N);
+        printf("[mytest][DBG] compare_done %s mismatches=%d\n", sc->layer, mismatches);
+        int64_t runtime = get_timer();
+        printf("[mytest] runtime=%ld cycles\n", (long)runtime);
+        printf("[mytest] sample={{%d, %d, %d, %d}}\n",
+               data.result_lp[0], data.result_lp[1], data.result_lp[2], data.result_lp[3]);
+
+        if (mismatches == 0)
+        {
+            printf("[mytest] PASS %s\n", sc->layer);
+        }
+        else
+        {
+            printf("[mytest] FAIL %s mismatches=%d\n", sc->layer, mismatches);
+            ++failures;
+        }
+    }
+
+    if (failures == 0)
+    {
+        printf("\n[mytest] ALL CASES PASSED\n");
+        return 0;
+    }
+
+    printf("\n[mytest] TOTAL FAILURES=%d\n", failures);
+    return 1;
+}

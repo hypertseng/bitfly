@@ -140,6 +140,10 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     rvv_pkg::vtype_t vtype;
     vlen_t vl;
     vlen_t vstart;
+    logic bmpu_replay_en;
+    logic [2:0] bmpu_self_blocks;
+    logic [2:0] bmpu_repeat_blocks;
+    vlen_t bmpu_block_words;
 
     // Hazards
     logic [NrVInsn-1:0] hazard;
@@ -227,6 +231,10 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   // Interface with the vector functional units
   vfu_operation_t                             vfu_operation;
   logic                                       vfu_operation_valid;
+  vfu_operation_t                             bmpu_vfu_operation;
+  logic                                       bmpu_vfu_operation_valid;
+  logic                                       bmpu_store_pending_d, bmpu_store_pending_q;
+  vfu_operation_t                             bmpu_store_pending_op_d, bmpu_store_pending_op_q;
   logic                                       alu_ready;
   logic                 [NrVInsn-1:0]         alu_vinsn_done;
   logic                                       mfpu_ready;
@@ -238,6 +246,9 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic                                       mask_b_cmd_pop_d, mask_b_cmd_pop_q;
   `FF(mask_b_cmd_pop_q, mask_b_cmd_pop_d, 1'b0, clk_i, rst_ni);
 
+
+  `FF(bmpu_store_pending_q, bmpu_store_pending_d, 1'b0, clk_i, rst_ni);
+  `FF(bmpu_store_pending_op_q, bmpu_store_pending_op_d, '0, clk_i, rst_ni);
 
   // Support for store exception flush
   logic lsu_ex_flush_op_req_d, lsu_ex_flush_op_req_q;
@@ -301,6 +312,22 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .masku_vrgat_req_ready_o(masku_vrgat_req_ready_o ),
     .masku_vrgat_req_i      (masku_vrgat_req_i       )
   );
+
+  always_comb begin
+    bmpu_store_pending_d = bmpu_store_pending_q;
+    bmpu_store_pending_op_d = bmpu_store_pending_op_q;
+
+    if (vfu_operation_valid && (vfu_operation.op == BMPSE) && !bmpu_store_pending_q) begin
+      bmpu_store_pending_d = 1'b1;
+      bmpu_store_pending_op_d = vfu_operation;
+    end else if (bmpu_store_pending_q && bmpu_ready) begin
+      bmpu_store_pending_d = 1'b0;
+    end
+
+    bmpu_vfu_operation = bmpu_store_pending_q ? bmpu_store_pending_op_q : vfu_operation;
+    bmpu_vfu_operation_valid = bmpu_store_pending_q ||
+                               (vfu_operation_valid && (vfu_operation.op != BMPSE));
+  end
 
   /////////////////////////
   //  Operand Requester  //
@@ -500,7 +527,14 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
 
 `ifndef SYNTHESIS
   always_ff @(posedge clk_i) begin
-    if (1'b1 && (lane_id_i == '0)) begin
+    if (lane_id_i < 2) begin
+      if (vrf_req[4] || vrf_req[5]) begin
+        $display("[%0t][LANE_VRF][lane%0d] b4 req=%0b wen=%0b addr=%0d tgt=%0d wdata=%h be=%h | b5 req=%0b wen=%0b addr=%0d tgt=%0d wdata=%h be=%h",
+                 $time,
+                 lane_id_i,
+                 vrf_req[4], vrf_wen[4], vrf_addr[4], vrf_tgt_opqueue[4], vrf_wdata[4], vrf_be[4],
+                 vrf_req[5], vrf_wen[5], vrf_addr[5], vrf_tgt_opqueue[5], vrf_wdata[5], vrf_be[5]);
+      end
       if (vrf_operand_valid[BMPUAct0] || vrf_operand_valid[BMPUAct1]
           || vrf_operand_valid[BMPUWgt0] || vrf_operand_valid[BMPUWgt1]) begin
         $display("[%0t][LANE][lane%0d] vrf_valid act=%b%b wgt=%b%b",
@@ -511,12 +545,16 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
                  vrf_operand_valid[BMPUWgt1],
                  vrf_operand_valid[BMPUWgt0]);
       end
-      if ((|bmpu_act_operand_valid[1:0]) || (|bmpu_wgt_operand_valid[1:0])) begin
-        $display("[%0t][LANE][lane%0d] opq_valid act=%b wgt=%b",
+      if (1'b0 && ((|bmpu_act_operand_valid[1:0]) || (|bmpu_wgt_operand_valid[1:0]))) begin
+        $display("[%0t][LANE_BMPU][lane%0d] opq_valid act=%b wgt=%b act0=%h act1=%h wgt0=%h wgt1=%h",
                  $time,
                  lane_id_i,
                  bmpu_act_operand_valid[1:0],
-                 bmpu_wgt_operand_valid[1:0]);
+                 bmpu_wgt_operand_valid[1:0],
+                 bmpu_act_operand[0],
+                 bmpu_act_operand[1],
+                 bmpu_wgt_operand[0],
+                 bmpu_wgt_operand[1]);
       end
     end
   end
@@ -677,8 +715,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .rst_ni               (rst_ni                         ),
     .lane_id_i            (lane_id_i                      ),
     // Interface with the lane sequencer
-    .vfu_operation_i      (vfu_operation                  ),
-    .vfu_operation_valid_i(vfu_operation_valid            ),
+    .vfu_operation_i      (bmpu_vfu_operation             ),
+    .vfu_operation_valid_i(bmpu_vfu_operation_valid       ),
     .bmpu_prefetch_ready_i(bmpu_prefetch_ready            ),
     .bmpu_weight_load_i    (bmpu_weight_load_pulse        ),
     .bmpu_ready_o          (bmpu_ready                      ),

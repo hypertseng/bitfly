@@ -41,7 +41,6 @@ int main()
         printf("\n------------------------------------------------------------\n");
         printf("[bmpmm_INT4] case%d layer=%s shape=(%lu,%lu,%lu), cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu)\n", i+1, sc->layer, sc->M, sc->N, sc->K, sc->cfg.mtile, sc->cfg.ntile, sc->cfg.ktile, sc->cfg.gm, sc->cfg.gn, sc->cfg.prec);
 
-        memset(data.result_lp, 0, (size_t)sc->M * (size_t)sc->N * sizeof(int16_t));
         start_timer();
         int ok = int4_mixed_matmul_with_cfg(data.result_lp, data.activation_lp, data.weight_lp, sc->M, sc->K, sc->N, &sc->cfg);
         stop_timer();

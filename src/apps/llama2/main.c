@@ -1741,7 +1741,7 @@ float *forward(Transformer *transformer, int token, int pos)
 
             // weighted sum of the values, store back into xb
             float *xb = s->xb + h * head_size;
-            memset(xb, 0, head_size * sizeof(float));
+            for (int i = 0; i < head_size; i++) xb[i] = 0.0f;
             for (int t = 0; t <= pos; t++)
             {
                 // get the value vector for this head and at this timestep

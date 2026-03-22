@@ -1,6 +1,8 @@
 import math
 import numpy as np
 
+from bmpmm_case_selection import MODEL_LAYER_CASES
+
 SEED = 42
 np.random.seed(SEED)
 
@@ -48,6 +50,21 @@ def emit_int16_row_major(lines, name, array, align="32 * NR_LANES"):
         lines.append("    .word " + ", ".join(f"0x{int(v):08x}" for v in words[i:i + 8]))
 
 
+def emit_case_aliases(lines, alias_name, target_name):
+    symbol_stems = [
+        "activation_lp",
+        "weight_lp",
+        "result_lp",
+        "activation_hp",
+        "weight_hp",
+        "result_hp",
+        "result_torch",
+    ]
+    lines.append(f"/* alias {alias_name} -> {target_name} */")
+    for stem in symbol_stems:
+        lines.append(f".global {stem}_{alias_name}")
+        lines.append(f".set {stem}_{alias_name}, {stem}_{target_name}")
+
 def emit_int8_row_major(lines, name, array, align="32 * NR_LANES"):
     flat = np.asarray(array, dtype=np.int8).flatten()
     pad = (4 - len(flat) % 4) % 4
@@ -82,12 +99,12 @@ def pack_activations_lp(array):
 
 def _pack_8x8_bit_block(block_bits):
     word = 0
-    for k_row in range(8):
+    for n_col in range(8):
         byte_val = 0
-        for n_col in range(8):
+        for k_row in range(8):
             bit = int(block_bits[k_row, n_col]) & 0x1
-            byte_val |= bit << n_col
-        word |= (byte_val & 0xFF) << (k_row * 8)
+            byte_val |= bit << (7 - k_row)
+        word |= (byte_val & 0xFF) << (n_col * 8)
     return word
 
 
@@ -176,13 +193,29 @@ def build_bench_case_dataset(lines, name, m_dim, n_dim, k_dim, prec):
     emit_int8_row_major(lines, f"activation_hp_{name}", A)
     emit_int8_row_major(lines, f"weight_hp_{name}", W)
     emit_int16_row_major(lines, f"result_hp_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
-    emit_int16_row_major(lines, f"result_torch_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
+    emit_int16_row_major(lines, f"result_torch_{name}", (A.astype(np.int32) @ W.astype(np.int32)).astype(np.int16))
 
 
 def generate_lowp_dataset(prec, square_sizes=(32,), model_filter=None):
     lines = [".section .l2,\"aw\",@progbits", f"/* auto-generated, seed={SEED}, prec={prec} */"]
     for s in square_sizes:
         build_square_dataset(lines, s, prec)
+
+    if model_filter is not None:
+        cases = [case for case in MODEL_LAYER_CASES if case["model"] == model_filter]
+        unique_case_by_shape = {}
+        for index, case in enumerate(cases, start=1):
+            name = f"case{index}"
+            m_dim, n_dim, k_dim = case["M"], case["N"], case["K"]
+            shape_key = (m_dim, n_dim, k_dim)
+            lines.append(f"/* model={case['model']}, scale={case['scale']}, layer={case['layer']} */")
+            if shape_key in unique_case_by_shape:
+                emit_case_aliases(lines, name, unique_case_by_shape[shape_key])
+                continue
+            unique_case_by_shape[shape_key] = name
+            build_bench_case_dataset(lines, name, m_dim, n_dim, k_dim, prec)
+        return "\n".join(lines) + "\n"
+
     for name, m_dim, n_dim, k_dim in BENCH_CASES:
         build_bench_case_dataset(lines, name, m_dim, n_dim, k_dim, prec)
     return "\n".join(lines) + "\n"
