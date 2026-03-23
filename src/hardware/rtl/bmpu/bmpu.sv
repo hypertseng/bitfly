@@ -333,7 +333,6 @@ module bmpu
     result_queue_write_pnt_d = result_queue_write_pnt_q;
     result_queue_cnt_d       = result_queue_cnt_q;
     store_word_pnt_d         = store_word_pnt_q;
-
     // Inform our status to the lane controller
     bmpu_ready_o              = !vinsn_queue_full &&
                                 (!vfu_operation_valid_i || !vfu_operation_i.bmpu_en || bmpu_prefetch_ready_i);
@@ -374,9 +373,11 @@ module bmpu
                         && (compute_mblock_q + 3'd1 >= m_block_count_q)
                         && (compute_ai_q + 3'd1 >= gm_q)
                         && (compute_wi_q + 3'd1 >= gn_q);
-      if (lane_id_i == 0) begin
-        $display("[%0t][BMPU_SA] sa_done ctx_compute=(%0d,%0d) ctx_store=(%0d,%0d) col=%0d sa0=%h sa1=%h",
-                 $time, compute_ai_q, compute_wi_q, store_ai_q, store_wi_q, store_col_q,
+      if (1'b0 && lane_id_i == 0) begin
+        if (1'b0) $display("[%0t][BMPU_SA] sa_done c=(ai=%0d,wi=%0d,mb=%0d,nb=%0d) s=(ai=%0d,wi=%0d,mb=%0d,nb=%0d,col=%0d) gm=%0d gn=%0d mbc=%0d nbc=%0d last=%0b issue=%0d commit=%0d sa0=%h sa1=%h",
+                 $time, compute_ai_q, compute_wi_q, compute_mblock_q, compute_nblock_q,
+                 store_ai_q, store_wi_q, store_mblock_q, store_nblock_q, store_col_q,
+                 gm_q, gn_q, m_block_count_q, n_block_count_q, last_compute_block, issue_cnt_q, commit_cnt_q,
                  sa_result[0], sa_result[1]);
       end
 `ifdef BMPMM_DEBUG
@@ -386,6 +387,11 @@ module bmpu
       end
 `endif
       if (last_compute_block) begin
+        if (lane_id_i == 0) begin
+          $display("[%0t][BMPU_POP] bmpmm done issue_p=%0d commit_p=%0d q_issue=%0d q_commit=%0d issue_cnt=%0d commit_cnt=%0d",
+                   $time, vinsn_queue_q.issue_pnt, vinsn_queue_q.commit_pnt,
+                   vinsn_queue_q.issue_cnt, vinsn_queue_q.commit_cnt, issue_cnt_q, commit_cnt_q);
+        end
         // Finished all physical blocks of this BMPMM instruction.
         vinsn_queue_d.issue_cnt -= 1;
         if (vinsn_queue_q.issue_pnt == VInsnQueueDepth - 1) vinsn_queue_d.issue_pnt = '0;
@@ -419,6 +425,11 @@ module bmpu
           end
         end else begin
           if ((|bmpu_act_operand_valid_i) && (|bmpu_wgt_operand_valid_i)) begin
+            if (1'b0 && (lane_id_i == 0) && !compute_active_q) begin
+              if (1'b0) $display("[%0t][BMPU_GO] c=(ai=%0d,wi=%0d,mb=%0d,nb=%0d) actv=%b wgtv=%b first_k=%0b epoch=%0b",
+                       $time, compute_ai_q, compute_wi_q, compute_mblock_q, compute_nblock_q,
+                       bmpu_act_operand_valid_i, bmpu_wgt_operand_valid_i, first_k_round_q, epoch_active_q);
+            end
 `ifdef BMPMM_DEBUG
             if (lane_id_i == 0) begin
               $display("[%0t][BMPU] issue op=%0d id=%0d vl=%0d k_dim=%0d prec=%0d output_en=%0b", $time,
@@ -426,8 +437,8 @@ module bmpu
             end
 `endif
             if (!epoch_active_q) begin
-              if (lane_id_i == 0) begin
-                $display("[%0t][BMPU_IN] act0=%h act1=%h wgt0=%h wgt1=%h", $time,
+              if (1'b0 && lane_id_i == 0) begin
+                if (1'b0) $display("[%0t][BMPU_IN] act0=%h act1=%h wgt0=%h wgt1=%h", $time,
                          bmpu_act_operand_i[0], bmpu_act_operand_i[1], bmpu_wgt_operand_i[0], bmpu_wgt_operand_i[1]);
               end
               epoch_active_d  = 1'b1;
@@ -498,11 +509,13 @@ module bmpu
               end
             end
           end
-
-          if ((lane_id_i == 0) && (vinsn_issue_q.op == BMPSE) && (store_ai_q == '0) && (store_wi_q == '0) && (store_col_q == '0)) begin
-            $display("[%0t][BMPU_DBG] enqueue bmpse qwr=%0d ctx=(%0d,%0d) col=%0d res0=%h res1=%h",
-                     $time, result_queue_write_pnt_q, store_ai_q, store_wi_q, store_col_q,
-                     bmpu_result[0], bmpu_result[1]);
+          if ((lane_id_i == 0) && (vinsn_issue_q.op == BMPSE)) begin
+            if (1'b0) $display("[%0t][BMPU_DBG] enqueue bmpse qwr=%0d issue_cnt=%0d ctx=(ai=%0d,wi=%0d,mb=%0d,nb=%0d,col=%0d) out_ctx=%0d res0=%h res1=%h w={%h,%h,%h,%h}",
+                     $time, result_queue_write_pnt_q, issue_cnt_q, store_ai_q, store_wi_q,
+                     store_mblock_q, store_nblock_q, store_col_q, sa_output_ctx_id,
+                     bmpu_result[0], bmpu_result[1],
+                     result_queue_d[result_queue_write_pnt_q][3].wdata, result_queue_d[result_queue_write_pnt_q][2].wdata,
+                     result_queue_d[result_queue_write_pnt_q][1].wdata, result_queue_d[result_queue_write_pnt_q][0].wdata);
           end
 
           // Bump pointers and counters of the result queue
@@ -547,8 +560,8 @@ module bmpu
                          vinsn_commit_valid && (vinsn_commit.op == BMPSE);
     bmpu_store_data_o  = result_queue_q[result_queue_read_pnt_q][store_word_pnt_q].wdata;
 
-    if ((lane_id_i == 0) && bmpu_store_valid_o) begin
-      $display("[%0t][BMPU_STO] qrd=%0d word=%0d data=%h commit_id=%0d",
+    if (1'b0 && (lane_id_i == 0) && bmpu_store_valid_o) begin
+      if (1'b0) $display("[%0t][BMPU_STO] qrd=%0d word=%0d data=%h commit_id=%0d",
                $time, result_queue_read_pnt_q, store_word_pnt_q, bmpu_store_data_o, vinsn_commit.id);
     end
 
@@ -586,19 +599,20 @@ module bmpu
         commit_cnt_d = vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].vl;
 
       if (vinsn_commit.op == BMPSE) begin
-        if (store_wi_q + 3'd1 < gn_q) begin
-          store_wi_d = store_wi_q + 3'd1;
-        end else begin
-          store_wi_d = '0;
-          store_col_d = '0;
-          if (store_ai_q + 3'd1 < gm_q) begin
-            store_ai_d = store_ai_q + 3'd1;
+        if ((store_col_d == '0) && (store_nblock_d == '0) && (store_mblock_d == '0)) begin
+          if (store_wi_q + 3'd1 < gn_q) begin
+            store_wi_d = store_wi_q + 3'd1;
           end else begin
-            store_ai_d     = '0;
-            epoch_active_d = 1'b0;
-            first_k_round_d = 1'b1;
-            compute_ai_d   = '0;
-            compute_wi_d   = '0;
+            store_wi_d = '0;
+            if (store_ai_q + 3'd1 < gm_q) begin
+              store_ai_d = store_ai_q + 3'd1;
+            end else begin
+              store_ai_d      = '0;
+              epoch_active_d  = 1'b0;
+              first_k_round_d = 1'b1;
+              compute_ai_d    = '0;
+              compute_wi_d    = '0;
+            end
           end
         end
       end
@@ -615,6 +629,14 @@ module bmpu
       $display("[%0t][BMPU] in_valid op=%0d vfu=%0d bmpu_en=%0b out_en=%0b vl=%0d id=%0d queue_full=%0b",
                $time, vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.bmpu_en,
                vfu_operation_i.bmpu_output_en, vfu_operation_i.vl, vfu_operation_i.id, vinsn_queue_full);
+    end
+    if (1'b0 && lane_id_i == 0 && ((vinsn_issue_valid && (vinsn_issue_q.op == BMPSE || vinsn_issue_q.bmpu_en)) ||
+                            (vinsn_commit_valid && (vinsn_commit.op == BMPSE || vinsn_commit.bmpu_en)) ||
+                            (vfu_operation_valid_i && (vfu_operation_i.op == BMPSE || vfu_operation_i.bmpu_en)))) begin
+      if (1'b0) $display("[%0t][BMPU_Q] acc_p=%0d iss_p=%0d com_p=%0d q_issue=%0d q_commit=%0d issue_cnt=%0d commit_cnt=%0d rq_cnt=%0d rq_r=%0d rq_w=%0d issue_op=%0d commit_op=%0d",
+               $time, vinsn_queue_q.accept_pnt, vinsn_queue_q.issue_pnt, vinsn_queue_q.commit_pnt,
+               vinsn_queue_q.issue_cnt, vinsn_queue_q.commit_cnt, issue_cnt_q, commit_cnt_q, result_queue_cnt_q,
+               result_queue_read_pnt_q, result_queue_write_pnt_q, vinsn_issue_q.op, vinsn_commit.op);
     end
     if (!vinsn_queue_full && vfu_operation_valid_i &&
         (vfu_operation_i.bmpu_en || vfu_operation_i.op == BMPSE) &&

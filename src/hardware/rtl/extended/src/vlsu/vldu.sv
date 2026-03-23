@@ -489,7 +489,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
 
 `ifndef SYNTHESIS
         if (issue_is_bmpu_load && (seq_word_wr_offset_q >= 48)) begin
-          $display("[%0t][VLDU_BMPLE] weight=%0b seq_off=%0d addr0=%0d addr1=%0d addr2=%0d addr3=%0d data0=%h data1=%h data2=%h data3=%h",
+          if (1'b0) $display("[%0t][VLDU_BMPLE] weight=%0b seq_off=%0d addr0=%0d addr1=%0d addr2=%0d addr3=%0d data0=%h data1=%h data2=%h data3=%h",
                    $time, issue_is_weight, seq_word_wr_offset_q,
                    result_queue_d[result_queue_write_pnt_q][0].addr,
                    result_queue_d[result_queue_write_pnt_q][1].addr,

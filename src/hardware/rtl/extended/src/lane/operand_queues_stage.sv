@@ -318,7 +318,8 @@ module operand_queues_stage
 
   operand_queue #(
       .CmdBufDepth        (MaskuInsnQueueDepth),
-      .DataBufDepth       (1),
+      .DataBufDepth       (4),
+          .AccessCmdPop        (1'b1),
       .FPUSupport         (FPUSupportNone),
       .NrLanes            (NrLanes),
       .VLEN               (VLEN),
@@ -345,13 +346,16 @@ module operand_queues_stage
   if (VrgatherOpQueueBufDepth % 2 != 0)
     $fatal(1, "Parameter VrgatherOpQueueBufDepth must be power of 2.");
 
+  logic [1:0] bmpu_act_cmd_pop, bmpu_wgt_cmd_pop;
+
   // SA激活值操作数队列f
   generate
     for (genvar i = 0; i < 2; i++) begin : gen_bmpu_act_queues
       // 共享队列实例
       operand_queue #(
           .CmdBufDepth        (BmpuInsnQueueDepth),
-          .DataBufDepth       (5),
+          .DataBufDepth       (4),
+          .AccessCmdPop        (1'b1),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),
           .VLEN               (VLEN),
@@ -364,7 +368,7 @@ module operand_queues_stage
           // 命令输入根据模式选择
           .operand_queue_cmd_i      (operand_queue_cmd_i[BMPUAct0+i]),
           .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[BMPUAct0+i]),
-          .cmd_pop_o                (),
+          .cmd_pop_o                (bmpu_act_cmd_pop[i]),
           // 数据输入根据模式选择
           .operand_i                (operand_i[BMPUAct0+i]),
           .operand_valid_i          (operand_valid_i[BMPUAct0+i]),
@@ -384,7 +388,8 @@ module operand_queues_stage
     for (genvar i = 0; i < 2; i++) begin : gen_bmpu_wgt_queues
       operand_queue #(
           .CmdBufDepth        (BmpuInsnQueueDepth),
-          .DataBufDepth       (5),
+          .DataBufDepth       (4),
+          .AccessCmdPop        (1'b1),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),
           .VLEN               (VLEN),
@@ -396,7 +401,7 @@ module operand_queues_stage
           .lane_id_i                (lane_id_i),
           .operand_queue_cmd_i      (operand_queue_cmd_i[BMPUWgt0+i]),
           .operand_queue_cmd_valid_i(operand_queue_cmd_valid_i[BMPUWgt0+i]),
-          .cmd_pop_o                (),
+          .cmd_pop_o                (bmpu_wgt_cmd_pop[i]),
           .operand_i                (operand_i[BMPUWgt0+i]),
           .operand_valid_i          (operand_valid_i[BMPUWgt0+i]),
           .operand_issued_i         (operand_issued_i[BMPUWgt0+i]),
@@ -411,11 +416,11 @@ module operand_queues_stage
 
 `ifndef SYNTHESIS
   always_ff @(posedge clk_i) begin
-    if (1'b0 && rst_ni && (lane_id_i == '0) &&
+    if (rst_ni && (lane_id_i == '0) &&
         (bmpu_act_operand_valid_o != '0 || bmpu_wgt_operand_valid_o != '0 ||
          operand_issued_i[BMPUAct0] || operand_issued_i[BMPUAct1] ||
          operand_issued_i[BMPUWgt0] || operand_issued_i[BMPUWgt1])) begin
-      $display("[%0t][OPQ_BMPU][lane%0d] in_v=%b%b%b%b in_d=%h/%h/%h/%h issued=%b%b%b%b out_v=%b%b%b%b out_d=%h/%h/%h/%h out_r=%b%b%b%b qready=%b%b%b%b",
+      $display("[%0t][OPQ_BMPU][lane%0d] in_v=%b%b%b%b in_d=%h/%h/%h/%h issued=%b%b%b%b cmd_pop=%b%b%b%b out_v=%b%b%b%b out_d=%h/%h/%h/%h out_r=%b%b%b%b qready=%b%b%b%b",
                $time, lane_id_i,
                operand_valid_i[BMPUAct0], operand_valid_i[BMPUAct1],
                operand_valid_i[BMPUWgt0], operand_valid_i[BMPUWgt1],
@@ -423,6 +428,7 @@ module operand_queues_stage
                operand_i[BMPUWgt0], operand_i[BMPUWgt1],
                operand_issued_i[BMPUAct0], operand_issued_i[BMPUAct1],
                operand_issued_i[BMPUWgt0], operand_issued_i[BMPUWgt1],
+               bmpu_act_cmd_pop[0], bmpu_act_cmd_pop[1], bmpu_wgt_cmd_pop[0], bmpu_wgt_cmd_pop[1],
                bmpu_act_operand_valid_o[0], bmpu_act_operand_valid_o[1],
                bmpu_wgt_operand_valid_o[0], bmpu_wgt_operand_valid_o[1],
                bmpu_act_operand_o[0], bmpu_act_operand_o[1],

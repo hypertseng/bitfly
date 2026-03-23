@@ -288,11 +288,15 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
 
     stu_current_burst_exception_d = 1'b0;
 
-    // Inform the main sequencer if we are idle
+    // Inform the main sequencer if we are idle. For BMPU stores, keep only
+    // one request in flight at a time so a previous store response cannot
+    // retire a later BMPSE prematurely.
     pe_req_ready_o = !vinsn_queue_full;
-
     if (pe_req_valid_i && pe_req_i.op == BMPSE) begin
-      is_bmpu_store_d = 1'b1;
+      pe_req_ready_o = !vinsn_queue_full && vinsn_queue_empty && !is_bmpu_store_q;
+      if (pe_req_ready_o) begin
+        is_bmpu_store_d = 1'b1;
+      end
     end
 
     /////////////////////////////////////
@@ -353,7 +357,7 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
               automatic int unsigned vrf_offset;
               automatic int unsigned vrf_lane;
               if (is_bmpu_store_q) begin
-                automatic int unsigned bmpu_local_byte = axi_byte - lower_byte;
+                automatic int unsigned bmpu_local_byte = vrf_seq_byte;
                 automatic int unsigned bmpu_elem = bmpu_local_byte >> 1;
                 automatic int unsigned bmpu_col  = bmpu_elem / (2 * NrLanes);
                 automatic int unsigned bmpu_row  = bmpu_elem % (2 * NrLanes);
@@ -386,7 +390,7 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
         end : beats_complete
 
         // We consumed a whole word from the lanes
-        if (vrf_pnt_d == NrLanes*8 || vrf_cnt_d == issue_cnt_bytes_q) begin : vrf_word_done
+        if (vrf_pnt_d == NrLanes*8 || (!is_bmpu_store_q && (vrf_cnt_d == issue_cnt_bytes_q))) begin : vrf_word_done
           // Reset the pointer in the VRF word
           vrf_pnt_d         = '0;
           vrf_cnt_d         = '0;
@@ -584,7 +588,7 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
 
       is_bmpu_store_q <= is_bmpu_store_d;
 `ifndef SYNTHESIS
-      if (!is_bmpu_store_q && is_bmpu_store_d) begin
+      if (1'b0 && !is_bmpu_store_q && is_bmpu_store_d) begin
         $display("[%0t][VSTU] bmpu store armed: commit_cnt=%0d issue_cnt=%0d",
                  $time, vinsn_queue_d.commit_cnt, vinsn_queue_d.issue_cnt);
       end
@@ -609,6 +613,19 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
         end
       end else begin
         dbg_b_wait_cycles_q <= '0;
+      end
+
+      if (1'b0 && axi_w_valid_o && is_bmpu_store_q) begin
+        if (1'b0) $display("[%0t][VSTU_DBG] id=%0d rem=%0d vrf_pnt=%0d addr=%h len=%0d req_len=%0d strb=%h axi=%h stu={%h,%h,%h,%h}",
+                 $time, vinsn_issue_q.id, issue_cnt_bytes_q, vrf_pnt_q,
+                 axi_addrgen_req_i.addr, axi_len_q, axi_addrgen_req_i.len, axi_w_o.strb, axi_w_o.data,
+                 stu_operand[3], stu_operand[2], stu_operand[1], stu_operand[0]);
+      end else if (1'b0 && is_bmpu_store_q && (issue_cnt_bytes_q == 160)) begin
+        if (1'b0) $display("[%0t][VSTU_STALL160] id=%0d issue_v=%0b addrgen_v=%0b is_load=%0b ex=%0b wready=%0b axlen=%0d req_len=%0d rem=%0d vrf_pnt=%0d stu_v=%b mask_v=%b vm=%0b",
+                 $time, vinsn_issue_q.id, vinsn_issue_valid, axi_addrgen_req_valid_i,
+                 axi_addrgen_req_i.is_load, axi_addrgen_req_i.is_exception, axi_w_ready_i,
+                 axi_len_q, axi_addrgen_req_i.len, issue_cnt_bytes_q, vrf_pnt_q,
+                 stu_operand_valid, mask_valid_q, vinsn_issue_q.vm);
       end
 
       if (1'b0 && axi_b_valid_i && (vinsn_queue_q.issue_pnt != vinsn_queue_q.commit_pnt)) begin

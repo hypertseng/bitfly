@@ -166,6 +166,23 @@ int main()
             continue;
         }
 
+        for (unsigned long dbg_col = 20; dbg_col < 24; ++dbg_col)
+        {
+            printf("[mytest][DBG] packed col%lu={", dbg_col);
+            for (unsigned long dbg_row = 0; dbg_row < sc->cfg.mtile; ++dbg_row)
+            {
+                unsigned long packed_idx = dbg_col * sc->cfg.mtile + dbg_row;
+                printf(dbg_row + 1 == sc->cfg.mtile ? "%d" : "%d, ", data.result_hp[packed_idx]);
+            }
+            printf("} gold={");
+            for (unsigned long dbg_row = 0; dbg_row < sc->cfg.mtile; ++dbg_row)
+            {
+                unsigned long gold_idx = dbg_col * sc->M + dbg_row;
+                printf(dbg_row + 1 == sc->cfg.mtile ? "%d" : "%d, ", data.result_torch[gold_idx]);
+            }
+            printf("}\n");
+        }
+
         printf("[mytest][DBG] unpack_begin %s\n", sc->layer);
         unpack_packed_tiles_to_col_major(data.result_lp,
                                          data.result_hp,

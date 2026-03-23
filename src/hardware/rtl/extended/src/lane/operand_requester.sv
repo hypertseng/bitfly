@@ -298,6 +298,9 @@ module operand_requester
     logic [NrVInsn-1:0] waw_hazard_counter;
   } requester_metadata_t;
 
+  requester_metadata_t [NrOperandQueues-1:0] requester_metadata_shadow_q;
+  logic [NrOperandQueues-1:0][6:0]          request_cnt_shadow_q;
+
   for (genvar b = 0; b < NrBanks; b++) begin
     for (genvar r = 0; r < NrOperandQueues; r++) begin
       assign lane_operand_req[b][r] = lane_operand_req_transposed[r][b];
@@ -375,6 +378,11 @@ module operand_requester
 
     logic [6:0] request_cnt_d, request_cnt_q;
 
+    always_comb begin
+      requester_metadata_shadow_q[requester_index] = requester_metadata_q;
+      request_cnt_shadow_q[requester_index] = request_cnt_q;
+    end
+
     always_comb begin : operand_requester
       // Helper local variables
       automatic operand_queue_cmd_t  operand_queue_cmd_tmp;
@@ -387,6 +395,11 @@ module operand_requester
       automatic elen_t               vector_body_len_byte;
       automatic elen_t               scaled_vector_len_elements;
       automatic vaddr_t              bmpu_bank_addr_init;
+      automatic logic                bmpu_word_ahead_hold;
+      automatic int unsigned         bmpu_peer_index;
+      automatic int unsigned         bmpu_progress_idx;
+      automatic int unsigned         bmpu_peer_progress_idx;
+      automatic int unsigned         bmpu_allowed_lead;
 
       // Bank we are currently requesting
       automatic int                  bank = requester_metadata_q.addr[idx_width(NrBanks)-1:0];
@@ -524,14 +537,27 @@ module operand_requester
 
           if (operand_queue_ready_i[requester_index]) begin
             automatic vlen_t num_elements;
+            automatic int unsigned startup_delay;
+            automatic logic bmpu_startup_hold;
+            startup_delay = 0;
+            bmpu_startup_hold = 1'b0;
+            bmpu_word_ahead_hold  = 1'b0;
+            bmpu_peer_index = requester_index;
+            bmpu_progress_idx = 0;
+            bmpu_peer_progress_idx = 0;
+            bmpu_allowed_lead = 0;
 
             // Operand request
-            lane_operand_req_transposed[requester_index][bank] = !stall;
+            lane_operand_req_transposed[requester_index][bank] = !stall && !bmpu_startup_hold && !bmpu_word_ahead_hold;
             operand_payload[requester_index] = '{
                 addr   : requester_metadata_q.addr >> $clog2(NrBanks),
                 opqueue: opqueue_e'(requester_index),
                 default: '0  // this is a read operation
             };
+
+            if (bmpu_startup_hold) begin
+              request_cnt_d = request_cnt_q + 1'b1;
+            end
 
             // Received a grant.
             if (|operand_requester_gnt) begin : op_req_grant
@@ -543,8 +569,8 @@ module operand_requester
               end
 `endif
 `ifndef SYNTHESIS
-              if ((lane_id_i == '0) && ((requester_index == BMPUAct0) || (requester_index == BMPUAct1)) &&
-                  ((requester_metadata_q.addr >> $clog2(NrBanks)) < 10)) begin
+              if ((lane_id_i == '0) && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1) &&
+                  (requester_metadata_q.len <= 96) && (requester_metadata_q.len != 0)) begin
                 $display("[%0t][OPREQ_BMPU][lane%0d] q=%0d bank=%0d row=%0d addr=%0d req_cnt=%0d len=%0d replay=%0b self=%0d repeat=%0d word=%0d",
                          $time, lane_id_i, requester_index, bank,
                          requester_metadata_q.addr >> $clog2(NrBanks), requester_metadata_q.addr,
@@ -554,11 +580,7 @@ module operand_requester
 `endif
               // Bump the address pointer
               if (requester_index > 4 && requester_index < 13) begin
-                automatic int unsigned startup_delay;
-                startup_delay = (requester_index < 9) ? (requester_index - 5) : (requester_index - 9);
-                if (request_cnt_q < startup_delay) begin
-                  requester_metadata_d.addr = requester_metadata_q.addr;
-                end else if (requester_metadata_q.bmpu_replay_en) begin
+                if (requester_metadata_q.bmpu_replay_en) begin
                   automatic int unsigned next_self_idx;
                   automatic int unsigned next_repeat_idx;
                   automatic int unsigned next_word_idx;
@@ -597,7 +619,7 @@ module operand_requester
                   requester_metadata_d.bmpu_word_idx   = vlen_t'(next_word_idx);
                   row_base_words = next_self_idx * requester_metadata_q.bmpu_block_words;
                   requester_metadata_d.addr = requester_metadata_q.bmpu_base_addr +
-                      vaddr_t'((row_base_words + next_word_idx) << $clog2(NrBanks));
+                                              vaddr_t'((row_base_words + next_word_idx) << 3);
                 end else begin
                   requester_metadata_d.addr = requester_metadata_q.addr + 4'b1000;
                 end
@@ -613,7 +635,12 @@ module operand_requester
                 requester_metadata_d.len = requester_metadata_q.len - num_elements;
               end
 
-              request_cnt_d += 1;
+              if (requester_metadata_q.bmpu_replay_en &&
+                  ((requester_metadata_q.bmpu_word_idx + 1) >= requester_metadata_q.bmpu_block_words)) begin
+                request_cnt_d = 0;
+              end else begin
+                request_cnt_d += 1;
+              end
             end : op_req_grant
 
             // Finished requesting all the elements
@@ -655,6 +682,17 @@ module operand_requester
           end
         end
       endcase
+`ifndef SYNTHESIS
+      if ((lane_id_i == 0) && ((requester_index == BMPUAct0) || (requester_index == BMPUAct1) ||
+                                (requester_index == BMPUWgt0) || (requester_index == BMPUWgt1)) &&
+          (state_q == REQUESTING) && (requester_metadata_q.len <= 192) && (requester_metadata_q.len != 0)) begin
+        $display("[%0t][OPREQ_TAIL][lane%0d] q=%0d addr=%0d len=%0d req_cnt=%0d self=%0d repeat=%0d word=%0d stall=%0b oq_ready=%0b issued=%0b req=%b",
+                 $time, lane_id_i, requester_index, requester_metadata_q.addr, requester_metadata_q.len,
+                 request_cnt_q, requester_metadata_q.bmpu_self_idx, requester_metadata_q.bmpu_repeat_idx,
+                 requester_metadata_q.bmpu_word_idx, stall, operand_queue_ready_i[requester_index], operand_issued_o[requester_index], lane_operand_req_transposed[requester_index]);
+      end
+`endif
+
       // Always keep the hazard bits up to date with the global hazard table
       requester_metadata_d.hazard &= global_hazard_table_i[requester_metadata_d.id];
 

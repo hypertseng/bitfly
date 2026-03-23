@@ -1062,10 +1062,7 @@ module lane_sequencer
                 cvt_resize        : pe_req.cvt_resize,
                 vtype             : pe_req.vtype,
                 vl                :
-                (pe_req.k_dim * m_block_count * n_block_count)
-                + (
-                i << 3
-                ),
+                (pe_req.k_dim * m_block_count * n_block_count),
                 vstart            : vfu_operation_d.vstart,
                 bmpu_replay_en    : (m_block_count != 4'd1) || (n_block_count != 4'd1),
                 bmpu_self_blocks  : m_block_count[2:0],
@@ -1089,10 +1086,7 @@ module lane_sequencer
                 cvt_resize        : pe_req.cvt_resize,
                 vtype             : pe_req.vtype,
                 vl                :
-                (pe_req.k_dim * bmp_planes * n_block_count * m_block_count)
-                + (
-                i << 3
-                ),
+                (pe_req.k_dim * bmp_planes * n_block_count * m_block_count),
                 vstart            : vfu_operation_d.vstart,
                 bmpu_replay_en    : (m_block_count != 4'd1) || (n_block_count != 4'd1),
                 bmpu_self_blocks  : n_block_count[2:0],

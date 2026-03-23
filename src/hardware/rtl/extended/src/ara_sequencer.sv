@@ -583,14 +583,31 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
           pe_req_valid_d = 1'b0;
         // 4) In the other cases, we need an ack from both addrgen and lanes, so keep up the req
 
-        // Wait for the address translation
-        if ((is_load(pe_req_d.op) || is_store(pe_req_d.op)) && addrgen_ack_i) begin
-          state_d             = IDLE;
-          ara_req_ready_o     = 1'b1;
-          ara_resp_valid_o    = 1'b1;
-          ara_resp_o.exception = addrgen_exception_i;
+        // Loads complete once the addrgen accepts them.
+        if (is_load(pe_req_d.op) && addrgen_ack_i) begin
+          state_d                  = IDLE;
+          ara_req_ready_o          = 1'b1;
+          ara_resp_valid_o         = 1'b1;
+          ara_resp_o.exception     = addrgen_exception_i;
           ara_resp_o.exception_vstart = addrgen_exception_vstart_i;
           ara_resp_o.fof_exception = addrgen_fof_exception_i;
+        end
+
+        // Regular stores can retire once the addrgen accepts them, but BMPSE must
+        // wait until the matching store-unit instruction actually commits.
+        if (is_store(pe_req_d.op)) begin
+          if (addrgen_ack_i && ((pe_req_d.op != BMPSE) || addrgen_exception_i.valid || addrgen_fof_exception_i)) begin
+            state_d                  = IDLE;
+            ara_req_ready_o          = 1'b1;
+            ara_resp_valid_o         = 1'b1;
+            ara_resp_o.exception     = addrgen_exception_i;
+            ara_resp_o.exception_vstart = addrgen_exception_vstart_i;
+            ara_resp_o.fof_exception = addrgen_fof_exception_i;
+          end else if ((pe_req_d.op == BMPSE) && pe_resp_i[NrLanes+OffsetStore].vinsn_done[pe_req_d.id]) begin
+            state_d              = IDLE;
+            ara_req_ready_o      = 1'b1;
+            ara_resp_valid_o     = 1'b1;
+          end
         end
 
         // Wait for the scalar result
