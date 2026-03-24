@@ -375,13 +375,15 @@ void RISCVInstPrinter::printBMPCFGImm25(const MCInst *MI, unsigned OpNo,
 {
   int64_t Imm = MI->getOperand(OpNo).getImm();
   int64_t Prec = (Imm >> 22) & 0x7;
-  int64_t KEnc = (Imm >> 5) & 0x1FFFF;
-  int64_t MCode = (Imm >> 2) & 0x7;
-  int64_t NCode = Imm & 0x3;
+  int64_t KCode = (Imm >> 17) & 0x1F;
+  int64_t MCode = (Imm >> 13) & 0xF;
+  int64_t NCode = (Imm >> 10) & 0x7;
+  int64_t GMCode = (Imm >> 7) & 0x7;
+  int64_t GNCode = (Imm >> 4) & 0x7;
 
-  int64_t GM = ((KEnc >> 15) & 0x3) + 1;
-  int64_t GN = ((KEnc >> 13) & 0x3) + 1;
-  int64_t K = KEnc & 0x1FFF;
+  int64_t GM = GMCode + 1;
+  int64_t GN = GNCode + 1;
+  int64_t K = (KCode + 1) * 8;
 
   int64_t MTile = 8 + MCode * 4;
   int64_t NTile = 16 + NCode * 16;

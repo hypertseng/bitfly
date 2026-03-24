@@ -4399,10 +4399,14 @@ ParseStatus RISCVAsmParser::parseBMPCFGImm(OperandVector &Operands)
   // Extended forms:
   //   bmpcfg prec, k, mtile, ntile
   //   bmpcfg prec, k, mtile, ntile, gm, gn
-  // Encoded kdim17 layout:
-  //   kdim17[16:15] = gm_code (gm = gm_code + 1)
-  //   kdim17[14:13] = gn_code (gn = gn_code + 1)
-  //   kdim17[12:0]  = k_low13
+  // Encoded bmpcfg imm25 layout:
+  //   imm25[24:22] = prec
+  //   imm25[21:17] = k_code      (K = (k_code + 1) * 8)
+  //   imm25[16:13] = mtile_code  (mtile = 8 + mtile_code * 4)
+  //   imm25[12:10] = ntile_code  (ntile = 16 + ntile_code * 16)
+  //   imm25[9:7]   = gm_code     (gm = gm_code + 1)
+  //   imm25[6:4]   = gn_code     (gn = gn_code + 1)
+  //   imm25[3:0]   = reserved    (must be zero)
   int64_t MTile = 8;
   int64_t NTile = 16;
   int64_t GM = 1;
@@ -4461,68 +4465,28 @@ ParseStatus RISCVAsmParser::parseBMPCFGImm(OperandVector &Operands)
   if (Prec < 0 || Prec > 7)
     return Error(S, "precision must be 3-bit");
 
-  if (K < 0 || K > 0x1FFF)
-    return Error(S, "k overflow (max 8191 with gm/gn encoding)");
+  if (K < 8 || K > 256 || (K & 0x7) != 0)
+    return Error(S, "k must be in {8,16,...,256}");
 
-  if (GM < 1 || GM > 4)
-    return Error(S, "gm must be in [1,4]");
+  if (GM < 1 || GM > 8)
+    return Error(S, "gm must be in [1,8]");
 
-  if (GN < 1 || GN > 4)
-    return Error(S, "gn must be in [1,4]");
+  if (GN < 1 || GN > 8)
+    return Error(S, "gn must be in [1,8]");
 
-  unsigned MCode = 0;
-  switch (MTile)
-  {
-  case 8:
-    MCode = 0;
-    break;
-  case 12:
-    MCode = 1;
-    break;
-  case 16:
-    MCode = 2;
-    break;
-  case 20:
-    MCode = 3;
-    break;
-  case 24:
-    MCode = 4;
-    break;
-  case 28:
-    MCode = 5;
-    break;
-  case 32:
-    MCode = 6;
-    break;
-  default:
-    return Error(S, "mtile must be one of {8,12,16,20,24,28,32}");
-  }
+  if (MTile < 8 || MTile > 64 || ((MTile - 8) & 0x3) != 0)
+    return Error(S, "mtile must be in {8,12,...,64}");
 
-  unsigned NCode = 0;
-  switch (NTile)
-  {
-  case 16:
-    NCode = 0;
-    break;
-  case 32:
-    NCode = 1;
-    break;
-  case 48:
-    NCode = 2;
-    break;
-  case 64:
-    NCode = 3;
-    break;
-  default:
-    return Error(S, "ntile must be one of {16,32,48,64}");
-  }
+  if (NTile < 16 || NTile > 128 || ((NTile - 16) & 0xF) != 0)
+    return Error(S, "ntile must be in {16,32,...,128}");
 
+  unsigned KCode = static_cast<unsigned>((K >> 3) - 1);
+  unsigned MCode = static_cast<unsigned>((MTile - 8) >> 2);
+  unsigned NCode = static_cast<unsigned>((NTile - 16) >> 4);
   unsigned GMCode = static_cast<unsigned>(GM - 1);
   unsigned GNCode = static_cast<unsigned>(GN - 1);
-  unsigned KEnc = (GMCode << 15) | (GNCode << 13) | static_cast<unsigned>(K);
-
-  unsigned Cfg5 = (MCode << 2) | NCode;
-  unsigned Packed = (Prec << 22) | (KEnc << 5) | Cfg5;
+  unsigned Packed = (Prec << 22) | (KCode << 17) | (MCode << 13) |
+                    (NCode << 10) | (GMCode << 7) | (GNCode << 4);
 
   Operands.push_back(RISCVOperand::createBMPCFGImm(Packed, S, getLoc()));
 
