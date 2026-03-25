@@ -192,7 +192,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     logic [6:0]         ntile;
     logic [2:0]         gm;
     logic [2:0]         gn;
-    logic [2:0]         group_g;
+    logic [5:0]         group_g;
     logic               bmpu_en;
     logic               is_weight;
     logic               bmpu_output_en;
@@ -235,6 +235,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic                                       bmpu_vfu_operation_valid_d, bmpu_vfu_operation_valid_q;
   logic                                       bmpu_store_pending_d, bmpu_store_pending_q;
   vfu_operation_t                             bmpu_store_pending_op_d, bmpu_store_pending_op_q;
+  logic                                       bmpu_store_seen_d, bmpu_store_seen_q;
+  vid_t                                       bmpu_store_seen_id_d, bmpu_store_seen_id_q;
   logic                                       alu_ready;
   logic                 [NrVInsn-1:0]         alu_vinsn_done;
   logic                                       mfpu_ready;
@@ -249,6 +251,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
 
   `FF(bmpu_store_pending_q, bmpu_store_pending_d, 1'b0, clk_i, rst_ni);
   `FF(bmpu_store_pending_op_q, bmpu_store_pending_op_d, '0, clk_i, rst_ni);
+  `FF(bmpu_store_seen_q, bmpu_store_seen_d, 1'b0, clk_i, rst_ni);
+  `FF(bmpu_store_seen_id_q, bmpu_store_seen_id_d, '0, clk_i, rst_ni);
   `FF(bmpu_vfu_operation_q, bmpu_vfu_operation_d, '0, clk_i, rst_ni);
   `FF(bmpu_vfu_operation_valid_q, bmpu_vfu_operation_valid_d, 1'b0, clk_i, rst_ni);
 
@@ -308,6 +312,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     .mfpu_ready_i           (mfpu_ready           ),
     .mfpu_vinsn_done_i      (mfpu_vinsn_done      ),
     .bmpu_ready_i            (bmpu_ready            ),
+    .bmpu_prefetch_ready_i (bmpu_prefetch_ready   ),
     .bmpu_insn_done_i        (bmpu_insn_done        ),
     // From the MASKU - for VRGATHER/VCOMPRESS
     .masku_vrgat_req_valid_i(masku_vrgat_req_valid_i ),
@@ -316,12 +321,25 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   );
 
   always_comb begin
+    logic same_bmpse_req;
+
     bmpu_store_pending_d = bmpu_store_pending_q;
     bmpu_store_pending_op_d = bmpu_store_pending_op_q;
+    bmpu_store_seen_d = 1'b0;
+    bmpu_store_seen_id_d = bmpu_store_seen_id_q;
 
-    if (vfu_operation_valid && (vfu_operation.op == BMPSE) && !bmpu_store_pending_q) begin
+    same_bmpse_req = vfu_operation_valid && (vfu_operation.op == BMPSE) &&
+                     bmpu_store_seen_q && (bmpu_store_seen_id_q == vfu_operation.id);
+    if (same_bmpse_req) begin
+      bmpu_store_seen_d = 1'b1;
+    end
+
+    if (vfu_operation_valid && (vfu_operation.op == BMPSE) &&
+        !bmpu_store_pending_q && !same_bmpse_req) begin
       bmpu_store_pending_d = 1'b1;
       bmpu_store_pending_op_d = vfu_operation;
+      bmpu_store_seen_d = 1'b1;
+      bmpu_store_seen_id_d = vfu_operation.id;
     end else if (bmpu_store_pending_q && bmpu_ready) begin
       bmpu_store_pending_d = 1'b0;
     end
@@ -550,7 +568,7 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
 
 `ifndef SYNTHESIS
   always_ff @(posedge clk_i) begin
-    if (lane_id_i < 2) begin
+    if (1'b0 && lane_id_i < 2) begin
       if (vrf_req[4] || vrf_req[5]) begin
         $display("[%0t][LANE_VRF][lane%0d] b4 req=%0b wen=%0b addr=%0d tgt=%0d wdata=%h be=%h | b5 req=%0b wen=%0b addr=%0d tgt=%0d wdata=%h be=%h",
                  $time,

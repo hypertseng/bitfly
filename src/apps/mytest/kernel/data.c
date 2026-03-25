@@ -5,42 +5,86 @@ BenchKernelData get_bench_kernel_data(int index)
 {
     switch (index)
     {
-#ifdef HAS_KERNEL_DATA_CASE_BINARY
     case 0:
         return (BenchKernelData){
-            .activation_lp = activation_lp_case_binary,
-            .weight_lp = weight_lp_case_binary,
-            .result_lp = result_lp_case_binary,
-            .activation_hp = activation_hp_case_binary,
-            .weight_hp = weight_hp_case_binary,
-            .result_hp = result_hp_case_binary,
-            .result_torch = result_torch_case_binary,
+            .activation_lp = activation_lp_case1,
+            .weight_lp = weight_lp_case1,
+            .result_lp = result_lp_case1,
+            .activation_hp = activation_hp_case1,
+            .weight_hp = weight_hp_case1,
+            .result_hp = result_hp_case1,
+            .result_torch = result_torch_case1,
         };
-#endif
-#ifdef HAS_KERNEL_DATA_CASE_INT2
     case 1:
         return (BenchKernelData){
-            .activation_lp = activation_lp_case_int2,
-            .weight_lp = weight_lp_case_int2,
-            .result_lp = result_lp_case_int2,
-            .activation_hp = activation_hp_case_int2,
-            .weight_hp = weight_hp_case_int2,
-            .result_hp = result_hp_case_int2,
-            .result_torch = result_torch_case_int2,
+            .activation_lp = activation_lp_case2,
+            .weight_lp = weight_lp_case2,
+            .result_lp = result_lp_case2,
+            .activation_hp = activation_hp_case2,
+            .weight_hp = weight_hp_case2,
+            .result_hp = result_hp_case2,
+            .result_torch = result_torch_case2,
         };
-#endif
-#ifdef HAS_KERNEL_DATA_CASE_INT4
     case 2:
         return (BenchKernelData){
-            .activation_lp = activation_lp_case_int4,
-            .weight_lp = weight_lp_case_int4,
-            .result_lp = result_lp_case_int4,
-            .activation_hp = activation_hp_case_int4,
-            .weight_hp = weight_hp_case_int4,
-            .result_hp = result_hp_case_int4,
-            .result_torch = result_torch_case_int4,
+            .activation_lp = activation_lp_case3,
+            .weight_lp = weight_lp_case3,
+            .result_lp = result_lp_case3,
+            .activation_hp = activation_hp_case3,
+            .weight_hp = weight_hp_case3,
+            .result_hp = result_hp_case3,
+            .result_torch = result_torch_case3,
         };
-#endif
+    case 3:
+        return (BenchKernelData){
+            .activation_lp = activation_lp_case4,
+            .weight_lp = weight_lp_case4,
+            .result_lp = result_lp_case4,
+            .activation_hp = activation_hp_case4,
+            .weight_hp = weight_hp_case4,
+            .result_hp = result_hp_case4,
+            .result_torch = result_torch_case4,
+        };
+    case 4:
+        return (BenchKernelData){
+            .activation_lp = activation_lp_case5,
+            .weight_lp = weight_lp_case5,
+            .result_lp = result_lp_case5,
+            .activation_hp = activation_hp_case5,
+            .weight_hp = weight_hp_case5,
+            .result_hp = result_hp_case5,
+            .result_torch = result_torch_case5,
+        };
+    case 5:
+        return (BenchKernelData){
+            .activation_lp = activation_lp_case6,
+            .weight_lp = weight_lp_case6,
+            .result_lp = result_lp_case6,
+            .activation_hp = activation_hp_case6,
+            .weight_hp = weight_hp_case6,
+            .result_hp = result_hp_case6,
+            .result_torch = result_torch_case6,
+        };
+    case 6:
+        return (BenchKernelData){
+            .activation_lp = activation_lp_case7,
+            .weight_lp = weight_lp_case7,
+            .result_lp = result_lp_case7,
+            .activation_hp = activation_hp_case7,
+            .weight_hp = weight_hp_case7,
+            .result_hp = result_hp_case7,
+            .result_torch = result_torch_case7,
+        };
+    case 7:
+        return (BenchKernelData){
+            .activation_lp = activation_lp_case8,
+            .weight_lp = weight_lp_case8,
+            .result_lp = result_lp_case8,
+            .activation_hp = activation_hp_case8,
+            .weight_hp = weight_hp_case8,
+            .result_hp = result_hp_case8,
+            .result_torch = result_torch_case8,
+        };
     default:
         return (BenchKernelData){0};
     }

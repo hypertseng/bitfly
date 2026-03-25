@@ -44,183 +44,183 @@ void static inline get_config(unsigned long int K)
     switch (K)
     {
     case 8:
-        asm volatile("mpcfg 8\n\t");
+        asm volatile("bmpcfg 0, 8, 16, 32, 1, 1\n\t");
         break;
     case 16:
-        asm volatile("mpcfg 16\n\t");
+        asm volatile("bmpcfg 0, 16, 16, 32, 1, 1\n\t");
         break;
     case 24:
-        asm volatile("mpcfg 24\n\t");
+        asm volatile("bmpcfg 0, 24, 16, 32, 1, 1\n\t");
         break;
     case 32:
-        asm volatile("mpcfg 32\n\t");
+        asm volatile("bmpcfg 0, 32, 16, 32, 1, 1\n\t");
         break;
     case 40:
-        asm volatile("mpcfg 40\n\t");
+        asm volatile("bmpcfg 0, 40, 16, 32, 1, 1\n\t");
     case 48:
-        asm volatile("mpcfg 48\n\t");
+        asm volatile("bmpcfg 0, 48, 16, 32, 1, 1\n\t");
         break;
     case 56:
-        asm volatile("mpcfg 56\n\t");
+        asm volatile("bmpcfg 0, 56, 16, 32, 1, 1\n\t");
         break;
     case 64:
-        asm volatile("mpcfg 64\n\t");
+        asm volatile("bmpcfg 0, 64, 16, 32, 1, 1\n\t");
         break;
     case 72:
-        asm volatile("mpcfg 72\n\t");
+        asm volatile("bmpcfg 0, 72, 16, 32, 1, 1\n\t");
         break;
     case 80:
-        asm volatile("mpcfg 80\n\t");
+        asm volatile("bmpcfg 0, 80, 16, 32, 1, 1\n\t");
         break;
     case 88:
-        asm volatile("mpcfg 88\n\t");
+        asm volatile("bmpcfg 0, 88, 16, 32, 1, 1\n\t");
         break;
     case 96:
-        asm volatile("mpcfg 96\n\t");
+        asm volatile("bmpcfg 0, 96, 16, 32, 1, 1\n\t");
         break;
     case 104:
-        asm volatile("mpcfg 104\n\t");
+        asm volatile("bmpcfg 0, 104, 16, 32, 1, 1\n\t");
         break;
     case 112:
-        asm volatile("mpcfg 112\n\t");
+        asm volatile("bmpcfg 0, 112, 16, 32, 1, 1\n\t");
         break;
     case 120:
-        asm volatile("mpcfg 120\n\t");
+        asm volatile("bmpcfg 0, 120, 16, 32, 1, 1\n\t");
         break;
     case 128:
-        asm volatile("mpcfg 128\n\t");
+        asm volatile("bmpcfg 0, 128, 16, 32, 1, 1\n\t");
         break;
     case 136:
-        asm volatile("mpcfg 136\n\t");
+        asm volatile("bmpcfg 0, 136, 16, 32, 1, 1\n\t");
         break;
     case 144:
-        asm volatile("mpcfg 144\n\t");
+        asm volatile("bmpcfg 0, 144, 16, 32, 1, 1\n\t");
         break;
     case 152:
-        asm volatile("mpcfg 152\n\t");
+        asm volatile("bmpcfg 0, 152, 16, 32, 1, 1\n\t");
         break;
     case 160:
-        asm volatile("mpcfg 160\n\t");
+        asm volatile("bmpcfg 0, 160, 16, 32, 1, 1\n\t");
         break;
     case 168:
-        asm volatile("mpcfg 168\n\t");
+        asm volatile("bmpcfg 0, 168, 16, 32, 1, 1\n\t");
         break;
     case 176:
-        asm volatile("mpcfg 176\n\t");
+        asm volatile("bmpcfg 0, 176, 16, 32, 1, 1\n\t");
         break;
     case 184:
-        asm volatile("mpcfg 184\n\t");
+        asm volatile("bmpcfg 0, 184, 16, 32, 1, 1\n\t");
         break;
     case 192:
-        asm volatile("mpcfg 192\n\t");
+        asm volatile("bmpcfg 0, 192, 16, 32, 1, 1\n\t");
         break;
     case 200:
-        asm volatile("mpcfg 200\n\t");
+        asm volatile("bmpcfg 0, 200, 16, 32, 1, 1\n\t");
         break;
     case 208:
-        asm volatile("mpcfg 208\n\t");
+        asm volatile("bmpcfg 0, 208, 16, 32, 1, 1\n\t");
         break;
     case 216:
-        asm volatile("mpcfg 216\n\t");
+        asm volatile("bmpcfg 0, 216, 16, 32, 1, 1\n\t");
         break;
     case 224:
-        asm volatile("mpcfg 224\n\t");
+        asm volatile("bmpcfg 0, 224, 16, 32, 1, 1\n\t");
         break;
     case 232:
-        asm volatile("mpcfg 232\n\t");
+        asm volatile("bmpcfg 0, 232, 16, 32, 1, 1\n\t");
         break;
     case 240:
-        asm volatile("mpcfg 240\n\t");
+        asm volatile("bmpcfg 0, 240, 16, 32, 1, 1\n\t");
         break;
     case 248:
-        asm volatile("mpcfg 248\n\t");
+        asm volatile("bmpcfg 0, 248, 16, 32, 1, 1\n\t");
         break;
     case 256:
-        asm volatile("mpcfg 256\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 264:
-        asm volatile("mpcfg 264\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 272:
-        asm volatile("mpcfg 272\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 280:
-        asm volatile("mpcfg 280\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 288:
-        asm volatile("mpcfg 288\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 296:
-        asm volatile("mpcfg 296\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 304:
-        asm volatile("mpcfg 304\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 312:
-        asm volatile("mpcfg 312\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 320:
-        asm volatile("mpcfg 320\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 328:
-        asm volatile("mpcfg 328\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 336:
-        asm volatile("mpcfg 336\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 344:
-        asm volatile("mpcfg 344\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 352:
-        asm volatile("mpcfg 352\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 360:
-        asm volatile("mpcfg 360\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 368:
-        asm volatile("mpcfg 368\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 376:
-        asm volatile("mpcfg 376\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 384:
-        asm volatile("mpcfg 384\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 392:
-        asm volatile("mpcfg 392\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 400:
-        asm volatile("mpcfg 400\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 408:
-        asm volatile("mpcfg 408\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 416:
-        asm volatile("mpcfg 416\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 424:
-        asm volatile("mpcfg 424\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 432:
-        asm volatile("mpcfg 432\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 440:
-        asm volatile("mpcfg 440\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 448:
-        asm volatile("mpcfg 448\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 456:
-        asm volatile("mpcfg 456\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 464:
-        asm volatile("mpcfg 464\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 472:
-        asm volatile("mpcfg 472\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     case 480:
-        asm volatile("mpcfg 480\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
         break;
     }
 }
@@ -231,10 +231,10 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
 {
     int tm = (M + 15) / 16;
     int tn = (N + 31) / 32;
-    int tk = (K + 479) / 480;
+    int tk = (K + 255) / 256;
     if (tk > 1)
     {
-        asm volatile("mpcfg 480\n\t");
+        asm volatile("bmpcfg 0, 256, 16, 32, 1, 1\n\t");
     }
     for (int i = 0; i < tm; i++)
     {
@@ -246,26 +246,26 @@ void binary_mixed_matmul(int16_t *c, const int8_t *a, const int8_t *b,
             for (int k = 0; k < tk; k++)
             {
                 if (k == tk - 1){
-                    if ((K % 480) % 8){
-                        get_config((8 - (K % 480) % 8) + (K % 480));
+                    if (((K % 256) % 8)){
+                        get_config((8 - (K % 256) % 8) + (K % 256));
                     }else{
                         get_config(K);
                     }
                 }
-                const int8_t *a_ = a + i * 16 * K + k * 16 * 480;
-                const int8_t *b_ = b + j * 32 * K / 8 + k * 32 * 480 / 8;
+                const int8_t *a_ = a + i * 16 * K + k * 16 * 256;
+                const int8_t *b_ = b + j * 32 * K / 8 + k * 32 * 256 / 8;
 
-                asm volatile("mple 0(%0), a\n\t" ::"r"(a_) : "memory");
+                asm volatile("bmple 0(%0), a\n\t" ::"r"(a_) : "memory");
                 // printf("1\n");
-                asm volatile("mple 0(%0), w\n\t" ::"r"(b_) : "memory");
+                asm volatile("bmple 0(%0), w\n\t" ::"r"(b_) : "memory");
                 // printf("2\n");
-                asm volatile("mpmm\n\t" ::);
+                asm volatile("bmpmm\n\t" ::);
                 // printf("3\n");
             }
             // runtime = get_timer();
             // printf("bmm2 timer cycles: %ld\n", runtime);
             // printf("4\n");
-            asm volatile("mpse 0(%0)\n\t" ::"r"(c_) : "memory");
+            asm volatile("bmpse 0(%0)\n\t" ::"r"(c_) : "memory");
             // runtime = get_timer();
             // printf("bmm3 timer cycles: %ld\n", runtime);
         }

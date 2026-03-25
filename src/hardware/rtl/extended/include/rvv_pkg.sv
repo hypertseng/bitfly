@@ -145,10 +145,12 @@ package rvv_pkg;
 
   typedef struct packed {
     logic [31:29] prec;
-    logic [28:27] gm_code;
-    logic [26:25] gn_code;
-    logic [24:12] kdim;
-    logic [4:0]   cfg;
+    logic [28:24] k_code;
+    logic [23:20] mtile_code;
+    logic [19:17] ntile_code;
+    logic [16:14] gm_code;
+    logic [13:11] gn_code;
+    logic [10:7]  reserved;
     logic [6:0]   opcode;
   } custom1_type_t;
 

@@ -319,6 +319,7 @@ module operand_queues_stage
   operand_queue #(
       .CmdBufDepth        (MaskuInsnQueueDepth),
       .DataBufDepth       (4),
+          .ReserveEntries     (3),
           .AccessCmdPop        (1'b1),
       .FPUSupport         (FPUSupportNone),
       .NrLanes            (NrLanes),
@@ -355,6 +356,7 @@ module operand_queues_stage
       operand_queue #(
           .CmdBufDepth        (BmpuInsnQueueDepth),
           .DataBufDepth       (4),
+          .ReserveEntries     (3),
           .AccessCmdPop        (1'b1),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),
@@ -416,7 +418,7 @@ module operand_queues_stage
 
 `ifndef SYNTHESIS
   always_ff @(posedge clk_i) begin
-    if (rst_ni && (lane_id_i == '0) &&
+    if (1'b0 && rst_ni && (lane_id_i == '0) &&
         (bmpu_act_operand_valid_o != '0 || bmpu_wgt_operand_valid_o != '0 ||
          operand_issued_i[BMPUAct0] || operand_issued_i[BMPUAct1] ||
          operand_issued_i[BMPUWgt0] || operand_issued_i[BMPUWgt1])) begin

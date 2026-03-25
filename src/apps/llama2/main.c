@@ -769,17 +769,17 @@ void transpose(const int8_t *A, int8_t *B, int M, int N)
 
 void pack_activation(const int8_t *array, int M, int K, int8_t *out) {
     const int tm = (M + 15) / 16;
-    const int tk = (K > 480) ? ((K + 479) / 480) : 1;
+    const int tk = (K > 256) ? ((K + 255) / 256) : 1;
 
     for (int i = 0; i < tm; i++) {
         const int m_start = i * 16;
         const int rows = (M - m_start < 16) ? (M - m_start) : 16;
         
         for (int j = 0; j < tk; j++) {
-            const int k_start = j * 480;
-            const int k_end = (k_start + 480 <= K) ? k_start + 480 : K;
+            const int k_start = j * 256;
+            const int k_end = (k_start + 256 <= K) ? k_start + 256 : K;
             const int chunk_count = (k_end - k_start + 7) / 8;
-            const int offset = (i * tk + j) * 16 * 480;
+            const int offset = (i * tk + j) * 16 * 256;
             
             const int8_t *block_in = array + offset;
             int8_t *out_block = out + offset;

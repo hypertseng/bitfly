@@ -1,0 +1,25994 @@
+.text
+
+.globl bmpcfg_emit_stub_0000
+.p2align 2
+.type bmpcfg_emit_stub_0000, @function
+bmpcfg_emit_stub_0000:
+    bmpcfg 0, 8, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0000, .-bmpcfg_emit_stub_0000
+
+.globl bmpcfg_emit_stub_0001
+.p2align 2
+.type bmpcfg_emit_stub_0001, @function
+bmpcfg_emit_stub_0001:
+    bmpcfg 0, 8, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0001, .-bmpcfg_emit_stub_0001
+
+.globl bmpcfg_emit_stub_0002
+.p2align 2
+.type bmpcfg_emit_stub_0002, @function
+bmpcfg_emit_stub_0002:
+    bmpcfg 0, 8, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0002, .-bmpcfg_emit_stub_0002
+
+.globl bmpcfg_emit_stub_0003
+.p2align 2
+.type bmpcfg_emit_stub_0003, @function
+bmpcfg_emit_stub_0003:
+    bmpcfg 0, 8, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0003, .-bmpcfg_emit_stub_0003
+
+.globl bmpcfg_emit_stub_0004
+.p2align 2
+.type bmpcfg_emit_stub_0004, @function
+bmpcfg_emit_stub_0004:
+    bmpcfg 0, 8, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0004, .-bmpcfg_emit_stub_0004
+
+.globl bmpcfg_emit_stub_0005
+.p2align 2
+.type bmpcfg_emit_stub_0005, @function
+bmpcfg_emit_stub_0005:
+    bmpcfg 0, 8, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0005, .-bmpcfg_emit_stub_0005
+
+.globl bmpcfg_emit_stub_0006
+.p2align 2
+.type bmpcfg_emit_stub_0006, @function
+bmpcfg_emit_stub_0006:
+    bmpcfg 0, 8, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0006, .-bmpcfg_emit_stub_0006
+
+.globl bmpcfg_emit_stub_0007
+.p2align 2
+.type bmpcfg_emit_stub_0007, @function
+bmpcfg_emit_stub_0007:
+    bmpcfg 0, 8, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0007, .-bmpcfg_emit_stub_0007
+
+.globl bmpcfg_emit_stub_0008
+.p2align 2
+.type bmpcfg_emit_stub_0008, @function
+bmpcfg_emit_stub_0008:
+    bmpcfg 0, 8, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0008, .-bmpcfg_emit_stub_0008
+
+.globl bmpcfg_emit_stub_0009
+.p2align 2
+.type bmpcfg_emit_stub_0009, @function
+bmpcfg_emit_stub_0009:
+    bmpcfg 0, 8, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0009, .-bmpcfg_emit_stub_0009
+
+.globl bmpcfg_emit_stub_0010
+.p2align 2
+.type bmpcfg_emit_stub_0010, @function
+bmpcfg_emit_stub_0010:
+    bmpcfg 0, 8, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0010, .-bmpcfg_emit_stub_0010
+
+.globl bmpcfg_emit_stub_0011
+.p2align 2
+.type bmpcfg_emit_stub_0011, @function
+bmpcfg_emit_stub_0011:
+    bmpcfg 0, 8, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0011, .-bmpcfg_emit_stub_0011
+
+.globl bmpcfg_emit_stub_0012
+.p2align 2
+.type bmpcfg_emit_stub_0012, @function
+bmpcfg_emit_stub_0012:
+    bmpcfg 0, 8, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0012, .-bmpcfg_emit_stub_0012
+
+.globl bmpcfg_emit_stub_0013
+.p2align 2
+.type bmpcfg_emit_stub_0013, @function
+bmpcfg_emit_stub_0013:
+    bmpcfg 0, 8, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0013, .-bmpcfg_emit_stub_0013
+
+.globl bmpcfg_emit_stub_0014
+.p2align 2
+.type bmpcfg_emit_stub_0014, @function
+bmpcfg_emit_stub_0014:
+    bmpcfg 0, 8, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0014, .-bmpcfg_emit_stub_0014
+
+.globl bmpcfg_emit_stub_0015
+.p2align 2
+.type bmpcfg_emit_stub_0015, @function
+bmpcfg_emit_stub_0015:
+    bmpcfg 0, 8, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0015, .-bmpcfg_emit_stub_0015
+
+.globl bmpcfg_emit_stub_0016
+.p2align 2
+.type bmpcfg_emit_stub_0016, @function
+bmpcfg_emit_stub_0016:
+    bmpcfg 0, 8, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0016, .-bmpcfg_emit_stub_0016
+
+.globl bmpcfg_emit_stub_0017
+.p2align 2
+.type bmpcfg_emit_stub_0017, @function
+bmpcfg_emit_stub_0017:
+    bmpcfg 0, 8, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0017, .-bmpcfg_emit_stub_0017
+
+.globl bmpcfg_emit_stub_0018
+.p2align 2
+.type bmpcfg_emit_stub_0018, @function
+bmpcfg_emit_stub_0018:
+    bmpcfg 0, 8, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0018, .-bmpcfg_emit_stub_0018
+
+.globl bmpcfg_emit_stub_0019
+.p2align 2
+.type bmpcfg_emit_stub_0019, @function
+bmpcfg_emit_stub_0019:
+    bmpcfg 0, 8, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0019, .-bmpcfg_emit_stub_0019
+
+.globl bmpcfg_emit_stub_0020
+.p2align 2
+.type bmpcfg_emit_stub_0020, @function
+bmpcfg_emit_stub_0020:
+    bmpcfg 0, 8, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0020, .-bmpcfg_emit_stub_0020
+
+.globl bmpcfg_emit_stub_0021
+.p2align 2
+.type bmpcfg_emit_stub_0021, @function
+bmpcfg_emit_stub_0021:
+    bmpcfg 0, 8, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0021, .-bmpcfg_emit_stub_0021
+
+.globl bmpcfg_emit_stub_0022
+.p2align 2
+.type bmpcfg_emit_stub_0022, @function
+bmpcfg_emit_stub_0022:
+    bmpcfg 0, 8, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0022, .-bmpcfg_emit_stub_0022
+
+.globl bmpcfg_emit_stub_0023
+.p2align 2
+.type bmpcfg_emit_stub_0023, @function
+bmpcfg_emit_stub_0023:
+    bmpcfg 0, 8, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0023, .-bmpcfg_emit_stub_0023
+
+.globl bmpcfg_emit_stub_0024
+.p2align 2
+.type bmpcfg_emit_stub_0024, @function
+bmpcfg_emit_stub_0024:
+    bmpcfg 0, 8, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0024, .-bmpcfg_emit_stub_0024
+
+.globl bmpcfg_emit_stub_0025
+.p2align 2
+.type bmpcfg_emit_stub_0025, @function
+bmpcfg_emit_stub_0025:
+    bmpcfg 0, 8, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0025, .-bmpcfg_emit_stub_0025
+
+.globl bmpcfg_emit_stub_0026
+.p2align 2
+.type bmpcfg_emit_stub_0026, @function
+bmpcfg_emit_stub_0026:
+    bmpcfg 0, 8, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0026, .-bmpcfg_emit_stub_0026
+
+.globl bmpcfg_emit_stub_0027
+.p2align 2
+.type bmpcfg_emit_stub_0027, @function
+bmpcfg_emit_stub_0027:
+    bmpcfg 0, 8, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0027, .-bmpcfg_emit_stub_0027
+
+.globl bmpcfg_emit_stub_0028
+.p2align 2
+.type bmpcfg_emit_stub_0028, @function
+bmpcfg_emit_stub_0028:
+    bmpcfg 0, 8, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0028, .-bmpcfg_emit_stub_0028
+
+.globl bmpcfg_emit_stub_0029
+.p2align 2
+.type bmpcfg_emit_stub_0029, @function
+bmpcfg_emit_stub_0029:
+    bmpcfg 0, 8, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0029, .-bmpcfg_emit_stub_0029
+
+.globl bmpcfg_emit_stub_0030
+.p2align 2
+.type bmpcfg_emit_stub_0030, @function
+bmpcfg_emit_stub_0030:
+    bmpcfg 0, 8, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0030, .-bmpcfg_emit_stub_0030
+
+.globl bmpcfg_emit_stub_0031
+.p2align 2
+.type bmpcfg_emit_stub_0031, @function
+bmpcfg_emit_stub_0031:
+    bmpcfg 0, 8, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0031, .-bmpcfg_emit_stub_0031
+
+.globl bmpcfg_emit_stub_0032
+.p2align 2
+.type bmpcfg_emit_stub_0032, @function
+bmpcfg_emit_stub_0032:
+    bmpcfg 0, 8, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0032, .-bmpcfg_emit_stub_0032
+
+.globl bmpcfg_emit_stub_0033
+.p2align 2
+.type bmpcfg_emit_stub_0033, @function
+bmpcfg_emit_stub_0033:
+    bmpcfg 0, 8, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0033, .-bmpcfg_emit_stub_0033
+
+.globl bmpcfg_emit_stub_0034
+.p2align 2
+.type bmpcfg_emit_stub_0034, @function
+bmpcfg_emit_stub_0034:
+    bmpcfg 0, 8, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0034, .-bmpcfg_emit_stub_0034
+
+.globl bmpcfg_emit_stub_0035
+.p2align 2
+.type bmpcfg_emit_stub_0035, @function
+bmpcfg_emit_stub_0035:
+    bmpcfg 0, 8, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0035, .-bmpcfg_emit_stub_0035
+
+.globl bmpcfg_emit_stub_0036
+.p2align 2
+.type bmpcfg_emit_stub_0036, @function
+bmpcfg_emit_stub_0036:
+    bmpcfg 0, 8, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0036, .-bmpcfg_emit_stub_0036
+
+.globl bmpcfg_emit_stub_0037
+.p2align 2
+.type bmpcfg_emit_stub_0037, @function
+bmpcfg_emit_stub_0037:
+    bmpcfg 0, 8, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0037, .-bmpcfg_emit_stub_0037
+
+.globl bmpcfg_emit_stub_0038
+.p2align 2
+.type bmpcfg_emit_stub_0038, @function
+bmpcfg_emit_stub_0038:
+    bmpcfg 0, 8, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0038, .-bmpcfg_emit_stub_0038
+
+.globl bmpcfg_emit_stub_0039
+.p2align 2
+.type bmpcfg_emit_stub_0039, @function
+bmpcfg_emit_stub_0039:
+    bmpcfg 0, 8, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0039, .-bmpcfg_emit_stub_0039
+
+.globl bmpcfg_emit_stub_0040
+.p2align 2
+.type bmpcfg_emit_stub_0040, @function
+bmpcfg_emit_stub_0040:
+    bmpcfg 0, 8, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0040, .-bmpcfg_emit_stub_0040
+
+.globl bmpcfg_emit_stub_0041
+.p2align 2
+.type bmpcfg_emit_stub_0041, @function
+bmpcfg_emit_stub_0041:
+    bmpcfg 0, 8, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0041, .-bmpcfg_emit_stub_0041
+
+.globl bmpcfg_emit_stub_0042
+.p2align 2
+.type bmpcfg_emit_stub_0042, @function
+bmpcfg_emit_stub_0042:
+    bmpcfg 0, 8, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0042, .-bmpcfg_emit_stub_0042
+
+.globl bmpcfg_emit_stub_0043
+.p2align 2
+.type bmpcfg_emit_stub_0043, @function
+bmpcfg_emit_stub_0043:
+    bmpcfg 0, 8, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0043, .-bmpcfg_emit_stub_0043
+
+.globl bmpcfg_emit_stub_0044
+.p2align 2
+.type bmpcfg_emit_stub_0044, @function
+bmpcfg_emit_stub_0044:
+    bmpcfg 0, 8, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0044, .-bmpcfg_emit_stub_0044
+
+.globl bmpcfg_emit_stub_0045
+.p2align 2
+.type bmpcfg_emit_stub_0045, @function
+bmpcfg_emit_stub_0045:
+    bmpcfg 0, 8, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0045, .-bmpcfg_emit_stub_0045
+
+.globl bmpcfg_emit_stub_0046
+.p2align 2
+.type bmpcfg_emit_stub_0046, @function
+bmpcfg_emit_stub_0046:
+    bmpcfg 0, 8, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0046, .-bmpcfg_emit_stub_0046
+
+.globl bmpcfg_emit_stub_0047
+.p2align 2
+.type bmpcfg_emit_stub_0047, @function
+bmpcfg_emit_stub_0047:
+    bmpcfg 0, 8, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0047, .-bmpcfg_emit_stub_0047
+
+.globl bmpcfg_emit_stub_0048
+.p2align 2
+.type bmpcfg_emit_stub_0048, @function
+bmpcfg_emit_stub_0048:
+    bmpcfg 0, 8, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0048, .-bmpcfg_emit_stub_0048
+
+.globl bmpcfg_emit_stub_0049
+.p2align 2
+.type bmpcfg_emit_stub_0049, @function
+bmpcfg_emit_stub_0049:
+    bmpcfg 0, 8, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0049, .-bmpcfg_emit_stub_0049
+
+.globl bmpcfg_emit_stub_0050
+.p2align 2
+.type bmpcfg_emit_stub_0050, @function
+bmpcfg_emit_stub_0050:
+    bmpcfg 0, 8, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0050, .-bmpcfg_emit_stub_0050
+
+.globl bmpcfg_emit_stub_0051
+.p2align 2
+.type bmpcfg_emit_stub_0051, @function
+bmpcfg_emit_stub_0051:
+    bmpcfg 0, 8, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0051, .-bmpcfg_emit_stub_0051
+
+.globl bmpcfg_emit_stub_0052
+.p2align 2
+.type bmpcfg_emit_stub_0052, @function
+bmpcfg_emit_stub_0052:
+    bmpcfg 0, 8, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0052, .-bmpcfg_emit_stub_0052
+
+.globl bmpcfg_emit_stub_0053
+.p2align 2
+.type bmpcfg_emit_stub_0053, @function
+bmpcfg_emit_stub_0053:
+    bmpcfg 0, 8, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0053, .-bmpcfg_emit_stub_0053
+
+.globl bmpcfg_emit_stub_0054
+.p2align 2
+.type bmpcfg_emit_stub_0054, @function
+bmpcfg_emit_stub_0054:
+    bmpcfg 0, 8, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0054, .-bmpcfg_emit_stub_0054
+
+.globl bmpcfg_emit_stub_0055
+.p2align 2
+.type bmpcfg_emit_stub_0055, @function
+bmpcfg_emit_stub_0055:
+    bmpcfg 0, 8, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0055, .-bmpcfg_emit_stub_0055
+
+.globl bmpcfg_emit_stub_0056
+.p2align 2
+.type bmpcfg_emit_stub_0056, @function
+bmpcfg_emit_stub_0056:
+    bmpcfg 0, 8, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0056, .-bmpcfg_emit_stub_0056
+
+.globl bmpcfg_emit_stub_0057
+.p2align 2
+.type bmpcfg_emit_stub_0057, @function
+bmpcfg_emit_stub_0057:
+    bmpcfg 0, 8, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0057, .-bmpcfg_emit_stub_0057
+
+.globl bmpcfg_emit_stub_0058
+.p2align 2
+.type bmpcfg_emit_stub_0058, @function
+bmpcfg_emit_stub_0058:
+    bmpcfg 0, 8, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0058, .-bmpcfg_emit_stub_0058
+
+.globl bmpcfg_emit_stub_0059
+.p2align 2
+.type bmpcfg_emit_stub_0059, @function
+bmpcfg_emit_stub_0059:
+    bmpcfg 0, 8, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0059, .-bmpcfg_emit_stub_0059
+
+.globl bmpcfg_emit_stub_0060
+.p2align 2
+.type bmpcfg_emit_stub_0060, @function
+bmpcfg_emit_stub_0060:
+    bmpcfg 0, 8, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0060, .-bmpcfg_emit_stub_0060
+
+.globl bmpcfg_emit_stub_0061
+.p2align 2
+.type bmpcfg_emit_stub_0061, @function
+bmpcfg_emit_stub_0061:
+    bmpcfg 0, 8, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0061, .-bmpcfg_emit_stub_0061
+
+.globl bmpcfg_emit_stub_0062
+.p2align 2
+.type bmpcfg_emit_stub_0062, @function
+bmpcfg_emit_stub_0062:
+    bmpcfg 0, 8, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0062, .-bmpcfg_emit_stub_0062
+
+.globl bmpcfg_emit_stub_0063
+.p2align 2
+.type bmpcfg_emit_stub_0063, @function
+bmpcfg_emit_stub_0063:
+    bmpcfg 0, 8, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0063, .-bmpcfg_emit_stub_0063
+
+.globl bmpcfg_emit_stub_0064
+.p2align 2
+.type bmpcfg_emit_stub_0064, @function
+bmpcfg_emit_stub_0064:
+    bmpcfg 0, 8, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0064, .-bmpcfg_emit_stub_0064
+
+.globl bmpcfg_emit_stub_0065
+.p2align 2
+.type bmpcfg_emit_stub_0065, @function
+bmpcfg_emit_stub_0065:
+    bmpcfg 0, 8, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0065, .-bmpcfg_emit_stub_0065
+
+.globl bmpcfg_emit_stub_0066
+.p2align 2
+.type bmpcfg_emit_stub_0066, @function
+bmpcfg_emit_stub_0066:
+    bmpcfg 0, 8, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0066, .-bmpcfg_emit_stub_0066
+
+.globl bmpcfg_emit_stub_0067
+.p2align 2
+.type bmpcfg_emit_stub_0067, @function
+bmpcfg_emit_stub_0067:
+    bmpcfg 0, 8, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0067, .-bmpcfg_emit_stub_0067
+
+.globl bmpcfg_emit_stub_0068
+.p2align 2
+.type bmpcfg_emit_stub_0068, @function
+bmpcfg_emit_stub_0068:
+    bmpcfg 0, 8, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0068, .-bmpcfg_emit_stub_0068
+
+.globl bmpcfg_emit_stub_0069
+.p2align 2
+.type bmpcfg_emit_stub_0069, @function
+bmpcfg_emit_stub_0069:
+    bmpcfg 0, 8, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0069, .-bmpcfg_emit_stub_0069
+
+.globl bmpcfg_emit_stub_0070
+.p2align 2
+.type bmpcfg_emit_stub_0070, @function
+bmpcfg_emit_stub_0070:
+    bmpcfg 0, 8, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0070, .-bmpcfg_emit_stub_0070
+
+.globl bmpcfg_emit_stub_0071
+.p2align 2
+.type bmpcfg_emit_stub_0071, @function
+bmpcfg_emit_stub_0071:
+    bmpcfg 0, 8, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0071, .-bmpcfg_emit_stub_0071
+
+.globl bmpcfg_emit_stub_0072
+.p2align 2
+.type bmpcfg_emit_stub_0072, @function
+bmpcfg_emit_stub_0072:
+    bmpcfg 0, 8, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0072, .-bmpcfg_emit_stub_0072
+
+.globl bmpcfg_emit_stub_0073
+.p2align 2
+.type bmpcfg_emit_stub_0073, @function
+bmpcfg_emit_stub_0073:
+    bmpcfg 0, 8, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0073, .-bmpcfg_emit_stub_0073
+
+.globl bmpcfg_emit_stub_0074
+.p2align 2
+.type bmpcfg_emit_stub_0074, @function
+bmpcfg_emit_stub_0074:
+    bmpcfg 0, 8, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0074, .-bmpcfg_emit_stub_0074
+
+.globl bmpcfg_emit_stub_0075
+.p2align 2
+.type bmpcfg_emit_stub_0075, @function
+bmpcfg_emit_stub_0075:
+    bmpcfg 0, 8, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0075, .-bmpcfg_emit_stub_0075
+
+.globl bmpcfg_emit_stub_0076
+.p2align 2
+.type bmpcfg_emit_stub_0076, @function
+bmpcfg_emit_stub_0076:
+    bmpcfg 0, 8, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0076, .-bmpcfg_emit_stub_0076
+
+.globl bmpcfg_emit_stub_0077
+.p2align 2
+.type bmpcfg_emit_stub_0077, @function
+bmpcfg_emit_stub_0077:
+    bmpcfg 0, 8, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0077, .-bmpcfg_emit_stub_0077
+
+.globl bmpcfg_emit_stub_0078
+.p2align 2
+.type bmpcfg_emit_stub_0078, @function
+bmpcfg_emit_stub_0078:
+    bmpcfg 0, 8, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0078, .-bmpcfg_emit_stub_0078
+
+.globl bmpcfg_emit_stub_0079
+.p2align 2
+.type bmpcfg_emit_stub_0079, @function
+bmpcfg_emit_stub_0079:
+    bmpcfg 0, 8, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0079, .-bmpcfg_emit_stub_0079
+
+.globl bmpcfg_emit_stub_0080
+.p2align 2
+.type bmpcfg_emit_stub_0080, @function
+bmpcfg_emit_stub_0080:
+    bmpcfg 0, 8, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0080, .-bmpcfg_emit_stub_0080
+
+.globl bmpcfg_emit_stub_0081
+.p2align 2
+.type bmpcfg_emit_stub_0081, @function
+bmpcfg_emit_stub_0081:
+    bmpcfg 0, 8, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0081, .-bmpcfg_emit_stub_0081
+
+.globl bmpcfg_emit_stub_0082
+.p2align 2
+.type bmpcfg_emit_stub_0082, @function
+bmpcfg_emit_stub_0082:
+    bmpcfg 0, 8, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0082, .-bmpcfg_emit_stub_0082
+
+.globl bmpcfg_emit_stub_0083
+.p2align 2
+.type bmpcfg_emit_stub_0083, @function
+bmpcfg_emit_stub_0083:
+    bmpcfg 0, 8, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0083, .-bmpcfg_emit_stub_0083
+
+.globl bmpcfg_emit_stub_0084
+.p2align 2
+.type bmpcfg_emit_stub_0084, @function
+bmpcfg_emit_stub_0084:
+    bmpcfg 0, 8, 44, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0084, .-bmpcfg_emit_stub_0084
+
+.globl bmpcfg_emit_stub_0085
+.p2align 2
+.type bmpcfg_emit_stub_0085, @function
+bmpcfg_emit_stub_0085:
+    bmpcfg 0, 8, 48, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0085, .-bmpcfg_emit_stub_0085
+
+.globl bmpcfg_emit_stub_0086
+.p2align 2
+.type bmpcfg_emit_stub_0086, @function
+bmpcfg_emit_stub_0086:
+    bmpcfg 0, 8, 52, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0086, .-bmpcfg_emit_stub_0086
+
+.globl bmpcfg_emit_stub_0087
+.p2align 2
+.type bmpcfg_emit_stub_0087, @function
+bmpcfg_emit_stub_0087:
+    bmpcfg 0, 8, 56, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0087, .-bmpcfg_emit_stub_0087
+
+.globl bmpcfg_emit_stub_0088
+.p2align 2
+.type bmpcfg_emit_stub_0088, @function
+bmpcfg_emit_stub_0088:
+    bmpcfg 0, 8, 60, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0088, .-bmpcfg_emit_stub_0088
+
+.globl bmpcfg_emit_stub_0089
+.p2align 2
+.type bmpcfg_emit_stub_0089, @function
+bmpcfg_emit_stub_0089:
+    bmpcfg 0, 8, 64, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0089, .-bmpcfg_emit_stub_0089
+
+.globl bmpcfg_emit_stub_0090
+.p2align 2
+.type bmpcfg_emit_stub_0090, @function
+bmpcfg_emit_stub_0090:
+    bmpcfg 0, 16, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0090, .-bmpcfg_emit_stub_0090
+
+.globl bmpcfg_emit_stub_0091
+.p2align 2
+.type bmpcfg_emit_stub_0091, @function
+bmpcfg_emit_stub_0091:
+    bmpcfg 0, 16, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0091, .-bmpcfg_emit_stub_0091
+
+.globl bmpcfg_emit_stub_0092
+.p2align 2
+.type bmpcfg_emit_stub_0092, @function
+bmpcfg_emit_stub_0092:
+    bmpcfg 0, 16, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0092, .-bmpcfg_emit_stub_0092
+
+.globl bmpcfg_emit_stub_0093
+.p2align 2
+.type bmpcfg_emit_stub_0093, @function
+bmpcfg_emit_stub_0093:
+    bmpcfg 0, 16, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0093, .-bmpcfg_emit_stub_0093
+
+.globl bmpcfg_emit_stub_0094
+.p2align 2
+.type bmpcfg_emit_stub_0094, @function
+bmpcfg_emit_stub_0094:
+    bmpcfg 0, 16, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0094, .-bmpcfg_emit_stub_0094
+
+.globl bmpcfg_emit_stub_0095
+.p2align 2
+.type bmpcfg_emit_stub_0095, @function
+bmpcfg_emit_stub_0095:
+    bmpcfg 0, 16, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0095, .-bmpcfg_emit_stub_0095
+
+.globl bmpcfg_emit_stub_0096
+.p2align 2
+.type bmpcfg_emit_stub_0096, @function
+bmpcfg_emit_stub_0096:
+    bmpcfg 0, 16, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0096, .-bmpcfg_emit_stub_0096
+
+.globl bmpcfg_emit_stub_0097
+.p2align 2
+.type bmpcfg_emit_stub_0097, @function
+bmpcfg_emit_stub_0097:
+    bmpcfg 0, 16, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0097, .-bmpcfg_emit_stub_0097
+
+.globl bmpcfg_emit_stub_0098
+.p2align 2
+.type bmpcfg_emit_stub_0098, @function
+bmpcfg_emit_stub_0098:
+    bmpcfg 0, 16, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0098, .-bmpcfg_emit_stub_0098
+
+.globl bmpcfg_emit_stub_0099
+.p2align 2
+.type bmpcfg_emit_stub_0099, @function
+bmpcfg_emit_stub_0099:
+    bmpcfg 0, 16, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0099, .-bmpcfg_emit_stub_0099
+
+.globl bmpcfg_emit_stub_0100
+.p2align 2
+.type bmpcfg_emit_stub_0100, @function
+bmpcfg_emit_stub_0100:
+    bmpcfg 0, 16, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0100, .-bmpcfg_emit_stub_0100
+
+.globl bmpcfg_emit_stub_0101
+.p2align 2
+.type bmpcfg_emit_stub_0101, @function
+bmpcfg_emit_stub_0101:
+    bmpcfg 0, 16, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0101, .-bmpcfg_emit_stub_0101
+
+.globl bmpcfg_emit_stub_0102
+.p2align 2
+.type bmpcfg_emit_stub_0102, @function
+bmpcfg_emit_stub_0102:
+    bmpcfg 0, 16, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0102, .-bmpcfg_emit_stub_0102
+
+.globl bmpcfg_emit_stub_0103
+.p2align 2
+.type bmpcfg_emit_stub_0103, @function
+bmpcfg_emit_stub_0103:
+    bmpcfg 0, 16, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0103, .-bmpcfg_emit_stub_0103
+
+.globl bmpcfg_emit_stub_0104
+.p2align 2
+.type bmpcfg_emit_stub_0104, @function
+bmpcfg_emit_stub_0104:
+    bmpcfg 0, 16, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0104, .-bmpcfg_emit_stub_0104
+
+.globl bmpcfg_emit_stub_0105
+.p2align 2
+.type bmpcfg_emit_stub_0105, @function
+bmpcfg_emit_stub_0105:
+    bmpcfg 0, 16, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0105, .-bmpcfg_emit_stub_0105
+
+.globl bmpcfg_emit_stub_0106
+.p2align 2
+.type bmpcfg_emit_stub_0106, @function
+bmpcfg_emit_stub_0106:
+    bmpcfg 0, 16, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0106, .-bmpcfg_emit_stub_0106
+
+.globl bmpcfg_emit_stub_0107
+.p2align 2
+.type bmpcfg_emit_stub_0107, @function
+bmpcfg_emit_stub_0107:
+    bmpcfg 0, 16, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0107, .-bmpcfg_emit_stub_0107
+
+.globl bmpcfg_emit_stub_0108
+.p2align 2
+.type bmpcfg_emit_stub_0108, @function
+bmpcfg_emit_stub_0108:
+    bmpcfg 0, 16, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0108, .-bmpcfg_emit_stub_0108
+
+.globl bmpcfg_emit_stub_0109
+.p2align 2
+.type bmpcfg_emit_stub_0109, @function
+bmpcfg_emit_stub_0109:
+    bmpcfg 0, 16, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0109, .-bmpcfg_emit_stub_0109
+
+.globl bmpcfg_emit_stub_0110
+.p2align 2
+.type bmpcfg_emit_stub_0110, @function
+bmpcfg_emit_stub_0110:
+    bmpcfg 0, 16, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0110, .-bmpcfg_emit_stub_0110
+
+.globl bmpcfg_emit_stub_0111
+.p2align 2
+.type bmpcfg_emit_stub_0111, @function
+bmpcfg_emit_stub_0111:
+    bmpcfg 0, 16, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0111, .-bmpcfg_emit_stub_0111
+
+.globl bmpcfg_emit_stub_0112
+.p2align 2
+.type bmpcfg_emit_stub_0112, @function
+bmpcfg_emit_stub_0112:
+    bmpcfg 0, 16, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0112, .-bmpcfg_emit_stub_0112
+
+.globl bmpcfg_emit_stub_0113
+.p2align 2
+.type bmpcfg_emit_stub_0113, @function
+bmpcfg_emit_stub_0113:
+    bmpcfg 0, 16, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0113, .-bmpcfg_emit_stub_0113
+
+.globl bmpcfg_emit_stub_0114
+.p2align 2
+.type bmpcfg_emit_stub_0114, @function
+bmpcfg_emit_stub_0114:
+    bmpcfg 0, 16, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0114, .-bmpcfg_emit_stub_0114
+
+.globl bmpcfg_emit_stub_0115
+.p2align 2
+.type bmpcfg_emit_stub_0115, @function
+bmpcfg_emit_stub_0115:
+    bmpcfg 0, 16, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0115, .-bmpcfg_emit_stub_0115
+
+.globl bmpcfg_emit_stub_0116
+.p2align 2
+.type bmpcfg_emit_stub_0116, @function
+bmpcfg_emit_stub_0116:
+    bmpcfg 0, 16, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0116, .-bmpcfg_emit_stub_0116
+
+.globl bmpcfg_emit_stub_0117
+.p2align 2
+.type bmpcfg_emit_stub_0117, @function
+bmpcfg_emit_stub_0117:
+    bmpcfg 0, 16, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0117, .-bmpcfg_emit_stub_0117
+
+.globl bmpcfg_emit_stub_0118
+.p2align 2
+.type bmpcfg_emit_stub_0118, @function
+bmpcfg_emit_stub_0118:
+    bmpcfg 0, 16, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0118, .-bmpcfg_emit_stub_0118
+
+.globl bmpcfg_emit_stub_0119
+.p2align 2
+.type bmpcfg_emit_stub_0119, @function
+bmpcfg_emit_stub_0119:
+    bmpcfg 0, 16, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0119, .-bmpcfg_emit_stub_0119
+
+.globl bmpcfg_emit_stub_0120
+.p2align 2
+.type bmpcfg_emit_stub_0120, @function
+bmpcfg_emit_stub_0120:
+    bmpcfg 0, 16, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0120, .-bmpcfg_emit_stub_0120
+
+.globl bmpcfg_emit_stub_0121
+.p2align 2
+.type bmpcfg_emit_stub_0121, @function
+bmpcfg_emit_stub_0121:
+    bmpcfg 0, 16, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0121, .-bmpcfg_emit_stub_0121
+
+.globl bmpcfg_emit_stub_0122
+.p2align 2
+.type bmpcfg_emit_stub_0122, @function
+bmpcfg_emit_stub_0122:
+    bmpcfg 0, 16, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0122, .-bmpcfg_emit_stub_0122
+
+.globl bmpcfg_emit_stub_0123
+.p2align 2
+.type bmpcfg_emit_stub_0123, @function
+bmpcfg_emit_stub_0123:
+    bmpcfg 0, 16, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0123, .-bmpcfg_emit_stub_0123
+
+.globl bmpcfg_emit_stub_0124
+.p2align 2
+.type bmpcfg_emit_stub_0124, @function
+bmpcfg_emit_stub_0124:
+    bmpcfg 0, 16, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0124, .-bmpcfg_emit_stub_0124
+
+.globl bmpcfg_emit_stub_0125
+.p2align 2
+.type bmpcfg_emit_stub_0125, @function
+bmpcfg_emit_stub_0125:
+    bmpcfg 0, 16, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0125, .-bmpcfg_emit_stub_0125
+
+.globl bmpcfg_emit_stub_0126
+.p2align 2
+.type bmpcfg_emit_stub_0126, @function
+bmpcfg_emit_stub_0126:
+    bmpcfg 0, 16, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0126, .-bmpcfg_emit_stub_0126
+
+.globl bmpcfg_emit_stub_0127
+.p2align 2
+.type bmpcfg_emit_stub_0127, @function
+bmpcfg_emit_stub_0127:
+    bmpcfg 0, 16, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0127, .-bmpcfg_emit_stub_0127
+
+.globl bmpcfg_emit_stub_0128
+.p2align 2
+.type bmpcfg_emit_stub_0128, @function
+bmpcfg_emit_stub_0128:
+    bmpcfg 0, 16, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0128, .-bmpcfg_emit_stub_0128
+
+.globl bmpcfg_emit_stub_0129
+.p2align 2
+.type bmpcfg_emit_stub_0129, @function
+bmpcfg_emit_stub_0129:
+    bmpcfg 0, 16, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0129, .-bmpcfg_emit_stub_0129
+
+.globl bmpcfg_emit_stub_0130
+.p2align 2
+.type bmpcfg_emit_stub_0130, @function
+bmpcfg_emit_stub_0130:
+    bmpcfg 0, 16, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0130, .-bmpcfg_emit_stub_0130
+
+.globl bmpcfg_emit_stub_0131
+.p2align 2
+.type bmpcfg_emit_stub_0131, @function
+bmpcfg_emit_stub_0131:
+    bmpcfg 0, 16, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0131, .-bmpcfg_emit_stub_0131
+
+.globl bmpcfg_emit_stub_0132
+.p2align 2
+.type bmpcfg_emit_stub_0132, @function
+bmpcfg_emit_stub_0132:
+    bmpcfg 0, 16, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0132, .-bmpcfg_emit_stub_0132
+
+.globl bmpcfg_emit_stub_0133
+.p2align 2
+.type bmpcfg_emit_stub_0133, @function
+bmpcfg_emit_stub_0133:
+    bmpcfg 0, 16, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0133, .-bmpcfg_emit_stub_0133
+
+.globl bmpcfg_emit_stub_0134
+.p2align 2
+.type bmpcfg_emit_stub_0134, @function
+bmpcfg_emit_stub_0134:
+    bmpcfg 0, 16, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0134, .-bmpcfg_emit_stub_0134
+
+.globl bmpcfg_emit_stub_0135
+.p2align 2
+.type bmpcfg_emit_stub_0135, @function
+bmpcfg_emit_stub_0135:
+    bmpcfg 0, 16, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0135, .-bmpcfg_emit_stub_0135
+
+.globl bmpcfg_emit_stub_0136
+.p2align 2
+.type bmpcfg_emit_stub_0136, @function
+bmpcfg_emit_stub_0136:
+    bmpcfg 0, 16, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0136, .-bmpcfg_emit_stub_0136
+
+.globl bmpcfg_emit_stub_0137
+.p2align 2
+.type bmpcfg_emit_stub_0137, @function
+bmpcfg_emit_stub_0137:
+    bmpcfg 0, 16, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0137, .-bmpcfg_emit_stub_0137
+
+.globl bmpcfg_emit_stub_0138
+.p2align 2
+.type bmpcfg_emit_stub_0138, @function
+bmpcfg_emit_stub_0138:
+    bmpcfg 0, 16, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0138, .-bmpcfg_emit_stub_0138
+
+.globl bmpcfg_emit_stub_0139
+.p2align 2
+.type bmpcfg_emit_stub_0139, @function
+bmpcfg_emit_stub_0139:
+    bmpcfg 0, 16, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0139, .-bmpcfg_emit_stub_0139
+
+.globl bmpcfg_emit_stub_0140
+.p2align 2
+.type bmpcfg_emit_stub_0140, @function
+bmpcfg_emit_stub_0140:
+    bmpcfg 0, 16, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0140, .-bmpcfg_emit_stub_0140
+
+.globl bmpcfg_emit_stub_0141
+.p2align 2
+.type bmpcfg_emit_stub_0141, @function
+bmpcfg_emit_stub_0141:
+    bmpcfg 0, 16, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0141, .-bmpcfg_emit_stub_0141
+
+.globl bmpcfg_emit_stub_0142
+.p2align 2
+.type bmpcfg_emit_stub_0142, @function
+bmpcfg_emit_stub_0142:
+    bmpcfg 0, 16, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0142, .-bmpcfg_emit_stub_0142
+
+.globl bmpcfg_emit_stub_0143
+.p2align 2
+.type bmpcfg_emit_stub_0143, @function
+bmpcfg_emit_stub_0143:
+    bmpcfg 0, 16, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0143, .-bmpcfg_emit_stub_0143
+
+.globl bmpcfg_emit_stub_0144
+.p2align 2
+.type bmpcfg_emit_stub_0144, @function
+bmpcfg_emit_stub_0144:
+    bmpcfg 0, 16, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0144, .-bmpcfg_emit_stub_0144
+
+.globl bmpcfg_emit_stub_0145
+.p2align 2
+.type bmpcfg_emit_stub_0145, @function
+bmpcfg_emit_stub_0145:
+    bmpcfg 0, 16, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0145, .-bmpcfg_emit_stub_0145
+
+.globl bmpcfg_emit_stub_0146
+.p2align 2
+.type bmpcfg_emit_stub_0146, @function
+bmpcfg_emit_stub_0146:
+    bmpcfg 0, 16, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0146, .-bmpcfg_emit_stub_0146
+
+.globl bmpcfg_emit_stub_0147
+.p2align 2
+.type bmpcfg_emit_stub_0147, @function
+bmpcfg_emit_stub_0147:
+    bmpcfg 0, 16, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0147, .-bmpcfg_emit_stub_0147
+
+.globl bmpcfg_emit_stub_0148
+.p2align 2
+.type bmpcfg_emit_stub_0148, @function
+bmpcfg_emit_stub_0148:
+    bmpcfg 0, 16, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0148, .-bmpcfg_emit_stub_0148
+
+.globl bmpcfg_emit_stub_0149
+.p2align 2
+.type bmpcfg_emit_stub_0149, @function
+bmpcfg_emit_stub_0149:
+    bmpcfg 0, 16, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0149, .-bmpcfg_emit_stub_0149
+
+.globl bmpcfg_emit_stub_0150
+.p2align 2
+.type bmpcfg_emit_stub_0150, @function
+bmpcfg_emit_stub_0150:
+    bmpcfg 0, 16, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0150, .-bmpcfg_emit_stub_0150
+
+.globl bmpcfg_emit_stub_0151
+.p2align 2
+.type bmpcfg_emit_stub_0151, @function
+bmpcfg_emit_stub_0151:
+    bmpcfg 0, 16, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0151, .-bmpcfg_emit_stub_0151
+
+.globl bmpcfg_emit_stub_0152
+.p2align 2
+.type bmpcfg_emit_stub_0152, @function
+bmpcfg_emit_stub_0152:
+    bmpcfg 0, 16, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0152, .-bmpcfg_emit_stub_0152
+
+.globl bmpcfg_emit_stub_0153
+.p2align 2
+.type bmpcfg_emit_stub_0153, @function
+bmpcfg_emit_stub_0153:
+    bmpcfg 0, 16, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0153, .-bmpcfg_emit_stub_0153
+
+.globl bmpcfg_emit_stub_0154
+.p2align 2
+.type bmpcfg_emit_stub_0154, @function
+bmpcfg_emit_stub_0154:
+    bmpcfg 0, 16, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0154, .-bmpcfg_emit_stub_0154
+
+.globl bmpcfg_emit_stub_0155
+.p2align 2
+.type bmpcfg_emit_stub_0155, @function
+bmpcfg_emit_stub_0155:
+    bmpcfg 0, 16, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0155, .-bmpcfg_emit_stub_0155
+
+.globl bmpcfg_emit_stub_0156
+.p2align 2
+.type bmpcfg_emit_stub_0156, @function
+bmpcfg_emit_stub_0156:
+    bmpcfg 0, 16, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0156, .-bmpcfg_emit_stub_0156
+
+.globl bmpcfg_emit_stub_0157
+.p2align 2
+.type bmpcfg_emit_stub_0157, @function
+bmpcfg_emit_stub_0157:
+    bmpcfg 0, 16, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0157, .-bmpcfg_emit_stub_0157
+
+.globl bmpcfg_emit_stub_0158
+.p2align 2
+.type bmpcfg_emit_stub_0158, @function
+bmpcfg_emit_stub_0158:
+    bmpcfg 0, 16, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0158, .-bmpcfg_emit_stub_0158
+
+.globl bmpcfg_emit_stub_0159
+.p2align 2
+.type bmpcfg_emit_stub_0159, @function
+bmpcfg_emit_stub_0159:
+    bmpcfg 0, 16, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0159, .-bmpcfg_emit_stub_0159
+
+.globl bmpcfg_emit_stub_0160
+.p2align 2
+.type bmpcfg_emit_stub_0160, @function
+bmpcfg_emit_stub_0160:
+    bmpcfg 0, 16, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0160, .-bmpcfg_emit_stub_0160
+
+.globl bmpcfg_emit_stub_0161
+.p2align 2
+.type bmpcfg_emit_stub_0161, @function
+bmpcfg_emit_stub_0161:
+    bmpcfg 0, 16, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0161, .-bmpcfg_emit_stub_0161
+
+.globl bmpcfg_emit_stub_0162
+.p2align 2
+.type bmpcfg_emit_stub_0162, @function
+bmpcfg_emit_stub_0162:
+    bmpcfg 0, 16, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0162, .-bmpcfg_emit_stub_0162
+
+.globl bmpcfg_emit_stub_0163
+.p2align 2
+.type bmpcfg_emit_stub_0163, @function
+bmpcfg_emit_stub_0163:
+    bmpcfg 0, 16, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0163, .-bmpcfg_emit_stub_0163
+
+.globl bmpcfg_emit_stub_0164
+.p2align 2
+.type bmpcfg_emit_stub_0164, @function
+bmpcfg_emit_stub_0164:
+    bmpcfg 0, 16, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0164, .-bmpcfg_emit_stub_0164
+
+.globl bmpcfg_emit_stub_0165
+.p2align 2
+.type bmpcfg_emit_stub_0165, @function
+bmpcfg_emit_stub_0165:
+    bmpcfg 0, 16, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0165, .-bmpcfg_emit_stub_0165
+
+.globl bmpcfg_emit_stub_0166
+.p2align 2
+.type bmpcfg_emit_stub_0166, @function
+bmpcfg_emit_stub_0166:
+    bmpcfg 0, 16, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0166, .-bmpcfg_emit_stub_0166
+
+.globl bmpcfg_emit_stub_0167
+.p2align 2
+.type bmpcfg_emit_stub_0167, @function
+bmpcfg_emit_stub_0167:
+    bmpcfg 0, 16, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0167, .-bmpcfg_emit_stub_0167
+
+.globl bmpcfg_emit_stub_0168
+.p2align 2
+.type bmpcfg_emit_stub_0168, @function
+bmpcfg_emit_stub_0168:
+    bmpcfg 0, 16, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0168, .-bmpcfg_emit_stub_0168
+
+.globl bmpcfg_emit_stub_0169
+.p2align 2
+.type bmpcfg_emit_stub_0169, @function
+bmpcfg_emit_stub_0169:
+    bmpcfg 0, 16, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0169, .-bmpcfg_emit_stub_0169
+
+.globl bmpcfg_emit_stub_0170
+.p2align 2
+.type bmpcfg_emit_stub_0170, @function
+bmpcfg_emit_stub_0170:
+    bmpcfg 0, 16, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0170, .-bmpcfg_emit_stub_0170
+
+.globl bmpcfg_emit_stub_0171
+.p2align 2
+.type bmpcfg_emit_stub_0171, @function
+bmpcfg_emit_stub_0171:
+    bmpcfg 0, 16, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0171, .-bmpcfg_emit_stub_0171
+
+.globl bmpcfg_emit_stub_0172
+.p2align 2
+.type bmpcfg_emit_stub_0172, @function
+bmpcfg_emit_stub_0172:
+    bmpcfg 0, 16, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0172, .-bmpcfg_emit_stub_0172
+
+.globl bmpcfg_emit_stub_0173
+.p2align 2
+.type bmpcfg_emit_stub_0173, @function
+bmpcfg_emit_stub_0173:
+    bmpcfg 0, 16, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0173, .-bmpcfg_emit_stub_0173
+
+.globl bmpcfg_emit_stub_0174
+.p2align 2
+.type bmpcfg_emit_stub_0174, @function
+bmpcfg_emit_stub_0174:
+    bmpcfg 0, 16, 44, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0174, .-bmpcfg_emit_stub_0174
+
+.globl bmpcfg_emit_stub_0175
+.p2align 2
+.type bmpcfg_emit_stub_0175, @function
+bmpcfg_emit_stub_0175:
+    bmpcfg 0, 16, 48, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0175, .-bmpcfg_emit_stub_0175
+
+.globl bmpcfg_emit_stub_0176
+.p2align 2
+.type bmpcfg_emit_stub_0176, @function
+bmpcfg_emit_stub_0176:
+    bmpcfg 0, 16, 52, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0176, .-bmpcfg_emit_stub_0176
+
+.globl bmpcfg_emit_stub_0177
+.p2align 2
+.type bmpcfg_emit_stub_0177, @function
+bmpcfg_emit_stub_0177:
+    bmpcfg 0, 16, 56, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0177, .-bmpcfg_emit_stub_0177
+
+.globl bmpcfg_emit_stub_0178
+.p2align 2
+.type bmpcfg_emit_stub_0178, @function
+bmpcfg_emit_stub_0178:
+    bmpcfg 0, 16, 60, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0178, .-bmpcfg_emit_stub_0178
+
+.globl bmpcfg_emit_stub_0179
+.p2align 2
+.type bmpcfg_emit_stub_0179, @function
+bmpcfg_emit_stub_0179:
+    bmpcfg 0, 16, 64, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0179, .-bmpcfg_emit_stub_0179
+
+.globl bmpcfg_emit_stub_0180
+.p2align 2
+.type bmpcfg_emit_stub_0180, @function
+bmpcfg_emit_stub_0180:
+    bmpcfg 0, 24, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0180, .-bmpcfg_emit_stub_0180
+
+.globl bmpcfg_emit_stub_0181
+.p2align 2
+.type bmpcfg_emit_stub_0181, @function
+bmpcfg_emit_stub_0181:
+    bmpcfg 0, 24, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0181, .-bmpcfg_emit_stub_0181
+
+.globl bmpcfg_emit_stub_0182
+.p2align 2
+.type bmpcfg_emit_stub_0182, @function
+bmpcfg_emit_stub_0182:
+    bmpcfg 0, 24, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0182, .-bmpcfg_emit_stub_0182
+
+.globl bmpcfg_emit_stub_0183
+.p2align 2
+.type bmpcfg_emit_stub_0183, @function
+bmpcfg_emit_stub_0183:
+    bmpcfg 0, 24, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0183, .-bmpcfg_emit_stub_0183
+
+.globl bmpcfg_emit_stub_0184
+.p2align 2
+.type bmpcfg_emit_stub_0184, @function
+bmpcfg_emit_stub_0184:
+    bmpcfg 0, 24, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0184, .-bmpcfg_emit_stub_0184
+
+.globl bmpcfg_emit_stub_0185
+.p2align 2
+.type bmpcfg_emit_stub_0185, @function
+bmpcfg_emit_stub_0185:
+    bmpcfg 0, 24, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0185, .-bmpcfg_emit_stub_0185
+
+.globl bmpcfg_emit_stub_0186
+.p2align 2
+.type bmpcfg_emit_stub_0186, @function
+bmpcfg_emit_stub_0186:
+    bmpcfg 0, 24, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0186, .-bmpcfg_emit_stub_0186
+
+.globl bmpcfg_emit_stub_0187
+.p2align 2
+.type bmpcfg_emit_stub_0187, @function
+bmpcfg_emit_stub_0187:
+    bmpcfg 0, 24, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0187, .-bmpcfg_emit_stub_0187
+
+.globl bmpcfg_emit_stub_0188
+.p2align 2
+.type bmpcfg_emit_stub_0188, @function
+bmpcfg_emit_stub_0188:
+    bmpcfg 0, 24, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0188, .-bmpcfg_emit_stub_0188
+
+.globl bmpcfg_emit_stub_0189
+.p2align 2
+.type bmpcfg_emit_stub_0189, @function
+bmpcfg_emit_stub_0189:
+    bmpcfg 0, 24, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0189, .-bmpcfg_emit_stub_0189
+
+.globl bmpcfg_emit_stub_0190
+.p2align 2
+.type bmpcfg_emit_stub_0190, @function
+bmpcfg_emit_stub_0190:
+    bmpcfg 0, 24, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0190, .-bmpcfg_emit_stub_0190
+
+.globl bmpcfg_emit_stub_0191
+.p2align 2
+.type bmpcfg_emit_stub_0191, @function
+bmpcfg_emit_stub_0191:
+    bmpcfg 0, 24, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0191, .-bmpcfg_emit_stub_0191
+
+.globl bmpcfg_emit_stub_0192
+.p2align 2
+.type bmpcfg_emit_stub_0192, @function
+bmpcfg_emit_stub_0192:
+    bmpcfg 0, 24, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0192, .-bmpcfg_emit_stub_0192
+
+.globl bmpcfg_emit_stub_0193
+.p2align 2
+.type bmpcfg_emit_stub_0193, @function
+bmpcfg_emit_stub_0193:
+    bmpcfg 0, 24, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0193, .-bmpcfg_emit_stub_0193
+
+.globl bmpcfg_emit_stub_0194
+.p2align 2
+.type bmpcfg_emit_stub_0194, @function
+bmpcfg_emit_stub_0194:
+    bmpcfg 0, 24, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0194, .-bmpcfg_emit_stub_0194
+
+.globl bmpcfg_emit_stub_0195
+.p2align 2
+.type bmpcfg_emit_stub_0195, @function
+bmpcfg_emit_stub_0195:
+    bmpcfg 0, 24, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0195, .-bmpcfg_emit_stub_0195
+
+.globl bmpcfg_emit_stub_0196
+.p2align 2
+.type bmpcfg_emit_stub_0196, @function
+bmpcfg_emit_stub_0196:
+    bmpcfg 0, 24, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0196, .-bmpcfg_emit_stub_0196
+
+.globl bmpcfg_emit_stub_0197
+.p2align 2
+.type bmpcfg_emit_stub_0197, @function
+bmpcfg_emit_stub_0197:
+    bmpcfg 0, 24, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0197, .-bmpcfg_emit_stub_0197
+
+.globl bmpcfg_emit_stub_0198
+.p2align 2
+.type bmpcfg_emit_stub_0198, @function
+bmpcfg_emit_stub_0198:
+    bmpcfg 0, 24, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0198, .-bmpcfg_emit_stub_0198
+
+.globl bmpcfg_emit_stub_0199
+.p2align 2
+.type bmpcfg_emit_stub_0199, @function
+bmpcfg_emit_stub_0199:
+    bmpcfg 0, 24, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0199, .-bmpcfg_emit_stub_0199
+
+.globl bmpcfg_emit_stub_0200
+.p2align 2
+.type bmpcfg_emit_stub_0200, @function
+bmpcfg_emit_stub_0200:
+    bmpcfg 0, 24, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0200, .-bmpcfg_emit_stub_0200
+
+.globl bmpcfg_emit_stub_0201
+.p2align 2
+.type bmpcfg_emit_stub_0201, @function
+bmpcfg_emit_stub_0201:
+    bmpcfg 0, 24, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0201, .-bmpcfg_emit_stub_0201
+
+.globl bmpcfg_emit_stub_0202
+.p2align 2
+.type bmpcfg_emit_stub_0202, @function
+bmpcfg_emit_stub_0202:
+    bmpcfg 0, 24, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0202, .-bmpcfg_emit_stub_0202
+
+.globl bmpcfg_emit_stub_0203
+.p2align 2
+.type bmpcfg_emit_stub_0203, @function
+bmpcfg_emit_stub_0203:
+    bmpcfg 0, 24, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0203, .-bmpcfg_emit_stub_0203
+
+.globl bmpcfg_emit_stub_0204
+.p2align 2
+.type bmpcfg_emit_stub_0204, @function
+bmpcfg_emit_stub_0204:
+    bmpcfg 0, 24, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0204, .-bmpcfg_emit_stub_0204
+
+.globl bmpcfg_emit_stub_0205
+.p2align 2
+.type bmpcfg_emit_stub_0205, @function
+bmpcfg_emit_stub_0205:
+    bmpcfg 0, 24, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0205, .-bmpcfg_emit_stub_0205
+
+.globl bmpcfg_emit_stub_0206
+.p2align 2
+.type bmpcfg_emit_stub_0206, @function
+bmpcfg_emit_stub_0206:
+    bmpcfg 0, 24, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0206, .-bmpcfg_emit_stub_0206
+
+.globl bmpcfg_emit_stub_0207
+.p2align 2
+.type bmpcfg_emit_stub_0207, @function
+bmpcfg_emit_stub_0207:
+    bmpcfg 0, 24, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0207, .-bmpcfg_emit_stub_0207
+
+.globl bmpcfg_emit_stub_0208
+.p2align 2
+.type bmpcfg_emit_stub_0208, @function
+bmpcfg_emit_stub_0208:
+    bmpcfg 0, 24, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0208, .-bmpcfg_emit_stub_0208
+
+.globl bmpcfg_emit_stub_0209
+.p2align 2
+.type bmpcfg_emit_stub_0209, @function
+bmpcfg_emit_stub_0209:
+    bmpcfg 0, 24, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0209, .-bmpcfg_emit_stub_0209
+
+.globl bmpcfg_emit_stub_0210
+.p2align 2
+.type bmpcfg_emit_stub_0210, @function
+bmpcfg_emit_stub_0210:
+    bmpcfg 0, 24, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0210, .-bmpcfg_emit_stub_0210
+
+.globl bmpcfg_emit_stub_0211
+.p2align 2
+.type bmpcfg_emit_stub_0211, @function
+bmpcfg_emit_stub_0211:
+    bmpcfg 0, 24, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0211, .-bmpcfg_emit_stub_0211
+
+.globl bmpcfg_emit_stub_0212
+.p2align 2
+.type bmpcfg_emit_stub_0212, @function
+bmpcfg_emit_stub_0212:
+    bmpcfg 0, 24, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0212, .-bmpcfg_emit_stub_0212
+
+.globl bmpcfg_emit_stub_0213
+.p2align 2
+.type bmpcfg_emit_stub_0213, @function
+bmpcfg_emit_stub_0213:
+    bmpcfg 0, 24, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0213, .-bmpcfg_emit_stub_0213
+
+.globl bmpcfg_emit_stub_0214
+.p2align 2
+.type bmpcfg_emit_stub_0214, @function
+bmpcfg_emit_stub_0214:
+    bmpcfg 0, 24, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0214, .-bmpcfg_emit_stub_0214
+
+.globl bmpcfg_emit_stub_0215
+.p2align 2
+.type bmpcfg_emit_stub_0215, @function
+bmpcfg_emit_stub_0215:
+    bmpcfg 0, 24, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0215, .-bmpcfg_emit_stub_0215
+
+.globl bmpcfg_emit_stub_0216
+.p2align 2
+.type bmpcfg_emit_stub_0216, @function
+bmpcfg_emit_stub_0216:
+    bmpcfg 0, 24, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0216, .-bmpcfg_emit_stub_0216
+
+.globl bmpcfg_emit_stub_0217
+.p2align 2
+.type bmpcfg_emit_stub_0217, @function
+bmpcfg_emit_stub_0217:
+    bmpcfg 0, 24, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0217, .-bmpcfg_emit_stub_0217
+
+.globl bmpcfg_emit_stub_0218
+.p2align 2
+.type bmpcfg_emit_stub_0218, @function
+bmpcfg_emit_stub_0218:
+    bmpcfg 0, 24, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0218, .-bmpcfg_emit_stub_0218
+
+.globl bmpcfg_emit_stub_0219
+.p2align 2
+.type bmpcfg_emit_stub_0219, @function
+bmpcfg_emit_stub_0219:
+    bmpcfg 0, 24, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0219, .-bmpcfg_emit_stub_0219
+
+.globl bmpcfg_emit_stub_0220
+.p2align 2
+.type bmpcfg_emit_stub_0220, @function
+bmpcfg_emit_stub_0220:
+    bmpcfg 0, 24, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0220, .-bmpcfg_emit_stub_0220
+
+.globl bmpcfg_emit_stub_0221
+.p2align 2
+.type bmpcfg_emit_stub_0221, @function
+bmpcfg_emit_stub_0221:
+    bmpcfg 0, 24, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0221, .-bmpcfg_emit_stub_0221
+
+.globl bmpcfg_emit_stub_0222
+.p2align 2
+.type bmpcfg_emit_stub_0222, @function
+bmpcfg_emit_stub_0222:
+    bmpcfg 0, 24, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0222, .-bmpcfg_emit_stub_0222
+
+.globl bmpcfg_emit_stub_0223
+.p2align 2
+.type bmpcfg_emit_stub_0223, @function
+bmpcfg_emit_stub_0223:
+    bmpcfg 0, 24, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0223, .-bmpcfg_emit_stub_0223
+
+.globl bmpcfg_emit_stub_0224
+.p2align 2
+.type bmpcfg_emit_stub_0224, @function
+bmpcfg_emit_stub_0224:
+    bmpcfg 0, 24, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0224, .-bmpcfg_emit_stub_0224
+
+.globl bmpcfg_emit_stub_0225
+.p2align 2
+.type bmpcfg_emit_stub_0225, @function
+bmpcfg_emit_stub_0225:
+    bmpcfg 0, 24, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0225, .-bmpcfg_emit_stub_0225
+
+.globl bmpcfg_emit_stub_0226
+.p2align 2
+.type bmpcfg_emit_stub_0226, @function
+bmpcfg_emit_stub_0226:
+    bmpcfg 0, 24, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0226, .-bmpcfg_emit_stub_0226
+
+.globl bmpcfg_emit_stub_0227
+.p2align 2
+.type bmpcfg_emit_stub_0227, @function
+bmpcfg_emit_stub_0227:
+    bmpcfg 0, 24, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0227, .-bmpcfg_emit_stub_0227
+
+.globl bmpcfg_emit_stub_0228
+.p2align 2
+.type bmpcfg_emit_stub_0228, @function
+bmpcfg_emit_stub_0228:
+    bmpcfg 0, 24, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0228, .-bmpcfg_emit_stub_0228
+
+.globl bmpcfg_emit_stub_0229
+.p2align 2
+.type bmpcfg_emit_stub_0229, @function
+bmpcfg_emit_stub_0229:
+    bmpcfg 0, 24, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0229, .-bmpcfg_emit_stub_0229
+
+.globl bmpcfg_emit_stub_0230
+.p2align 2
+.type bmpcfg_emit_stub_0230, @function
+bmpcfg_emit_stub_0230:
+    bmpcfg 0, 24, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0230, .-bmpcfg_emit_stub_0230
+
+.globl bmpcfg_emit_stub_0231
+.p2align 2
+.type bmpcfg_emit_stub_0231, @function
+bmpcfg_emit_stub_0231:
+    bmpcfg 0, 24, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0231, .-bmpcfg_emit_stub_0231
+
+.globl bmpcfg_emit_stub_0232
+.p2align 2
+.type bmpcfg_emit_stub_0232, @function
+bmpcfg_emit_stub_0232:
+    bmpcfg 0, 24, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0232, .-bmpcfg_emit_stub_0232
+
+.globl bmpcfg_emit_stub_0233
+.p2align 2
+.type bmpcfg_emit_stub_0233, @function
+bmpcfg_emit_stub_0233:
+    bmpcfg 0, 24, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0233, .-bmpcfg_emit_stub_0233
+
+.globl bmpcfg_emit_stub_0234
+.p2align 2
+.type bmpcfg_emit_stub_0234, @function
+bmpcfg_emit_stub_0234:
+    bmpcfg 0, 24, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0234, .-bmpcfg_emit_stub_0234
+
+.globl bmpcfg_emit_stub_0235
+.p2align 2
+.type bmpcfg_emit_stub_0235, @function
+bmpcfg_emit_stub_0235:
+    bmpcfg 0, 24, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0235, .-bmpcfg_emit_stub_0235
+
+.globl bmpcfg_emit_stub_0236
+.p2align 2
+.type bmpcfg_emit_stub_0236, @function
+bmpcfg_emit_stub_0236:
+    bmpcfg 0, 24, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0236, .-bmpcfg_emit_stub_0236
+
+.globl bmpcfg_emit_stub_0237
+.p2align 2
+.type bmpcfg_emit_stub_0237, @function
+bmpcfg_emit_stub_0237:
+    bmpcfg 0, 24, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0237, .-bmpcfg_emit_stub_0237
+
+.globl bmpcfg_emit_stub_0238
+.p2align 2
+.type bmpcfg_emit_stub_0238, @function
+bmpcfg_emit_stub_0238:
+    bmpcfg 0, 24, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0238, .-bmpcfg_emit_stub_0238
+
+.globl bmpcfg_emit_stub_0239
+.p2align 2
+.type bmpcfg_emit_stub_0239, @function
+bmpcfg_emit_stub_0239:
+    bmpcfg 0, 24, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0239, .-bmpcfg_emit_stub_0239
+
+.globl bmpcfg_emit_stub_0240
+.p2align 2
+.type bmpcfg_emit_stub_0240, @function
+bmpcfg_emit_stub_0240:
+    bmpcfg 0, 24, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0240, .-bmpcfg_emit_stub_0240
+
+.globl bmpcfg_emit_stub_0241
+.p2align 2
+.type bmpcfg_emit_stub_0241, @function
+bmpcfg_emit_stub_0241:
+    bmpcfg 0, 24, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0241, .-bmpcfg_emit_stub_0241
+
+.globl bmpcfg_emit_stub_0242
+.p2align 2
+.type bmpcfg_emit_stub_0242, @function
+bmpcfg_emit_stub_0242:
+    bmpcfg 0, 24, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0242, .-bmpcfg_emit_stub_0242
+
+.globl bmpcfg_emit_stub_0243
+.p2align 2
+.type bmpcfg_emit_stub_0243, @function
+bmpcfg_emit_stub_0243:
+    bmpcfg 0, 24, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0243, .-bmpcfg_emit_stub_0243
+
+.globl bmpcfg_emit_stub_0244
+.p2align 2
+.type bmpcfg_emit_stub_0244, @function
+bmpcfg_emit_stub_0244:
+    bmpcfg 0, 24, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0244, .-bmpcfg_emit_stub_0244
+
+.globl bmpcfg_emit_stub_0245
+.p2align 2
+.type bmpcfg_emit_stub_0245, @function
+bmpcfg_emit_stub_0245:
+    bmpcfg 0, 24, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0245, .-bmpcfg_emit_stub_0245
+
+.globl bmpcfg_emit_stub_0246
+.p2align 2
+.type bmpcfg_emit_stub_0246, @function
+bmpcfg_emit_stub_0246:
+    bmpcfg 0, 24, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0246, .-bmpcfg_emit_stub_0246
+
+.globl bmpcfg_emit_stub_0247
+.p2align 2
+.type bmpcfg_emit_stub_0247, @function
+bmpcfg_emit_stub_0247:
+    bmpcfg 0, 24, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0247, .-bmpcfg_emit_stub_0247
+
+.globl bmpcfg_emit_stub_0248
+.p2align 2
+.type bmpcfg_emit_stub_0248, @function
+bmpcfg_emit_stub_0248:
+    bmpcfg 0, 24, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0248, .-bmpcfg_emit_stub_0248
+
+.globl bmpcfg_emit_stub_0249
+.p2align 2
+.type bmpcfg_emit_stub_0249, @function
+bmpcfg_emit_stub_0249:
+    bmpcfg 0, 24, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0249, .-bmpcfg_emit_stub_0249
+
+.globl bmpcfg_emit_stub_0250
+.p2align 2
+.type bmpcfg_emit_stub_0250, @function
+bmpcfg_emit_stub_0250:
+    bmpcfg 0, 24, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0250, .-bmpcfg_emit_stub_0250
+
+.globl bmpcfg_emit_stub_0251
+.p2align 2
+.type bmpcfg_emit_stub_0251, @function
+bmpcfg_emit_stub_0251:
+    bmpcfg 0, 24, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0251, .-bmpcfg_emit_stub_0251
+
+.globl bmpcfg_emit_stub_0252
+.p2align 2
+.type bmpcfg_emit_stub_0252, @function
+bmpcfg_emit_stub_0252:
+    bmpcfg 0, 24, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0252, .-bmpcfg_emit_stub_0252
+
+.globl bmpcfg_emit_stub_0253
+.p2align 2
+.type bmpcfg_emit_stub_0253, @function
+bmpcfg_emit_stub_0253:
+    bmpcfg 0, 24, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0253, .-bmpcfg_emit_stub_0253
+
+.globl bmpcfg_emit_stub_0254
+.p2align 2
+.type bmpcfg_emit_stub_0254, @function
+bmpcfg_emit_stub_0254:
+    bmpcfg 0, 24, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0254, .-bmpcfg_emit_stub_0254
+
+.globl bmpcfg_emit_stub_0255
+.p2align 2
+.type bmpcfg_emit_stub_0255, @function
+bmpcfg_emit_stub_0255:
+    bmpcfg 0, 24, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0255, .-bmpcfg_emit_stub_0255
+
+.globl bmpcfg_emit_stub_0256
+.p2align 2
+.type bmpcfg_emit_stub_0256, @function
+bmpcfg_emit_stub_0256:
+    bmpcfg 0, 24, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0256, .-bmpcfg_emit_stub_0256
+
+.globl bmpcfg_emit_stub_0257
+.p2align 2
+.type bmpcfg_emit_stub_0257, @function
+bmpcfg_emit_stub_0257:
+    bmpcfg 0, 24, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0257, .-bmpcfg_emit_stub_0257
+
+.globl bmpcfg_emit_stub_0258
+.p2align 2
+.type bmpcfg_emit_stub_0258, @function
+bmpcfg_emit_stub_0258:
+    bmpcfg 0, 24, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0258, .-bmpcfg_emit_stub_0258
+
+.globl bmpcfg_emit_stub_0259
+.p2align 2
+.type bmpcfg_emit_stub_0259, @function
+bmpcfg_emit_stub_0259:
+    bmpcfg 0, 24, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0259, .-bmpcfg_emit_stub_0259
+
+.globl bmpcfg_emit_stub_0260
+.p2align 2
+.type bmpcfg_emit_stub_0260, @function
+bmpcfg_emit_stub_0260:
+    bmpcfg 0, 24, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0260, .-bmpcfg_emit_stub_0260
+
+.globl bmpcfg_emit_stub_0261
+.p2align 2
+.type bmpcfg_emit_stub_0261, @function
+bmpcfg_emit_stub_0261:
+    bmpcfg 0, 24, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0261, .-bmpcfg_emit_stub_0261
+
+.globl bmpcfg_emit_stub_0262
+.p2align 2
+.type bmpcfg_emit_stub_0262, @function
+bmpcfg_emit_stub_0262:
+    bmpcfg 0, 24, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0262, .-bmpcfg_emit_stub_0262
+
+.globl bmpcfg_emit_stub_0263
+.p2align 2
+.type bmpcfg_emit_stub_0263, @function
+bmpcfg_emit_stub_0263:
+    bmpcfg 0, 24, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0263, .-bmpcfg_emit_stub_0263
+
+.globl bmpcfg_emit_stub_0264
+.p2align 2
+.type bmpcfg_emit_stub_0264, @function
+bmpcfg_emit_stub_0264:
+    bmpcfg 0, 32, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0264, .-bmpcfg_emit_stub_0264
+
+.globl bmpcfg_emit_stub_0265
+.p2align 2
+.type bmpcfg_emit_stub_0265, @function
+bmpcfg_emit_stub_0265:
+    bmpcfg 0, 32, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0265, .-bmpcfg_emit_stub_0265
+
+.globl bmpcfg_emit_stub_0266
+.p2align 2
+.type bmpcfg_emit_stub_0266, @function
+bmpcfg_emit_stub_0266:
+    bmpcfg 0, 32, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0266, .-bmpcfg_emit_stub_0266
+
+.globl bmpcfg_emit_stub_0267
+.p2align 2
+.type bmpcfg_emit_stub_0267, @function
+bmpcfg_emit_stub_0267:
+    bmpcfg 0, 32, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0267, .-bmpcfg_emit_stub_0267
+
+.globl bmpcfg_emit_stub_0268
+.p2align 2
+.type bmpcfg_emit_stub_0268, @function
+bmpcfg_emit_stub_0268:
+    bmpcfg 0, 32, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0268, .-bmpcfg_emit_stub_0268
+
+.globl bmpcfg_emit_stub_0269
+.p2align 2
+.type bmpcfg_emit_stub_0269, @function
+bmpcfg_emit_stub_0269:
+    bmpcfg 0, 32, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0269, .-bmpcfg_emit_stub_0269
+
+.globl bmpcfg_emit_stub_0270
+.p2align 2
+.type bmpcfg_emit_stub_0270, @function
+bmpcfg_emit_stub_0270:
+    bmpcfg 0, 32, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0270, .-bmpcfg_emit_stub_0270
+
+.globl bmpcfg_emit_stub_0271
+.p2align 2
+.type bmpcfg_emit_stub_0271, @function
+bmpcfg_emit_stub_0271:
+    bmpcfg 0, 32, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0271, .-bmpcfg_emit_stub_0271
+
+.globl bmpcfg_emit_stub_0272
+.p2align 2
+.type bmpcfg_emit_stub_0272, @function
+bmpcfg_emit_stub_0272:
+    bmpcfg 0, 32, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0272, .-bmpcfg_emit_stub_0272
+
+.globl bmpcfg_emit_stub_0273
+.p2align 2
+.type bmpcfg_emit_stub_0273, @function
+bmpcfg_emit_stub_0273:
+    bmpcfg 0, 32, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0273, .-bmpcfg_emit_stub_0273
+
+.globl bmpcfg_emit_stub_0274
+.p2align 2
+.type bmpcfg_emit_stub_0274, @function
+bmpcfg_emit_stub_0274:
+    bmpcfg 0, 32, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0274, .-bmpcfg_emit_stub_0274
+
+.globl bmpcfg_emit_stub_0275
+.p2align 2
+.type bmpcfg_emit_stub_0275, @function
+bmpcfg_emit_stub_0275:
+    bmpcfg 0, 32, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0275, .-bmpcfg_emit_stub_0275
+
+.globl bmpcfg_emit_stub_0276
+.p2align 2
+.type bmpcfg_emit_stub_0276, @function
+bmpcfg_emit_stub_0276:
+    bmpcfg 0, 32, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0276, .-bmpcfg_emit_stub_0276
+
+.globl bmpcfg_emit_stub_0277
+.p2align 2
+.type bmpcfg_emit_stub_0277, @function
+bmpcfg_emit_stub_0277:
+    bmpcfg 0, 32, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0277, .-bmpcfg_emit_stub_0277
+
+.globl bmpcfg_emit_stub_0278
+.p2align 2
+.type bmpcfg_emit_stub_0278, @function
+bmpcfg_emit_stub_0278:
+    bmpcfg 0, 32, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0278, .-bmpcfg_emit_stub_0278
+
+.globl bmpcfg_emit_stub_0279
+.p2align 2
+.type bmpcfg_emit_stub_0279, @function
+bmpcfg_emit_stub_0279:
+    bmpcfg 0, 32, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0279, .-bmpcfg_emit_stub_0279
+
+.globl bmpcfg_emit_stub_0280
+.p2align 2
+.type bmpcfg_emit_stub_0280, @function
+bmpcfg_emit_stub_0280:
+    bmpcfg 0, 32, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0280, .-bmpcfg_emit_stub_0280
+
+.globl bmpcfg_emit_stub_0281
+.p2align 2
+.type bmpcfg_emit_stub_0281, @function
+bmpcfg_emit_stub_0281:
+    bmpcfg 0, 32, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0281, .-bmpcfg_emit_stub_0281
+
+.globl bmpcfg_emit_stub_0282
+.p2align 2
+.type bmpcfg_emit_stub_0282, @function
+bmpcfg_emit_stub_0282:
+    bmpcfg 0, 32, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0282, .-bmpcfg_emit_stub_0282
+
+.globl bmpcfg_emit_stub_0283
+.p2align 2
+.type bmpcfg_emit_stub_0283, @function
+bmpcfg_emit_stub_0283:
+    bmpcfg 0, 32, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0283, .-bmpcfg_emit_stub_0283
+
+.globl bmpcfg_emit_stub_0284
+.p2align 2
+.type bmpcfg_emit_stub_0284, @function
+bmpcfg_emit_stub_0284:
+    bmpcfg 0, 32, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0284, .-bmpcfg_emit_stub_0284
+
+.globl bmpcfg_emit_stub_0285
+.p2align 2
+.type bmpcfg_emit_stub_0285, @function
+bmpcfg_emit_stub_0285:
+    bmpcfg 0, 32, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0285, .-bmpcfg_emit_stub_0285
+
+.globl bmpcfg_emit_stub_0286
+.p2align 2
+.type bmpcfg_emit_stub_0286, @function
+bmpcfg_emit_stub_0286:
+    bmpcfg 0, 32, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0286, .-bmpcfg_emit_stub_0286
+
+.globl bmpcfg_emit_stub_0287
+.p2align 2
+.type bmpcfg_emit_stub_0287, @function
+bmpcfg_emit_stub_0287:
+    bmpcfg 0, 32, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0287, .-bmpcfg_emit_stub_0287
+
+.globl bmpcfg_emit_stub_0288
+.p2align 2
+.type bmpcfg_emit_stub_0288, @function
+bmpcfg_emit_stub_0288:
+    bmpcfg 0, 32, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0288, .-bmpcfg_emit_stub_0288
+
+.globl bmpcfg_emit_stub_0289
+.p2align 2
+.type bmpcfg_emit_stub_0289, @function
+bmpcfg_emit_stub_0289:
+    bmpcfg 0, 32, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0289, .-bmpcfg_emit_stub_0289
+
+.globl bmpcfg_emit_stub_0290
+.p2align 2
+.type bmpcfg_emit_stub_0290, @function
+bmpcfg_emit_stub_0290:
+    bmpcfg 0, 32, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0290, .-bmpcfg_emit_stub_0290
+
+.globl bmpcfg_emit_stub_0291
+.p2align 2
+.type bmpcfg_emit_stub_0291, @function
+bmpcfg_emit_stub_0291:
+    bmpcfg 0, 32, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0291, .-bmpcfg_emit_stub_0291
+
+.globl bmpcfg_emit_stub_0292
+.p2align 2
+.type bmpcfg_emit_stub_0292, @function
+bmpcfg_emit_stub_0292:
+    bmpcfg 0, 32, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0292, .-bmpcfg_emit_stub_0292
+
+.globl bmpcfg_emit_stub_0293
+.p2align 2
+.type bmpcfg_emit_stub_0293, @function
+bmpcfg_emit_stub_0293:
+    bmpcfg 0, 32, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0293, .-bmpcfg_emit_stub_0293
+
+.globl bmpcfg_emit_stub_0294
+.p2align 2
+.type bmpcfg_emit_stub_0294, @function
+bmpcfg_emit_stub_0294:
+    bmpcfg 0, 32, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0294, .-bmpcfg_emit_stub_0294
+
+.globl bmpcfg_emit_stub_0295
+.p2align 2
+.type bmpcfg_emit_stub_0295, @function
+bmpcfg_emit_stub_0295:
+    bmpcfg 0, 32, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0295, .-bmpcfg_emit_stub_0295
+
+.globl bmpcfg_emit_stub_0296
+.p2align 2
+.type bmpcfg_emit_stub_0296, @function
+bmpcfg_emit_stub_0296:
+    bmpcfg 0, 32, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0296, .-bmpcfg_emit_stub_0296
+
+.globl bmpcfg_emit_stub_0297
+.p2align 2
+.type bmpcfg_emit_stub_0297, @function
+bmpcfg_emit_stub_0297:
+    bmpcfg 0, 32, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0297, .-bmpcfg_emit_stub_0297
+
+.globl bmpcfg_emit_stub_0298
+.p2align 2
+.type bmpcfg_emit_stub_0298, @function
+bmpcfg_emit_stub_0298:
+    bmpcfg 0, 32, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0298, .-bmpcfg_emit_stub_0298
+
+.globl bmpcfg_emit_stub_0299
+.p2align 2
+.type bmpcfg_emit_stub_0299, @function
+bmpcfg_emit_stub_0299:
+    bmpcfg 0, 32, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0299, .-bmpcfg_emit_stub_0299
+
+.globl bmpcfg_emit_stub_0300
+.p2align 2
+.type bmpcfg_emit_stub_0300, @function
+bmpcfg_emit_stub_0300:
+    bmpcfg 0, 32, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0300, .-bmpcfg_emit_stub_0300
+
+.globl bmpcfg_emit_stub_0301
+.p2align 2
+.type bmpcfg_emit_stub_0301, @function
+bmpcfg_emit_stub_0301:
+    bmpcfg 0, 32, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0301, .-bmpcfg_emit_stub_0301
+
+.globl bmpcfg_emit_stub_0302
+.p2align 2
+.type bmpcfg_emit_stub_0302, @function
+bmpcfg_emit_stub_0302:
+    bmpcfg 0, 32, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0302, .-bmpcfg_emit_stub_0302
+
+.globl bmpcfg_emit_stub_0303
+.p2align 2
+.type bmpcfg_emit_stub_0303, @function
+bmpcfg_emit_stub_0303:
+    bmpcfg 0, 32, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0303, .-bmpcfg_emit_stub_0303
+
+.globl bmpcfg_emit_stub_0304
+.p2align 2
+.type bmpcfg_emit_stub_0304, @function
+bmpcfg_emit_stub_0304:
+    bmpcfg 0, 32, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0304, .-bmpcfg_emit_stub_0304
+
+.globl bmpcfg_emit_stub_0305
+.p2align 2
+.type bmpcfg_emit_stub_0305, @function
+bmpcfg_emit_stub_0305:
+    bmpcfg 0, 32, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0305, .-bmpcfg_emit_stub_0305
+
+.globl bmpcfg_emit_stub_0306
+.p2align 2
+.type bmpcfg_emit_stub_0306, @function
+bmpcfg_emit_stub_0306:
+    bmpcfg 0, 32, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0306, .-bmpcfg_emit_stub_0306
+
+.globl bmpcfg_emit_stub_0307
+.p2align 2
+.type bmpcfg_emit_stub_0307, @function
+bmpcfg_emit_stub_0307:
+    bmpcfg 0, 32, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0307, .-bmpcfg_emit_stub_0307
+
+.globl bmpcfg_emit_stub_0308
+.p2align 2
+.type bmpcfg_emit_stub_0308, @function
+bmpcfg_emit_stub_0308:
+    bmpcfg 0, 32, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0308, .-bmpcfg_emit_stub_0308
+
+.globl bmpcfg_emit_stub_0309
+.p2align 2
+.type bmpcfg_emit_stub_0309, @function
+bmpcfg_emit_stub_0309:
+    bmpcfg 0, 32, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0309, .-bmpcfg_emit_stub_0309
+
+.globl bmpcfg_emit_stub_0310
+.p2align 2
+.type bmpcfg_emit_stub_0310, @function
+bmpcfg_emit_stub_0310:
+    bmpcfg 0, 32, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0310, .-bmpcfg_emit_stub_0310
+
+.globl bmpcfg_emit_stub_0311
+.p2align 2
+.type bmpcfg_emit_stub_0311, @function
+bmpcfg_emit_stub_0311:
+    bmpcfg 0, 32, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0311, .-bmpcfg_emit_stub_0311
+
+.globl bmpcfg_emit_stub_0312
+.p2align 2
+.type bmpcfg_emit_stub_0312, @function
+bmpcfg_emit_stub_0312:
+    bmpcfg 0, 32, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0312, .-bmpcfg_emit_stub_0312
+
+.globl bmpcfg_emit_stub_0313
+.p2align 2
+.type bmpcfg_emit_stub_0313, @function
+bmpcfg_emit_stub_0313:
+    bmpcfg 0, 32, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0313, .-bmpcfg_emit_stub_0313
+
+.globl bmpcfg_emit_stub_0314
+.p2align 2
+.type bmpcfg_emit_stub_0314, @function
+bmpcfg_emit_stub_0314:
+    bmpcfg 0, 32, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0314, .-bmpcfg_emit_stub_0314
+
+.globl bmpcfg_emit_stub_0315
+.p2align 2
+.type bmpcfg_emit_stub_0315, @function
+bmpcfg_emit_stub_0315:
+    bmpcfg 0, 32, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0315, .-bmpcfg_emit_stub_0315
+
+.globl bmpcfg_emit_stub_0316
+.p2align 2
+.type bmpcfg_emit_stub_0316, @function
+bmpcfg_emit_stub_0316:
+    bmpcfg 0, 32, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0316, .-bmpcfg_emit_stub_0316
+
+.globl bmpcfg_emit_stub_0317
+.p2align 2
+.type bmpcfg_emit_stub_0317, @function
+bmpcfg_emit_stub_0317:
+    bmpcfg 0, 32, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0317, .-bmpcfg_emit_stub_0317
+
+.globl bmpcfg_emit_stub_0318
+.p2align 2
+.type bmpcfg_emit_stub_0318, @function
+bmpcfg_emit_stub_0318:
+    bmpcfg 0, 32, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0318, .-bmpcfg_emit_stub_0318
+
+.globl bmpcfg_emit_stub_0319
+.p2align 2
+.type bmpcfg_emit_stub_0319, @function
+bmpcfg_emit_stub_0319:
+    bmpcfg 0, 32, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0319, .-bmpcfg_emit_stub_0319
+
+.globl bmpcfg_emit_stub_0320
+.p2align 2
+.type bmpcfg_emit_stub_0320, @function
+bmpcfg_emit_stub_0320:
+    bmpcfg 0, 32, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0320, .-bmpcfg_emit_stub_0320
+
+.globl bmpcfg_emit_stub_0321
+.p2align 2
+.type bmpcfg_emit_stub_0321, @function
+bmpcfg_emit_stub_0321:
+    bmpcfg 0, 32, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0321, .-bmpcfg_emit_stub_0321
+
+.globl bmpcfg_emit_stub_0322
+.p2align 2
+.type bmpcfg_emit_stub_0322, @function
+bmpcfg_emit_stub_0322:
+    bmpcfg 0, 32, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0322, .-bmpcfg_emit_stub_0322
+
+.globl bmpcfg_emit_stub_0323
+.p2align 2
+.type bmpcfg_emit_stub_0323, @function
+bmpcfg_emit_stub_0323:
+    bmpcfg 0, 32, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0323, .-bmpcfg_emit_stub_0323
+
+.globl bmpcfg_emit_stub_0324
+.p2align 2
+.type bmpcfg_emit_stub_0324, @function
+bmpcfg_emit_stub_0324:
+    bmpcfg 0, 32, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0324, .-bmpcfg_emit_stub_0324
+
+.globl bmpcfg_emit_stub_0325
+.p2align 2
+.type bmpcfg_emit_stub_0325, @function
+bmpcfg_emit_stub_0325:
+    bmpcfg 0, 32, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0325, .-bmpcfg_emit_stub_0325
+
+.globl bmpcfg_emit_stub_0326
+.p2align 2
+.type bmpcfg_emit_stub_0326, @function
+bmpcfg_emit_stub_0326:
+    bmpcfg 0, 32, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0326, .-bmpcfg_emit_stub_0326
+
+.globl bmpcfg_emit_stub_0327
+.p2align 2
+.type bmpcfg_emit_stub_0327, @function
+bmpcfg_emit_stub_0327:
+    bmpcfg 0, 32, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0327, .-bmpcfg_emit_stub_0327
+
+.globl bmpcfg_emit_stub_0328
+.p2align 2
+.type bmpcfg_emit_stub_0328, @function
+bmpcfg_emit_stub_0328:
+    bmpcfg 0, 32, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0328, .-bmpcfg_emit_stub_0328
+
+.globl bmpcfg_emit_stub_0329
+.p2align 2
+.type bmpcfg_emit_stub_0329, @function
+bmpcfg_emit_stub_0329:
+    bmpcfg 0, 32, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0329, .-bmpcfg_emit_stub_0329
+
+.globl bmpcfg_emit_stub_0330
+.p2align 2
+.type bmpcfg_emit_stub_0330, @function
+bmpcfg_emit_stub_0330:
+    bmpcfg 0, 32, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0330, .-bmpcfg_emit_stub_0330
+
+.globl bmpcfg_emit_stub_0331
+.p2align 2
+.type bmpcfg_emit_stub_0331, @function
+bmpcfg_emit_stub_0331:
+    bmpcfg 0, 32, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0331, .-bmpcfg_emit_stub_0331
+
+.globl bmpcfg_emit_stub_0332
+.p2align 2
+.type bmpcfg_emit_stub_0332, @function
+bmpcfg_emit_stub_0332:
+    bmpcfg 0, 32, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0332, .-bmpcfg_emit_stub_0332
+
+.globl bmpcfg_emit_stub_0333
+.p2align 2
+.type bmpcfg_emit_stub_0333, @function
+bmpcfg_emit_stub_0333:
+    bmpcfg 0, 32, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0333, .-bmpcfg_emit_stub_0333
+
+.globl bmpcfg_emit_stub_0334
+.p2align 2
+.type bmpcfg_emit_stub_0334, @function
+bmpcfg_emit_stub_0334:
+    bmpcfg 0, 32, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0334, .-bmpcfg_emit_stub_0334
+
+.globl bmpcfg_emit_stub_0335
+.p2align 2
+.type bmpcfg_emit_stub_0335, @function
+bmpcfg_emit_stub_0335:
+    bmpcfg 0, 32, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0335, .-bmpcfg_emit_stub_0335
+
+.globl bmpcfg_emit_stub_0336
+.p2align 2
+.type bmpcfg_emit_stub_0336, @function
+bmpcfg_emit_stub_0336:
+    bmpcfg 0, 32, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0336, .-bmpcfg_emit_stub_0336
+
+.globl bmpcfg_emit_stub_0337
+.p2align 2
+.type bmpcfg_emit_stub_0337, @function
+bmpcfg_emit_stub_0337:
+    bmpcfg 0, 32, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0337, .-bmpcfg_emit_stub_0337
+
+.globl bmpcfg_emit_stub_0338
+.p2align 2
+.type bmpcfg_emit_stub_0338, @function
+bmpcfg_emit_stub_0338:
+    bmpcfg 0, 32, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0338, .-bmpcfg_emit_stub_0338
+
+.globl bmpcfg_emit_stub_0339
+.p2align 2
+.type bmpcfg_emit_stub_0339, @function
+bmpcfg_emit_stub_0339:
+    bmpcfg 0, 32, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0339, .-bmpcfg_emit_stub_0339
+
+.globl bmpcfg_emit_stub_0340
+.p2align 2
+.type bmpcfg_emit_stub_0340, @function
+bmpcfg_emit_stub_0340:
+    bmpcfg 0, 32, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0340, .-bmpcfg_emit_stub_0340
+
+.globl bmpcfg_emit_stub_0341
+.p2align 2
+.type bmpcfg_emit_stub_0341, @function
+bmpcfg_emit_stub_0341:
+    bmpcfg 0, 32, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0341, .-bmpcfg_emit_stub_0341
+
+.globl bmpcfg_emit_stub_0342
+.p2align 2
+.type bmpcfg_emit_stub_0342, @function
+bmpcfg_emit_stub_0342:
+    bmpcfg 0, 32, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0342, .-bmpcfg_emit_stub_0342
+
+.globl bmpcfg_emit_stub_0343
+.p2align 2
+.type bmpcfg_emit_stub_0343, @function
+bmpcfg_emit_stub_0343:
+    bmpcfg 0, 32, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0343, .-bmpcfg_emit_stub_0343
+
+.globl bmpcfg_emit_stub_0344
+.p2align 2
+.type bmpcfg_emit_stub_0344, @function
+bmpcfg_emit_stub_0344:
+    bmpcfg 0, 32, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0344, .-bmpcfg_emit_stub_0344
+
+.globl bmpcfg_emit_stub_0345
+.p2align 2
+.type bmpcfg_emit_stub_0345, @function
+bmpcfg_emit_stub_0345:
+    bmpcfg 0, 32, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0345, .-bmpcfg_emit_stub_0345
+
+.globl bmpcfg_emit_stub_0346
+.p2align 2
+.type bmpcfg_emit_stub_0346, @function
+bmpcfg_emit_stub_0346:
+    bmpcfg 0, 40, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0346, .-bmpcfg_emit_stub_0346
+
+.globl bmpcfg_emit_stub_0347
+.p2align 2
+.type bmpcfg_emit_stub_0347, @function
+bmpcfg_emit_stub_0347:
+    bmpcfg 0, 40, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0347, .-bmpcfg_emit_stub_0347
+
+.globl bmpcfg_emit_stub_0348
+.p2align 2
+.type bmpcfg_emit_stub_0348, @function
+bmpcfg_emit_stub_0348:
+    bmpcfg 0, 40, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0348, .-bmpcfg_emit_stub_0348
+
+.globl bmpcfg_emit_stub_0349
+.p2align 2
+.type bmpcfg_emit_stub_0349, @function
+bmpcfg_emit_stub_0349:
+    bmpcfg 0, 40, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0349, .-bmpcfg_emit_stub_0349
+
+.globl bmpcfg_emit_stub_0350
+.p2align 2
+.type bmpcfg_emit_stub_0350, @function
+bmpcfg_emit_stub_0350:
+    bmpcfg 0, 40, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0350, .-bmpcfg_emit_stub_0350
+
+.globl bmpcfg_emit_stub_0351
+.p2align 2
+.type bmpcfg_emit_stub_0351, @function
+bmpcfg_emit_stub_0351:
+    bmpcfg 0, 40, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0351, .-bmpcfg_emit_stub_0351
+
+.globl bmpcfg_emit_stub_0352
+.p2align 2
+.type bmpcfg_emit_stub_0352, @function
+bmpcfg_emit_stub_0352:
+    bmpcfg 0, 40, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0352, .-bmpcfg_emit_stub_0352
+
+.globl bmpcfg_emit_stub_0353
+.p2align 2
+.type bmpcfg_emit_stub_0353, @function
+bmpcfg_emit_stub_0353:
+    bmpcfg 0, 40, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0353, .-bmpcfg_emit_stub_0353
+
+.globl bmpcfg_emit_stub_0354
+.p2align 2
+.type bmpcfg_emit_stub_0354, @function
+bmpcfg_emit_stub_0354:
+    bmpcfg 0, 40, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0354, .-bmpcfg_emit_stub_0354
+
+.globl bmpcfg_emit_stub_0355
+.p2align 2
+.type bmpcfg_emit_stub_0355, @function
+bmpcfg_emit_stub_0355:
+    bmpcfg 0, 40, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0355, .-bmpcfg_emit_stub_0355
+
+.globl bmpcfg_emit_stub_0356
+.p2align 2
+.type bmpcfg_emit_stub_0356, @function
+bmpcfg_emit_stub_0356:
+    bmpcfg 0, 40, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0356, .-bmpcfg_emit_stub_0356
+
+.globl bmpcfg_emit_stub_0357
+.p2align 2
+.type bmpcfg_emit_stub_0357, @function
+bmpcfg_emit_stub_0357:
+    bmpcfg 0, 40, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0357, .-bmpcfg_emit_stub_0357
+
+.globl bmpcfg_emit_stub_0358
+.p2align 2
+.type bmpcfg_emit_stub_0358, @function
+bmpcfg_emit_stub_0358:
+    bmpcfg 0, 40, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0358, .-bmpcfg_emit_stub_0358
+
+.globl bmpcfg_emit_stub_0359
+.p2align 2
+.type bmpcfg_emit_stub_0359, @function
+bmpcfg_emit_stub_0359:
+    bmpcfg 0, 40, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0359, .-bmpcfg_emit_stub_0359
+
+.globl bmpcfg_emit_stub_0360
+.p2align 2
+.type bmpcfg_emit_stub_0360, @function
+bmpcfg_emit_stub_0360:
+    bmpcfg 0, 40, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0360, .-bmpcfg_emit_stub_0360
+
+.globl bmpcfg_emit_stub_0361
+.p2align 2
+.type bmpcfg_emit_stub_0361, @function
+bmpcfg_emit_stub_0361:
+    bmpcfg 0, 40, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0361, .-bmpcfg_emit_stub_0361
+
+.globl bmpcfg_emit_stub_0362
+.p2align 2
+.type bmpcfg_emit_stub_0362, @function
+bmpcfg_emit_stub_0362:
+    bmpcfg 0, 40, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0362, .-bmpcfg_emit_stub_0362
+
+.globl bmpcfg_emit_stub_0363
+.p2align 2
+.type bmpcfg_emit_stub_0363, @function
+bmpcfg_emit_stub_0363:
+    bmpcfg 0, 40, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0363, .-bmpcfg_emit_stub_0363
+
+.globl bmpcfg_emit_stub_0364
+.p2align 2
+.type bmpcfg_emit_stub_0364, @function
+bmpcfg_emit_stub_0364:
+    bmpcfg 0, 40, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0364, .-bmpcfg_emit_stub_0364
+
+.globl bmpcfg_emit_stub_0365
+.p2align 2
+.type bmpcfg_emit_stub_0365, @function
+bmpcfg_emit_stub_0365:
+    bmpcfg 0, 40, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0365, .-bmpcfg_emit_stub_0365
+
+.globl bmpcfg_emit_stub_0366
+.p2align 2
+.type bmpcfg_emit_stub_0366, @function
+bmpcfg_emit_stub_0366:
+    bmpcfg 0, 40, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0366, .-bmpcfg_emit_stub_0366
+
+.globl bmpcfg_emit_stub_0367
+.p2align 2
+.type bmpcfg_emit_stub_0367, @function
+bmpcfg_emit_stub_0367:
+    bmpcfg 0, 40, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0367, .-bmpcfg_emit_stub_0367
+
+.globl bmpcfg_emit_stub_0368
+.p2align 2
+.type bmpcfg_emit_stub_0368, @function
+bmpcfg_emit_stub_0368:
+    bmpcfg 0, 40, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0368, .-bmpcfg_emit_stub_0368
+
+.globl bmpcfg_emit_stub_0369
+.p2align 2
+.type bmpcfg_emit_stub_0369, @function
+bmpcfg_emit_stub_0369:
+    bmpcfg 0, 40, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0369, .-bmpcfg_emit_stub_0369
+
+.globl bmpcfg_emit_stub_0370
+.p2align 2
+.type bmpcfg_emit_stub_0370, @function
+bmpcfg_emit_stub_0370:
+    bmpcfg 0, 40, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0370, .-bmpcfg_emit_stub_0370
+
+.globl bmpcfg_emit_stub_0371
+.p2align 2
+.type bmpcfg_emit_stub_0371, @function
+bmpcfg_emit_stub_0371:
+    bmpcfg 0, 40, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0371, .-bmpcfg_emit_stub_0371
+
+.globl bmpcfg_emit_stub_0372
+.p2align 2
+.type bmpcfg_emit_stub_0372, @function
+bmpcfg_emit_stub_0372:
+    bmpcfg 0, 40, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0372, .-bmpcfg_emit_stub_0372
+
+.globl bmpcfg_emit_stub_0373
+.p2align 2
+.type bmpcfg_emit_stub_0373, @function
+bmpcfg_emit_stub_0373:
+    bmpcfg 0, 40, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0373, .-bmpcfg_emit_stub_0373
+
+.globl bmpcfg_emit_stub_0374
+.p2align 2
+.type bmpcfg_emit_stub_0374, @function
+bmpcfg_emit_stub_0374:
+    bmpcfg 0, 40, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0374, .-bmpcfg_emit_stub_0374
+
+.globl bmpcfg_emit_stub_0375
+.p2align 2
+.type bmpcfg_emit_stub_0375, @function
+bmpcfg_emit_stub_0375:
+    bmpcfg 0, 40, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0375, .-bmpcfg_emit_stub_0375
+
+.globl bmpcfg_emit_stub_0376
+.p2align 2
+.type bmpcfg_emit_stub_0376, @function
+bmpcfg_emit_stub_0376:
+    bmpcfg 0, 40, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0376, .-bmpcfg_emit_stub_0376
+
+.globl bmpcfg_emit_stub_0377
+.p2align 2
+.type bmpcfg_emit_stub_0377, @function
+bmpcfg_emit_stub_0377:
+    bmpcfg 0, 40, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0377, .-bmpcfg_emit_stub_0377
+
+.globl bmpcfg_emit_stub_0378
+.p2align 2
+.type bmpcfg_emit_stub_0378, @function
+bmpcfg_emit_stub_0378:
+    bmpcfg 0, 40, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0378, .-bmpcfg_emit_stub_0378
+
+.globl bmpcfg_emit_stub_0379
+.p2align 2
+.type bmpcfg_emit_stub_0379, @function
+bmpcfg_emit_stub_0379:
+    bmpcfg 0, 40, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0379, .-bmpcfg_emit_stub_0379
+
+.globl bmpcfg_emit_stub_0380
+.p2align 2
+.type bmpcfg_emit_stub_0380, @function
+bmpcfg_emit_stub_0380:
+    bmpcfg 0, 40, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0380, .-bmpcfg_emit_stub_0380
+
+.globl bmpcfg_emit_stub_0381
+.p2align 2
+.type bmpcfg_emit_stub_0381, @function
+bmpcfg_emit_stub_0381:
+    bmpcfg 0, 40, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0381, .-bmpcfg_emit_stub_0381
+
+.globl bmpcfg_emit_stub_0382
+.p2align 2
+.type bmpcfg_emit_stub_0382, @function
+bmpcfg_emit_stub_0382:
+    bmpcfg 0, 40, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0382, .-bmpcfg_emit_stub_0382
+
+.globl bmpcfg_emit_stub_0383
+.p2align 2
+.type bmpcfg_emit_stub_0383, @function
+bmpcfg_emit_stub_0383:
+    bmpcfg 0, 40, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0383, .-bmpcfg_emit_stub_0383
+
+.globl bmpcfg_emit_stub_0384
+.p2align 2
+.type bmpcfg_emit_stub_0384, @function
+bmpcfg_emit_stub_0384:
+    bmpcfg 0, 40, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0384, .-bmpcfg_emit_stub_0384
+
+.globl bmpcfg_emit_stub_0385
+.p2align 2
+.type bmpcfg_emit_stub_0385, @function
+bmpcfg_emit_stub_0385:
+    bmpcfg 0, 40, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0385, .-bmpcfg_emit_stub_0385
+
+.globl bmpcfg_emit_stub_0386
+.p2align 2
+.type bmpcfg_emit_stub_0386, @function
+bmpcfg_emit_stub_0386:
+    bmpcfg 0, 40, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0386, .-bmpcfg_emit_stub_0386
+
+.globl bmpcfg_emit_stub_0387
+.p2align 2
+.type bmpcfg_emit_stub_0387, @function
+bmpcfg_emit_stub_0387:
+    bmpcfg 0, 40, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0387, .-bmpcfg_emit_stub_0387
+
+.globl bmpcfg_emit_stub_0388
+.p2align 2
+.type bmpcfg_emit_stub_0388, @function
+bmpcfg_emit_stub_0388:
+    bmpcfg 0, 40, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0388, .-bmpcfg_emit_stub_0388
+
+.globl bmpcfg_emit_stub_0389
+.p2align 2
+.type bmpcfg_emit_stub_0389, @function
+bmpcfg_emit_stub_0389:
+    bmpcfg 0, 40, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0389, .-bmpcfg_emit_stub_0389
+
+.globl bmpcfg_emit_stub_0390
+.p2align 2
+.type bmpcfg_emit_stub_0390, @function
+bmpcfg_emit_stub_0390:
+    bmpcfg 0, 40, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0390, .-bmpcfg_emit_stub_0390
+
+.globl bmpcfg_emit_stub_0391
+.p2align 2
+.type bmpcfg_emit_stub_0391, @function
+bmpcfg_emit_stub_0391:
+    bmpcfg 0, 40, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0391, .-bmpcfg_emit_stub_0391
+
+.globl bmpcfg_emit_stub_0392
+.p2align 2
+.type bmpcfg_emit_stub_0392, @function
+bmpcfg_emit_stub_0392:
+    bmpcfg 0, 40, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0392, .-bmpcfg_emit_stub_0392
+
+.globl bmpcfg_emit_stub_0393
+.p2align 2
+.type bmpcfg_emit_stub_0393, @function
+bmpcfg_emit_stub_0393:
+    bmpcfg 0, 40, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0393, .-bmpcfg_emit_stub_0393
+
+.globl bmpcfg_emit_stub_0394
+.p2align 2
+.type bmpcfg_emit_stub_0394, @function
+bmpcfg_emit_stub_0394:
+    bmpcfg 0, 40, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0394, .-bmpcfg_emit_stub_0394
+
+.globl bmpcfg_emit_stub_0395
+.p2align 2
+.type bmpcfg_emit_stub_0395, @function
+bmpcfg_emit_stub_0395:
+    bmpcfg 0, 40, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0395, .-bmpcfg_emit_stub_0395
+
+.globl bmpcfg_emit_stub_0396
+.p2align 2
+.type bmpcfg_emit_stub_0396, @function
+bmpcfg_emit_stub_0396:
+    bmpcfg 0, 40, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0396, .-bmpcfg_emit_stub_0396
+
+.globl bmpcfg_emit_stub_0397
+.p2align 2
+.type bmpcfg_emit_stub_0397, @function
+bmpcfg_emit_stub_0397:
+    bmpcfg 0, 40, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0397, .-bmpcfg_emit_stub_0397
+
+.globl bmpcfg_emit_stub_0398
+.p2align 2
+.type bmpcfg_emit_stub_0398, @function
+bmpcfg_emit_stub_0398:
+    bmpcfg 0, 40, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0398, .-bmpcfg_emit_stub_0398
+
+.globl bmpcfg_emit_stub_0399
+.p2align 2
+.type bmpcfg_emit_stub_0399, @function
+bmpcfg_emit_stub_0399:
+    bmpcfg 0, 40, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0399, .-bmpcfg_emit_stub_0399
+
+.globl bmpcfg_emit_stub_0400
+.p2align 2
+.type bmpcfg_emit_stub_0400, @function
+bmpcfg_emit_stub_0400:
+    bmpcfg 0, 40, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0400, .-bmpcfg_emit_stub_0400
+
+.globl bmpcfg_emit_stub_0401
+.p2align 2
+.type bmpcfg_emit_stub_0401, @function
+bmpcfg_emit_stub_0401:
+    bmpcfg 0, 40, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0401, .-bmpcfg_emit_stub_0401
+
+.globl bmpcfg_emit_stub_0402
+.p2align 2
+.type bmpcfg_emit_stub_0402, @function
+bmpcfg_emit_stub_0402:
+    bmpcfg 0, 40, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0402, .-bmpcfg_emit_stub_0402
+
+.globl bmpcfg_emit_stub_0403
+.p2align 2
+.type bmpcfg_emit_stub_0403, @function
+bmpcfg_emit_stub_0403:
+    bmpcfg 0, 40, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0403, .-bmpcfg_emit_stub_0403
+
+.globl bmpcfg_emit_stub_0404
+.p2align 2
+.type bmpcfg_emit_stub_0404, @function
+bmpcfg_emit_stub_0404:
+    bmpcfg 0, 40, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0404, .-bmpcfg_emit_stub_0404
+
+.globl bmpcfg_emit_stub_0405
+.p2align 2
+.type bmpcfg_emit_stub_0405, @function
+bmpcfg_emit_stub_0405:
+    bmpcfg 0, 40, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0405, .-bmpcfg_emit_stub_0405
+
+.globl bmpcfg_emit_stub_0406
+.p2align 2
+.type bmpcfg_emit_stub_0406, @function
+bmpcfg_emit_stub_0406:
+    bmpcfg 0, 40, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0406, .-bmpcfg_emit_stub_0406
+
+.globl bmpcfg_emit_stub_0407
+.p2align 2
+.type bmpcfg_emit_stub_0407, @function
+bmpcfg_emit_stub_0407:
+    bmpcfg 0, 40, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0407, .-bmpcfg_emit_stub_0407
+
+.globl bmpcfg_emit_stub_0408
+.p2align 2
+.type bmpcfg_emit_stub_0408, @function
+bmpcfg_emit_stub_0408:
+    bmpcfg 0, 40, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0408, .-bmpcfg_emit_stub_0408
+
+.globl bmpcfg_emit_stub_0409
+.p2align 2
+.type bmpcfg_emit_stub_0409, @function
+bmpcfg_emit_stub_0409:
+    bmpcfg 0, 40, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0409, .-bmpcfg_emit_stub_0409
+
+.globl bmpcfg_emit_stub_0410
+.p2align 2
+.type bmpcfg_emit_stub_0410, @function
+bmpcfg_emit_stub_0410:
+    bmpcfg 0, 40, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0410, .-bmpcfg_emit_stub_0410
+
+.globl bmpcfg_emit_stub_0411
+.p2align 2
+.type bmpcfg_emit_stub_0411, @function
+bmpcfg_emit_stub_0411:
+    bmpcfg 0, 40, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0411, .-bmpcfg_emit_stub_0411
+
+.globl bmpcfg_emit_stub_0412
+.p2align 2
+.type bmpcfg_emit_stub_0412, @function
+bmpcfg_emit_stub_0412:
+    bmpcfg 0, 40, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0412, .-bmpcfg_emit_stub_0412
+
+.globl bmpcfg_emit_stub_0413
+.p2align 2
+.type bmpcfg_emit_stub_0413, @function
+bmpcfg_emit_stub_0413:
+    bmpcfg 0, 40, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0413, .-bmpcfg_emit_stub_0413
+
+.globl bmpcfg_emit_stub_0414
+.p2align 2
+.type bmpcfg_emit_stub_0414, @function
+bmpcfg_emit_stub_0414:
+    bmpcfg 0, 40, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0414, .-bmpcfg_emit_stub_0414
+
+.globl bmpcfg_emit_stub_0415
+.p2align 2
+.type bmpcfg_emit_stub_0415, @function
+bmpcfg_emit_stub_0415:
+    bmpcfg 0, 40, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0415, .-bmpcfg_emit_stub_0415
+
+.globl bmpcfg_emit_stub_0416
+.p2align 2
+.type bmpcfg_emit_stub_0416, @function
+bmpcfg_emit_stub_0416:
+    bmpcfg 0, 40, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0416, .-bmpcfg_emit_stub_0416
+
+.globl bmpcfg_emit_stub_0417
+.p2align 2
+.type bmpcfg_emit_stub_0417, @function
+bmpcfg_emit_stub_0417:
+    bmpcfg 0, 40, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0417, .-bmpcfg_emit_stub_0417
+
+.globl bmpcfg_emit_stub_0418
+.p2align 2
+.type bmpcfg_emit_stub_0418, @function
+bmpcfg_emit_stub_0418:
+    bmpcfg 0, 40, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0418, .-bmpcfg_emit_stub_0418
+
+.globl bmpcfg_emit_stub_0419
+.p2align 2
+.type bmpcfg_emit_stub_0419, @function
+bmpcfg_emit_stub_0419:
+    bmpcfg 0, 40, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0419, .-bmpcfg_emit_stub_0419
+
+.globl bmpcfg_emit_stub_0420
+.p2align 2
+.type bmpcfg_emit_stub_0420, @function
+bmpcfg_emit_stub_0420:
+    bmpcfg 0, 48, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0420, .-bmpcfg_emit_stub_0420
+
+.globl bmpcfg_emit_stub_0421
+.p2align 2
+.type bmpcfg_emit_stub_0421, @function
+bmpcfg_emit_stub_0421:
+    bmpcfg 0, 48, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0421, .-bmpcfg_emit_stub_0421
+
+.globl bmpcfg_emit_stub_0422
+.p2align 2
+.type bmpcfg_emit_stub_0422, @function
+bmpcfg_emit_stub_0422:
+    bmpcfg 0, 48, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0422, .-bmpcfg_emit_stub_0422
+
+.globl bmpcfg_emit_stub_0423
+.p2align 2
+.type bmpcfg_emit_stub_0423, @function
+bmpcfg_emit_stub_0423:
+    bmpcfg 0, 48, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0423, .-bmpcfg_emit_stub_0423
+
+.globl bmpcfg_emit_stub_0424
+.p2align 2
+.type bmpcfg_emit_stub_0424, @function
+bmpcfg_emit_stub_0424:
+    bmpcfg 0, 48, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0424, .-bmpcfg_emit_stub_0424
+
+.globl bmpcfg_emit_stub_0425
+.p2align 2
+.type bmpcfg_emit_stub_0425, @function
+bmpcfg_emit_stub_0425:
+    bmpcfg 0, 48, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0425, .-bmpcfg_emit_stub_0425
+
+.globl bmpcfg_emit_stub_0426
+.p2align 2
+.type bmpcfg_emit_stub_0426, @function
+bmpcfg_emit_stub_0426:
+    bmpcfg 0, 48, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0426, .-bmpcfg_emit_stub_0426
+
+.globl bmpcfg_emit_stub_0427
+.p2align 2
+.type bmpcfg_emit_stub_0427, @function
+bmpcfg_emit_stub_0427:
+    bmpcfg 0, 48, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0427, .-bmpcfg_emit_stub_0427
+
+.globl bmpcfg_emit_stub_0428
+.p2align 2
+.type bmpcfg_emit_stub_0428, @function
+bmpcfg_emit_stub_0428:
+    bmpcfg 0, 48, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0428, .-bmpcfg_emit_stub_0428
+
+.globl bmpcfg_emit_stub_0429
+.p2align 2
+.type bmpcfg_emit_stub_0429, @function
+bmpcfg_emit_stub_0429:
+    bmpcfg 0, 48, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0429, .-bmpcfg_emit_stub_0429
+
+.globl bmpcfg_emit_stub_0430
+.p2align 2
+.type bmpcfg_emit_stub_0430, @function
+bmpcfg_emit_stub_0430:
+    bmpcfg 0, 48, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0430, .-bmpcfg_emit_stub_0430
+
+.globl bmpcfg_emit_stub_0431
+.p2align 2
+.type bmpcfg_emit_stub_0431, @function
+bmpcfg_emit_stub_0431:
+    bmpcfg 0, 48, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0431, .-bmpcfg_emit_stub_0431
+
+.globl bmpcfg_emit_stub_0432
+.p2align 2
+.type bmpcfg_emit_stub_0432, @function
+bmpcfg_emit_stub_0432:
+    bmpcfg 0, 48, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0432, .-bmpcfg_emit_stub_0432
+
+.globl bmpcfg_emit_stub_0433
+.p2align 2
+.type bmpcfg_emit_stub_0433, @function
+bmpcfg_emit_stub_0433:
+    bmpcfg 0, 48, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0433, .-bmpcfg_emit_stub_0433
+
+.globl bmpcfg_emit_stub_0434
+.p2align 2
+.type bmpcfg_emit_stub_0434, @function
+bmpcfg_emit_stub_0434:
+    bmpcfg 0, 48, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0434, .-bmpcfg_emit_stub_0434
+
+.globl bmpcfg_emit_stub_0435
+.p2align 2
+.type bmpcfg_emit_stub_0435, @function
+bmpcfg_emit_stub_0435:
+    bmpcfg 0, 48, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0435, .-bmpcfg_emit_stub_0435
+
+.globl bmpcfg_emit_stub_0436
+.p2align 2
+.type bmpcfg_emit_stub_0436, @function
+bmpcfg_emit_stub_0436:
+    bmpcfg 0, 48, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0436, .-bmpcfg_emit_stub_0436
+
+.globl bmpcfg_emit_stub_0437
+.p2align 2
+.type bmpcfg_emit_stub_0437, @function
+bmpcfg_emit_stub_0437:
+    bmpcfg 0, 48, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0437, .-bmpcfg_emit_stub_0437
+
+.globl bmpcfg_emit_stub_0438
+.p2align 2
+.type bmpcfg_emit_stub_0438, @function
+bmpcfg_emit_stub_0438:
+    bmpcfg 0, 48, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0438, .-bmpcfg_emit_stub_0438
+
+.globl bmpcfg_emit_stub_0439
+.p2align 2
+.type bmpcfg_emit_stub_0439, @function
+bmpcfg_emit_stub_0439:
+    bmpcfg 0, 48, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0439, .-bmpcfg_emit_stub_0439
+
+.globl bmpcfg_emit_stub_0440
+.p2align 2
+.type bmpcfg_emit_stub_0440, @function
+bmpcfg_emit_stub_0440:
+    bmpcfg 0, 48, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0440, .-bmpcfg_emit_stub_0440
+
+.globl bmpcfg_emit_stub_0441
+.p2align 2
+.type bmpcfg_emit_stub_0441, @function
+bmpcfg_emit_stub_0441:
+    bmpcfg 0, 48, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0441, .-bmpcfg_emit_stub_0441
+
+.globl bmpcfg_emit_stub_0442
+.p2align 2
+.type bmpcfg_emit_stub_0442, @function
+bmpcfg_emit_stub_0442:
+    bmpcfg 0, 48, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0442, .-bmpcfg_emit_stub_0442
+
+.globl bmpcfg_emit_stub_0443
+.p2align 2
+.type bmpcfg_emit_stub_0443, @function
+bmpcfg_emit_stub_0443:
+    bmpcfg 0, 48, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0443, .-bmpcfg_emit_stub_0443
+
+.globl bmpcfg_emit_stub_0444
+.p2align 2
+.type bmpcfg_emit_stub_0444, @function
+bmpcfg_emit_stub_0444:
+    bmpcfg 0, 48, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0444, .-bmpcfg_emit_stub_0444
+
+.globl bmpcfg_emit_stub_0445
+.p2align 2
+.type bmpcfg_emit_stub_0445, @function
+bmpcfg_emit_stub_0445:
+    bmpcfg 0, 48, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0445, .-bmpcfg_emit_stub_0445
+
+.globl bmpcfg_emit_stub_0446
+.p2align 2
+.type bmpcfg_emit_stub_0446, @function
+bmpcfg_emit_stub_0446:
+    bmpcfg 0, 48, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0446, .-bmpcfg_emit_stub_0446
+
+.globl bmpcfg_emit_stub_0447
+.p2align 2
+.type bmpcfg_emit_stub_0447, @function
+bmpcfg_emit_stub_0447:
+    bmpcfg 0, 48, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0447, .-bmpcfg_emit_stub_0447
+
+.globl bmpcfg_emit_stub_0448
+.p2align 2
+.type bmpcfg_emit_stub_0448, @function
+bmpcfg_emit_stub_0448:
+    bmpcfg 0, 48, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0448, .-bmpcfg_emit_stub_0448
+
+.globl bmpcfg_emit_stub_0449
+.p2align 2
+.type bmpcfg_emit_stub_0449, @function
+bmpcfg_emit_stub_0449:
+    bmpcfg 0, 48, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0449, .-bmpcfg_emit_stub_0449
+
+.globl bmpcfg_emit_stub_0450
+.p2align 2
+.type bmpcfg_emit_stub_0450, @function
+bmpcfg_emit_stub_0450:
+    bmpcfg 0, 48, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0450, .-bmpcfg_emit_stub_0450
+
+.globl bmpcfg_emit_stub_0451
+.p2align 2
+.type bmpcfg_emit_stub_0451, @function
+bmpcfg_emit_stub_0451:
+    bmpcfg 0, 48, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0451, .-bmpcfg_emit_stub_0451
+
+.globl bmpcfg_emit_stub_0452
+.p2align 2
+.type bmpcfg_emit_stub_0452, @function
+bmpcfg_emit_stub_0452:
+    bmpcfg 0, 48, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0452, .-bmpcfg_emit_stub_0452
+
+.globl bmpcfg_emit_stub_0453
+.p2align 2
+.type bmpcfg_emit_stub_0453, @function
+bmpcfg_emit_stub_0453:
+    bmpcfg 0, 48, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0453, .-bmpcfg_emit_stub_0453
+
+.globl bmpcfg_emit_stub_0454
+.p2align 2
+.type bmpcfg_emit_stub_0454, @function
+bmpcfg_emit_stub_0454:
+    bmpcfg 0, 48, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0454, .-bmpcfg_emit_stub_0454
+
+.globl bmpcfg_emit_stub_0455
+.p2align 2
+.type bmpcfg_emit_stub_0455, @function
+bmpcfg_emit_stub_0455:
+    bmpcfg 0, 48, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0455, .-bmpcfg_emit_stub_0455
+
+.globl bmpcfg_emit_stub_0456
+.p2align 2
+.type bmpcfg_emit_stub_0456, @function
+bmpcfg_emit_stub_0456:
+    bmpcfg 0, 48, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0456, .-bmpcfg_emit_stub_0456
+
+.globl bmpcfg_emit_stub_0457
+.p2align 2
+.type bmpcfg_emit_stub_0457, @function
+bmpcfg_emit_stub_0457:
+    bmpcfg 0, 48, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0457, .-bmpcfg_emit_stub_0457
+
+.globl bmpcfg_emit_stub_0458
+.p2align 2
+.type bmpcfg_emit_stub_0458, @function
+bmpcfg_emit_stub_0458:
+    bmpcfg 0, 48, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0458, .-bmpcfg_emit_stub_0458
+
+.globl bmpcfg_emit_stub_0459
+.p2align 2
+.type bmpcfg_emit_stub_0459, @function
+bmpcfg_emit_stub_0459:
+    bmpcfg 0, 48, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0459, .-bmpcfg_emit_stub_0459
+
+.globl bmpcfg_emit_stub_0460
+.p2align 2
+.type bmpcfg_emit_stub_0460, @function
+bmpcfg_emit_stub_0460:
+    bmpcfg 0, 48, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0460, .-bmpcfg_emit_stub_0460
+
+.globl bmpcfg_emit_stub_0461
+.p2align 2
+.type bmpcfg_emit_stub_0461, @function
+bmpcfg_emit_stub_0461:
+    bmpcfg 0, 48, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0461, .-bmpcfg_emit_stub_0461
+
+.globl bmpcfg_emit_stub_0462
+.p2align 2
+.type bmpcfg_emit_stub_0462, @function
+bmpcfg_emit_stub_0462:
+    bmpcfg 0, 48, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0462, .-bmpcfg_emit_stub_0462
+
+.globl bmpcfg_emit_stub_0463
+.p2align 2
+.type bmpcfg_emit_stub_0463, @function
+bmpcfg_emit_stub_0463:
+    bmpcfg 0, 48, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0463, .-bmpcfg_emit_stub_0463
+
+.globl bmpcfg_emit_stub_0464
+.p2align 2
+.type bmpcfg_emit_stub_0464, @function
+bmpcfg_emit_stub_0464:
+    bmpcfg 0, 48, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0464, .-bmpcfg_emit_stub_0464
+
+.globl bmpcfg_emit_stub_0465
+.p2align 2
+.type bmpcfg_emit_stub_0465, @function
+bmpcfg_emit_stub_0465:
+    bmpcfg 0, 48, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0465, .-bmpcfg_emit_stub_0465
+
+.globl bmpcfg_emit_stub_0466
+.p2align 2
+.type bmpcfg_emit_stub_0466, @function
+bmpcfg_emit_stub_0466:
+    bmpcfg 0, 48, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0466, .-bmpcfg_emit_stub_0466
+
+.globl bmpcfg_emit_stub_0467
+.p2align 2
+.type bmpcfg_emit_stub_0467, @function
+bmpcfg_emit_stub_0467:
+    bmpcfg 0, 48, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0467, .-bmpcfg_emit_stub_0467
+
+.globl bmpcfg_emit_stub_0468
+.p2align 2
+.type bmpcfg_emit_stub_0468, @function
+bmpcfg_emit_stub_0468:
+    bmpcfg 0, 48, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0468, .-bmpcfg_emit_stub_0468
+
+.globl bmpcfg_emit_stub_0469
+.p2align 2
+.type bmpcfg_emit_stub_0469, @function
+bmpcfg_emit_stub_0469:
+    bmpcfg 0, 48, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0469, .-bmpcfg_emit_stub_0469
+
+.globl bmpcfg_emit_stub_0470
+.p2align 2
+.type bmpcfg_emit_stub_0470, @function
+bmpcfg_emit_stub_0470:
+    bmpcfg 0, 48, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0470, .-bmpcfg_emit_stub_0470
+
+.globl bmpcfg_emit_stub_0471
+.p2align 2
+.type bmpcfg_emit_stub_0471, @function
+bmpcfg_emit_stub_0471:
+    bmpcfg 0, 48, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0471, .-bmpcfg_emit_stub_0471
+
+.globl bmpcfg_emit_stub_0472
+.p2align 2
+.type bmpcfg_emit_stub_0472, @function
+bmpcfg_emit_stub_0472:
+    bmpcfg 0, 48, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0472, .-bmpcfg_emit_stub_0472
+
+.globl bmpcfg_emit_stub_0473
+.p2align 2
+.type bmpcfg_emit_stub_0473, @function
+bmpcfg_emit_stub_0473:
+    bmpcfg 0, 48, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0473, .-bmpcfg_emit_stub_0473
+
+.globl bmpcfg_emit_stub_0474
+.p2align 2
+.type bmpcfg_emit_stub_0474, @function
+bmpcfg_emit_stub_0474:
+    bmpcfg 0, 48, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0474, .-bmpcfg_emit_stub_0474
+
+.globl bmpcfg_emit_stub_0475
+.p2align 2
+.type bmpcfg_emit_stub_0475, @function
+bmpcfg_emit_stub_0475:
+    bmpcfg 0, 48, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0475, .-bmpcfg_emit_stub_0475
+
+.globl bmpcfg_emit_stub_0476
+.p2align 2
+.type bmpcfg_emit_stub_0476, @function
+bmpcfg_emit_stub_0476:
+    bmpcfg 0, 48, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0476, .-bmpcfg_emit_stub_0476
+
+.globl bmpcfg_emit_stub_0477
+.p2align 2
+.type bmpcfg_emit_stub_0477, @function
+bmpcfg_emit_stub_0477:
+    bmpcfg 0, 48, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0477, .-bmpcfg_emit_stub_0477
+
+.globl bmpcfg_emit_stub_0478
+.p2align 2
+.type bmpcfg_emit_stub_0478, @function
+bmpcfg_emit_stub_0478:
+    bmpcfg 0, 48, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0478, .-bmpcfg_emit_stub_0478
+
+.globl bmpcfg_emit_stub_0479
+.p2align 2
+.type bmpcfg_emit_stub_0479, @function
+bmpcfg_emit_stub_0479:
+    bmpcfg 0, 48, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0479, .-bmpcfg_emit_stub_0479
+
+.globl bmpcfg_emit_stub_0480
+.p2align 2
+.type bmpcfg_emit_stub_0480, @function
+bmpcfg_emit_stub_0480:
+    bmpcfg 0, 48, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0480, .-bmpcfg_emit_stub_0480
+
+.globl bmpcfg_emit_stub_0481
+.p2align 2
+.type bmpcfg_emit_stub_0481, @function
+bmpcfg_emit_stub_0481:
+    bmpcfg 0, 48, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0481, .-bmpcfg_emit_stub_0481
+
+.globl bmpcfg_emit_stub_0482
+.p2align 2
+.type bmpcfg_emit_stub_0482, @function
+bmpcfg_emit_stub_0482:
+    bmpcfg 0, 48, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0482, .-bmpcfg_emit_stub_0482
+
+.globl bmpcfg_emit_stub_0483
+.p2align 2
+.type bmpcfg_emit_stub_0483, @function
+bmpcfg_emit_stub_0483:
+    bmpcfg 0, 48, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0483, .-bmpcfg_emit_stub_0483
+
+.globl bmpcfg_emit_stub_0484
+.p2align 2
+.type bmpcfg_emit_stub_0484, @function
+bmpcfg_emit_stub_0484:
+    bmpcfg 0, 48, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0484, .-bmpcfg_emit_stub_0484
+
+.globl bmpcfg_emit_stub_0485
+.p2align 2
+.type bmpcfg_emit_stub_0485, @function
+bmpcfg_emit_stub_0485:
+    bmpcfg 0, 48, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0485, .-bmpcfg_emit_stub_0485
+
+.globl bmpcfg_emit_stub_0486
+.p2align 2
+.type bmpcfg_emit_stub_0486, @function
+bmpcfg_emit_stub_0486:
+    bmpcfg 0, 48, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0486, .-bmpcfg_emit_stub_0486
+
+.globl bmpcfg_emit_stub_0487
+.p2align 2
+.type bmpcfg_emit_stub_0487, @function
+bmpcfg_emit_stub_0487:
+    bmpcfg 0, 48, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0487, .-bmpcfg_emit_stub_0487
+
+.globl bmpcfg_emit_stub_0488
+.p2align 2
+.type bmpcfg_emit_stub_0488, @function
+bmpcfg_emit_stub_0488:
+    bmpcfg 0, 48, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0488, .-bmpcfg_emit_stub_0488
+
+.globl bmpcfg_emit_stub_0489
+.p2align 2
+.type bmpcfg_emit_stub_0489, @function
+bmpcfg_emit_stub_0489:
+    bmpcfg 0, 48, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0489, .-bmpcfg_emit_stub_0489
+
+.globl bmpcfg_emit_stub_0490
+.p2align 2
+.type bmpcfg_emit_stub_0490, @function
+bmpcfg_emit_stub_0490:
+    bmpcfg 0, 56, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0490, .-bmpcfg_emit_stub_0490
+
+.globl bmpcfg_emit_stub_0491
+.p2align 2
+.type bmpcfg_emit_stub_0491, @function
+bmpcfg_emit_stub_0491:
+    bmpcfg 0, 56, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0491, .-bmpcfg_emit_stub_0491
+
+.globl bmpcfg_emit_stub_0492
+.p2align 2
+.type bmpcfg_emit_stub_0492, @function
+bmpcfg_emit_stub_0492:
+    bmpcfg 0, 56, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0492, .-bmpcfg_emit_stub_0492
+
+.globl bmpcfg_emit_stub_0493
+.p2align 2
+.type bmpcfg_emit_stub_0493, @function
+bmpcfg_emit_stub_0493:
+    bmpcfg 0, 56, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0493, .-bmpcfg_emit_stub_0493
+
+.globl bmpcfg_emit_stub_0494
+.p2align 2
+.type bmpcfg_emit_stub_0494, @function
+bmpcfg_emit_stub_0494:
+    bmpcfg 0, 56, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0494, .-bmpcfg_emit_stub_0494
+
+.globl bmpcfg_emit_stub_0495
+.p2align 2
+.type bmpcfg_emit_stub_0495, @function
+bmpcfg_emit_stub_0495:
+    bmpcfg 0, 56, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0495, .-bmpcfg_emit_stub_0495
+
+.globl bmpcfg_emit_stub_0496
+.p2align 2
+.type bmpcfg_emit_stub_0496, @function
+bmpcfg_emit_stub_0496:
+    bmpcfg 0, 56, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0496, .-bmpcfg_emit_stub_0496
+
+.globl bmpcfg_emit_stub_0497
+.p2align 2
+.type bmpcfg_emit_stub_0497, @function
+bmpcfg_emit_stub_0497:
+    bmpcfg 0, 56, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0497, .-bmpcfg_emit_stub_0497
+
+.globl bmpcfg_emit_stub_0498
+.p2align 2
+.type bmpcfg_emit_stub_0498, @function
+bmpcfg_emit_stub_0498:
+    bmpcfg 0, 56, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0498, .-bmpcfg_emit_stub_0498
+
+.globl bmpcfg_emit_stub_0499
+.p2align 2
+.type bmpcfg_emit_stub_0499, @function
+bmpcfg_emit_stub_0499:
+    bmpcfg 0, 56, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0499, .-bmpcfg_emit_stub_0499
+
+.globl bmpcfg_emit_stub_0500
+.p2align 2
+.type bmpcfg_emit_stub_0500, @function
+bmpcfg_emit_stub_0500:
+    bmpcfg 0, 56, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0500, .-bmpcfg_emit_stub_0500
+
+.globl bmpcfg_emit_stub_0501
+.p2align 2
+.type bmpcfg_emit_stub_0501, @function
+bmpcfg_emit_stub_0501:
+    bmpcfg 0, 56, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0501, .-bmpcfg_emit_stub_0501
+
+.globl bmpcfg_emit_stub_0502
+.p2align 2
+.type bmpcfg_emit_stub_0502, @function
+bmpcfg_emit_stub_0502:
+    bmpcfg 0, 56, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0502, .-bmpcfg_emit_stub_0502
+
+.globl bmpcfg_emit_stub_0503
+.p2align 2
+.type bmpcfg_emit_stub_0503, @function
+bmpcfg_emit_stub_0503:
+    bmpcfg 0, 56, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0503, .-bmpcfg_emit_stub_0503
+
+.globl bmpcfg_emit_stub_0504
+.p2align 2
+.type bmpcfg_emit_stub_0504, @function
+bmpcfg_emit_stub_0504:
+    bmpcfg 0, 56, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0504, .-bmpcfg_emit_stub_0504
+
+.globl bmpcfg_emit_stub_0505
+.p2align 2
+.type bmpcfg_emit_stub_0505, @function
+bmpcfg_emit_stub_0505:
+    bmpcfg 0, 56, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0505, .-bmpcfg_emit_stub_0505
+
+.globl bmpcfg_emit_stub_0506
+.p2align 2
+.type bmpcfg_emit_stub_0506, @function
+bmpcfg_emit_stub_0506:
+    bmpcfg 0, 56, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0506, .-bmpcfg_emit_stub_0506
+
+.globl bmpcfg_emit_stub_0507
+.p2align 2
+.type bmpcfg_emit_stub_0507, @function
+bmpcfg_emit_stub_0507:
+    bmpcfg 0, 56, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0507, .-bmpcfg_emit_stub_0507
+
+.globl bmpcfg_emit_stub_0508
+.p2align 2
+.type bmpcfg_emit_stub_0508, @function
+bmpcfg_emit_stub_0508:
+    bmpcfg 0, 56, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0508, .-bmpcfg_emit_stub_0508
+
+.globl bmpcfg_emit_stub_0509
+.p2align 2
+.type bmpcfg_emit_stub_0509, @function
+bmpcfg_emit_stub_0509:
+    bmpcfg 0, 56, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0509, .-bmpcfg_emit_stub_0509
+
+.globl bmpcfg_emit_stub_0510
+.p2align 2
+.type bmpcfg_emit_stub_0510, @function
+bmpcfg_emit_stub_0510:
+    bmpcfg 0, 56, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0510, .-bmpcfg_emit_stub_0510
+
+.globl bmpcfg_emit_stub_0511
+.p2align 2
+.type bmpcfg_emit_stub_0511, @function
+bmpcfg_emit_stub_0511:
+    bmpcfg 0, 56, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0511, .-bmpcfg_emit_stub_0511
+
+.globl bmpcfg_emit_stub_0512
+.p2align 2
+.type bmpcfg_emit_stub_0512, @function
+bmpcfg_emit_stub_0512:
+    bmpcfg 0, 56, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0512, .-bmpcfg_emit_stub_0512
+
+.globl bmpcfg_emit_stub_0513
+.p2align 2
+.type bmpcfg_emit_stub_0513, @function
+bmpcfg_emit_stub_0513:
+    bmpcfg 0, 56, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0513, .-bmpcfg_emit_stub_0513
+
+.globl bmpcfg_emit_stub_0514
+.p2align 2
+.type bmpcfg_emit_stub_0514, @function
+bmpcfg_emit_stub_0514:
+    bmpcfg 0, 56, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0514, .-bmpcfg_emit_stub_0514
+
+.globl bmpcfg_emit_stub_0515
+.p2align 2
+.type bmpcfg_emit_stub_0515, @function
+bmpcfg_emit_stub_0515:
+    bmpcfg 0, 56, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0515, .-bmpcfg_emit_stub_0515
+
+.globl bmpcfg_emit_stub_0516
+.p2align 2
+.type bmpcfg_emit_stub_0516, @function
+bmpcfg_emit_stub_0516:
+    bmpcfg 0, 56, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0516, .-bmpcfg_emit_stub_0516
+
+.globl bmpcfg_emit_stub_0517
+.p2align 2
+.type bmpcfg_emit_stub_0517, @function
+bmpcfg_emit_stub_0517:
+    bmpcfg 0, 56, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0517, .-bmpcfg_emit_stub_0517
+
+.globl bmpcfg_emit_stub_0518
+.p2align 2
+.type bmpcfg_emit_stub_0518, @function
+bmpcfg_emit_stub_0518:
+    bmpcfg 0, 56, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0518, .-bmpcfg_emit_stub_0518
+
+.globl bmpcfg_emit_stub_0519
+.p2align 2
+.type bmpcfg_emit_stub_0519, @function
+bmpcfg_emit_stub_0519:
+    bmpcfg 0, 56, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0519, .-bmpcfg_emit_stub_0519
+
+.globl bmpcfg_emit_stub_0520
+.p2align 2
+.type bmpcfg_emit_stub_0520, @function
+bmpcfg_emit_stub_0520:
+    bmpcfg 0, 56, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0520, .-bmpcfg_emit_stub_0520
+
+.globl bmpcfg_emit_stub_0521
+.p2align 2
+.type bmpcfg_emit_stub_0521, @function
+bmpcfg_emit_stub_0521:
+    bmpcfg 0, 56, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0521, .-bmpcfg_emit_stub_0521
+
+.globl bmpcfg_emit_stub_0522
+.p2align 2
+.type bmpcfg_emit_stub_0522, @function
+bmpcfg_emit_stub_0522:
+    bmpcfg 0, 56, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0522, .-bmpcfg_emit_stub_0522
+
+.globl bmpcfg_emit_stub_0523
+.p2align 2
+.type bmpcfg_emit_stub_0523, @function
+bmpcfg_emit_stub_0523:
+    bmpcfg 0, 56, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0523, .-bmpcfg_emit_stub_0523
+
+.globl bmpcfg_emit_stub_0524
+.p2align 2
+.type bmpcfg_emit_stub_0524, @function
+bmpcfg_emit_stub_0524:
+    bmpcfg 0, 56, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0524, .-bmpcfg_emit_stub_0524
+
+.globl bmpcfg_emit_stub_0525
+.p2align 2
+.type bmpcfg_emit_stub_0525, @function
+bmpcfg_emit_stub_0525:
+    bmpcfg 0, 56, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0525, .-bmpcfg_emit_stub_0525
+
+.globl bmpcfg_emit_stub_0526
+.p2align 2
+.type bmpcfg_emit_stub_0526, @function
+bmpcfg_emit_stub_0526:
+    bmpcfg 0, 56, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0526, .-bmpcfg_emit_stub_0526
+
+.globl bmpcfg_emit_stub_0527
+.p2align 2
+.type bmpcfg_emit_stub_0527, @function
+bmpcfg_emit_stub_0527:
+    bmpcfg 0, 56, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0527, .-bmpcfg_emit_stub_0527
+
+.globl bmpcfg_emit_stub_0528
+.p2align 2
+.type bmpcfg_emit_stub_0528, @function
+bmpcfg_emit_stub_0528:
+    bmpcfg 0, 56, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0528, .-bmpcfg_emit_stub_0528
+
+.globl bmpcfg_emit_stub_0529
+.p2align 2
+.type bmpcfg_emit_stub_0529, @function
+bmpcfg_emit_stub_0529:
+    bmpcfg 0, 56, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0529, .-bmpcfg_emit_stub_0529
+
+.globl bmpcfg_emit_stub_0530
+.p2align 2
+.type bmpcfg_emit_stub_0530, @function
+bmpcfg_emit_stub_0530:
+    bmpcfg 0, 56, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0530, .-bmpcfg_emit_stub_0530
+
+.globl bmpcfg_emit_stub_0531
+.p2align 2
+.type bmpcfg_emit_stub_0531, @function
+bmpcfg_emit_stub_0531:
+    bmpcfg 0, 56, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0531, .-bmpcfg_emit_stub_0531
+
+.globl bmpcfg_emit_stub_0532
+.p2align 2
+.type bmpcfg_emit_stub_0532, @function
+bmpcfg_emit_stub_0532:
+    bmpcfg 0, 56, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0532, .-bmpcfg_emit_stub_0532
+
+.globl bmpcfg_emit_stub_0533
+.p2align 2
+.type bmpcfg_emit_stub_0533, @function
+bmpcfg_emit_stub_0533:
+    bmpcfg 0, 56, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0533, .-bmpcfg_emit_stub_0533
+
+.globl bmpcfg_emit_stub_0534
+.p2align 2
+.type bmpcfg_emit_stub_0534, @function
+bmpcfg_emit_stub_0534:
+    bmpcfg 0, 56, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0534, .-bmpcfg_emit_stub_0534
+
+.globl bmpcfg_emit_stub_0535
+.p2align 2
+.type bmpcfg_emit_stub_0535, @function
+bmpcfg_emit_stub_0535:
+    bmpcfg 0, 56, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0535, .-bmpcfg_emit_stub_0535
+
+.globl bmpcfg_emit_stub_0536
+.p2align 2
+.type bmpcfg_emit_stub_0536, @function
+bmpcfg_emit_stub_0536:
+    bmpcfg 0, 56, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0536, .-bmpcfg_emit_stub_0536
+
+.globl bmpcfg_emit_stub_0537
+.p2align 2
+.type bmpcfg_emit_stub_0537, @function
+bmpcfg_emit_stub_0537:
+    bmpcfg 0, 56, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0537, .-bmpcfg_emit_stub_0537
+
+.globl bmpcfg_emit_stub_0538
+.p2align 2
+.type bmpcfg_emit_stub_0538, @function
+bmpcfg_emit_stub_0538:
+    bmpcfg 0, 56, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0538, .-bmpcfg_emit_stub_0538
+
+.globl bmpcfg_emit_stub_0539
+.p2align 2
+.type bmpcfg_emit_stub_0539, @function
+bmpcfg_emit_stub_0539:
+    bmpcfg 0, 56, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0539, .-bmpcfg_emit_stub_0539
+
+.globl bmpcfg_emit_stub_0540
+.p2align 2
+.type bmpcfg_emit_stub_0540, @function
+bmpcfg_emit_stub_0540:
+    bmpcfg 0, 56, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0540, .-bmpcfg_emit_stub_0540
+
+.globl bmpcfg_emit_stub_0541
+.p2align 2
+.type bmpcfg_emit_stub_0541, @function
+bmpcfg_emit_stub_0541:
+    bmpcfg 0, 56, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0541, .-bmpcfg_emit_stub_0541
+
+.globl bmpcfg_emit_stub_0542
+.p2align 2
+.type bmpcfg_emit_stub_0542, @function
+bmpcfg_emit_stub_0542:
+    bmpcfg 0, 56, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0542, .-bmpcfg_emit_stub_0542
+
+.globl bmpcfg_emit_stub_0543
+.p2align 2
+.type bmpcfg_emit_stub_0543, @function
+bmpcfg_emit_stub_0543:
+    bmpcfg 0, 56, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0543, .-bmpcfg_emit_stub_0543
+
+.globl bmpcfg_emit_stub_0544
+.p2align 2
+.type bmpcfg_emit_stub_0544, @function
+bmpcfg_emit_stub_0544:
+    bmpcfg 0, 56, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0544, .-bmpcfg_emit_stub_0544
+
+.globl bmpcfg_emit_stub_0545
+.p2align 2
+.type bmpcfg_emit_stub_0545, @function
+bmpcfg_emit_stub_0545:
+    bmpcfg 0, 56, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0545, .-bmpcfg_emit_stub_0545
+
+.globl bmpcfg_emit_stub_0546
+.p2align 2
+.type bmpcfg_emit_stub_0546, @function
+bmpcfg_emit_stub_0546:
+    bmpcfg 0, 56, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0546, .-bmpcfg_emit_stub_0546
+
+.globl bmpcfg_emit_stub_0547
+.p2align 2
+.type bmpcfg_emit_stub_0547, @function
+bmpcfg_emit_stub_0547:
+    bmpcfg 0, 56, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0547, .-bmpcfg_emit_stub_0547
+
+.globl bmpcfg_emit_stub_0548
+.p2align 2
+.type bmpcfg_emit_stub_0548, @function
+bmpcfg_emit_stub_0548:
+    bmpcfg 0, 56, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0548, .-bmpcfg_emit_stub_0548
+
+.globl bmpcfg_emit_stub_0549
+.p2align 2
+.type bmpcfg_emit_stub_0549, @function
+bmpcfg_emit_stub_0549:
+    bmpcfg 0, 56, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0549, .-bmpcfg_emit_stub_0549
+
+.globl bmpcfg_emit_stub_0550
+.p2align 2
+.type bmpcfg_emit_stub_0550, @function
+bmpcfg_emit_stub_0550:
+    bmpcfg 0, 56, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0550, .-bmpcfg_emit_stub_0550
+
+.globl bmpcfg_emit_stub_0551
+.p2align 2
+.type bmpcfg_emit_stub_0551, @function
+bmpcfg_emit_stub_0551:
+    bmpcfg 0, 56, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0551, .-bmpcfg_emit_stub_0551
+
+.globl bmpcfg_emit_stub_0552
+.p2align 2
+.type bmpcfg_emit_stub_0552, @function
+bmpcfg_emit_stub_0552:
+    bmpcfg 0, 56, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0552, .-bmpcfg_emit_stub_0552
+
+.globl bmpcfg_emit_stub_0553
+.p2align 2
+.type bmpcfg_emit_stub_0553, @function
+bmpcfg_emit_stub_0553:
+    bmpcfg 0, 64, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0553, .-bmpcfg_emit_stub_0553
+
+.globl bmpcfg_emit_stub_0554
+.p2align 2
+.type bmpcfg_emit_stub_0554, @function
+bmpcfg_emit_stub_0554:
+    bmpcfg 0, 64, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0554, .-bmpcfg_emit_stub_0554
+
+.globl bmpcfg_emit_stub_0555
+.p2align 2
+.type bmpcfg_emit_stub_0555, @function
+bmpcfg_emit_stub_0555:
+    bmpcfg 0, 64, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0555, .-bmpcfg_emit_stub_0555
+
+.globl bmpcfg_emit_stub_0556
+.p2align 2
+.type bmpcfg_emit_stub_0556, @function
+bmpcfg_emit_stub_0556:
+    bmpcfg 0, 64, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0556, .-bmpcfg_emit_stub_0556
+
+.globl bmpcfg_emit_stub_0557
+.p2align 2
+.type bmpcfg_emit_stub_0557, @function
+bmpcfg_emit_stub_0557:
+    bmpcfg 0, 64, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0557, .-bmpcfg_emit_stub_0557
+
+.globl bmpcfg_emit_stub_0558
+.p2align 2
+.type bmpcfg_emit_stub_0558, @function
+bmpcfg_emit_stub_0558:
+    bmpcfg 0, 64, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0558, .-bmpcfg_emit_stub_0558
+
+.globl bmpcfg_emit_stub_0559
+.p2align 2
+.type bmpcfg_emit_stub_0559, @function
+bmpcfg_emit_stub_0559:
+    bmpcfg 0, 64, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0559, .-bmpcfg_emit_stub_0559
+
+.globl bmpcfg_emit_stub_0560
+.p2align 2
+.type bmpcfg_emit_stub_0560, @function
+bmpcfg_emit_stub_0560:
+    bmpcfg 0, 64, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0560, .-bmpcfg_emit_stub_0560
+
+.globl bmpcfg_emit_stub_0561
+.p2align 2
+.type bmpcfg_emit_stub_0561, @function
+bmpcfg_emit_stub_0561:
+    bmpcfg 0, 64, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0561, .-bmpcfg_emit_stub_0561
+
+.globl bmpcfg_emit_stub_0562
+.p2align 2
+.type bmpcfg_emit_stub_0562, @function
+bmpcfg_emit_stub_0562:
+    bmpcfg 0, 64, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0562, .-bmpcfg_emit_stub_0562
+
+.globl bmpcfg_emit_stub_0563
+.p2align 2
+.type bmpcfg_emit_stub_0563, @function
+bmpcfg_emit_stub_0563:
+    bmpcfg 0, 64, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0563, .-bmpcfg_emit_stub_0563
+
+.globl bmpcfg_emit_stub_0564
+.p2align 2
+.type bmpcfg_emit_stub_0564, @function
+bmpcfg_emit_stub_0564:
+    bmpcfg 0, 64, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0564, .-bmpcfg_emit_stub_0564
+
+.globl bmpcfg_emit_stub_0565
+.p2align 2
+.type bmpcfg_emit_stub_0565, @function
+bmpcfg_emit_stub_0565:
+    bmpcfg 0, 64, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0565, .-bmpcfg_emit_stub_0565
+
+.globl bmpcfg_emit_stub_0566
+.p2align 2
+.type bmpcfg_emit_stub_0566, @function
+bmpcfg_emit_stub_0566:
+    bmpcfg 0, 64, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0566, .-bmpcfg_emit_stub_0566
+
+.globl bmpcfg_emit_stub_0567
+.p2align 2
+.type bmpcfg_emit_stub_0567, @function
+bmpcfg_emit_stub_0567:
+    bmpcfg 0, 64, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0567, .-bmpcfg_emit_stub_0567
+
+.globl bmpcfg_emit_stub_0568
+.p2align 2
+.type bmpcfg_emit_stub_0568, @function
+bmpcfg_emit_stub_0568:
+    bmpcfg 0, 64, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0568, .-bmpcfg_emit_stub_0568
+
+.globl bmpcfg_emit_stub_0569
+.p2align 2
+.type bmpcfg_emit_stub_0569, @function
+bmpcfg_emit_stub_0569:
+    bmpcfg 0, 64, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0569, .-bmpcfg_emit_stub_0569
+
+.globl bmpcfg_emit_stub_0570
+.p2align 2
+.type bmpcfg_emit_stub_0570, @function
+bmpcfg_emit_stub_0570:
+    bmpcfg 0, 64, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0570, .-bmpcfg_emit_stub_0570
+
+.globl bmpcfg_emit_stub_0571
+.p2align 2
+.type bmpcfg_emit_stub_0571, @function
+bmpcfg_emit_stub_0571:
+    bmpcfg 0, 64, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0571, .-bmpcfg_emit_stub_0571
+
+.globl bmpcfg_emit_stub_0572
+.p2align 2
+.type bmpcfg_emit_stub_0572, @function
+bmpcfg_emit_stub_0572:
+    bmpcfg 0, 64, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0572, .-bmpcfg_emit_stub_0572
+
+.globl bmpcfg_emit_stub_0573
+.p2align 2
+.type bmpcfg_emit_stub_0573, @function
+bmpcfg_emit_stub_0573:
+    bmpcfg 0, 64, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0573, .-bmpcfg_emit_stub_0573
+
+.globl bmpcfg_emit_stub_0574
+.p2align 2
+.type bmpcfg_emit_stub_0574, @function
+bmpcfg_emit_stub_0574:
+    bmpcfg 0, 64, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0574, .-bmpcfg_emit_stub_0574
+
+.globl bmpcfg_emit_stub_0575
+.p2align 2
+.type bmpcfg_emit_stub_0575, @function
+bmpcfg_emit_stub_0575:
+    bmpcfg 0, 64, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0575, .-bmpcfg_emit_stub_0575
+
+.globl bmpcfg_emit_stub_0576
+.p2align 2
+.type bmpcfg_emit_stub_0576, @function
+bmpcfg_emit_stub_0576:
+    bmpcfg 0, 64, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0576, .-bmpcfg_emit_stub_0576
+
+.globl bmpcfg_emit_stub_0577
+.p2align 2
+.type bmpcfg_emit_stub_0577, @function
+bmpcfg_emit_stub_0577:
+    bmpcfg 0, 64, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0577, .-bmpcfg_emit_stub_0577
+
+.globl bmpcfg_emit_stub_0578
+.p2align 2
+.type bmpcfg_emit_stub_0578, @function
+bmpcfg_emit_stub_0578:
+    bmpcfg 0, 64, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0578, .-bmpcfg_emit_stub_0578
+
+.globl bmpcfg_emit_stub_0579
+.p2align 2
+.type bmpcfg_emit_stub_0579, @function
+bmpcfg_emit_stub_0579:
+    bmpcfg 0, 64, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0579, .-bmpcfg_emit_stub_0579
+
+.globl bmpcfg_emit_stub_0580
+.p2align 2
+.type bmpcfg_emit_stub_0580, @function
+bmpcfg_emit_stub_0580:
+    bmpcfg 0, 64, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0580, .-bmpcfg_emit_stub_0580
+
+.globl bmpcfg_emit_stub_0581
+.p2align 2
+.type bmpcfg_emit_stub_0581, @function
+bmpcfg_emit_stub_0581:
+    bmpcfg 0, 64, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0581, .-bmpcfg_emit_stub_0581
+
+.globl bmpcfg_emit_stub_0582
+.p2align 2
+.type bmpcfg_emit_stub_0582, @function
+bmpcfg_emit_stub_0582:
+    bmpcfg 0, 64, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0582, .-bmpcfg_emit_stub_0582
+
+.globl bmpcfg_emit_stub_0583
+.p2align 2
+.type bmpcfg_emit_stub_0583, @function
+bmpcfg_emit_stub_0583:
+    bmpcfg 0, 64, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0583, .-bmpcfg_emit_stub_0583
+
+.globl bmpcfg_emit_stub_0584
+.p2align 2
+.type bmpcfg_emit_stub_0584, @function
+bmpcfg_emit_stub_0584:
+    bmpcfg 0, 64, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0584, .-bmpcfg_emit_stub_0584
+
+.globl bmpcfg_emit_stub_0585
+.p2align 2
+.type bmpcfg_emit_stub_0585, @function
+bmpcfg_emit_stub_0585:
+    bmpcfg 0, 64, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0585, .-bmpcfg_emit_stub_0585
+
+.globl bmpcfg_emit_stub_0586
+.p2align 2
+.type bmpcfg_emit_stub_0586, @function
+bmpcfg_emit_stub_0586:
+    bmpcfg 0, 64, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0586, .-bmpcfg_emit_stub_0586
+
+.globl bmpcfg_emit_stub_0587
+.p2align 2
+.type bmpcfg_emit_stub_0587, @function
+bmpcfg_emit_stub_0587:
+    bmpcfg 0, 64, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0587, .-bmpcfg_emit_stub_0587
+
+.globl bmpcfg_emit_stub_0588
+.p2align 2
+.type bmpcfg_emit_stub_0588, @function
+bmpcfg_emit_stub_0588:
+    bmpcfg 0, 64, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0588, .-bmpcfg_emit_stub_0588
+
+.globl bmpcfg_emit_stub_0589
+.p2align 2
+.type bmpcfg_emit_stub_0589, @function
+bmpcfg_emit_stub_0589:
+    bmpcfg 0, 64, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0589, .-bmpcfg_emit_stub_0589
+
+.globl bmpcfg_emit_stub_0590
+.p2align 2
+.type bmpcfg_emit_stub_0590, @function
+bmpcfg_emit_stub_0590:
+    bmpcfg 0, 64, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0590, .-bmpcfg_emit_stub_0590
+
+.globl bmpcfg_emit_stub_0591
+.p2align 2
+.type bmpcfg_emit_stub_0591, @function
+bmpcfg_emit_stub_0591:
+    bmpcfg 0, 64, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0591, .-bmpcfg_emit_stub_0591
+
+.globl bmpcfg_emit_stub_0592
+.p2align 2
+.type bmpcfg_emit_stub_0592, @function
+bmpcfg_emit_stub_0592:
+    bmpcfg 0, 64, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0592, .-bmpcfg_emit_stub_0592
+
+.globl bmpcfg_emit_stub_0593
+.p2align 2
+.type bmpcfg_emit_stub_0593, @function
+bmpcfg_emit_stub_0593:
+    bmpcfg 0, 64, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0593, .-bmpcfg_emit_stub_0593
+
+.globl bmpcfg_emit_stub_0594
+.p2align 2
+.type bmpcfg_emit_stub_0594, @function
+bmpcfg_emit_stub_0594:
+    bmpcfg 0, 64, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0594, .-bmpcfg_emit_stub_0594
+
+.globl bmpcfg_emit_stub_0595
+.p2align 2
+.type bmpcfg_emit_stub_0595, @function
+bmpcfg_emit_stub_0595:
+    bmpcfg 0, 64, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0595, .-bmpcfg_emit_stub_0595
+
+.globl bmpcfg_emit_stub_0596
+.p2align 2
+.type bmpcfg_emit_stub_0596, @function
+bmpcfg_emit_stub_0596:
+    bmpcfg 0, 64, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0596, .-bmpcfg_emit_stub_0596
+
+.globl bmpcfg_emit_stub_0597
+.p2align 2
+.type bmpcfg_emit_stub_0597, @function
+bmpcfg_emit_stub_0597:
+    bmpcfg 0, 64, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0597, .-bmpcfg_emit_stub_0597
+
+.globl bmpcfg_emit_stub_0598
+.p2align 2
+.type bmpcfg_emit_stub_0598, @function
+bmpcfg_emit_stub_0598:
+    bmpcfg 0, 64, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0598, .-bmpcfg_emit_stub_0598
+
+.globl bmpcfg_emit_stub_0599
+.p2align 2
+.type bmpcfg_emit_stub_0599, @function
+bmpcfg_emit_stub_0599:
+    bmpcfg 0, 64, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0599, .-bmpcfg_emit_stub_0599
+
+.globl bmpcfg_emit_stub_0600
+.p2align 2
+.type bmpcfg_emit_stub_0600, @function
+bmpcfg_emit_stub_0600:
+    bmpcfg 0, 64, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0600, .-bmpcfg_emit_stub_0600
+
+.globl bmpcfg_emit_stub_0601
+.p2align 2
+.type bmpcfg_emit_stub_0601, @function
+bmpcfg_emit_stub_0601:
+    bmpcfg 0, 64, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0601, .-bmpcfg_emit_stub_0601
+
+.globl bmpcfg_emit_stub_0602
+.p2align 2
+.type bmpcfg_emit_stub_0602, @function
+bmpcfg_emit_stub_0602:
+    bmpcfg 0, 64, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0602, .-bmpcfg_emit_stub_0602
+
+.globl bmpcfg_emit_stub_0603
+.p2align 2
+.type bmpcfg_emit_stub_0603, @function
+bmpcfg_emit_stub_0603:
+    bmpcfg 0, 64, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0603, .-bmpcfg_emit_stub_0603
+
+.globl bmpcfg_emit_stub_0604
+.p2align 2
+.type bmpcfg_emit_stub_0604, @function
+bmpcfg_emit_stub_0604:
+    bmpcfg 0, 64, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0604, .-bmpcfg_emit_stub_0604
+
+.globl bmpcfg_emit_stub_0605
+.p2align 2
+.type bmpcfg_emit_stub_0605, @function
+bmpcfg_emit_stub_0605:
+    bmpcfg 0, 64, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0605, .-bmpcfg_emit_stub_0605
+
+.globl bmpcfg_emit_stub_0606
+.p2align 2
+.type bmpcfg_emit_stub_0606, @function
+bmpcfg_emit_stub_0606:
+    bmpcfg 0, 64, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0606, .-bmpcfg_emit_stub_0606
+
+.globl bmpcfg_emit_stub_0607
+.p2align 2
+.type bmpcfg_emit_stub_0607, @function
+bmpcfg_emit_stub_0607:
+    bmpcfg 0, 64, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0607, .-bmpcfg_emit_stub_0607
+
+.globl bmpcfg_emit_stub_0608
+.p2align 2
+.type bmpcfg_emit_stub_0608, @function
+bmpcfg_emit_stub_0608:
+    bmpcfg 0, 64, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0608, .-bmpcfg_emit_stub_0608
+
+.globl bmpcfg_emit_stub_0609
+.p2align 2
+.type bmpcfg_emit_stub_0609, @function
+bmpcfg_emit_stub_0609:
+    bmpcfg 0, 64, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0609, .-bmpcfg_emit_stub_0609
+
+.globl bmpcfg_emit_stub_0610
+.p2align 2
+.type bmpcfg_emit_stub_0610, @function
+bmpcfg_emit_stub_0610:
+    bmpcfg 0, 64, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0610, .-bmpcfg_emit_stub_0610
+
+.globl bmpcfg_emit_stub_0611
+.p2align 2
+.type bmpcfg_emit_stub_0611, @function
+bmpcfg_emit_stub_0611:
+    bmpcfg 0, 64, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0611, .-bmpcfg_emit_stub_0611
+
+.globl bmpcfg_emit_stub_0612
+.p2align 2
+.type bmpcfg_emit_stub_0612, @function
+bmpcfg_emit_stub_0612:
+    bmpcfg 0, 64, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0612, .-bmpcfg_emit_stub_0612
+
+.globl bmpcfg_emit_stub_0613
+.p2align 2
+.type bmpcfg_emit_stub_0613, @function
+bmpcfg_emit_stub_0613:
+    bmpcfg 0, 64, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0613, .-bmpcfg_emit_stub_0613
+
+.globl bmpcfg_emit_stub_0614
+.p2align 2
+.type bmpcfg_emit_stub_0614, @function
+bmpcfg_emit_stub_0614:
+    bmpcfg 0, 64, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0614, .-bmpcfg_emit_stub_0614
+
+.globl bmpcfg_emit_stub_0615
+.p2align 2
+.type bmpcfg_emit_stub_0615, @function
+bmpcfg_emit_stub_0615:
+    bmpcfg 0, 64, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0615, .-bmpcfg_emit_stub_0615
+
+.globl bmpcfg_emit_stub_0616
+.p2align 2
+.type bmpcfg_emit_stub_0616, @function
+bmpcfg_emit_stub_0616:
+    bmpcfg 0, 72, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0616, .-bmpcfg_emit_stub_0616
+
+.globl bmpcfg_emit_stub_0617
+.p2align 2
+.type bmpcfg_emit_stub_0617, @function
+bmpcfg_emit_stub_0617:
+    bmpcfg 0, 72, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0617, .-bmpcfg_emit_stub_0617
+
+.globl bmpcfg_emit_stub_0618
+.p2align 2
+.type bmpcfg_emit_stub_0618, @function
+bmpcfg_emit_stub_0618:
+    bmpcfg 0, 72, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0618, .-bmpcfg_emit_stub_0618
+
+.globl bmpcfg_emit_stub_0619
+.p2align 2
+.type bmpcfg_emit_stub_0619, @function
+bmpcfg_emit_stub_0619:
+    bmpcfg 0, 72, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0619, .-bmpcfg_emit_stub_0619
+
+.globl bmpcfg_emit_stub_0620
+.p2align 2
+.type bmpcfg_emit_stub_0620, @function
+bmpcfg_emit_stub_0620:
+    bmpcfg 0, 72, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0620, .-bmpcfg_emit_stub_0620
+
+.globl bmpcfg_emit_stub_0621
+.p2align 2
+.type bmpcfg_emit_stub_0621, @function
+bmpcfg_emit_stub_0621:
+    bmpcfg 0, 72, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0621, .-bmpcfg_emit_stub_0621
+
+.globl bmpcfg_emit_stub_0622
+.p2align 2
+.type bmpcfg_emit_stub_0622, @function
+bmpcfg_emit_stub_0622:
+    bmpcfg 0, 72, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0622, .-bmpcfg_emit_stub_0622
+
+.globl bmpcfg_emit_stub_0623
+.p2align 2
+.type bmpcfg_emit_stub_0623, @function
+bmpcfg_emit_stub_0623:
+    bmpcfg 0, 72, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0623, .-bmpcfg_emit_stub_0623
+
+.globl bmpcfg_emit_stub_0624
+.p2align 2
+.type bmpcfg_emit_stub_0624, @function
+bmpcfg_emit_stub_0624:
+    bmpcfg 0, 72, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0624, .-bmpcfg_emit_stub_0624
+
+.globl bmpcfg_emit_stub_0625
+.p2align 2
+.type bmpcfg_emit_stub_0625, @function
+bmpcfg_emit_stub_0625:
+    bmpcfg 0, 72, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0625, .-bmpcfg_emit_stub_0625
+
+.globl bmpcfg_emit_stub_0626
+.p2align 2
+.type bmpcfg_emit_stub_0626, @function
+bmpcfg_emit_stub_0626:
+    bmpcfg 0, 72, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0626, .-bmpcfg_emit_stub_0626
+
+.globl bmpcfg_emit_stub_0627
+.p2align 2
+.type bmpcfg_emit_stub_0627, @function
+bmpcfg_emit_stub_0627:
+    bmpcfg 0, 72, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0627, .-bmpcfg_emit_stub_0627
+
+.globl bmpcfg_emit_stub_0628
+.p2align 2
+.type bmpcfg_emit_stub_0628, @function
+bmpcfg_emit_stub_0628:
+    bmpcfg 0, 72, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0628, .-bmpcfg_emit_stub_0628
+
+.globl bmpcfg_emit_stub_0629
+.p2align 2
+.type bmpcfg_emit_stub_0629, @function
+bmpcfg_emit_stub_0629:
+    bmpcfg 0, 72, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0629, .-bmpcfg_emit_stub_0629
+
+.globl bmpcfg_emit_stub_0630
+.p2align 2
+.type bmpcfg_emit_stub_0630, @function
+bmpcfg_emit_stub_0630:
+    bmpcfg 0, 72, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0630, .-bmpcfg_emit_stub_0630
+
+.globl bmpcfg_emit_stub_0631
+.p2align 2
+.type bmpcfg_emit_stub_0631, @function
+bmpcfg_emit_stub_0631:
+    bmpcfg 0, 72, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0631, .-bmpcfg_emit_stub_0631
+
+.globl bmpcfg_emit_stub_0632
+.p2align 2
+.type bmpcfg_emit_stub_0632, @function
+bmpcfg_emit_stub_0632:
+    bmpcfg 0, 72, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0632, .-bmpcfg_emit_stub_0632
+
+.globl bmpcfg_emit_stub_0633
+.p2align 2
+.type bmpcfg_emit_stub_0633, @function
+bmpcfg_emit_stub_0633:
+    bmpcfg 0, 72, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0633, .-bmpcfg_emit_stub_0633
+
+.globl bmpcfg_emit_stub_0634
+.p2align 2
+.type bmpcfg_emit_stub_0634, @function
+bmpcfg_emit_stub_0634:
+    bmpcfg 0, 72, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0634, .-bmpcfg_emit_stub_0634
+
+.globl bmpcfg_emit_stub_0635
+.p2align 2
+.type bmpcfg_emit_stub_0635, @function
+bmpcfg_emit_stub_0635:
+    bmpcfg 0, 72, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0635, .-bmpcfg_emit_stub_0635
+
+.globl bmpcfg_emit_stub_0636
+.p2align 2
+.type bmpcfg_emit_stub_0636, @function
+bmpcfg_emit_stub_0636:
+    bmpcfg 0, 72, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0636, .-bmpcfg_emit_stub_0636
+
+.globl bmpcfg_emit_stub_0637
+.p2align 2
+.type bmpcfg_emit_stub_0637, @function
+bmpcfg_emit_stub_0637:
+    bmpcfg 0, 72, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0637, .-bmpcfg_emit_stub_0637
+
+.globl bmpcfg_emit_stub_0638
+.p2align 2
+.type bmpcfg_emit_stub_0638, @function
+bmpcfg_emit_stub_0638:
+    bmpcfg 0, 72, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0638, .-bmpcfg_emit_stub_0638
+
+.globl bmpcfg_emit_stub_0639
+.p2align 2
+.type bmpcfg_emit_stub_0639, @function
+bmpcfg_emit_stub_0639:
+    bmpcfg 0, 72, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0639, .-bmpcfg_emit_stub_0639
+
+.globl bmpcfg_emit_stub_0640
+.p2align 2
+.type bmpcfg_emit_stub_0640, @function
+bmpcfg_emit_stub_0640:
+    bmpcfg 0, 72, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0640, .-bmpcfg_emit_stub_0640
+
+.globl bmpcfg_emit_stub_0641
+.p2align 2
+.type bmpcfg_emit_stub_0641, @function
+bmpcfg_emit_stub_0641:
+    bmpcfg 0, 72, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0641, .-bmpcfg_emit_stub_0641
+
+.globl bmpcfg_emit_stub_0642
+.p2align 2
+.type bmpcfg_emit_stub_0642, @function
+bmpcfg_emit_stub_0642:
+    bmpcfg 0, 72, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0642, .-bmpcfg_emit_stub_0642
+
+.globl bmpcfg_emit_stub_0643
+.p2align 2
+.type bmpcfg_emit_stub_0643, @function
+bmpcfg_emit_stub_0643:
+    bmpcfg 0, 72, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0643, .-bmpcfg_emit_stub_0643
+
+.globl bmpcfg_emit_stub_0644
+.p2align 2
+.type bmpcfg_emit_stub_0644, @function
+bmpcfg_emit_stub_0644:
+    bmpcfg 0, 72, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0644, .-bmpcfg_emit_stub_0644
+
+.globl bmpcfg_emit_stub_0645
+.p2align 2
+.type bmpcfg_emit_stub_0645, @function
+bmpcfg_emit_stub_0645:
+    bmpcfg 0, 72, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0645, .-bmpcfg_emit_stub_0645
+
+.globl bmpcfg_emit_stub_0646
+.p2align 2
+.type bmpcfg_emit_stub_0646, @function
+bmpcfg_emit_stub_0646:
+    bmpcfg 0, 72, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0646, .-bmpcfg_emit_stub_0646
+
+.globl bmpcfg_emit_stub_0647
+.p2align 2
+.type bmpcfg_emit_stub_0647, @function
+bmpcfg_emit_stub_0647:
+    bmpcfg 0, 72, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0647, .-bmpcfg_emit_stub_0647
+
+.globl bmpcfg_emit_stub_0648
+.p2align 2
+.type bmpcfg_emit_stub_0648, @function
+bmpcfg_emit_stub_0648:
+    bmpcfg 0, 72, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0648, .-bmpcfg_emit_stub_0648
+
+.globl bmpcfg_emit_stub_0649
+.p2align 2
+.type bmpcfg_emit_stub_0649, @function
+bmpcfg_emit_stub_0649:
+    bmpcfg 0, 72, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0649, .-bmpcfg_emit_stub_0649
+
+.globl bmpcfg_emit_stub_0650
+.p2align 2
+.type bmpcfg_emit_stub_0650, @function
+bmpcfg_emit_stub_0650:
+    bmpcfg 0, 72, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0650, .-bmpcfg_emit_stub_0650
+
+.globl bmpcfg_emit_stub_0651
+.p2align 2
+.type bmpcfg_emit_stub_0651, @function
+bmpcfg_emit_stub_0651:
+    bmpcfg 0, 72, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0651, .-bmpcfg_emit_stub_0651
+
+.globl bmpcfg_emit_stub_0652
+.p2align 2
+.type bmpcfg_emit_stub_0652, @function
+bmpcfg_emit_stub_0652:
+    bmpcfg 0, 72, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0652, .-bmpcfg_emit_stub_0652
+
+.globl bmpcfg_emit_stub_0653
+.p2align 2
+.type bmpcfg_emit_stub_0653, @function
+bmpcfg_emit_stub_0653:
+    bmpcfg 0, 72, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0653, .-bmpcfg_emit_stub_0653
+
+.globl bmpcfg_emit_stub_0654
+.p2align 2
+.type bmpcfg_emit_stub_0654, @function
+bmpcfg_emit_stub_0654:
+    bmpcfg 0, 72, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0654, .-bmpcfg_emit_stub_0654
+
+.globl bmpcfg_emit_stub_0655
+.p2align 2
+.type bmpcfg_emit_stub_0655, @function
+bmpcfg_emit_stub_0655:
+    bmpcfg 0, 72, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0655, .-bmpcfg_emit_stub_0655
+
+.globl bmpcfg_emit_stub_0656
+.p2align 2
+.type bmpcfg_emit_stub_0656, @function
+bmpcfg_emit_stub_0656:
+    bmpcfg 0, 72, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0656, .-bmpcfg_emit_stub_0656
+
+.globl bmpcfg_emit_stub_0657
+.p2align 2
+.type bmpcfg_emit_stub_0657, @function
+bmpcfg_emit_stub_0657:
+    bmpcfg 0, 72, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0657, .-bmpcfg_emit_stub_0657
+
+.globl bmpcfg_emit_stub_0658
+.p2align 2
+.type bmpcfg_emit_stub_0658, @function
+bmpcfg_emit_stub_0658:
+    bmpcfg 0, 72, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0658, .-bmpcfg_emit_stub_0658
+
+.globl bmpcfg_emit_stub_0659
+.p2align 2
+.type bmpcfg_emit_stub_0659, @function
+bmpcfg_emit_stub_0659:
+    bmpcfg 0, 72, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0659, .-bmpcfg_emit_stub_0659
+
+.globl bmpcfg_emit_stub_0660
+.p2align 2
+.type bmpcfg_emit_stub_0660, @function
+bmpcfg_emit_stub_0660:
+    bmpcfg 0, 72, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0660, .-bmpcfg_emit_stub_0660
+
+.globl bmpcfg_emit_stub_0661
+.p2align 2
+.type bmpcfg_emit_stub_0661, @function
+bmpcfg_emit_stub_0661:
+    bmpcfg 0, 72, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0661, .-bmpcfg_emit_stub_0661
+
+.globl bmpcfg_emit_stub_0662
+.p2align 2
+.type bmpcfg_emit_stub_0662, @function
+bmpcfg_emit_stub_0662:
+    bmpcfg 0, 72, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0662, .-bmpcfg_emit_stub_0662
+
+.globl bmpcfg_emit_stub_0663
+.p2align 2
+.type bmpcfg_emit_stub_0663, @function
+bmpcfg_emit_stub_0663:
+    bmpcfg 0, 72, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0663, .-bmpcfg_emit_stub_0663
+
+.globl bmpcfg_emit_stub_0664
+.p2align 2
+.type bmpcfg_emit_stub_0664, @function
+bmpcfg_emit_stub_0664:
+    bmpcfg 0, 72, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0664, .-bmpcfg_emit_stub_0664
+
+.globl bmpcfg_emit_stub_0665
+.p2align 2
+.type bmpcfg_emit_stub_0665, @function
+bmpcfg_emit_stub_0665:
+    bmpcfg 0, 80, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0665, .-bmpcfg_emit_stub_0665
+
+.globl bmpcfg_emit_stub_0666
+.p2align 2
+.type bmpcfg_emit_stub_0666, @function
+bmpcfg_emit_stub_0666:
+    bmpcfg 0, 80, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0666, .-bmpcfg_emit_stub_0666
+
+.globl bmpcfg_emit_stub_0667
+.p2align 2
+.type bmpcfg_emit_stub_0667, @function
+bmpcfg_emit_stub_0667:
+    bmpcfg 0, 80, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0667, .-bmpcfg_emit_stub_0667
+
+.globl bmpcfg_emit_stub_0668
+.p2align 2
+.type bmpcfg_emit_stub_0668, @function
+bmpcfg_emit_stub_0668:
+    bmpcfg 0, 80, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0668, .-bmpcfg_emit_stub_0668
+
+.globl bmpcfg_emit_stub_0669
+.p2align 2
+.type bmpcfg_emit_stub_0669, @function
+bmpcfg_emit_stub_0669:
+    bmpcfg 0, 80, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0669, .-bmpcfg_emit_stub_0669
+
+.globl bmpcfg_emit_stub_0670
+.p2align 2
+.type bmpcfg_emit_stub_0670, @function
+bmpcfg_emit_stub_0670:
+    bmpcfg 0, 80, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0670, .-bmpcfg_emit_stub_0670
+
+.globl bmpcfg_emit_stub_0671
+.p2align 2
+.type bmpcfg_emit_stub_0671, @function
+bmpcfg_emit_stub_0671:
+    bmpcfg 0, 80, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0671, .-bmpcfg_emit_stub_0671
+
+.globl bmpcfg_emit_stub_0672
+.p2align 2
+.type bmpcfg_emit_stub_0672, @function
+bmpcfg_emit_stub_0672:
+    bmpcfg 0, 80, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0672, .-bmpcfg_emit_stub_0672
+
+.globl bmpcfg_emit_stub_0673
+.p2align 2
+.type bmpcfg_emit_stub_0673, @function
+bmpcfg_emit_stub_0673:
+    bmpcfg 0, 80, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0673, .-bmpcfg_emit_stub_0673
+
+.globl bmpcfg_emit_stub_0674
+.p2align 2
+.type bmpcfg_emit_stub_0674, @function
+bmpcfg_emit_stub_0674:
+    bmpcfg 0, 80, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0674, .-bmpcfg_emit_stub_0674
+
+.globl bmpcfg_emit_stub_0675
+.p2align 2
+.type bmpcfg_emit_stub_0675, @function
+bmpcfg_emit_stub_0675:
+    bmpcfg 0, 80, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0675, .-bmpcfg_emit_stub_0675
+
+.globl bmpcfg_emit_stub_0676
+.p2align 2
+.type bmpcfg_emit_stub_0676, @function
+bmpcfg_emit_stub_0676:
+    bmpcfg 0, 80, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0676, .-bmpcfg_emit_stub_0676
+
+.globl bmpcfg_emit_stub_0677
+.p2align 2
+.type bmpcfg_emit_stub_0677, @function
+bmpcfg_emit_stub_0677:
+    bmpcfg 0, 80, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0677, .-bmpcfg_emit_stub_0677
+
+.globl bmpcfg_emit_stub_0678
+.p2align 2
+.type bmpcfg_emit_stub_0678, @function
+bmpcfg_emit_stub_0678:
+    bmpcfg 0, 80, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0678, .-bmpcfg_emit_stub_0678
+
+.globl bmpcfg_emit_stub_0679
+.p2align 2
+.type bmpcfg_emit_stub_0679, @function
+bmpcfg_emit_stub_0679:
+    bmpcfg 0, 80, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0679, .-bmpcfg_emit_stub_0679
+
+.globl bmpcfg_emit_stub_0680
+.p2align 2
+.type bmpcfg_emit_stub_0680, @function
+bmpcfg_emit_stub_0680:
+    bmpcfg 0, 80, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0680, .-bmpcfg_emit_stub_0680
+
+.globl bmpcfg_emit_stub_0681
+.p2align 2
+.type bmpcfg_emit_stub_0681, @function
+bmpcfg_emit_stub_0681:
+    bmpcfg 0, 80, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0681, .-bmpcfg_emit_stub_0681
+
+.globl bmpcfg_emit_stub_0682
+.p2align 2
+.type bmpcfg_emit_stub_0682, @function
+bmpcfg_emit_stub_0682:
+    bmpcfg 0, 80, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0682, .-bmpcfg_emit_stub_0682
+
+.globl bmpcfg_emit_stub_0683
+.p2align 2
+.type bmpcfg_emit_stub_0683, @function
+bmpcfg_emit_stub_0683:
+    bmpcfg 0, 80, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0683, .-bmpcfg_emit_stub_0683
+
+.globl bmpcfg_emit_stub_0684
+.p2align 2
+.type bmpcfg_emit_stub_0684, @function
+bmpcfg_emit_stub_0684:
+    bmpcfg 0, 80, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0684, .-bmpcfg_emit_stub_0684
+
+.globl bmpcfg_emit_stub_0685
+.p2align 2
+.type bmpcfg_emit_stub_0685, @function
+bmpcfg_emit_stub_0685:
+    bmpcfg 0, 80, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0685, .-bmpcfg_emit_stub_0685
+
+.globl bmpcfg_emit_stub_0686
+.p2align 2
+.type bmpcfg_emit_stub_0686, @function
+bmpcfg_emit_stub_0686:
+    bmpcfg 0, 80, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0686, .-bmpcfg_emit_stub_0686
+
+.globl bmpcfg_emit_stub_0687
+.p2align 2
+.type bmpcfg_emit_stub_0687, @function
+bmpcfg_emit_stub_0687:
+    bmpcfg 0, 80, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0687, .-bmpcfg_emit_stub_0687
+
+.globl bmpcfg_emit_stub_0688
+.p2align 2
+.type bmpcfg_emit_stub_0688, @function
+bmpcfg_emit_stub_0688:
+    bmpcfg 0, 80, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0688, .-bmpcfg_emit_stub_0688
+
+.globl bmpcfg_emit_stub_0689
+.p2align 2
+.type bmpcfg_emit_stub_0689, @function
+bmpcfg_emit_stub_0689:
+    bmpcfg 0, 80, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0689, .-bmpcfg_emit_stub_0689
+
+.globl bmpcfg_emit_stub_0690
+.p2align 2
+.type bmpcfg_emit_stub_0690, @function
+bmpcfg_emit_stub_0690:
+    bmpcfg 0, 80, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0690, .-bmpcfg_emit_stub_0690
+
+.globl bmpcfg_emit_stub_0691
+.p2align 2
+.type bmpcfg_emit_stub_0691, @function
+bmpcfg_emit_stub_0691:
+    bmpcfg 0, 80, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0691, .-bmpcfg_emit_stub_0691
+
+.globl bmpcfg_emit_stub_0692
+.p2align 2
+.type bmpcfg_emit_stub_0692, @function
+bmpcfg_emit_stub_0692:
+    bmpcfg 0, 80, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0692, .-bmpcfg_emit_stub_0692
+
+.globl bmpcfg_emit_stub_0693
+.p2align 2
+.type bmpcfg_emit_stub_0693, @function
+bmpcfg_emit_stub_0693:
+    bmpcfg 0, 80, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0693, .-bmpcfg_emit_stub_0693
+
+.globl bmpcfg_emit_stub_0694
+.p2align 2
+.type bmpcfg_emit_stub_0694, @function
+bmpcfg_emit_stub_0694:
+    bmpcfg 0, 80, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0694, .-bmpcfg_emit_stub_0694
+
+.globl bmpcfg_emit_stub_0695
+.p2align 2
+.type bmpcfg_emit_stub_0695, @function
+bmpcfg_emit_stub_0695:
+    bmpcfg 0, 80, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0695, .-bmpcfg_emit_stub_0695
+
+.globl bmpcfg_emit_stub_0696
+.p2align 2
+.type bmpcfg_emit_stub_0696, @function
+bmpcfg_emit_stub_0696:
+    bmpcfg 0, 80, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0696, .-bmpcfg_emit_stub_0696
+
+.globl bmpcfg_emit_stub_0697
+.p2align 2
+.type bmpcfg_emit_stub_0697, @function
+bmpcfg_emit_stub_0697:
+    bmpcfg 0, 80, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0697, .-bmpcfg_emit_stub_0697
+
+.globl bmpcfg_emit_stub_0698
+.p2align 2
+.type bmpcfg_emit_stub_0698, @function
+bmpcfg_emit_stub_0698:
+    bmpcfg 0, 80, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0698, .-bmpcfg_emit_stub_0698
+
+.globl bmpcfg_emit_stub_0699
+.p2align 2
+.type bmpcfg_emit_stub_0699, @function
+bmpcfg_emit_stub_0699:
+    bmpcfg 0, 80, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0699, .-bmpcfg_emit_stub_0699
+
+.globl bmpcfg_emit_stub_0700
+.p2align 2
+.type bmpcfg_emit_stub_0700, @function
+bmpcfg_emit_stub_0700:
+    bmpcfg 0, 80, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0700, .-bmpcfg_emit_stub_0700
+
+.globl bmpcfg_emit_stub_0701
+.p2align 2
+.type bmpcfg_emit_stub_0701, @function
+bmpcfg_emit_stub_0701:
+    bmpcfg 0, 80, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0701, .-bmpcfg_emit_stub_0701
+
+.globl bmpcfg_emit_stub_0702
+.p2align 2
+.type bmpcfg_emit_stub_0702, @function
+bmpcfg_emit_stub_0702:
+    bmpcfg 0, 80, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0702, .-bmpcfg_emit_stub_0702
+
+.globl bmpcfg_emit_stub_0703
+.p2align 2
+.type bmpcfg_emit_stub_0703, @function
+bmpcfg_emit_stub_0703:
+    bmpcfg 0, 80, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0703, .-bmpcfg_emit_stub_0703
+
+.globl bmpcfg_emit_stub_0704
+.p2align 2
+.type bmpcfg_emit_stub_0704, @function
+bmpcfg_emit_stub_0704:
+    bmpcfg 0, 80, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0704, .-bmpcfg_emit_stub_0704
+
+.globl bmpcfg_emit_stub_0705
+.p2align 2
+.type bmpcfg_emit_stub_0705, @function
+bmpcfg_emit_stub_0705:
+    bmpcfg 0, 80, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0705, .-bmpcfg_emit_stub_0705
+
+.globl bmpcfg_emit_stub_0706
+.p2align 2
+.type bmpcfg_emit_stub_0706, @function
+bmpcfg_emit_stub_0706:
+    bmpcfg 0, 80, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0706, .-bmpcfg_emit_stub_0706
+
+.globl bmpcfg_emit_stub_0707
+.p2align 2
+.type bmpcfg_emit_stub_0707, @function
+bmpcfg_emit_stub_0707:
+    bmpcfg 0, 80, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0707, .-bmpcfg_emit_stub_0707
+
+.globl bmpcfg_emit_stub_0708
+.p2align 2
+.type bmpcfg_emit_stub_0708, @function
+bmpcfg_emit_stub_0708:
+    bmpcfg 0, 80, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0708, .-bmpcfg_emit_stub_0708
+
+.globl bmpcfg_emit_stub_0709
+.p2align 2
+.type bmpcfg_emit_stub_0709, @function
+bmpcfg_emit_stub_0709:
+    bmpcfg 0, 80, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0709, .-bmpcfg_emit_stub_0709
+
+.globl bmpcfg_emit_stub_0710
+.p2align 2
+.type bmpcfg_emit_stub_0710, @function
+bmpcfg_emit_stub_0710:
+    bmpcfg 0, 80, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0710, .-bmpcfg_emit_stub_0710
+
+.globl bmpcfg_emit_stub_0711
+.p2align 2
+.type bmpcfg_emit_stub_0711, @function
+bmpcfg_emit_stub_0711:
+    bmpcfg 0, 80, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0711, .-bmpcfg_emit_stub_0711
+
+.globl bmpcfg_emit_stub_0712
+.p2align 2
+.type bmpcfg_emit_stub_0712, @function
+bmpcfg_emit_stub_0712:
+    bmpcfg 0, 80, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0712, .-bmpcfg_emit_stub_0712
+
+.globl bmpcfg_emit_stub_0713
+.p2align 2
+.type bmpcfg_emit_stub_0713, @function
+bmpcfg_emit_stub_0713:
+    bmpcfg 0, 88, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0713, .-bmpcfg_emit_stub_0713
+
+.globl bmpcfg_emit_stub_0714
+.p2align 2
+.type bmpcfg_emit_stub_0714, @function
+bmpcfg_emit_stub_0714:
+    bmpcfg 0, 88, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0714, .-bmpcfg_emit_stub_0714
+
+.globl bmpcfg_emit_stub_0715
+.p2align 2
+.type bmpcfg_emit_stub_0715, @function
+bmpcfg_emit_stub_0715:
+    bmpcfg 0, 88, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0715, .-bmpcfg_emit_stub_0715
+
+.globl bmpcfg_emit_stub_0716
+.p2align 2
+.type bmpcfg_emit_stub_0716, @function
+bmpcfg_emit_stub_0716:
+    bmpcfg 0, 88, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0716, .-bmpcfg_emit_stub_0716
+
+.globl bmpcfg_emit_stub_0717
+.p2align 2
+.type bmpcfg_emit_stub_0717, @function
+bmpcfg_emit_stub_0717:
+    bmpcfg 0, 88, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0717, .-bmpcfg_emit_stub_0717
+
+.globl bmpcfg_emit_stub_0718
+.p2align 2
+.type bmpcfg_emit_stub_0718, @function
+bmpcfg_emit_stub_0718:
+    bmpcfg 0, 88, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0718, .-bmpcfg_emit_stub_0718
+
+.globl bmpcfg_emit_stub_0719
+.p2align 2
+.type bmpcfg_emit_stub_0719, @function
+bmpcfg_emit_stub_0719:
+    bmpcfg 0, 88, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0719, .-bmpcfg_emit_stub_0719
+
+.globl bmpcfg_emit_stub_0720
+.p2align 2
+.type bmpcfg_emit_stub_0720, @function
+bmpcfg_emit_stub_0720:
+    bmpcfg 0, 88, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0720, .-bmpcfg_emit_stub_0720
+
+.globl bmpcfg_emit_stub_0721
+.p2align 2
+.type bmpcfg_emit_stub_0721, @function
+bmpcfg_emit_stub_0721:
+    bmpcfg 0, 88, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0721, .-bmpcfg_emit_stub_0721
+
+.globl bmpcfg_emit_stub_0722
+.p2align 2
+.type bmpcfg_emit_stub_0722, @function
+bmpcfg_emit_stub_0722:
+    bmpcfg 0, 88, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0722, .-bmpcfg_emit_stub_0722
+
+.globl bmpcfg_emit_stub_0723
+.p2align 2
+.type bmpcfg_emit_stub_0723, @function
+bmpcfg_emit_stub_0723:
+    bmpcfg 0, 88, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0723, .-bmpcfg_emit_stub_0723
+
+.globl bmpcfg_emit_stub_0724
+.p2align 2
+.type bmpcfg_emit_stub_0724, @function
+bmpcfg_emit_stub_0724:
+    bmpcfg 0, 88, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0724, .-bmpcfg_emit_stub_0724
+
+.globl bmpcfg_emit_stub_0725
+.p2align 2
+.type bmpcfg_emit_stub_0725, @function
+bmpcfg_emit_stub_0725:
+    bmpcfg 0, 88, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0725, .-bmpcfg_emit_stub_0725
+
+.globl bmpcfg_emit_stub_0726
+.p2align 2
+.type bmpcfg_emit_stub_0726, @function
+bmpcfg_emit_stub_0726:
+    bmpcfg 0, 88, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0726, .-bmpcfg_emit_stub_0726
+
+.globl bmpcfg_emit_stub_0727
+.p2align 2
+.type bmpcfg_emit_stub_0727, @function
+bmpcfg_emit_stub_0727:
+    bmpcfg 0, 88, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0727, .-bmpcfg_emit_stub_0727
+
+.globl bmpcfg_emit_stub_0728
+.p2align 2
+.type bmpcfg_emit_stub_0728, @function
+bmpcfg_emit_stub_0728:
+    bmpcfg 0, 88, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0728, .-bmpcfg_emit_stub_0728
+
+.globl bmpcfg_emit_stub_0729
+.p2align 2
+.type bmpcfg_emit_stub_0729, @function
+bmpcfg_emit_stub_0729:
+    bmpcfg 0, 88, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0729, .-bmpcfg_emit_stub_0729
+
+.globl bmpcfg_emit_stub_0730
+.p2align 2
+.type bmpcfg_emit_stub_0730, @function
+bmpcfg_emit_stub_0730:
+    bmpcfg 0, 88, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0730, .-bmpcfg_emit_stub_0730
+
+.globl bmpcfg_emit_stub_0731
+.p2align 2
+.type bmpcfg_emit_stub_0731, @function
+bmpcfg_emit_stub_0731:
+    bmpcfg 0, 88, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0731, .-bmpcfg_emit_stub_0731
+
+.globl bmpcfg_emit_stub_0732
+.p2align 2
+.type bmpcfg_emit_stub_0732, @function
+bmpcfg_emit_stub_0732:
+    bmpcfg 0, 88, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0732, .-bmpcfg_emit_stub_0732
+
+.globl bmpcfg_emit_stub_0733
+.p2align 2
+.type bmpcfg_emit_stub_0733, @function
+bmpcfg_emit_stub_0733:
+    bmpcfg 0, 88, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0733, .-bmpcfg_emit_stub_0733
+
+.globl bmpcfg_emit_stub_0734
+.p2align 2
+.type bmpcfg_emit_stub_0734, @function
+bmpcfg_emit_stub_0734:
+    bmpcfg 0, 88, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0734, .-bmpcfg_emit_stub_0734
+
+.globl bmpcfg_emit_stub_0735
+.p2align 2
+.type bmpcfg_emit_stub_0735, @function
+bmpcfg_emit_stub_0735:
+    bmpcfg 0, 88, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0735, .-bmpcfg_emit_stub_0735
+
+.globl bmpcfg_emit_stub_0736
+.p2align 2
+.type bmpcfg_emit_stub_0736, @function
+bmpcfg_emit_stub_0736:
+    bmpcfg 0, 88, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0736, .-bmpcfg_emit_stub_0736
+
+.globl bmpcfg_emit_stub_0737
+.p2align 2
+.type bmpcfg_emit_stub_0737, @function
+bmpcfg_emit_stub_0737:
+    bmpcfg 0, 88, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0737, .-bmpcfg_emit_stub_0737
+
+.globl bmpcfg_emit_stub_0738
+.p2align 2
+.type bmpcfg_emit_stub_0738, @function
+bmpcfg_emit_stub_0738:
+    bmpcfg 0, 88, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0738, .-bmpcfg_emit_stub_0738
+
+.globl bmpcfg_emit_stub_0739
+.p2align 2
+.type bmpcfg_emit_stub_0739, @function
+bmpcfg_emit_stub_0739:
+    bmpcfg 0, 88, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0739, .-bmpcfg_emit_stub_0739
+
+.globl bmpcfg_emit_stub_0740
+.p2align 2
+.type bmpcfg_emit_stub_0740, @function
+bmpcfg_emit_stub_0740:
+    bmpcfg 0, 88, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0740, .-bmpcfg_emit_stub_0740
+
+.globl bmpcfg_emit_stub_0741
+.p2align 2
+.type bmpcfg_emit_stub_0741, @function
+bmpcfg_emit_stub_0741:
+    bmpcfg 0, 88, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0741, .-bmpcfg_emit_stub_0741
+
+.globl bmpcfg_emit_stub_0742
+.p2align 2
+.type bmpcfg_emit_stub_0742, @function
+bmpcfg_emit_stub_0742:
+    bmpcfg 0, 88, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0742, .-bmpcfg_emit_stub_0742
+
+.globl bmpcfg_emit_stub_0743
+.p2align 2
+.type bmpcfg_emit_stub_0743, @function
+bmpcfg_emit_stub_0743:
+    bmpcfg 0, 88, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0743, .-bmpcfg_emit_stub_0743
+
+.globl bmpcfg_emit_stub_0744
+.p2align 2
+.type bmpcfg_emit_stub_0744, @function
+bmpcfg_emit_stub_0744:
+    bmpcfg 0, 96, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0744, .-bmpcfg_emit_stub_0744
+
+.globl bmpcfg_emit_stub_0745
+.p2align 2
+.type bmpcfg_emit_stub_0745, @function
+bmpcfg_emit_stub_0745:
+    bmpcfg 0, 96, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0745, .-bmpcfg_emit_stub_0745
+
+.globl bmpcfg_emit_stub_0746
+.p2align 2
+.type bmpcfg_emit_stub_0746, @function
+bmpcfg_emit_stub_0746:
+    bmpcfg 0, 96, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0746, .-bmpcfg_emit_stub_0746
+
+.globl bmpcfg_emit_stub_0747
+.p2align 2
+.type bmpcfg_emit_stub_0747, @function
+bmpcfg_emit_stub_0747:
+    bmpcfg 0, 96, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0747, .-bmpcfg_emit_stub_0747
+
+.globl bmpcfg_emit_stub_0748
+.p2align 2
+.type bmpcfg_emit_stub_0748, @function
+bmpcfg_emit_stub_0748:
+    bmpcfg 0, 96, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0748, .-bmpcfg_emit_stub_0748
+
+.globl bmpcfg_emit_stub_0749
+.p2align 2
+.type bmpcfg_emit_stub_0749, @function
+bmpcfg_emit_stub_0749:
+    bmpcfg 0, 96, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0749, .-bmpcfg_emit_stub_0749
+
+.globl bmpcfg_emit_stub_0750
+.p2align 2
+.type bmpcfg_emit_stub_0750, @function
+bmpcfg_emit_stub_0750:
+    bmpcfg 0, 96, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0750, .-bmpcfg_emit_stub_0750
+
+.globl bmpcfg_emit_stub_0751
+.p2align 2
+.type bmpcfg_emit_stub_0751, @function
+bmpcfg_emit_stub_0751:
+    bmpcfg 0, 96, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0751, .-bmpcfg_emit_stub_0751
+
+.globl bmpcfg_emit_stub_0752
+.p2align 2
+.type bmpcfg_emit_stub_0752, @function
+bmpcfg_emit_stub_0752:
+    bmpcfg 0, 96, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0752, .-bmpcfg_emit_stub_0752
+
+.globl bmpcfg_emit_stub_0753
+.p2align 2
+.type bmpcfg_emit_stub_0753, @function
+bmpcfg_emit_stub_0753:
+    bmpcfg 0, 96, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0753, .-bmpcfg_emit_stub_0753
+
+.globl bmpcfg_emit_stub_0754
+.p2align 2
+.type bmpcfg_emit_stub_0754, @function
+bmpcfg_emit_stub_0754:
+    bmpcfg 0, 96, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0754, .-bmpcfg_emit_stub_0754
+
+.globl bmpcfg_emit_stub_0755
+.p2align 2
+.type bmpcfg_emit_stub_0755, @function
+bmpcfg_emit_stub_0755:
+    bmpcfg 0, 96, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0755, .-bmpcfg_emit_stub_0755
+
+.globl bmpcfg_emit_stub_0756
+.p2align 2
+.type bmpcfg_emit_stub_0756, @function
+bmpcfg_emit_stub_0756:
+    bmpcfg 0, 96, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0756, .-bmpcfg_emit_stub_0756
+
+.globl bmpcfg_emit_stub_0757
+.p2align 2
+.type bmpcfg_emit_stub_0757, @function
+bmpcfg_emit_stub_0757:
+    bmpcfg 0, 96, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0757, .-bmpcfg_emit_stub_0757
+
+.globl bmpcfg_emit_stub_0758
+.p2align 2
+.type bmpcfg_emit_stub_0758, @function
+bmpcfg_emit_stub_0758:
+    bmpcfg 0, 96, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0758, .-bmpcfg_emit_stub_0758
+
+.globl bmpcfg_emit_stub_0759
+.p2align 2
+.type bmpcfg_emit_stub_0759, @function
+bmpcfg_emit_stub_0759:
+    bmpcfg 0, 96, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0759, .-bmpcfg_emit_stub_0759
+
+.globl bmpcfg_emit_stub_0760
+.p2align 2
+.type bmpcfg_emit_stub_0760, @function
+bmpcfg_emit_stub_0760:
+    bmpcfg 0, 96, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0760, .-bmpcfg_emit_stub_0760
+
+.globl bmpcfg_emit_stub_0761
+.p2align 2
+.type bmpcfg_emit_stub_0761, @function
+bmpcfg_emit_stub_0761:
+    bmpcfg 0, 96, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0761, .-bmpcfg_emit_stub_0761
+
+.globl bmpcfg_emit_stub_0762
+.p2align 2
+.type bmpcfg_emit_stub_0762, @function
+bmpcfg_emit_stub_0762:
+    bmpcfg 0, 96, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0762, .-bmpcfg_emit_stub_0762
+
+.globl bmpcfg_emit_stub_0763
+.p2align 2
+.type bmpcfg_emit_stub_0763, @function
+bmpcfg_emit_stub_0763:
+    bmpcfg 0, 96, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0763, .-bmpcfg_emit_stub_0763
+
+.globl bmpcfg_emit_stub_0764
+.p2align 2
+.type bmpcfg_emit_stub_0764, @function
+bmpcfg_emit_stub_0764:
+    bmpcfg 0, 96, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0764, .-bmpcfg_emit_stub_0764
+
+.globl bmpcfg_emit_stub_0765
+.p2align 2
+.type bmpcfg_emit_stub_0765, @function
+bmpcfg_emit_stub_0765:
+    bmpcfg 0, 96, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0765, .-bmpcfg_emit_stub_0765
+
+.globl bmpcfg_emit_stub_0766
+.p2align 2
+.type bmpcfg_emit_stub_0766, @function
+bmpcfg_emit_stub_0766:
+    bmpcfg 0, 96, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0766, .-bmpcfg_emit_stub_0766
+
+.globl bmpcfg_emit_stub_0767
+.p2align 2
+.type bmpcfg_emit_stub_0767, @function
+bmpcfg_emit_stub_0767:
+    bmpcfg 0, 96, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0767, .-bmpcfg_emit_stub_0767
+
+.globl bmpcfg_emit_stub_0768
+.p2align 2
+.type bmpcfg_emit_stub_0768, @function
+bmpcfg_emit_stub_0768:
+    bmpcfg 0, 96, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0768, .-bmpcfg_emit_stub_0768
+
+.globl bmpcfg_emit_stub_0769
+.p2align 2
+.type bmpcfg_emit_stub_0769, @function
+bmpcfg_emit_stub_0769:
+    bmpcfg 0, 96, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0769, .-bmpcfg_emit_stub_0769
+
+.globl bmpcfg_emit_stub_0770
+.p2align 2
+.type bmpcfg_emit_stub_0770, @function
+bmpcfg_emit_stub_0770:
+    bmpcfg 0, 96, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0770, .-bmpcfg_emit_stub_0770
+
+.globl bmpcfg_emit_stub_0771
+.p2align 2
+.type bmpcfg_emit_stub_0771, @function
+bmpcfg_emit_stub_0771:
+    bmpcfg 0, 96, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0771, .-bmpcfg_emit_stub_0771
+
+.globl bmpcfg_emit_stub_0772
+.p2align 2
+.type bmpcfg_emit_stub_0772, @function
+bmpcfg_emit_stub_0772:
+    bmpcfg 0, 96, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0772, .-bmpcfg_emit_stub_0772
+
+.globl bmpcfg_emit_stub_0773
+.p2align 2
+.type bmpcfg_emit_stub_0773, @function
+bmpcfg_emit_stub_0773:
+    bmpcfg 0, 96, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0773, .-bmpcfg_emit_stub_0773
+
+.globl bmpcfg_emit_stub_0774
+.p2align 2
+.type bmpcfg_emit_stub_0774, @function
+bmpcfg_emit_stub_0774:
+    bmpcfg 0, 96, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0774, .-bmpcfg_emit_stub_0774
+
+.globl bmpcfg_emit_stub_0775
+.p2align 2
+.type bmpcfg_emit_stub_0775, @function
+bmpcfg_emit_stub_0775:
+    bmpcfg 0, 104, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0775, .-bmpcfg_emit_stub_0775
+
+.globl bmpcfg_emit_stub_0776
+.p2align 2
+.type bmpcfg_emit_stub_0776, @function
+bmpcfg_emit_stub_0776:
+    bmpcfg 0, 104, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0776, .-bmpcfg_emit_stub_0776
+
+.globl bmpcfg_emit_stub_0777
+.p2align 2
+.type bmpcfg_emit_stub_0777, @function
+bmpcfg_emit_stub_0777:
+    bmpcfg 0, 104, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0777, .-bmpcfg_emit_stub_0777
+
+.globl bmpcfg_emit_stub_0778
+.p2align 2
+.type bmpcfg_emit_stub_0778, @function
+bmpcfg_emit_stub_0778:
+    bmpcfg 0, 104, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0778, .-bmpcfg_emit_stub_0778
+
+.globl bmpcfg_emit_stub_0779
+.p2align 2
+.type bmpcfg_emit_stub_0779, @function
+bmpcfg_emit_stub_0779:
+    bmpcfg 0, 104, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0779, .-bmpcfg_emit_stub_0779
+
+.globl bmpcfg_emit_stub_0780
+.p2align 2
+.type bmpcfg_emit_stub_0780, @function
+bmpcfg_emit_stub_0780:
+    bmpcfg 0, 104, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0780, .-bmpcfg_emit_stub_0780
+
+.globl bmpcfg_emit_stub_0781
+.p2align 2
+.type bmpcfg_emit_stub_0781, @function
+bmpcfg_emit_stub_0781:
+    bmpcfg 0, 104, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0781, .-bmpcfg_emit_stub_0781
+
+.globl bmpcfg_emit_stub_0782
+.p2align 2
+.type bmpcfg_emit_stub_0782, @function
+bmpcfg_emit_stub_0782:
+    bmpcfg 0, 104, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0782, .-bmpcfg_emit_stub_0782
+
+.globl bmpcfg_emit_stub_0783
+.p2align 2
+.type bmpcfg_emit_stub_0783, @function
+bmpcfg_emit_stub_0783:
+    bmpcfg 0, 104, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0783, .-bmpcfg_emit_stub_0783
+
+.globl bmpcfg_emit_stub_0784
+.p2align 2
+.type bmpcfg_emit_stub_0784, @function
+bmpcfg_emit_stub_0784:
+    bmpcfg 0, 104, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0784, .-bmpcfg_emit_stub_0784
+
+.globl bmpcfg_emit_stub_0785
+.p2align 2
+.type bmpcfg_emit_stub_0785, @function
+bmpcfg_emit_stub_0785:
+    bmpcfg 0, 104, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0785, .-bmpcfg_emit_stub_0785
+
+.globl bmpcfg_emit_stub_0786
+.p2align 2
+.type bmpcfg_emit_stub_0786, @function
+bmpcfg_emit_stub_0786:
+    bmpcfg 0, 104, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0786, .-bmpcfg_emit_stub_0786
+
+.globl bmpcfg_emit_stub_0787
+.p2align 2
+.type bmpcfg_emit_stub_0787, @function
+bmpcfg_emit_stub_0787:
+    bmpcfg 0, 104, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0787, .-bmpcfg_emit_stub_0787
+
+.globl bmpcfg_emit_stub_0788
+.p2align 2
+.type bmpcfg_emit_stub_0788, @function
+bmpcfg_emit_stub_0788:
+    bmpcfg 0, 104, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0788, .-bmpcfg_emit_stub_0788
+
+.globl bmpcfg_emit_stub_0789
+.p2align 2
+.type bmpcfg_emit_stub_0789, @function
+bmpcfg_emit_stub_0789:
+    bmpcfg 0, 104, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0789, .-bmpcfg_emit_stub_0789
+
+.globl bmpcfg_emit_stub_0790
+.p2align 2
+.type bmpcfg_emit_stub_0790, @function
+bmpcfg_emit_stub_0790:
+    bmpcfg 0, 104, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0790, .-bmpcfg_emit_stub_0790
+
+.globl bmpcfg_emit_stub_0791
+.p2align 2
+.type bmpcfg_emit_stub_0791, @function
+bmpcfg_emit_stub_0791:
+    bmpcfg 0, 104, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0791, .-bmpcfg_emit_stub_0791
+
+.globl bmpcfg_emit_stub_0792
+.p2align 2
+.type bmpcfg_emit_stub_0792, @function
+bmpcfg_emit_stub_0792:
+    bmpcfg 0, 104, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0792, .-bmpcfg_emit_stub_0792
+
+.globl bmpcfg_emit_stub_0793
+.p2align 2
+.type bmpcfg_emit_stub_0793, @function
+bmpcfg_emit_stub_0793:
+    bmpcfg 0, 104, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0793, .-bmpcfg_emit_stub_0793
+
+.globl bmpcfg_emit_stub_0794
+.p2align 2
+.type bmpcfg_emit_stub_0794, @function
+bmpcfg_emit_stub_0794:
+    bmpcfg 0, 104, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0794, .-bmpcfg_emit_stub_0794
+
+.globl bmpcfg_emit_stub_0795
+.p2align 2
+.type bmpcfg_emit_stub_0795, @function
+bmpcfg_emit_stub_0795:
+    bmpcfg 0, 104, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0795, .-bmpcfg_emit_stub_0795
+
+.globl bmpcfg_emit_stub_0796
+.p2align 2
+.type bmpcfg_emit_stub_0796, @function
+bmpcfg_emit_stub_0796:
+    bmpcfg 0, 104, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0796, .-bmpcfg_emit_stub_0796
+
+.globl bmpcfg_emit_stub_0797
+.p2align 2
+.type bmpcfg_emit_stub_0797, @function
+bmpcfg_emit_stub_0797:
+    bmpcfg 0, 104, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0797, .-bmpcfg_emit_stub_0797
+
+.globl bmpcfg_emit_stub_0798
+.p2align 2
+.type bmpcfg_emit_stub_0798, @function
+bmpcfg_emit_stub_0798:
+    bmpcfg 0, 104, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0798, .-bmpcfg_emit_stub_0798
+
+.globl bmpcfg_emit_stub_0799
+.p2align 2
+.type bmpcfg_emit_stub_0799, @function
+bmpcfg_emit_stub_0799:
+    bmpcfg 0, 104, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0799, .-bmpcfg_emit_stub_0799
+
+.globl bmpcfg_emit_stub_0800
+.p2align 2
+.type bmpcfg_emit_stub_0800, @function
+bmpcfg_emit_stub_0800:
+    bmpcfg 0, 104, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0800, .-bmpcfg_emit_stub_0800
+
+.globl bmpcfg_emit_stub_0801
+.p2align 2
+.type bmpcfg_emit_stub_0801, @function
+bmpcfg_emit_stub_0801:
+    bmpcfg 0, 104, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0801, .-bmpcfg_emit_stub_0801
+
+.globl bmpcfg_emit_stub_0802
+.p2align 2
+.type bmpcfg_emit_stub_0802, @function
+bmpcfg_emit_stub_0802:
+    bmpcfg 0, 104, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0802, .-bmpcfg_emit_stub_0802
+
+.globl bmpcfg_emit_stub_0803
+.p2align 2
+.type bmpcfg_emit_stub_0803, @function
+bmpcfg_emit_stub_0803:
+    bmpcfg 0, 104, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0803, .-bmpcfg_emit_stub_0803
+
+.globl bmpcfg_emit_stub_0804
+.p2align 2
+.type bmpcfg_emit_stub_0804, @function
+bmpcfg_emit_stub_0804:
+    bmpcfg 0, 104, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0804, .-bmpcfg_emit_stub_0804
+
+.globl bmpcfg_emit_stub_0805
+.p2align 2
+.type bmpcfg_emit_stub_0805, @function
+bmpcfg_emit_stub_0805:
+    bmpcfg 0, 112, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0805, .-bmpcfg_emit_stub_0805
+
+.globl bmpcfg_emit_stub_0806
+.p2align 2
+.type bmpcfg_emit_stub_0806, @function
+bmpcfg_emit_stub_0806:
+    bmpcfg 0, 112, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0806, .-bmpcfg_emit_stub_0806
+
+.globl bmpcfg_emit_stub_0807
+.p2align 2
+.type bmpcfg_emit_stub_0807, @function
+bmpcfg_emit_stub_0807:
+    bmpcfg 0, 112, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0807, .-bmpcfg_emit_stub_0807
+
+.globl bmpcfg_emit_stub_0808
+.p2align 2
+.type bmpcfg_emit_stub_0808, @function
+bmpcfg_emit_stub_0808:
+    bmpcfg 0, 112, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0808, .-bmpcfg_emit_stub_0808
+
+.globl bmpcfg_emit_stub_0809
+.p2align 2
+.type bmpcfg_emit_stub_0809, @function
+bmpcfg_emit_stub_0809:
+    bmpcfg 0, 112, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0809, .-bmpcfg_emit_stub_0809
+
+.globl bmpcfg_emit_stub_0810
+.p2align 2
+.type bmpcfg_emit_stub_0810, @function
+bmpcfg_emit_stub_0810:
+    bmpcfg 0, 112, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0810, .-bmpcfg_emit_stub_0810
+
+.globl bmpcfg_emit_stub_0811
+.p2align 2
+.type bmpcfg_emit_stub_0811, @function
+bmpcfg_emit_stub_0811:
+    bmpcfg 0, 112, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0811, .-bmpcfg_emit_stub_0811
+
+.globl bmpcfg_emit_stub_0812
+.p2align 2
+.type bmpcfg_emit_stub_0812, @function
+bmpcfg_emit_stub_0812:
+    bmpcfg 0, 112, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0812, .-bmpcfg_emit_stub_0812
+
+.globl bmpcfg_emit_stub_0813
+.p2align 2
+.type bmpcfg_emit_stub_0813, @function
+bmpcfg_emit_stub_0813:
+    bmpcfg 0, 112, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0813, .-bmpcfg_emit_stub_0813
+
+.globl bmpcfg_emit_stub_0814
+.p2align 2
+.type bmpcfg_emit_stub_0814, @function
+bmpcfg_emit_stub_0814:
+    bmpcfg 0, 112, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0814, .-bmpcfg_emit_stub_0814
+
+.globl bmpcfg_emit_stub_0815
+.p2align 2
+.type bmpcfg_emit_stub_0815, @function
+bmpcfg_emit_stub_0815:
+    bmpcfg 0, 112, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0815, .-bmpcfg_emit_stub_0815
+
+.globl bmpcfg_emit_stub_0816
+.p2align 2
+.type bmpcfg_emit_stub_0816, @function
+bmpcfg_emit_stub_0816:
+    bmpcfg 0, 112, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0816, .-bmpcfg_emit_stub_0816
+
+.globl bmpcfg_emit_stub_0817
+.p2align 2
+.type bmpcfg_emit_stub_0817, @function
+bmpcfg_emit_stub_0817:
+    bmpcfg 0, 112, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0817, .-bmpcfg_emit_stub_0817
+
+.globl bmpcfg_emit_stub_0818
+.p2align 2
+.type bmpcfg_emit_stub_0818, @function
+bmpcfg_emit_stub_0818:
+    bmpcfg 0, 112, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0818, .-bmpcfg_emit_stub_0818
+
+.globl bmpcfg_emit_stub_0819
+.p2align 2
+.type bmpcfg_emit_stub_0819, @function
+bmpcfg_emit_stub_0819:
+    bmpcfg 0, 112, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0819, .-bmpcfg_emit_stub_0819
+
+.globl bmpcfg_emit_stub_0820
+.p2align 2
+.type bmpcfg_emit_stub_0820, @function
+bmpcfg_emit_stub_0820:
+    bmpcfg 0, 112, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0820, .-bmpcfg_emit_stub_0820
+
+.globl bmpcfg_emit_stub_0821
+.p2align 2
+.type bmpcfg_emit_stub_0821, @function
+bmpcfg_emit_stub_0821:
+    bmpcfg 0, 112, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0821, .-bmpcfg_emit_stub_0821
+
+.globl bmpcfg_emit_stub_0822
+.p2align 2
+.type bmpcfg_emit_stub_0822, @function
+bmpcfg_emit_stub_0822:
+    bmpcfg 0, 112, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0822, .-bmpcfg_emit_stub_0822
+
+.globl bmpcfg_emit_stub_0823
+.p2align 2
+.type bmpcfg_emit_stub_0823, @function
+bmpcfg_emit_stub_0823:
+    bmpcfg 0, 112, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0823, .-bmpcfg_emit_stub_0823
+
+.globl bmpcfg_emit_stub_0824
+.p2align 2
+.type bmpcfg_emit_stub_0824, @function
+bmpcfg_emit_stub_0824:
+    bmpcfg 0, 112, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0824, .-bmpcfg_emit_stub_0824
+
+.globl bmpcfg_emit_stub_0825
+.p2align 2
+.type bmpcfg_emit_stub_0825, @function
+bmpcfg_emit_stub_0825:
+    bmpcfg 0, 112, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0825, .-bmpcfg_emit_stub_0825
+
+.globl bmpcfg_emit_stub_0826
+.p2align 2
+.type bmpcfg_emit_stub_0826, @function
+bmpcfg_emit_stub_0826:
+    bmpcfg 0, 112, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0826, .-bmpcfg_emit_stub_0826
+
+.globl bmpcfg_emit_stub_0827
+.p2align 2
+.type bmpcfg_emit_stub_0827, @function
+bmpcfg_emit_stub_0827:
+    bmpcfg 0, 112, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0827, .-bmpcfg_emit_stub_0827
+
+.globl bmpcfg_emit_stub_0828
+.p2align 2
+.type bmpcfg_emit_stub_0828, @function
+bmpcfg_emit_stub_0828:
+    bmpcfg 0, 112, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0828, .-bmpcfg_emit_stub_0828
+
+.globl bmpcfg_emit_stub_0829
+.p2align 2
+.type bmpcfg_emit_stub_0829, @function
+bmpcfg_emit_stub_0829:
+    bmpcfg 0, 112, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0829, .-bmpcfg_emit_stub_0829
+
+.globl bmpcfg_emit_stub_0830
+.p2align 2
+.type bmpcfg_emit_stub_0830, @function
+bmpcfg_emit_stub_0830:
+    bmpcfg 0, 112, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0830, .-bmpcfg_emit_stub_0830
+
+.globl bmpcfg_emit_stub_0831
+.p2align 2
+.type bmpcfg_emit_stub_0831, @function
+bmpcfg_emit_stub_0831:
+    bmpcfg 0, 112, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0831, .-bmpcfg_emit_stub_0831
+
+.globl bmpcfg_emit_stub_0832
+.p2align 2
+.type bmpcfg_emit_stub_0832, @function
+bmpcfg_emit_stub_0832:
+    bmpcfg 0, 112, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0832, .-bmpcfg_emit_stub_0832
+
+.globl bmpcfg_emit_stub_0833
+.p2align 2
+.type bmpcfg_emit_stub_0833, @function
+bmpcfg_emit_stub_0833:
+    bmpcfg 0, 112, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0833, .-bmpcfg_emit_stub_0833
+
+.globl bmpcfg_emit_stub_0834
+.p2align 2
+.type bmpcfg_emit_stub_0834, @function
+bmpcfg_emit_stub_0834:
+    bmpcfg 0, 112, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0834, .-bmpcfg_emit_stub_0834
+
+.globl bmpcfg_emit_stub_0835
+.p2align 2
+.type bmpcfg_emit_stub_0835, @function
+bmpcfg_emit_stub_0835:
+    bmpcfg 0, 120, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0835, .-bmpcfg_emit_stub_0835
+
+.globl bmpcfg_emit_stub_0836
+.p2align 2
+.type bmpcfg_emit_stub_0836, @function
+bmpcfg_emit_stub_0836:
+    bmpcfg 0, 120, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0836, .-bmpcfg_emit_stub_0836
+
+.globl bmpcfg_emit_stub_0837
+.p2align 2
+.type bmpcfg_emit_stub_0837, @function
+bmpcfg_emit_stub_0837:
+    bmpcfg 0, 120, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0837, .-bmpcfg_emit_stub_0837
+
+.globl bmpcfg_emit_stub_0838
+.p2align 2
+.type bmpcfg_emit_stub_0838, @function
+bmpcfg_emit_stub_0838:
+    bmpcfg 0, 120, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0838, .-bmpcfg_emit_stub_0838
+
+.globl bmpcfg_emit_stub_0839
+.p2align 2
+.type bmpcfg_emit_stub_0839, @function
+bmpcfg_emit_stub_0839:
+    bmpcfg 0, 120, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0839, .-bmpcfg_emit_stub_0839
+
+.globl bmpcfg_emit_stub_0840
+.p2align 2
+.type bmpcfg_emit_stub_0840, @function
+bmpcfg_emit_stub_0840:
+    bmpcfg 0, 120, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0840, .-bmpcfg_emit_stub_0840
+
+.globl bmpcfg_emit_stub_0841
+.p2align 2
+.type bmpcfg_emit_stub_0841, @function
+bmpcfg_emit_stub_0841:
+    bmpcfg 0, 120, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0841, .-bmpcfg_emit_stub_0841
+
+.globl bmpcfg_emit_stub_0842
+.p2align 2
+.type bmpcfg_emit_stub_0842, @function
+bmpcfg_emit_stub_0842:
+    bmpcfg 0, 120, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0842, .-bmpcfg_emit_stub_0842
+
+.globl bmpcfg_emit_stub_0843
+.p2align 2
+.type bmpcfg_emit_stub_0843, @function
+bmpcfg_emit_stub_0843:
+    bmpcfg 0, 120, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0843, .-bmpcfg_emit_stub_0843
+
+.globl bmpcfg_emit_stub_0844
+.p2align 2
+.type bmpcfg_emit_stub_0844, @function
+bmpcfg_emit_stub_0844:
+    bmpcfg 0, 120, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0844, .-bmpcfg_emit_stub_0844
+
+.globl bmpcfg_emit_stub_0845
+.p2align 2
+.type bmpcfg_emit_stub_0845, @function
+bmpcfg_emit_stub_0845:
+    bmpcfg 0, 120, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0845, .-bmpcfg_emit_stub_0845
+
+.globl bmpcfg_emit_stub_0846
+.p2align 2
+.type bmpcfg_emit_stub_0846, @function
+bmpcfg_emit_stub_0846:
+    bmpcfg 0, 120, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0846, .-bmpcfg_emit_stub_0846
+
+.globl bmpcfg_emit_stub_0847
+.p2align 2
+.type bmpcfg_emit_stub_0847, @function
+bmpcfg_emit_stub_0847:
+    bmpcfg 0, 120, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0847, .-bmpcfg_emit_stub_0847
+
+.globl bmpcfg_emit_stub_0848
+.p2align 2
+.type bmpcfg_emit_stub_0848, @function
+bmpcfg_emit_stub_0848:
+    bmpcfg 0, 120, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0848, .-bmpcfg_emit_stub_0848
+
+.globl bmpcfg_emit_stub_0849
+.p2align 2
+.type bmpcfg_emit_stub_0849, @function
+bmpcfg_emit_stub_0849:
+    bmpcfg 0, 120, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0849, .-bmpcfg_emit_stub_0849
+
+.globl bmpcfg_emit_stub_0850
+.p2align 2
+.type bmpcfg_emit_stub_0850, @function
+bmpcfg_emit_stub_0850:
+    bmpcfg 0, 120, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0850, .-bmpcfg_emit_stub_0850
+
+.globl bmpcfg_emit_stub_0851
+.p2align 2
+.type bmpcfg_emit_stub_0851, @function
+bmpcfg_emit_stub_0851:
+    bmpcfg 0, 120, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0851, .-bmpcfg_emit_stub_0851
+
+.globl bmpcfg_emit_stub_0852
+.p2align 2
+.type bmpcfg_emit_stub_0852, @function
+bmpcfg_emit_stub_0852:
+    bmpcfg 0, 120, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0852, .-bmpcfg_emit_stub_0852
+
+.globl bmpcfg_emit_stub_0853
+.p2align 2
+.type bmpcfg_emit_stub_0853, @function
+bmpcfg_emit_stub_0853:
+    bmpcfg 0, 120, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0853, .-bmpcfg_emit_stub_0853
+
+.globl bmpcfg_emit_stub_0854
+.p2align 2
+.type bmpcfg_emit_stub_0854, @function
+bmpcfg_emit_stub_0854:
+    bmpcfg 0, 120, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0854, .-bmpcfg_emit_stub_0854
+
+.globl bmpcfg_emit_stub_0855
+.p2align 2
+.type bmpcfg_emit_stub_0855, @function
+bmpcfg_emit_stub_0855:
+    bmpcfg 0, 120, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0855, .-bmpcfg_emit_stub_0855
+
+.globl bmpcfg_emit_stub_0856
+.p2align 2
+.type bmpcfg_emit_stub_0856, @function
+bmpcfg_emit_stub_0856:
+    bmpcfg 0, 120, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0856, .-bmpcfg_emit_stub_0856
+
+.globl bmpcfg_emit_stub_0857
+.p2align 2
+.type bmpcfg_emit_stub_0857, @function
+bmpcfg_emit_stub_0857:
+    bmpcfg 0, 120, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0857, .-bmpcfg_emit_stub_0857
+
+.globl bmpcfg_emit_stub_0858
+.p2align 2
+.type bmpcfg_emit_stub_0858, @function
+bmpcfg_emit_stub_0858:
+    bmpcfg 0, 120, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0858, .-bmpcfg_emit_stub_0858
+
+.globl bmpcfg_emit_stub_0859
+.p2align 2
+.type bmpcfg_emit_stub_0859, @function
+bmpcfg_emit_stub_0859:
+    bmpcfg 0, 120, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0859, .-bmpcfg_emit_stub_0859
+
+.globl bmpcfg_emit_stub_0860
+.p2align 2
+.type bmpcfg_emit_stub_0860, @function
+bmpcfg_emit_stub_0860:
+    bmpcfg 0, 120, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0860, .-bmpcfg_emit_stub_0860
+
+.globl bmpcfg_emit_stub_0861
+.p2align 2
+.type bmpcfg_emit_stub_0861, @function
+bmpcfg_emit_stub_0861:
+    bmpcfg 0, 120, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0861, .-bmpcfg_emit_stub_0861
+
+.globl bmpcfg_emit_stub_0862
+.p2align 2
+.type bmpcfg_emit_stub_0862, @function
+bmpcfg_emit_stub_0862:
+    bmpcfg 0, 120, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0862, .-bmpcfg_emit_stub_0862
+
+.globl bmpcfg_emit_stub_0863
+.p2align 2
+.type bmpcfg_emit_stub_0863, @function
+bmpcfg_emit_stub_0863:
+    bmpcfg 0, 120, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0863, .-bmpcfg_emit_stub_0863
+
+.globl bmpcfg_emit_stub_0864
+.p2align 2
+.type bmpcfg_emit_stub_0864, @function
+bmpcfg_emit_stub_0864:
+    bmpcfg 0, 120, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0864, .-bmpcfg_emit_stub_0864
+
+.globl bmpcfg_emit_stub_0865
+.p2align 2
+.type bmpcfg_emit_stub_0865, @function
+bmpcfg_emit_stub_0865:
+    bmpcfg 0, 128, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0865, .-bmpcfg_emit_stub_0865
+
+.globl bmpcfg_emit_stub_0866
+.p2align 2
+.type bmpcfg_emit_stub_0866, @function
+bmpcfg_emit_stub_0866:
+    bmpcfg 0, 128, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0866, .-bmpcfg_emit_stub_0866
+
+.globl bmpcfg_emit_stub_0867
+.p2align 2
+.type bmpcfg_emit_stub_0867, @function
+bmpcfg_emit_stub_0867:
+    bmpcfg 0, 128, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0867, .-bmpcfg_emit_stub_0867
+
+.globl bmpcfg_emit_stub_0868
+.p2align 2
+.type bmpcfg_emit_stub_0868, @function
+bmpcfg_emit_stub_0868:
+    bmpcfg 0, 128, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0868, .-bmpcfg_emit_stub_0868
+
+.globl bmpcfg_emit_stub_0869
+.p2align 2
+.type bmpcfg_emit_stub_0869, @function
+bmpcfg_emit_stub_0869:
+    bmpcfg 0, 128, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0869, .-bmpcfg_emit_stub_0869
+
+.globl bmpcfg_emit_stub_0870
+.p2align 2
+.type bmpcfg_emit_stub_0870, @function
+bmpcfg_emit_stub_0870:
+    bmpcfg 0, 128, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0870, .-bmpcfg_emit_stub_0870
+
+.globl bmpcfg_emit_stub_0871
+.p2align 2
+.type bmpcfg_emit_stub_0871, @function
+bmpcfg_emit_stub_0871:
+    bmpcfg 0, 128, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0871, .-bmpcfg_emit_stub_0871
+
+.globl bmpcfg_emit_stub_0872
+.p2align 2
+.type bmpcfg_emit_stub_0872, @function
+bmpcfg_emit_stub_0872:
+    bmpcfg 0, 128, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0872, .-bmpcfg_emit_stub_0872
+
+.globl bmpcfg_emit_stub_0873
+.p2align 2
+.type bmpcfg_emit_stub_0873, @function
+bmpcfg_emit_stub_0873:
+    bmpcfg 0, 128, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0873, .-bmpcfg_emit_stub_0873
+
+.globl bmpcfg_emit_stub_0874
+.p2align 2
+.type bmpcfg_emit_stub_0874, @function
+bmpcfg_emit_stub_0874:
+    bmpcfg 0, 128, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0874, .-bmpcfg_emit_stub_0874
+
+.globl bmpcfg_emit_stub_0875
+.p2align 2
+.type bmpcfg_emit_stub_0875, @function
+bmpcfg_emit_stub_0875:
+    bmpcfg 0, 128, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0875, .-bmpcfg_emit_stub_0875
+
+.globl bmpcfg_emit_stub_0876
+.p2align 2
+.type bmpcfg_emit_stub_0876, @function
+bmpcfg_emit_stub_0876:
+    bmpcfg 0, 128, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0876, .-bmpcfg_emit_stub_0876
+
+.globl bmpcfg_emit_stub_0877
+.p2align 2
+.type bmpcfg_emit_stub_0877, @function
+bmpcfg_emit_stub_0877:
+    bmpcfg 0, 128, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0877, .-bmpcfg_emit_stub_0877
+
+.globl bmpcfg_emit_stub_0878
+.p2align 2
+.type bmpcfg_emit_stub_0878, @function
+bmpcfg_emit_stub_0878:
+    bmpcfg 0, 128, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0878, .-bmpcfg_emit_stub_0878
+
+.globl bmpcfg_emit_stub_0879
+.p2align 2
+.type bmpcfg_emit_stub_0879, @function
+bmpcfg_emit_stub_0879:
+    bmpcfg 0, 128, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0879, .-bmpcfg_emit_stub_0879
+
+.globl bmpcfg_emit_stub_0880
+.p2align 2
+.type bmpcfg_emit_stub_0880, @function
+bmpcfg_emit_stub_0880:
+    bmpcfg 0, 128, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0880, .-bmpcfg_emit_stub_0880
+
+.globl bmpcfg_emit_stub_0881
+.p2align 2
+.type bmpcfg_emit_stub_0881, @function
+bmpcfg_emit_stub_0881:
+    bmpcfg 0, 128, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0881, .-bmpcfg_emit_stub_0881
+
+.globl bmpcfg_emit_stub_0882
+.p2align 2
+.type bmpcfg_emit_stub_0882, @function
+bmpcfg_emit_stub_0882:
+    bmpcfg 0, 128, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0882, .-bmpcfg_emit_stub_0882
+
+.globl bmpcfg_emit_stub_0883
+.p2align 2
+.type bmpcfg_emit_stub_0883, @function
+bmpcfg_emit_stub_0883:
+    bmpcfg 0, 128, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0883, .-bmpcfg_emit_stub_0883
+
+.globl bmpcfg_emit_stub_0884
+.p2align 2
+.type bmpcfg_emit_stub_0884, @function
+bmpcfg_emit_stub_0884:
+    bmpcfg 0, 128, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0884, .-bmpcfg_emit_stub_0884
+
+.globl bmpcfg_emit_stub_0885
+.p2align 2
+.type bmpcfg_emit_stub_0885, @function
+bmpcfg_emit_stub_0885:
+    bmpcfg 0, 128, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0885, .-bmpcfg_emit_stub_0885
+
+.globl bmpcfg_emit_stub_0886
+.p2align 2
+.type bmpcfg_emit_stub_0886, @function
+bmpcfg_emit_stub_0886:
+    bmpcfg 0, 128, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0886, .-bmpcfg_emit_stub_0886
+
+.globl bmpcfg_emit_stub_0887
+.p2align 2
+.type bmpcfg_emit_stub_0887, @function
+bmpcfg_emit_stub_0887:
+    bmpcfg 0, 128, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0887, .-bmpcfg_emit_stub_0887
+
+.globl bmpcfg_emit_stub_0888
+.p2align 2
+.type bmpcfg_emit_stub_0888, @function
+bmpcfg_emit_stub_0888:
+    bmpcfg 0, 128, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0888, .-bmpcfg_emit_stub_0888
+
+.globl bmpcfg_emit_stub_0889
+.p2align 2
+.type bmpcfg_emit_stub_0889, @function
+bmpcfg_emit_stub_0889:
+    bmpcfg 0, 128, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0889, .-bmpcfg_emit_stub_0889
+
+.globl bmpcfg_emit_stub_0890
+.p2align 2
+.type bmpcfg_emit_stub_0890, @function
+bmpcfg_emit_stub_0890:
+    bmpcfg 0, 128, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0890, .-bmpcfg_emit_stub_0890
+
+.globl bmpcfg_emit_stub_0891
+.p2align 2
+.type bmpcfg_emit_stub_0891, @function
+bmpcfg_emit_stub_0891:
+    bmpcfg 0, 128, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0891, .-bmpcfg_emit_stub_0891
+
+.globl bmpcfg_emit_stub_0892
+.p2align 2
+.type bmpcfg_emit_stub_0892, @function
+bmpcfg_emit_stub_0892:
+    bmpcfg 0, 128, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0892, .-bmpcfg_emit_stub_0892
+
+.globl bmpcfg_emit_stub_0893
+.p2align 2
+.type bmpcfg_emit_stub_0893, @function
+bmpcfg_emit_stub_0893:
+    bmpcfg 0, 128, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0893, .-bmpcfg_emit_stub_0893
+
+.globl bmpcfg_emit_stub_0894
+.p2align 2
+.type bmpcfg_emit_stub_0894, @function
+bmpcfg_emit_stub_0894:
+    bmpcfg 0, 128, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0894, .-bmpcfg_emit_stub_0894
+
+.globl bmpcfg_emit_stub_0895
+.p2align 2
+.type bmpcfg_emit_stub_0895, @function
+bmpcfg_emit_stub_0895:
+    bmpcfg 1, 8, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0895, .-bmpcfg_emit_stub_0895
+
+.globl bmpcfg_emit_stub_0896
+.p2align 2
+.type bmpcfg_emit_stub_0896, @function
+bmpcfg_emit_stub_0896:
+    bmpcfg 1, 8, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0896, .-bmpcfg_emit_stub_0896
+
+.globl bmpcfg_emit_stub_0897
+.p2align 2
+.type bmpcfg_emit_stub_0897, @function
+bmpcfg_emit_stub_0897:
+    bmpcfg 1, 8, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0897, .-bmpcfg_emit_stub_0897
+
+.globl bmpcfg_emit_stub_0898
+.p2align 2
+.type bmpcfg_emit_stub_0898, @function
+bmpcfg_emit_stub_0898:
+    bmpcfg 1, 8, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0898, .-bmpcfg_emit_stub_0898
+
+.globl bmpcfg_emit_stub_0899
+.p2align 2
+.type bmpcfg_emit_stub_0899, @function
+bmpcfg_emit_stub_0899:
+    bmpcfg 1, 8, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0899, .-bmpcfg_emit_stub_0899
+
+.globl bmpcfg_emit_stub_0900
+.p2align 2
+.type bmpcfg_emit_stub_0900, @function
+bmpcfg_emit_stub_0900:
+    bmpcfg 1, 8, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0900, .-bmpcfg_emit_stub_0900
+
+.globl bmpcfg_emit_stub_0901
+.p2align 2
+.type bmpcfg_emit_stub_0901, @function
+bmpcfg_emit_stub_0901:
+    bmpcfg 1, 8, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0901, .-bmpcfg_emit_stub_0901
+
+.globl bmpcfg_emit_stub_0902
+.p2align 2
+.type bmpcfg_emit_stub_0902, @function
+bmpcfg_emit_stub_0902:
+    bmpcfg 1, 8, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0902, .-bmpcfg_emit_stub_0902
+
+.globl bmpcfg_emit_stub_0903
+.p2align 2
+.type bmpcfg_emit_stub_0903, @function
+bmpcfg_emit_stub_0903:
+    bmpcfg 1, 8, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0903, .-bmpcfg_emit_stub_0903
+
+.globl bmpcfg_emit_stub_0904
+.p2align 2
+.type bmpcfg_emit_stub_0904, @function
+bmpcfg_emit_stub_0904:
+    bmpcfg 1, 8, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0904, .-bmpcfg_emit_stub_0904
+
+.globl bmpcfg_emit_stub_0905
+.p2align 2
+.type bmpcfg_emit_stub_0905, @function
+bmpcfg_emit_stub_0905:
+    bmpcfg 1, 8, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0905, .-bmpcfg_emit_stub_0905
+
+.globl bmpcfg_emit_stub_0906
+.p2align 2
+.type bmpcfg_emit_stub_0906, @function
+bmpcfg_emit_stub_0906:
+    bmpcfg 1, 8, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0906, .-bmpcfg_emit_stub_0906
+
+.globl bmpcfg_emit_stub_0907
+.p2align 2
+.type bmpcfg_emit_stub_0907, @function
+bmpcfg_emit_stub_0907:
+    bmpcfg 1, 8, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0907, .-bmpcfg_emit_stub_0907
+
+.globl bmpcfg_emit_stub_0908
+.p2align 2
+.type bmpcfg_emit_stub_0908, @function
+bmpcfg_emit_stub_0908:
+    bmpcfg 1, 8, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0908, .-bmpcfg_emit_stub_0908
+
+.globl bmpcfg_emit_stub_0909
+.p2align 2
+.type bmpcfg_emit_stub_0909, @function
+bmpcfg_emit_stub_0909:
+    bmpcfg 1, 8, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0909, .-bmpcfg_emit_stub_0909
+
+.globl bmpcfg_emit_stub_0910
+.p2align 2
+.type bmpcfg_emit_stub_0910, @function
+bmpcfg_emit_stub_0910:
+    bmpcfg 1, 8, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_0910, .-bmpcfg_emit_stub_0910
+
+.globl bmpcfg_emit_stub_0911
+.p2align 2
+.type bmpcfg_emit_stub_0911, @function
+bmpcfg_emit_stub_0911:
+    bmpcfg 1, 8, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0911, .-bmpcfg_emit_stub_0911
+
+.globl bmpcfg_emit_stub_0912
+.p2align 2
+.type bmpcfg_emit_stub_0912, @function
+bmpcfg_emit_stub_0912:
+    bmpcfg 1, 8, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0912, .-bmpcfg_emit_stub_0912
+
+.globl bmpcfg_emit_stub_0913
+.p2align 2
+.type bmpcfg_emit_stub_0913, @function
+bmpcfg_emit_stub_0913:
+    bmpcfg 1, 8, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_0913, .-bmpcfg_emit_stub_0913
+
+.globl bmpcfg_emit_stub_0914
+.p2align 2
+.type bmpcfg_emit_stub_0914, @function
+bmpcfg_emit_stub_0914:
+    bmpcfg 1, 8, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_0914, .-bmpcfg_emit_stub_0914
+
+.globl bmpcfg_emit_stub_0915
+.p2align 2
+.type bmpcfg_emit_stub_0915, @function
+bmpcfg_emit_stub_0915:
+    bmpcfg 1, 8, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0915, .-bmpcfg_emit_stub_0915
+
+.globl bmpcfg_emit_stub_0916
+.p2align 2
+.type bmpcfg_emit_stub_0916, @function
+bmpcfg_emit_stub_0916:
+    bmpcfg 1, 8, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_0916, .-bmpcfg_emit_stub_0916
+
+.globl bmpcfg_emit_stub_0917
+.p2align 2
+.type bmpcfg_emit_stub_0917, @function
+bmpcfg_emit_stub_0917:
+    bmpcfg 1, 8, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_0917, .-bmpcfg_emit_stub_0917
+
+.globl bmpcfg_emit_stub_0918
+.p2align 2
+.type bmpcfg_emit_stub_0918, @function
+bmpcfg_emit_stub_0918:
+    bmpcfg 1, 8, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_0918, .-bmpcfg_emit_stub_0918
+
+.globl bmpcfg_emit_stub_0919
+.p2align 2
+.type bmpcfg_emit_stub_0919, @function
+bmpcfg_emit_stub_0919:
+    bmpcfg 1, 8, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0919, .-bmpcfg_emit_stub_0919
+
+.globl bmpcfg_emit_stub_0920
+.p2align 2
+.type bmpcfg_emit_stub_0920, @function
+bmpcfg_emit_stub_0920:
+    bmpcfg 1, 8, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_0920, .-bmpcfg_emit_stub_0920
+
+.globl bmpcfg_emit_stub_0921
+.p2align 2
+.type bmpcfg_emit_stub_0921, @function
+bmpcfg_emit_stub_0921:
+    bmpcfg 1, 8, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_0921, .-bmpcfg_emit_stub_0921
+
+.globl bmpcfg_emit_stub_0922
+.p2align 2
+.type bmpcfg_emit_stub_0922, @function
+bmpcfg_emit_stub_0922:
+    bmpcfg 1, 8, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0922, .-bmpcfg_emit_stub_0922
+
+.globl bmpcfg_emit_stub_0923
+.p2align 2
+.type bmpcfg_emit_stub_0923, @function
+bmpcfg_emit_stub_0923:
+    bmpcfg 1, 8, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_0923, .-bmpcfg_emit_stub_0923
+
+.globl bmpcfg_emit_stub_0924
+.p2align 2
+.type bmpcfg_emit_stub_0924, @function
+bmpcfg_emit_stub_0924:
+    bmpcfg 1, 8, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_0924, .-bmpcfg_emit_stub_0924
+
+.globl bmpcfg_emit_stub_0925
+.p2align 2
+.type bmpcfg_emit_stub_0925, @function
+bmpcfg_emit_stub_0925:
+    bmpcfg 1, 8, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0925, .-bmpcfg_emit_stub_0925
+
+.globl bmpcfg_emit_stub_0926
+.p2align 2
+.type bmpcfg_emit_stub_0926, @function
+bmpcfg_emit_stub_0926:
+    bmpcfg 1, 8, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_0926, .-bmpcfg_emit_stub_0926
+
+.globl bmpcfg_emit_stub_0927
+.p2align 2
+.type bmpcfg_emit_stub_0927, @function
+bmpcfg_emit_stub_0927:
+    bmpcfg 1, 8, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_0927, .-bmpcfg_emit_stub_0927
+
+.globl bmpcfg_emit_stub_0928
+.p2align 2
+.type bmpcfg_emit_stub_0928, @function
+bmpcfg_emit_stub_0928:
+    bmpcfg 1, 8, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_0928, .-bmpcfg_emit_stub_0928
+
+.globl bmpcfg_emit_stub_0929
+.p2align 2
+.type bmpcfg_emit_stub_0929, @function
+bmpcfg_emit_stub_0929:
+    bmpcfg 1, 8, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0929, .-bmpcfg_emit_stub_0929
+
+.globl bmpcfg_emit_stub_0930
+.p2align 2
+.type bmpcfg_emit_stub_0930, @function
+bmpcfg_emit_stub_0930:
+    bmpcfg 1, 8, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0930, .-bmpcfg_emit_stub_0930
+
+.globl bmpcfg_emit_stub_0931
+.p2align 2
+.type bmpcfg_emit_stub_0931, @function
+bmpcfg_emit_stub_0931:
+    bmpcfg 1, 8, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0931, .-bmpcfg_emit_stub_0931
+
+.globl bmpcfg_emit_stub_0932
+.p2align 2
+.type bmpcfg_emit_stub_0932, @function
+bmpcfg_emit_stub_0932:
+    bmpcfg 1, 8, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0932, .-bmpcfg_emit_stub_0932
+
+.globl bmpcfg_emit_stub_0933
+.p2align 2
+.type bmpcfg_emit_stub_0933, @function
+bmpcfg_emit_stub_0933:
+    bmpcfg 1, 8, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0933, .-bmpcfg_emit_stub_0933
+
+.globl bmpcfg_emit_stub_0934
+.p2align 2
+.type bmpcfg_emit_stub_0934, @function
+bmpcfg_emit_stub_0934:
+    bmpcfg 1, 8, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0934, .-bmpcfg_emit_stub_0934
+
+.globl bmpcfg_emit_stub_0935
+.p2align 2
+.type bmpcfg_emit_stub_0935, @function
+bmpcfg_emit_stub_0935:
+    bmpcfg 1, 8, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0935, .-bmpcfg_emit_stub_0935
+
+.globl bmpcfg_emit_stub_0936
+.p2align 2
+.type bmpcfg_emit_stub_0936, @function
+bmpcfg_emit_stub_0936:
+    bmpcfg 1, 8, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0936, .-bmpcfg_emit_stub_0936
+
+.globl bmpcfg_emit_stub_0937
+.p2align 2
+.type bmpcfg_emit_stub_0937, @function
+bmpcfg_emit_stub_0937:
+    bmpcfg 1, 8, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0937, .-bmpcfg_emit_stub_0937
+
+.globl bmpcfg_emit_stub_0938
+.p2align 2
+.type bmpcfg_emit_stub_0938, @function
+bmpcfg_emit_stub_0938:
+    bmpcfg 1, 8, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0938, .-bmpcfg_emit_stub_0938
+
+.globl bmpcfg_emit_stub_0939
+.p2align 2
+.type bmpcfg_emit_stub_0939, @function
+bmpcfg_emit_stub_0939:
+    bmpcfg 1, 8, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0939, .-bmpcfg_emit_stub_0939
+
+.globl bmpcfg_emit_stub_0940
+.p2align 2
+.type bmpcfg_emit_stub_0940, @function
+bmpcfg_emit_stub_0940:
+    bmpcfg 1, 8, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0940, .-bmpcfg_emit_stub_0940
+
+.globl bmpcfg_emit_stub_0941
+.p2align 2
+.type bmpcfg_emit_stub_0941, @function
+bmpcfg_emit_stub_0941:
+    bmpcfg 1, 8, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0941, .-bmpcfg_emit_stub_0941
+
+.globl bmpcfg_emit_stub_0942
+.p2align 2
+.type bmpcfg_emit_stub_0942, @function
+bmpcfg_emit_stub_0942:
+    bmpcfg 1, 8, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0942, .-bmpcfg_emit_stub_0942
+
+.globl bmpcfg_emit_stub_0943
+.p2align 2
+.type bmpcfg_emit_stub_0943, @function
+bmpcfg_emit_stub_0943:
+    bmpcfg 1, 8, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0943, .-bmpcfg_emit_stub_0943
+
+.globl bmpcfg_emit_stub_0944
+.p2align 2
+.type bmpcfg_emit_stub_0944, @function
+bmpcfg_emit_stub_0944:
+    bmpcfg 1, 8, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_0944, .-bmpcfg_emit_stub_0944
+
+.globl bmpcfg_emit_stub_0945
+.p2align 2
+.type bmpcfg_emit_stub_0945, @function
+bmpcfg_emit_stub_0945:
+    bmpcfg 1, 8, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0945, .-bmpcfg_emit_stub_0945
+
+.globl bmpcfg_emit_stub_0946
+.p2align 2
+.type bmpcfg_emit_stub_0946, @function
+bmpcfg_emit_stub_0946:
+    bmpcfg 1, 8, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0946, .-bmpcfg_emit_stub_0946
+
+.globl bmpcfg_emit_stub_0947
+.p2align 2
+.type bmpcfg_emit_stub_0947, @function
+bmpcfg_emit_stub_0947:
+    bmpcfg 1, 8, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0947, .-bmpcfg_emit_stub_0947
+
+.globl bmpcfg_emit_stub_0948
+.p2align 2
+.type bmpcfg_emit_stub_0948, @function
+bmpcfg_emit_stub_0948:
+    bmpcfg 1, 8, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0948, .-bmpcfg_emit_stub_0948
+
+.globl bmpcfg_emit_stub_0949
+.p2align 2
+.type bmpcfg_emit_stub_0949, @function
+bmpcfg_emit_stub_0949:
+    bmpcfg 1, 8, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0949, .-bmpcfg_emit_stub_0949
+
+.globl bmpcfg_emit_stub_0950
+.p2align 2
+.type bmpcfg_emit_stub_0950, @function
+bmpcfg_emit_stub_0950:
+    bmpcfg 1, 8, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0950, .-bmpcfg_emit_stub_0950
+
+.globl bmpcfg_emit_stub_0951
+.p2align 2
+.type bmpcfg_emit_stub_0951, @function
+bmpcfg_emit_stub_0951:
+    bmpcfg 1, 8, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0951, .-bmpcfg_emit_stub_0951
+
+.globl bmpcfg_emit_stub_0952
+.p2align 2
+.type bmpcfg_emit_stub_0952, @function
+bmpcfg_emit_stub_0952:
+    bmpcfg 1, 8, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0952, .-bmpcfg_emit_stub_0952
+
+.globl bmpcfg_emit_stub_0953
+.p2align 2
+.type bmpcfg_emit_stub_0953, @function
+bmpcfg_emit_stub_0953:
+    bmpcfg 1, 8, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0953, .-bmpcfg_emit_stub_0953
+
+.globl bmpcfg_emit_stub_0954
+.p2align 2
+.type bmpcfg_emit_stub_0954, @function
+bmpcfg_emit_stub_0954:
+    bmpcfg 1, 8, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_0954, .-bmpcfg_emit_stub_0954
+
+.globl bmpcfg_emit_stub_0955
+.p2align 2
+.type bmpcfg_emit_stub_0955, @function
+bmpcfg_emit_stub_0955:
+    bmpcfg 1, 8, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_0955, .-bmpcfg_emit_stub_0955
+
+.globl bmpcfg_emit_stub_0956
+.p2align 2
+.type bmpcfg_emit_stub_0956, @function
+bmpcfg_emit_stub_0956:
+    bmpcfg 1, 8, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0956, .-bmpcfg_emit_stub_0956
+
+.globl bmpcfg_emit_stub_0957
+.p2align 2
+.type bmpcfg_emit_stub_0957, @function
+bmpcfg_emit_stub_0957:
+    bmpcfg 1, 8, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_0957, .-bmpcfg_emit_stub_0957
+
+.globl bmpcfg_emit_stub_0958
+.p2align 2
+.type bmpcfg_emit_stub_0958, @function
+bmpcfg_emit_stub_0958:
+    bmpcfg 1, 8, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0958, .-bmpcfg_emit_stub_0958
+
+.globl bmpcfg_emit_stub_0959
+.p2align 2
+.type bmpcfg_emit_stub_0959, @function
+bmpcfg_emit_stub_0959:
+    bmpcfg 1, 8, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0959, .-bmpcfg_emit_stub_0959
+
+.globl bmpcfg_emit_stub_0960
+.p2align 2
+.type bmpcfg_emit_stub_0960, @function
+bmpcfg_emit_stub_0960:
+    bmpcfg 1, 8, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0960, .-bmpcfg_emit_stub_0960
+
+.globl bmpcfg_emit_stub_0961
+.p2align 2
+.type bmpcfg_emit_stub_0961, @function
+bmpcfg_emit_stub_0961:
+    bmpcfg 1, 8, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0961, .-bmpcfg_emit_stub_0961
+
+.globl bmpcfg_emit_stub_0962
+.p2align 2
+.type bmpcfg_emit_stub_0962, @function
+bmpcfg_emit_stub_0962:
+    bmpcfg 1, 8, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0962, .-bmpcfg_emit_stub_0962
+
+.globl bmpcfg_emit_stub_0963
+.p2align 2
+.type bmpcfg_emit_stub_0963, @function
+bmpcfg_emit_stub_0963:
+    bmpcfg 1, 8, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0963, .-bmpcfg_emit_stub_0963
+
+.globl bmpcfg_emit_stub_0964
+.p2align 2
+.type bmpcfg_emit_stub_0964, @function
+bmpcfg_emit_stub_0964:
+    bmpcfg 1, 8, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_0964, .-bmpcfg_emit_stub_0964
+
+.globl bmpcfg_emit_stub_0965
+.p2align 2
+.type bmpcfg_emit_stub_0965, @function
+bmpcfg_emit_stub_0965:
+    bmpcfg 1, 8, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0965, .-bmpcfg_emit_stub_0965
+
+.globl bmpcfg_emit_stub_0966
+.p2align 2
+.type bmpcfg_emit_stub_0966, @function
+bmpcfg_emit_stub_0966:
+    bmpcfg 1, 8, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0966, .-bmpcfg_emit_stub_0966
+
+.globl bmpcfg_emit_stub_0967
+.p2align 2
+.type bmpcfg_emit_stub_0967, @function
+bmpcfg_emit_stub_0967:
+    bmpcfg 1, 8, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0967, .-bmpcfg_emit_stub_0967
+
+.globl bmpcfg_emit_stub_0968
+.p2align 2
+.type bmpcfg_emit_stub_0968, @function
+bmpcfg_emit_stub_0968:
+    bmpcfg 1, 8, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0968, .-bmpcfg_emit_stub_0968
+
+.globl bmpcfg_emit_stub_0969
+.p2align 2
+.type bmpcfg_emit_stub_0969, @function
+bmpcfg_emit_stub_0969:
+    bmpcfg 1, 8, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0969, .-bmpcfg_emit_stub_0969
+
+.globl bmpcfg_emit_stub_0970
+.p2align 2
+.type bmpcfg_emit_stub_0970, @function
+bmpcfg_emit_stub_0970:
+    bmpcfg 1, 8, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0970, .-bmpcfg_emit_stub_0970
+
+.globl bmpcfg_emit_stub_0971
+.p2align 2
+.type bmpcfg_emit_stub_0971, @function
+bmpcfg_emit_stub_0971:
+    bmpcfg 1, 8, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0971, .-bmpcfg_emit_stub_0971
+
+.globl bmpcfg_emit_stub_0972
+.p2align 2
+.type bmpcfg_emit_stub_0972, @function
+bmpcfg_emit_stub_0972:
+    bmpcfg 1, 8, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0972, .-bmpcfg_emit_stub_0972
+
+.globl bmpcfg_emit_stub_0973
+.p2align 2
+.type bmpcfg_emit_stub_0973, @function
+bmpcfg_emit_stub_0973:
+    bmpcfg 1, 8, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0973, .-bmpcfg_emit_stub_0973
+
+.globl bmpcfg_emit_stub_0974
+.p2align 2
+.type bmpcfg_emit_stub_0974, @function
+bmpcfg_emit_stub_0974:
+    bmpcfg 1, 8, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0974, .-bmpcfg_emit_stub_0974
+
+.globl bmpcfg_emit_stub_0975
+.p2align 2
+.type bmpcfg_emit_stub_0975, @function
+bmpcfg_emit_stub_0975:
+    bmpcfg 1, 8, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0975, .-bmpcfg_emit_stub_0975
+
+.globl bmpcfg_emit_stub_0976
+.p2align 2
+.type bmpcfg_emit_stub_0976, @function
+bmpcfg_emit_stub_0976:
+    bmpcfg 1, 8, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_0976, .-bmpcfg_emit_stub_0976
+
+.globl bmpcfg_emit_stub_0977
+.p2align 2
+.type bmpcfg_emit_stub_0977, @function
+bmpcfg_emit_stub_0977:
+    bmpcfg 1, 8, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0977, .-bmpcfg_emit_stub_0977
+
+.globl bmpcfg_emit_stub_0978
+.p2align 2
+.type bmpcfg_emit_stub_0978, @function
+bmpcfg_emit_stub_0978:
+    bmpcfg 1, 8, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0978, .-bmpcfg_emit_stub_0978
+
+.globl bmpcfg_emit_stub_0979
+.p2align 2
+.type bmpcfg_emit_stub_0979, @function
+bmpcfg_emit_stub_0979:
+    bmpcfg 1, 8, 44, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0979, .-bmpcfg_emit_stub_0979
+
+.globl bmpcfg_emit_stub_0980
+.p2align 2
+.type bmpcfg_emit_stub_0980, @function
+bmpcfg_emit_stub_0980:
+    bmpcfg 1, 8, 48, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0980, .-bmpcfg_emit_stub_0980
+
+.globl bmpcfg_emit_stub_0981
+.p2align 2
+.type bmpcfg_emit_stub_0981, @function
+bmpcfg_emit_stub_0981:
+    bmpcfg 1, 8, 52, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0981, .-bmpcfg_emit_stub_0981
+
+.globl bmpcfg_emit_stub_0982
+.p2align 2
+.type bmpcfg_emit_stub_0982, @function
+bmpcfg_emit_stub_0982:
+    bmpcfg 1, 8, 56, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0982, .-bmpcfg_emit_stub_0982
+
+.globl bmpcfg_emit_stub_0983
+.p2align 2
+.type bmpcfg_emit_stub_0983, @function
+bmpcfg_emit_stub_0983:
+    bmpcfg 1, 8, 60, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0983, .-bmpcfg_emit_stub_0983
+
+.globl bmpcfg_emit_stub_0984
+.p2align 2
+.type bmpcfg_emit_stub_0984, @function
+bmpcfg_emit_stub_0984:
+    bmpcfg 1, 8, 64, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0984, .-bmpcfg_emit_stub_0984
+
+.globl bmpcfg_emit_stub_0985
+.p2align 2
+.type bmpcfg_emit_stub_0985, @function
+bmpcfg_emit_stub_0985:
+    bmpcfg 1, 16, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_0985, .-bmpcfg_emit_stub_0985
+
+.globl bmpcfg_emit_stub_0986
+.p2align 2
+.type bmpcfg_emit_stub_0986, @function
+bmpcfg_emit_stub_0986:
+    bmpcfg 1, 16, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_0986, .-bmpcfg_emit_stub_0986
+
+.globl bmpcfg_emit_stub_0987
+.p2align 2
+.type bmpcfg_emit_stub_0987, @function
+bmpcfg_emit_stub_0987:
+    bmpcfg 1, 16, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_0987, .-bmpcfg_emit_stub_0987
+
+.globl bmpcfg_emit_stub_0988
+.p2align 2
+.type bmpcfg_emit_stub_0988, @function
+bmpcfg_emit_stub_0988:
+    bmpcfg 1, 16, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_0988, .-bmpcfg_emit_stub_0988
+
+.globl bmpcfg_emit_stub_0989
+.p2align 2
+.type bmpcfg_emit_stub_0989, @function
+bmpcfg_emit_stub_0989:
+    bmpcfg 1, 16, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_0989, .-bmpcfg_emit_stub_0989
+
+.globl bmpcfg_emit_stub_0990
+.p2align 2
+.type bmpcfg_emit_stub_0990, @function
+bmpcfg_emit_stub_0990:
+    bmpcfg 1, 16, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_0990, .-bmpcfg_emit_stub_0990
+
+.globl bmpcfg_emit_stub_0991
+.p2align 2
+.type bmpcfg_emit_stub_0991, @function
+bmpcfg_emit_stub_0991:
+    bmpcfg 1, 16, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_0991, .-bmpcfg_emit_stub_0991
+
+.globl bmpcfg_emit_stub_0992
+.p2align 2
+.type bmpcfg_emit_stub_0992, @function
+bmpcfg_emit_stub_0992:
+    bmpcfg 1, 16, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_0992, .-bmpcfg_emit_stub_0992
+
+.globl bmpcfg_emit_stub_0993
+.p2align 2
+.type bmpcfg_emit_stub_0993, @function
+bmpcfg_emit_stub_0993:
+    bmpcfg 1, 16, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_0993, .-bmpcfg_emit_stub_0993
+
+.globl bmpcfg_emit_stub_0994
+.p2align 2
+.type bmpcfg_emit_stub_0994, @function
+bmpcfg_emit_stub_0994:
+    bmpcfg 1, 16, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_0994, .-bmpcfg_emit_stub_0994
+
+.globl bmpcfg_emit_stub_0995
+.p2align 2
+.type bmpcfg_emit_stub_0995, @function
+bmpcfg_emit_stub_0995:
+    bmpcfg 1, 16, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_0995, .-bmpcfg_emit_stub_0995
+
+.globl bmpcfg_emit_stub_0996
+.p2align 2
+.type bmpcfg_emit_stub_0996, @function
+bmpcfg_emit_stub_0996:
+    bmpcfg 1, 16, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_0996, .-bmpcfg_emit_stub_0996
+
+.globl bmpcfg_emit_stub_0997
+.p2align 2
+.type bmpcfg_emit_stub_0997, @function
+bmpcfg_emit_stub_0997:
+    bmpcfg 1, 16, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_0997, .-bmpcfg_emit_stub_0997
+
+.globl bmpcfg_emit_stub_0998
+.p2align 2
+.type bmpcfg_emit_stub_0998, @function
+bmpcfg_emit_stub_0998:
+    bmpcfg 1, 16, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_0998, .-bmpcfg_emit_stub_0998
+
+.globl bmpcfg_emit_stub_0999
+.p2align 2
+.type bmpcfg_emit_stub_0999, @function
+bmpcfg_emit_stub_0999:
+    bmpcfg 1, 16, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_0999, .-bmpcfg_emit_stub_0999
+
+.globl bmpcfg_emit_stub_1000
+.p2align 2
+.type bmpcfg_emit_stub_1000, @function
+bmpcfg_emit_stub_1000:
+    bmpcfg 1, 16, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1000, .-bmpcfg_emit_stub_1000
+
+.globl bmpcfg_emit_stub_1001
+.p2align 2
+.type bmpcfg_emit_stub_1001, @function
+bmpcfg_emit_stub_1001:
+    bmpcfg 1, 16, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1001, .-bmpcfg_emit_stub_1001
+
+.globl bmpcfg_emit_stub_1002
+.p2align 2
+.type bmpcfg_emit_stub_1002, @function
+bmpcfg_emit_stub_1002:
+    bmpcfg 1, 16, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1002, .-bmpcfg_emit_stub_1002
+
+.globl bmpcfg_emit_stub_1003
+.p2align 2
+.type bmpcfg_emit_stub_1003, @function
+bmpcfg_emit_stub_1003:
+    bmpcfg 1, 16, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1003, .-bmpcfg_emit_stub_1003
+
+.globl bmpcfg_emit_stub_1004
+.p2align 2
+.type bmpcfg_emit_stub_1004, @function
+bmpcfg_emit_stub_1004:
+    bmpcfg 1, 16, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1004, .-bmpcfg_emit_stub_1004
+
+.globl bmpcfg_emit_stub_1005
+.p2align 2
+.type bmpcfg_emit_stub_1005, @function
+bmpcfg_emit_stub_1005:
+    bmpcfg 1, 16, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1005, .-bmpcfg_emit_stub_1005
+
+.globl bmpcfg_emit_stub_1006
+.p2align 2
+.type bmpcfg_emit_stub_1006, @function
+bmpcfg_emit_stub_1006:
+    bmpcfg 1, 16, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1006, .-bmpcfg_emit_stub_1006
+
+.globl bmpcfg_emit_stub_1007
+.p2align 2
+.type bmpcfg_emit_stub_1007, @function
+bmpcfg_emit_stub_1007:
+    bmpcfg 1, 16, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1007, .-bmpcfg_emit_stub_1007
+
+.globl bmpcfg_emit_stub_1008
+.p2align 2
+.type bmpcfg_emit_stub_1008, @function
+bmpcfg_emit_stub_1008:
+    bmpcfg 1, 16, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1008, .-bmpcfg_emit_stub_1008
+
+.globl bmpcfg_emit_stub_1009
+.p2align 2
+.type bmpcfg_emit_stub_1009, @function
+bmpcfg_emit_stub_1009:
+    bmpcfg 1, 16, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1009, .-bmpcfg_emit_stub_1009
+
+.globl bmpcfg_emit_stub_1010
+.p2align 2
+.type bmpcfg_emit_stub_1010, @function
+bmpcfg_emit_stub_1010:
+    bmpcfg 1, 16, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1010, .-bmpcfg_emit_stub_1010
+
+.globl bmpcfg_emit_stub_1011
+.p2align 2
+.type bmpcfg_emit_stub_1011, @function
+bmpcfg_emit_stub_1011:
+    bmpcfg 1, 16, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1011, .-bmpcfg_emit_stub_1011
+
+.globl bmpcfg_emit_stub_1012
+.p2align 2
+.type bmpcfg_emit_stub_1012, @function
+bmpcfg_emit_stub_1012:
+    bmpcfg 1, 16, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1012, .-bmpcfg_emit_stub_1012
+
+.globl bmpcfg_emit_stub_1013
+.p2align 2
+.type bmpcfg_emit_stub_1013, @function
+bmpcfg_emit_stub_1013:
+    bmpcfg 1, 16, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1013, .-bmpcfg_emit_stub_1013
+
+.globl bmpcfg_emit_stub_1014
+.p2align 2
+.type bmpcfg_emit_stub_1014, @function
+bmpcfg_emit_stub_1014:
+    bmpcfg 1, 16, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1014, .-bmpcfg_emit_stub_1014
+
+.globl bmpcfg_emit_stub_1015
+.p2align 2
+.type bmpcfg_emit_stub_1015, @function
+bmpcfg_emit_stub_1015:
+    bmpcfg 1, 16, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1015, .-bmpcfg_emit_stub_1015
+
+.globl bmpcfg_emit_stub_1016
+.p2align 2
+.type bmpcfg_emit_stub_1016, @function
+bmpcfg_emit_stub_1016:
+    bmpcfg 1, 16, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_1016, .-bmpcfg_emit_stub_1016
+
+.globl bmpcfg_emit_stub_1017
+.p2align 2
+.type bmpcfg_emit_stub_1017, @function
+bmpcfg_emit_stub_1017:
+    bmpcfg 1, 16, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_1017, .-bmpcfg_emit_stub_1017
+
+.globl bmpcfg_emit_stub_1018
+.p2align 2
+.type bmpcfg_emit_stub_1018, @function
+bmpcfg_emit_stub_1018:
+    bmpcfg 1, 16, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_1018, .-bmpcfg_emit_stub_1018
+
+.globl bmpcfg_emit_stub_1019
+.p2align 2
+.type bmpcfg_emit_stub_1019, @function
+bmpcfg_emit_stub_1019:
+    bmpcfg 1, 16, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1019, .-bmpcfg_emit_stub_1019
+
+.globl bmpcfg_emit_stub_1020
+.p2align 2
+.type bmpcfg_emit_stub_1020, @function
+bmpcfg_emit_stub_1020:
+    bmpcfg 1, 16, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1020, .-bmpcfg_emit_stub_1020
+
+.globl bmpcfg_emit_stub_1021
+.p2align 2
+.type bmpcfg_emit_stub_1021, @function
+bmpcfg_emit_stub_1021:
+    bmpcfg 1, 16, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1021, .-bmpcfg_emit_stub_1021
+
+.globl bmpcfg_emit_stub_1022
+.p2align 2
+.type bmpcfg_emit_stub_1022, @function
+bmpcfg_emit_stub_1022:
+    bmpcfg 1, 16, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1022, .-bmpcfg_emit_stub_1022
+
+.globl bmpcfg_emit_stub_1023
+.p2align 2
+.type bmpcfg_emit_stub_1023, @function
+bmpcfg_emit_stub_1023:
+    bmpcfg 1, 16, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1023, .-bmpcfg_emit_stub_1023
+
+.globl bmpcfg_emit_stub_1024
+.p2align 2
+.type bmpcfg_emit_stub_1024, @function
+bmpcfg_emit_stub_1024:
+    bmpcfg 1, 16, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1024, .-bmpcfg_emit_stub_1024
+
+.globl bmpcfg_emit_stub_1025
+.p2align 2
+.type bmpcfg_emit_stub_1025, @function
+bmpcfg_emit_stub_1025:
+    bmpcfg 1, 16, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1025, .-bmpcfg_emit_stub_1025
+
+.globl bmpcfg_emit_stub_1026
+.p2align 2
+.type bmpcfg_emit_stub_1026, @function
+bmpcfg_emit_stub_1026:
+    bmpcfg 1, 16, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1026, .-bmpcfg_emit_stub_1026
+
+.globl bmpcfg_emit_stub_1027
+.p2align 2
+.type bmpcfg_emit_stub_1027, @function
+bmpcfg_emit_stub_1027:
+    bmpcfg 1, 16, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1027, .-bmpcfg_emit_stub_1027
+
+.globl bmpcfg_emit_stub_1028
+.p2align 2
+.type bmpcfg_emit_stub_1028, @function
+bmpcfg_emit_stub_1028:
+    bmpcfg 1, 16, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1028, .-bmpcfg_emit_stub_1028
+
+.globl bmpcfg_emit_stub_1029
+.p2align 2
+.type bmpcfg_emit_stub_1029, @function
+bmpcfg_emit_stub_1029:
+    bmpcfg 1, 16, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1029, .-bmpcfg_emit_stub_1029
+
+.globl bmpcfg_emit_stub_1030
+.p2align 2
+.type bmpcfg_emit_stub_1030, @function
+bmpcfg_emit_stub_1030:
+    bmpcfg 1, 16, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1030, .-bmpcfg_emit_stub_1030
+
+.globl bmpcfg_emit_stub_1031
+.p2align 2
+.type bmpcfg_emit_stub_1031, @function
+bmpcfg_emit_stub_1031:
+    bmpcfg 1, 16, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1031, .-bmpcfg_emit_stub_1031
+
+.globl bmpcfg_emit_stub_1032
+.p2align 2
+.type bmpcfg_emit_stub_1032, @function
+bmpcfg_emit_stub_1032:
+    bmpcfg 1, 16, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1032, .-bmpcfg_emit_stub_1032
+
+.globl bmpcfg_emit_stub_1033
+.p2align 2
+.type bmpcfg_emit_stub_1033, @function
+bmpcfg_emit_stub_1033:
+    bmpcfg 1, 16, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1033, .-bmpcfg_emit_stub_1033
+
+.globl bmpcfg_emit_stub_1034
+.p2align 2
+.type bmpcfg_emit_stub_1034, @function
+bmpcfg_emit_stub_1034:
+    bmpcfg 1, 16, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1034, .-bmpcfg_emit_stub_1034
+
+.globl bmpcfg_emit_stub_1035
+.p2align 2
+.type bmpcfg_emit_stub_1035, @function
+bmpcfg_emit_stub_1035:
+    bmpcfg 1, 16, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1035, .-bmpcfg_emit_stub_1035
+
+.globl bmpcfg_emit_stub_1036
+.p2align 2
+.type bmpcfg_emit_stub_1036, @function
+bmpcfg_emit_stub_1036:
+    bmpcfg 1, 16, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1036, .-bmpcfg_emit_stub_1036
+
+.globl bmpcfg_emit_stub_1037
+.p2align 2
+.type bmpcfg_emit_stub_1037, @function
+bmpcfg_emit_stub_1037:
+    bmpcfg 1, 16, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1037, .-bmpcfg_emit_stub_1037
+
+.globl bmpcfg_emit_stub_1038
+.p2align 2
+.type bmpcfg_emit_stub_1038, @function
+bmpcfg_emit_stub_1038:
+    bmpcfg 1, 16, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1038, .-bmpcfg_emit_stub_1038
+
+.globl bmpcfg_emit_stub_1039
+.p2align 2
+.type bmpcfg_emit_stub_1039, @function
+bmpcfg_emit_stub_1039:
+    bmpcfg 1, 16, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1039, .-bmpcfg_emit_stub_1039
+
+.globl bmpcfg_emit_stub_1040
+.p2align 2
+.type bmpcfg_emit_stub_1040, @function
+bmpcfg_emit_stub_1040:
+    bmpcfg 1, 16, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1040, .-bmpcfg_emit_stub_1040
+
+.globl bmpcfg_emit_stub_1041
+.p2align 2
+.type bmpcfg_emit_stub_1041, @function
+bmpcfg_emit_stub_1041:
+    bmpcfg 1, 16, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1041, .-bmpcfg_emit_stub_1041
+
+.globl bmpcfg_emit_stub_1042
+.p2align 2
+.type bmpcfg_emit_stub_1042, @function
+bmpcfg_emit_stub_1042:
+    bmpcfg 1, 16, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1042, .-bmpcfg_emit_stub_1042
+
+.globl bmpcfg_emit_stub_1043
+.p2align 2
+.type bmpcfg_emit_stub_1043, @function
+bmpcfg_emit_stub_1043:
+    bmpcfg 1, 16, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1043, .-bmpcfg_emit_stub_1043
+
+.globl bmpcfg_emit_stub_1044
+.p2align 2
+.type bmpcfg_emit_stub_1044, @function
+bmpcfg_emit_stub_1044:
+    bmpcfg 1, 16, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1044, .-bmpcfg_emit_stub_1044
+
+.globl bmpcfg_emit_stub_1045
+.p2align 2
+.type bmpcfg_emit_stub_1045, @function
+bmpcfg_emit_stub_1045:
+    bmpcfg 1, 16, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1045, .-bmpcfg_emit_stub_1045
+
+.globl bmpcfg_emit_stub_1046
+.p2align 2
+.type bmpcfg_emit_stub_1046, @function
+bmpcfg_emit_stub_1046:
+    bmpcfg 1, 16, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1046, .-bmpcfg_emit_stub_1046
+
+.globl bmpcfg_emit_stub_1047
+.p2align 2
+.type bmpcfg_emit_stub_1047, @function
+bmpcfg_emit_stub_1047:
+    bmpcfg 1, 16, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1047, .-bmpcfg_emit_stub_1047
+
+.globl bmpcfg_emit_stub_1048
+.p2align 2
+.type bmpcfg_emit_stub_1048, @function
+bmpcfg_emit_stub_1048:
+    bmpcfg 1, 16, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1048, .-bmpcfg_emit_stub_1048
+
+.globl bmpcfg_emit_stub_1049
+.p2align 2
+.type bmpcfg_emit_stub_1049, @function
+bmpcfg_emit_stub_1049:
+    bmpcfg 1, 16, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1049, .-bmpcfg_emit_stub_1049
+
+.globl bmpcfg_emit_stub_1050
+.p2align 2
+.type bmpcfg_emit_stub_1050, @function
+bmpcfg_emit_stub_1050:
+    bmpcfg 1, 16, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1050, .-bmpcfg_emit_stub_1050
+
+.globl bmpcfg_emit_stub_1051
+.p2align 2
+.type bmpcfg_emit_stub_1051, @function
+bmpcfg_emit_stub_1051:
+    bmpcfg 1, 16, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1051, .-bmpcfg_emit_stub_1051
+
+.globl bmpcfg_emit_stub_1052
+.p2align 2
+.type bmpcfg_emit_stub_1052, @function
+bmpcfg_emit_stub_1052:
+    bmpcfg 1, 16, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1052, .-bmpcfg_emit_stub_1052
+
+.globl bmpcfg_emit_stub_1053
+.p2align 2
+.type bmpcfg_emit_stub_1053, @function
+bmpcfg_emit_stub_1053:
+    bmpcfg 1, 16, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1053, .-bmpcfg_emit_stub_1053
+
+.globl bmpcfg_emit_stub_1054
+.p2align 2
+.type bmpcfg_emit_stub_1054, @function
+bmpcfg_emit_stub_1054:
+    bmpcfg 1, 16, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1054, .-bmpcfg_emit_stub_1054
+
+.globl bmpcfg_emit_stub_1055
+.p2align 2
+.type bmpcfg_emit_stub_1055, @function
+bmpcfg_emit_stub_1055:
+    bmpcfg 1, 16, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1055, .-bmpcfg_emit_stub_1055
+
+.globl bmpcfg_emit_stub_1056
+.p2align 2
+.type bmpcfg_emit_stub_1056, @function
+bmpcfg_emit_stub_1056:
+    bmpcfg 1, 16, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1056, .-bmpcfg_emit_stub_1056
+
+.globl bmpcfg_emit_stub_1057
+.p2align 2
+.type bmpcfg_emit_stub_1057, @function
+bmpcfg_emit_stub_1057:
+    bmpcfg 1, 16, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1057, .-bmpcfg_emit_stub_1057
+
+.globl bmpcfg_emit_stub_1058
+.p2align 2
+.type bmpcfg_emit_stub_1058, @function
+bmpcfg_emit_stub_1058:
+    bmpcfg 1, 16, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1058, .-bmpcfg_emit_stub_1058
+
+.globl bmpcfg_emit_stub_1059
+.p2align 2
+.type bmpcfg_emit_stub_1059, @function
+bmpcfg_emit_stub_1059:
+    bmpcfg 1, 16, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1059, .-bmpcfg_emit_stub_1059
+
+.globl bmpcfg_emit_stub_1060
+.p2align 2
+.type bmpcfg_emit_stub_1060, @function
+bmpcfg_emit_stub_1060:
+    bmpcfg 1, 16, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1060, .-bmpcfg_emit_stub_1060
+
+.globl bmpcfg_emit_stub_1061
+.p2align 2
+.type bmpcfg_emit_stub_1061, @function
+bmpcfg_emit_stub_1061:
+    bmpcfg 1, 16, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1061, .-bmpcfg_emit_stub_1061
+
+.globl bmpcfg_emit_stub_1062
+.p2align 2
+.type bmpcfg_emit_stub_1062, @function
+bmpcfg_emit_stub_1062:
+    bmpcfg 1, 16, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1062, .-bmpcfg_emit_stub_1062
+
+.globl bmpcfg_emit_stub_1063
+.p2align 2
+.type bmpcfg_emit_stub_1063, @function
+bmpcfg_emit_stub_1063:
+    bmpcfg 1, 16, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1063, .-bmpcfg_emit_stub_1063
+
+.globl bmpcfg_emit_stub_1064
+.p2align 2
+.type bmpcfg_emit_stub_1064, @function
+bmpcfg_emit_stub_1064:
+    bmpcfg 1, 16, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1064, .-bmpcfg_emit_stub_1064
+
+.globl bmpcfg_emit_stub_1065
+.p2align 2
+.type bmpcfg_emit_stub_1065, @function
+bmpcfg_emit_stub_1065:
+    bmpcfg 1, 16, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1065, .-bmpcfg_emit_stub_1065
+
+.globl bmpcfg_emit_stub_1066
+.p2align 2
+.type bmpcfg_emit_stub_1066, @function
+bmpcfg_emit_stub_1066:
+    bmpcfg 1, 16, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1066, .-bmpcfg_emit_stub_1066
+
+.globl bmpcfg_emit_stub_1067
+.p2align 2
+.type bmpcfg_emit_stub_1067, @function
+bmpcfg_emit_stub_1067:
+    bmpcfg 1, 16, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1067, .-bmpcfg_emit_stub_1067
+
+.globl bmpcfg_emit_stub_1068
+.p2align 2
+.type bmpcfg_emit_stub_1068, @function
+bmpcfg_emit_stub_1068:
+    bmpcfg 1, 16, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1068, .-bmpcfg_emit_stub_1068
+
+.globl bmpcfg_emit_stub_1069
+.p2align 2
+.type bmpcfg_emit_stub_1069, @function
+bmpcfg_emit_stub_1069:
+    bmpcfg 1, 16, 44, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1069, .-bmpcfg_emit_stub_1069
+
+.globl bmpcfg_emit_stub_1070
+.p2align 2
+.type bmpcfg_emit_stub_1070, @function
+bmpcfg_emit_stub_1070:
+    bmpcfg 1, 16, 48, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1070, .-bmpcfg_emit_stub_1070
+
+.globl bmpcfg_emit_stub_1071
+.p2align 2
+.type bmpcfg_emit_stub_1071, @function
+bmpcfg_emit_stub_1071:
+    bmpcfg 1, 16, 52, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1071, .-bmpcfg_emit_stub_1071
+
+.globl bmpcfg_emit_stub_1072
+.p2align 2
+.type bmpcfg_emit_stub_1072, @function
+bmpcfg_emit_stub_1072:
+    bmpcfg 1, 16, 56, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1072, .-bmpcfg_emit_stub_1072
+
+.globl bmpcfg_emit_stub_1073
+.p2align 2
+.type bmpcfg_emit_stub_1073, @function
+bmpcfg_emit_stub_1073:
+    bmpcfg 1, 16, 60, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1073, .-bmpcfg_emit_stub_1073
+
+.globl bmpcfg_emit_stub_1074
+.p2align 2
+.type bmpcfg_emit_stub_1074, @function
+bmpcfg_emit_stub_1074:
+    bmpcfg 1, 16, 64, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1074, .-bmpcfg_emit_stub_1074
+
+.globl bmpcfg_emit_stub_1075
+.p2align 2
+.type bmpcfg_emit_stub_1075, @function
+bmpcfg_emit_stub_1075:
+    bmpcfg 1, 24, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1075, .-bmpcfg_emit_stub_1075
+
+.globl bmpcfg_emit_stub_1076
+.p2align 2
+.type bmpcfg_emit_stub_1076, @function
+bmpcfg_emit_stub_1076:
+    bmpcfg 1, 24, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1076, .-bmpcfg_emit_stub_1076
+
+.globl bmpcfg_emit_stub_1077
+.p2align 2
+.type bmpcfg_emit_stub_1077, @function
+bmpcfg_emit_stub_1077:
+    bmpcfg 1, 24, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1077, .-bmpcfg_emit_stub_1077
+
+.globl bmpcfg_emit_stub_1078
+.p2align 2
+.type bmpcfg_emit_stub_1078, @function
+bmpcfg_emit_stub_1078:
+    bmpcfg 1, 24, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1078, .-bmpcfg_emit_stub_1078
+
+.globl bmpcfg_emit_stub_1079
+.p2align 2
+.type bmpcfg_emit_stub_1079, @function
+bmpcfg_emit_stub_1079:
+    bmpcfg 1, 24, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1079, .-bmpcfg_emit_stub_1079
+
+.globl bmpcfg_emit_stub_1080
+.p2align 2
+.type bmpcfg_emit_stub_1080, @function
+bmpcfg_emit_stub_1080:
+    bmpcfg 1, 24, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1080, .-bmpcfg_emit_stub_1080
+
+.globl bmpcfg_emit_stub_1081
+.p2align 2
+.type bmpcfg_emit_stub_1081, @function
+bmpcfg_emit_stub_1081:
+    bmpcfg 1, 24, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1081, .-bmpcfg_emit_stub_1081
+
+.globl bmpcfg_emit_stub_1082
+.p2align 2
+.type bmpcfg_emit_stub_1082, @function
+bmpcfg_emit_stub_1082:
+    bmpcfg 1, 24, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1082, .-bmpcfg_emit_stub_1082
+
+.globl bmpcfg_emit_stub_1083
+.p2align 2
+.type bmpcfg_emit_stub_1083, @function
+bmpcfg_emit_stub_1083:
+    bmpcfg 1, 24, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1083, .-bmpcfg_emit_stub_1083
+
+.globl bmpcfg_emit_stub_1084
+.p2align 2
+.type bmpcfg_emit_stub_1084, @function
+bmpcfg_emit_stub_1084:
+    bmpcfg 1, 24, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1084, .-bmpcfg_emit_stub_1084
+
+.globl bmpcfg_emit_stub_1085
+.p2align 2
+.type bmpcfg_emit_stub_1085, @function
+bmpcfg_emit_stub_1085:
+    bmpcfg 1, 24, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1085, .-bmpcfg_emit_stub_1085
+
+.globl bmpcfg_emit_stub_1086
+.p2align 2
+.type bmpcfg_emit_stub_1086, @function
+bmpcfg_emit_stub_1086:
+    bmpcfg 1, 24, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1086, .-bmpcfg_emit_stub_1086
+
+.globl bmpcfg_emit_stub_1087
+.p2align 2
+.type bmpcfg_emit_stub_1087, @function
+bmpcfg_emit_stub_1087:
+    bmpcfg 1, 24, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1087, .-bmpcfg_emit_stub_1087
+
+.globl bmpcfg_emit_stub_1088
+.p2align 2
+.type bmpcfg_emit_stub_1088, @function
+bmpcfg_emit_stub_1088:
+    bmpcfg 1, 24, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1088, .-bmpcfg_emit_stub_1088
+
+.globl bmpcfg_emit_stub_1089
+.p2align 2
+.type bmpcfg_emit_stub_1089, @function
+bmpcfg_emit_stub_1089:
+    bmpcfg 1, 24, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1089, .-bmpcfg_emit_stub_1089
+
+.globl bmpcfg_emit_stub_1090
+.p2align 2
+.type bmpcfg_emit_stub_1090, @function
+bmpcfg_emit_stub_1090:
+    bmpcfg 1, 24, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1090, .-bmpcfg_emit_stub_1090
+
+.globl bmpcfg_emit_stub_1091
+.p2align 2
+.type bmpcfg_emit_stub_1091, @function
+bmpcfg_emit_stub_1091:
+    bmpcfg 1, 24, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1091, .-bmpcfg_emit_stub_1091
+
+.globl bmpcfg_emit_stub_1092
+.p2align 2
+.type bmpcfg_emit_stub_1092, @function
+bmpcfg_emit_stub_1092:
+    bmpcfg 1, 24, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1092, .-bmpcfg_emit_stub_1092
+
+.globl bmpcfg_emit_stub_1093
+.p2align 2
+.type bmpcfg_emit_stub_1093, @function
+bmpcfg_emit_stub_1093:
+    bmpcfg 1, 24, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1093, .-bmpcfg_emit_stub_1093
+
+.globl bmpcfg_emit_stub_1094
+.p2align 2
+.type bmpcfg_emit_stub_1094, @function
+bmpcfg_emit_stub_1094:
+    bmpcfg 1, 24, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1094, .-bmpcfg_emit_stub_1094
+
+.globl bmpcfg_emit_stub_1095
+.p2align 2
+.type bmpcfg_emit_stub_1095, @function
+bmpcfg_emit_stub_1095:
+    bmpcfg 1, 24, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1095, .-bmpcfg_emit_stub_1095
+
+.globl bmpcfg_emit_stub_1096
+.p2align 2
+.type bmpcfg_emit_stub_1096, @function
+bmpcfg_emit_stub_1096:
+    bmpcfg 1, 24, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1096, .-bmpcfg_emit_stub_1096
+
+.globl bmpcfg_emit_stub_1097
+.p2align 2
+.type bmpcfg_emit_stub_1097, @function
+bmpcfg_emit_stub_1097:
+    bmpcfg 1, 24, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1097, .-bmpcfg_emit_stub_1097
+
+.globl bmpcfg_emit_stub_1098
+.p2align 2
+.type bmpcfg_emit_stub_1098, @function
+bmpcfg_emit_stub_1098:
+    bmpcfg 1, 24, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1098, .-bmpcfg_emit_stub_1098
+
+.globl bmpcfg_emit_stub_1099
+.p2align 2
+.type bmpcfg_emit_stub_1099, @function
+bmpcfg_emit_stub_1099:
+    bmpcfg 1, 24, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1099, .-bmpcfg_emit_stub_1099
+
+.globl bmpcfg_emit_stub_1100
+.p2align 2
+.type bmpcfg_emit_stub_1100, @function
+bmpcfg_emit_stub_1100:
+    bmpcfg 1, 24, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1100, .-bmpcfg_emit_stub_1100
+
+.globl bmpcfg_emit_stub_1101
+.p2align 2
+.type bmpcfg_emit_stub_1101, @function
+bmpcfg_emit_stub_1101:
+    bmpcfg 1, 24, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1101, .-bmpcfg_emit_stub_1101
+
+.globl bmpcfg_emit_stub_1102
+.p2align 2
+.type bmpcfg_emit_stub_1102, @function
+bmpcfg_emit_stub_1102:
+    bmpcfg 1, 24, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1102, .-bmpcfg_emit_stub_1102
+
+.globl bmpcfg_emit_stub_1103
+.p2align 2
+.type bmpcfg_emit_stub_1103, @function
+bmpcfg_emit_stub_1103:
+    bmpcfg 1, 24, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1103, .-bmpcfg_emit_stub_1103
+
+.globl bmpcfg_emit_stub_1104
+.p2align 2
+.type bmpcfg_emit_stub_1104, @function
+bmpcfg_emit_stub_1104:
+    bmpcfg 1, 24, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1104, .-bmpcfg_emit_stub_1104
+
+.globl bmpcfg_emit_stub_1105
+.p2align 2
+.type bmpcfg_emit_stub_1105, @function
+bmpcfg_emit_stub_1105:
+    bmpcfg 1, 24, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1105, .-bmpcfg_emit_stub_1105
+
+.globl bmpcfg_emit_stub_1106
+.p2align 2
+.type bmpcfg_emit_stub_1106, @function
+bmpcfg_emit_stub_1106:
+    bmpcfg 1, 24, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_1106, .-bmpcfg_emit_stub_1106
+
+.globl bmpcfg_emit_stub_1107
+.p2align 2
+.type bmpcfg_emit_stub_1107, @function
+bmpcfg_emit_stub_1107:
+    bmpcfg 1, 24, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_1107, .-bmpcfg_emit_stub_1107
+
+.globl bmpcfg_emit_stub_1108
+.p2align 2
+.type bmpcfg_emit_stub_1108, @function
+bmpcfg_emit_stub_1108:
+    bmpcfg 1, 24, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_1108, .-bmpcfg_emit_stub_1108
+
+.globl bmpcfg_emit_stub_1109
+.p2align 2
+.type bmpcfg_emit_stub_1109, @function
+bmpcfg_emit_stub_1109:
+    bmpcfg 1, 24, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1109, .-bmpcfg_emit_stub_1109
+
+.globl bmpcfg_emit_stub_1110
+.p2align 2
+.type bmpcfg_emit_stub_1110, @function
+bmpcfg_emit_stub_1110:
+    bmpcfg 1, 24, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1110, .-bmpcfg_emit_stub_1110
+
+.globl bmpcfg_emit_stub_1111
+.p2align 2
+.type bmpcfg_emit_stub_1111, @function
+bmpcfg_emit_stub_1111:
+    bmpcfg 1, 24, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1111, .-bmpcfg_emit_stub_1111
+
+.globl bmpcfg_emit_stub_1112
+.p2align 2
+.type bmpcfg_emit_stub_1112, @function
+bmpcfg_emit_stub_1112:
+    bmpcfg 1, 24, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1112, .-bmpcfg_emit_stub_1112
+
+.globl bmpcfg_emit_stub_1113
+.p2align 2
+.type bmpcfg_emit_stub_1113, @function
+bmpcfg_emit_stub_1113:
+    bmpcfg 1, 24, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1113, .-bmpcfg_emit_stub_1113
+
+.globl bmpcfg_emit_stub_1114
+.p2align 2
+.type bmpcfg_emit_stub_1114, @function
+bmpcfg_emit_stub_1114:
+    bmpcfg 1, 24, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1114, .-bmpcfg_emit_stub_1114
+
+.globl bmpcfg_emit_stub_1115
+.p2align 2
+.type bmpcfg_emit_stub_1115, @function
+bmpcfg_emit_stub_1115:
+    bmpcfg 1, 24, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1115, .-bmpcfg_emit_stub_1115
+
+.globl bmpcfg_emit_stub_1116
+.p2align 2
+.type bmpcfg_emit_stub_1116, @function
+bmpcfg_emit_stub_1116:
+    bmpcfg 1, 24, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1116, .-bmpcfg_emit_stub_1116
+
+.globl bmpcfg_emit_stub_1117
+.p2align 2
+.type bmpcfg_emit_stub_1117, @function
+bmpcfg_emit_stub_1117:
+    bmpcfg 1, 24, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1117, .-bmpcfg_emit_stub_1117
+
+.globl bmpcfg_emit_stub_1118
+.p2align 2
+.type bmpcfg_emit_stub_1118, @function
+bmpcfg_emit_stub_1118:
+    bmpcfg 1, 24, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1118, .-bmpcfg_emit_stub_1118
+
+.globl bmpcfg_emit_stub_1119
+.p2align 2
+.type bmpcfg_emit_stub_1119, @function
+bmpcfg_emit_stub_1119:
+    bmpcfg 1, 24, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1119, .-bmpcfg_emit_stub_1119
+
+.globl bmpcfg_emit_stub_1120
+.p2align 2
+.type bmpcfg_emit_stub_1120, @function
+bmpcfg_emit_stub_1120:
+    bmpcfg 1, 24, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1120, .-bmpcfg_emit_stub_1120
+
+.globl bmpcfg_emit_stub_1121
+.p2align 2
+.type bmpcfg_emit_stub_1121, @function
+bmpcfg_emit_stub_1121:
+    bmpcfg 1, 24, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1121, .-bmpcfg_emit_stub_1121
+
+.globl bmpcfg_emit_stub_1122
+.p2align 2
+.type bmpcfg_emit_stub_1122, @function
+bmpcfg_emit_stub_1122:
+    bmpcfg 1, 24, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1122, .-bmpcfg_emit_stub_1122
+
+.globl bmpcfg_emit_stub_1123
+.p2align 2
+.type bmpcfg_emit_stub_1123, @function
+bmpcfg_emit_stub_1123:
+    bmpcfg 1, 24, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1123, .-bmpcfg_emit_stub_1123
+
+.globl bmpcfg_emit_stub_1124
+.p2align 2
+.type bmpcfg_emit_stub_1124, @function
+bmpcfg_emit_stub_1124:
+    bmpcfg 1, 24, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1124, .-bmpcfg_emit_stub_1124
+
+.globl bmpcfg_emit_stub_1125
+.p2align 2
+.type bmpcfg_emit_stub_1125, @function
+bmpcfg_emit_stub_1125:
+    bmpcfg 1, 24, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1125, .-bmpcfg_emit_stub_1125
+
+.globl bmpcfg_emit_stub_1126
+.p2align 2
+.type bmpcfg_emit_stub_1126, @function
+bmpcfg_emit_stub_1126:
+    bmpcfg 1, 24, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1126, .-bmpcfg_emit_stub_1126
+
+.globl bmpcfg_emit_stub_1127
+.p2align 2
+.type bmpcfg_emit_stub_1127, @function
+bmpcfg_emit_stub_1127:
+    bmpcfg 1, 24, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1127, .-bmpcfg_emit_stub_1127
+
+.globl bmpcfg_emit_stub_1128
+.p2align 2
+.type bmpcfg_emit_stub_1128, @function
+bmpcfg_emit_stub_1128:
+    bmpcfg 1, 24, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1128, .-bmpcfg_emit_stub_1128
+
+.globl bmpcfg_emit_stub_1129
+.p2align 2
+.type bmpcfg_emit_stub_1129, @function
+bmpcfg_emit_stub_1129:
+    bmpcfg 1, 24, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1129, .-bmpcfg_emit_stub_1129
+
+.globl bmpcfg_emit_stub_1130
+.p2align 2
+.type bmpcfg_emit_stub_1130, @function
+bmpcfg_emit_stub_1130:
+    bmpcfg 1, 24, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1130, .-bmpcfg_emit_stub_1130
+
+.globl bmpcfg_emit_stub_1131
+.p2align 2
+.type bmpcfg_emit_stub_1131, @function
+bmpcfg_emit_stub_1131:
+    bmpcfg 1, 24, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1131, .-bmpcfg_emit_stub_1131
+
+.globl bmpcfg_emit_stub_1132
+.p2align 2
+.type bmpcfg_emit_stub_1132, @function
+bmpcfg_emit_stub_1132:
+    bmpcfg 1, 24, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1132, .-bmpcfg_emit_stub_1132
+
+.globl bmpcfg_emit_stub_1133
+.p2align 2
+.type bmpcfg_emit_stub_1133, @function
+bmpcfg_emit_stub_1133:
+    bmpcfg 1, 24, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1133, .-bmpcfg_emit_stub_1133
+
+.globl bmpcfg_emit_stub_1134
+.p2align 2
+.type bmpcfg_emit_stub_1134, @function
+bmpcfg_emit_stub_1134:
+    bmpcfg 1, 24, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1134, .-bmpcfg_emit_stub_1134
+
+.globl bmpcfg_emit_stub_1135
+.p2align 2
+.type bmpcfg_emit_stub_1135, @function
+bmpcfg_emit_stub_1135:
+    bmpcfg 1, 24, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1135, .-bmpcfg_emit_stub_1135
+
+.globl bmpcfg_emit_stub_1136
+.p2align 2
+.type bmpcfg_emit_stub_1136, @function
+bmpcfg_emit_stub_1136:
+    bmpcfg 1, 24, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1136, .-bmpcfg_emit_stub_1136
+
+.globl bmpcfg_emit_stub_1137
+.p2align 2
+.type bmpcfg_emit_stub_1137, @function
+bmpcfg_emit_stub_1137:
+    bmpcfg 1, 24, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1137, .-bmpcfg_emit_stub_1137
+
+.globl bmpcfg_emit_stub_1138
+.p2align 2
+.type bmpcfg_emit_stub_1138, @function
+bmpcfg_emit_stub_1138:
+    bmpcfg 1, 24, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1138, .-bmpcfg_emit_stub_1138
+
+.globl bmpcfg_emit_stub_1139
+.p2align 2
+.type bmpcfg_emit_stub_1139, @function
+bmpcfg_emit_stub_1139:
+    bmpcfg 1, 24, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1139, .-bmpcfg_emit_stub_1139
+
+.globl bmpcfg_emit_stub_1140
+.p2align 2
+.type bmpcfg_emit_stub_1140, @function
+bmpcfg_emit_stub_1140:
+    bmpcfg 1, 24, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1140, .-bmpcfg_emit_stub_1140
+
+.globl bmpcfg_emit_stub_1141
+.p2align 2
+.type bmpcfg_emit_stub_1141, @function
+bmpcfg_emit_stub_1141:
+    bmpcfg 1, 24, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1141, .-bmpcfg_emit_stub_1141
+
+.globl bmpcfg_emit_stub_1142
+.p2align 2
+.type bmpcfg_emit_stub_1142, @function
+bmpcfg_emit_stub_1142:
+    bmpcfg 1, 24, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1142, .-bmpcfg_emit_stub_1142
+
+.globl bmpcfg_emit_stub_1143
+.p2align 2
+.type bmpcfg_emit_stub_1143, @function
+bmpcfg_emit_stub_1143:
+    bmpcfg 1, 24, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1143, .-bmpcfg_emit_stub_1143
+
+.globl bmpcfg_emit_stub_1144
+.p2align 2
+.type bmpcfg_emit_stub_1144, @function
+bmpcfg_emit_stub_1144:
+    bmpcfg 1, 24, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1144, .-bmpcfg_emit_stub_1144
+
+.globl bmpcfg_emit_stub_1145
+.p2align 2
+.type bmpcfg_emit_stub_1145, @function
+bmpcfg_emit_stub_1145:
+    bmpcfg 1, 24, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1145, .-bmpcfg_emit_stub_1145
+
+.globl bmpcfg_emit_stub_1146
+.p2align 2
+.type bmpcfg_emit_stub_1146, @function
+bmpcfg_emit_stub_1146:
+    bmpcfg 1, 24, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1146, .-bmpcfg_emit_stub_1146
+
+.globl bmpcfg_emit_stub_1147
+.p2align 2
+.type bmpcfg_emit_stub_1147, @function
+bmpcfg_emit_stub_1147:
+    bmpcfg 1, 24, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1147, .-bmpcfg_emit_stub_1147
+
+.globl bmpcfg_emit_stub_1148
+.p2align 2
+.type bmpcfg_emit_stub_1148, @function
+bmpcfg_emit_stub_1148:
+    bmpcfg 1, 24, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1148, .-bmpcfg_emit_stub_1148
+
+.globl bmpcfg_emit_stub_1149
+.p2align 2
+.type bmpcfg_emit_stub_1149, @function
+bmpcfg_emit_stub_1149:
+    bmpcfg 1, 24, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1149, .-bmpcfg_emit_stub_1149
+
+.globl bmpcfg_emit_stub_1150
+.p2align 2
+.type bmpcfg_emit_stub_1150, @function
+bmpcfg_emit_stub_1150:
+    bmpcfg 1, 24, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1150, .-bmpcfg_emit_stub_1150
+
+.globl bmpcfg_emit_stub_1151
+.p2align 2
+.type bmpcfg_emit_stub_1151, @function
+bmpcfg_emit_stub_1151:
+    bmpcfg 1, 24, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1151, .-bmpcfg_emit_stub_1151
+
+.globl bmpcfg_emit_stub_1152
+.p2align 2
+.type bmpcfg_emit_stub_1152, @function
+bmpcfg_emit_stub_1152:
+    bmpcfg 1, 24, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1152, .-bmpcfg_emit_stub_1152
+
+.globl bmpcfg_emit_stub_1153
+.p2align 2
+.type bmpcfg_emit_stub_1153, @function
+bmpcfg_emit_stub_1153:
+    bmpcfg 1, 24, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1153, .-bmpcfg_emit_stub_1153
+
+.globl bmpcfg_emit_stub_1154
+.p2align 2
+.type bmpcfg_emit_stub_1154, @function
+bmpcfg_emit_stub_1154:
+    bmpcfg 1, 24, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1154, .-bmpcfg_emit_stub_1154
+
+.globl bmpcfg_emit_stub_1155
+.p2align 2
+.type bmpcfg_emit_stub_1155, @function
+bmpcfg_emit_stub_1155:
+    bmpcfg 1, 24, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1155, .-bmpcfg_emit_stub_1155
+
+.globl bmpcfg_emit_stub_1156
+.p2align 2
+.type bmpcfg_emit_stub_1156, @function
+bmpcfg_emit_stub_1156:
+    bmpcfg 1, 24, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1156, .-bmpcfg_emit_stub_1156
+
+.globl bmpcfg_emit_stub_1157
+.p2align 2
+.type bmpcfg_emit_stub_1157, @function
+bmpcfg_emit_stub_1157:
+    bmpcfg 1, 24, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1157, .-bmpcfg_emit_stub_1157
+
+.globl bmpcfg_emit_stub_1158
+.p2align 2
+.type bmpcfg_emit_stub_1158, @function
+bmpcfg_emit_stub_1158:
+    bmpcfg 1, 24, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1158, .-bmpcfg_emit_stub_1158
+
+.globl bmpcfg_emit_stub_1159
+.p2align 2
+.type bmpcfg_emit_stub_1159, @function
+bmpcfg_emit_stub_1159:
+    bmpcfg 1, 32, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1159, .-bmpcfg_emit_stub_1159
+
+.globl bmpcfg_emit_stub_1160
+.p2align 2
+.type bmpcfg_emit_stub_1160, @function
+bmpcfg_emit_stub_1160:
+    bmpcfg 1, 32, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1160, .-bmpcfg_emit_stub_1160
+
+.globl bmpcfg_emit_stub_1161
+.p2align 2
+.type bmpcfg_emit_stub_1161, @function
+bmpcfg_emit_stub_1161:
+    bmpcfg 1, 32, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1161, .-bmpcfg_emit_stub_1161
+
+.globl bmpcfg_emit_stub_1162
+.p2align 2
+.type bmpcfg_emit_stub_1162, @function
+bmpcfg_emit_stub_1162:
+    bmpcfg 1, 32, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1162, .-bmpcfg_emit_stub_1162
+
+.globl bmpcfg_emit_stub_1163
+.p2align 2
+.type bmpcfg_emit_stub_1163, @function
+bmpcfg_emit_stub_1163:
+    bmpcfg 1, 32, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1163, .-bmpcfg_emit_stub_1163
+
+.globl bmpcfg_emit_stub_1164
+.p2align 2
+.type bmpcfg_emit_stub_1164, @function
+bmpcfg_emit_stub_1164:
+    bmpcfg 1, 32, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1164, .-bmpcfg_emit_stub_1164
+
+.globl bmpcfg_emit_stub_1165
+.p2align 2
+.type bmpcfg_emit_stub_1165, @function
+bmpcfg_emit_stub_1165:
+    bmpcfg 1, 32, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1165, .-bmpcfg_emit_stub_1165
+
+.globl bmpcfg_emit_stub_1166
+.p2align 2
+.type bmpcfg_emit_stub_1166, @function
+bmpcfg_emit_stub_1166:
+    bmpcfg 1, 32, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1166, .-bmpcfg_emit_stub_1166
+
+.globl bmpcfg_emit_stub_1167
+.p2align 2
+.type bmpcfg_emit_stub_1167, @function
+bmpcfg_emit_stub_1167:
+    bmpcfg 1, 32, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1167, .-bmpcfg_emit_stub_1167
+
+.globl bmpcfg_emit_stub_1168
+.p2align 2
+.type bmpcfg_emit_stub_1168, @function
+bmpcfg_emit_stub_1168:
+    bmpcfg 1, 32, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1168, .-bmpcfg_emit_stub_1168
+
+.globl bmpcfg_emit_stub_1169
+.p2align 2
+.type bmpcfg_emit_stub_1169, @function
+bmpcfg_emit_stub_1169:
+    bmpcfg 1, 32, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1169, .-bmpcfg_emit_stub_1169
+
+.globl bmpcfg_emit_stub_1170
+.p2align 2
+.type bmpcfg_emit_stub_1170, @function
+bmpcfg_emit_stub_1170:
+    bmpcfg 1, 32, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1170, .-bmpcfg_emit_stub_1170
+
+.globl bmpcfg_emit_stub_1171
+.p2align 2
+.type bmpcfg_emit_stub_1171, @function
+bmpcfg_emit_stub_1171:
+    bmpcfg 1, 32, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1171, .-bmpcfg_emit_stub_1171
+
+.globl bmpcfg_emit_stub_1172
+.p2align 2
+.type bmpcfg_emit_stub_1172, @function
+bmpcfg_emit_stub_1172:
+    bmpcfg 1, 32, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1172, .-bmpcfg_emit_stub_1172
+
+.globl bmpcfg_emit_stub_1173
+.p2align 2
+.type bmpcfg_emit_stub_1173, @function
+bmpcfg_emit_stub_1173:
+    bmpcfg 1, 32, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1173, .-bmpcfg_emit_stub_1173
+
+.globl bmpcfg_emit_stub_1174
+.p2align 2
+.type bmpcfg_emit_stub_1174, @function
+bmpcfg_emit_stub_1174:
+    bmpcfg 1, 32, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1174, .-bmpcfg_emit_stub_1174
+
+.globl bmpcfg_emit_stub_1175
+.p2align 2
+.type bmpcfg_emit_stub_1175, @function
+bmpcfg_emit_stub_1175:
+    bmpcfg 1, 32, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1175, .-bmpcfg_emit_stub_1175
+
+.globl bmpcfg_emit_stub_1176
+.p2align 2
+.type bmpcfg_emit_stub_1176, @function
+bmpcfg_emit_stub_1176:
+    bmpcfg 1, 32, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1176, .-bmpcfg_emit_stub_1176
+
+.globl bmpcfg_emit_stub_1177
+.p2align 2
+.type bmpcfg_emit_stub_1177, @function
+bmpcfg_emit_stub_1177:
+    bmpcfg 1, 32, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1177, .-bmpcfg_emit_stub_1177
+
+.globl bmpcfg_emit_stub_1178
+.p2align 2
+.type bmpcfg_emit_stub_1178, @function
+bmpcfg_emit_stub_1178:
+    bmpcfg 1, 32, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1178, .-bmpcfg_emit_stub_1178
+
+.globl bmpcfg_emit_stub_1179
+.p2align 2
+.type bmpcfg_emit_stub_1179, @function
+bmpcfg_emit_stub_1179:
+    bmpcfg 1, 32, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1179, .-bmpcfg_emit_stub_1179
+
+.globl bmpcfg_emit_stub_1180
+.p2align 2
+.type bmpcfg_emit_stub_1180, @function
+bmpcfg_emit_stub_1180:
+    bmpcfg 1, 32, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1180, .-bmpcfg_emit_stub_1180
+
+.globl bmpcfg_emit_stub_1181
+.p2align 2
+.type bmpcfg_emit_stub_1181, @function
+bmpcfg_emit_stub_1181:
+    bmpcfg 1, 32, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1181, .-bmpcfg_emit_stub_1181
+
+.globl bmpcfg_emit_stub_1182
+.p2align 2
+.type bmpcfg_emit_stub_1182, @function
+bmpcfg_emit_stub_1182:
+    bmpcfg 1, 32, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1182, .-bmpcfg_emit_stub_1182
+
+.globl bmpcfg_emit_stub_1183
+.p2align 2
+.type bmpcfg_emit_stub_1183, @function
+bmpcfg_emit_stub_1183:
+    bmpcfg 1, 32, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1183, .-bmpcfg_emit_stub_1183
+
+.globl bmpcfg_emit_stub_1184
+.p2align 2
+.type bmpcfg_emit_stub_1184, @function
+bmpcfg_emit_stub_1184:
+    bmpcfg 1, 32, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1184, .-bmpcfg_emit_stub_1184
+
+.globl bmpcfg_emit_stub_1185
+.p2align 2
+.type bmpcfg_emit_stub_1185, @function
+bmpcfg_emit_stub_1185:
+    bmpcfg 1, 32, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1185, .-bmpcfg_emit_stub_1185
+
+.globl bmpcfg_emit_stub_1186
+.p2align 2
+.type bmpcfg_emit_stub_1186, @function
+bmpcfg_emit_stub_1186:
+    bmpcfg 1, 32, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1186, .-bmpcfg_emit_stub_1186
+
+.globl bmpcfg_emit_stub_1187
+.p2align 2
+.type bmpcfg_emit_stub_1187, @function
+bmpcfg_emit_stub_1187:
+    bmpcfg 1, 32, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1187, .-bmpcfg_emit_stub_1187
+
+.globl bmpcfg_emit_stub_1188
+.p2align 2
+.type bmpcfg_emit_stub_1188, @function
+bmpcfg_emit_stub_1188:
+    bmpcfg 1, 32, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1188, .-bmpcfg_emit_stub_1188
+
+.globl bmpcfg_emit_stub_1189
+.p2align 2
+.type bmpcfg_emit_stub_1189, @function
+bmpcfg_emit_stub_1189:
+    bmpcfg 1, 32, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1189, .-bmpcfg_emit_stub_1189
+
+.globl bmpcfg_emit_stub_1190
+.p2align 2
+.type bmpcfg_emit_stub_1190, @function
+bmpcfg_emit_stub_1190:
+    bmpcfg 1, 32, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_1190, .-bmpcfg_emit_stub_1190
+
+.globl bmpcfg_emit_stub_1191
+.p2align 2
+.type bmpcfg_emit_stub_1191, @function
+bmpcfg_emit_stub_1191:
+    bmpcfg 1, 32, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_1191, .-bmpcfg_emit_stub_1191
+
+.globl bmpcfg_emit_stub_1192
+.p2align 2
+.type bmpcfg_emit_stub_1192, @function
+bmpcfg_emit_stub_1192:
+    bmpcfg 1, 32, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_1192, .-bmpcfg_emit_stub_1192
+
+.globl bmpcfg_emit_stub_1193
+.p2align 2
+.type bmpcfg_emit_stub_1193, @function
+bmpcfg_emit_stub_1193:
+    bmpcfg 1, 32, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1193, .-bmpcfg_emit_stub_1193
+
+.globl bmpcfg_emit_stub_1194
+.p2align 2
+.type bmpcfg_emit_stub_1194, @function
+bmpcfg_emit_stub_1194:
+    bmpcfg 1, 32, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1194, .-bmpcfg_emit_stub_1194
+
+.globl bmpcfg_emit_stub_1195
+.p2align 2
+.type bmpcfg_emit_stub_1195, @function
+bmpcfg_emit_stub_1195:
+    bmpcfg 1, 32, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1195, .-bmpcfg_emit_stub_1195
+
+.globl bmpcfg_emit_stub_1196
+.p2align 2
+.type bmpcfg_emit_stub_1196, @function
+bmpcfg_emit_stub_1196:
+    bmpcfg 1, 32, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1196, .-bmpcfg_emit_stub_1196
+
+.globl bmpcfg_emit_stub_1197
+.p2align 2
+.type bmpcfg_emit_stub_1197, @function
+bmpcfg_emit_stub_1197:
+    bmpcfg 1, 32, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1197, .-bmpcfg_emit_stub_1197
+
+.globl bmpcfg_emit_stub_1198
+.p2align 2
+.type bmpcfg_emit_stub_1198, @function
+bmpcfg_emit_stub_1198:
+    bmpcfg 1, 32, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1198, .-bmpcfg_emit_stub_1198
+
+.globl bmpcfg_emit_stub_1199
+.p2align 2
+.type bmpcfg_emit_stub_1199, @function
+bmpcfg_emit_stub_1199:
+    bmpcfg 1, 32, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1199, .-bmpcfg_emit_stub_1199
+
+.globl bmpcfg_emit_stub_1200
+.p2align 2
+.type bmpcfg_emit_stub_1200, @function
+bmpcfg_emit_stub_1200:
+    bmpcfg 1, 32, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1200, .-bmpcfg_emit_stub_1200
+
+.globl bmpcfg_emit_stub_1201
+.p2align 2
+.type bmpcfg_emit_stub_1201, @function
+bmpcfg_emit_stub_1201:
+    bmpcfg 1, 32, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1201, .-bmpcfg_emit_stub_1201
+
+.globl bmpcfg_emit_stub_1202
+.p2align 2
+.type bmpcfg_emit_stub_1202, @function
+bmpcfg_emit_stub_1202:
+    bmpcfg 1, 32, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1202, .-bmpcfg_emit_stub_1202
+
+.globl bmpcfg_emit_stub_1203
+.p2align 2
+.type bmpcfg_emit_stub_1203, @function
+bmpcfg_emit_stub_1203:
+    bmpcfg 1, 32, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1203, .-bmpcfg_emit_stub_1203
+
+.globl bmpcfg_emit_stub_1204
+.p2align 2
+.type bmpcfg_emit_stub_1204, @function
+bmpcfg_emit_stub_1204:
+    bmpcfg 1, 32, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1204, .-bmpcfg_emit_stub_1204
+
+.globl bmpcfg_emit_stub_1205
+.p2align 2
+.type bmpcfg_emit_stub_1205, @function
+bmpcfg_emit_stub_1205:
+    bmpcfg 1, 32, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1205, .-bmpcfg_emit_stub_1205
+
+.globl bmpcfg_emit_stub_1206
+.p2align 2
+.type bmpcfg_emit_stub_1206, @function
+bmpcfg_emit_stub_1206:
+    bmpcfg 1, 32, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1206, .-bmpcfg_emit_stub_1206
+
+.globl bmpcfg_emit_stub_1207
+.p2align 2
+.type bmpcfg_emit_stub_1207, @function
+bmpcfg_emit_stub_1207:
+    bmpcfg 1, 32, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1207, .-bmpcfg_emit_stub_1207
+
+.globl bmpcfg_emit_stub_1208
+.p2align 2
+.type bmpcfg_emit_stub_1208, @function
+bmpcfg_emit_stub_1208:
+    bmpcfg 1, 32, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1208, .-bmpcfg_emit_stub_1208
+
+.globl bmpcfg_emit_stub_1209
+.p2align 2
+.type bmpcfg_emit_stub_1209, @function
+bmpcfg_emit_stub_1209:
+    bmpcfg 1, 32, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1209, .-bmpcfg_emit_stub_1209
+
+.globl bmpcfg_emit_stub_1210
+.p2align 2
+.type bmpcfg_emit_stub_1210, @function
+bmpcfg_emit_stub_1210:
+    bmpcfg 1, 32, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1210, .-bmpcfg_emit_stub_1210
+
+.globl bmpcfg_emit_stub_1211
+.p2align 2
+.type bmpcfg_emit_stub_1211, @function
+bmpcfg_emit_stub_1211:
+    bmpcfg 1, 32, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1211, .-bmpcfg_emit_stub_1211
+
+.globl bmpcfg_emit_stub_1212
+.p2align 2
+.type bmpcfg_emit_stub_1212, @function
+bmpcfg_emit_stub_1212:
+    bmpcfg 1, 32, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1212, .-bmpcfg_emit_stub_1212
+
+.globl bmpcfg_emit_stub_1213
+.p2align 2
+.type bmpcfg_emit_stub_1213, @function
+bmpcfg_emit_stub_1213:
+    bmpcfg 1, 32, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1213, .-bmpcfg_emit_stub_1213
+
+.globl bmpcfg_emit_stub_1214
+.p2align 2
+.type bmpcfg_emit_stub_1214, @function
+bmpcfg_emit_stub_1214:
+    bmpcfg 1, 32, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1214, .-bmpcfg_emit_stub_1214
+
+.globl bmpcfg_emit_stub_1215
+.p2align 2
+.type bmpcfg_emit_stub_1215, @function
+bmpcfg_emit_stub_1215:
+    bmpcfg 1, 32, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1215, .-bmpcfg_emit_stub_1215
+
+.globl bmpcfg_emit_stub_1216
+.p2align 2
+.type bmpcfg_emit_stub_1216, @function
+bmpcfg_emit_stub_1216:
+    bmpcfg 1, 32, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1216, .-bmpcfg_emit_stub_1216
+
+.globl bmpcfg_emit_stub_1217
+.p2align 2
+.type bmpcfg_emit_stub_1217, @function
+bmpcfg_emit_stub_1217:
+    bmpcfg 1, 32, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1217, .-bmpcfg_emit_stub_1217
+
+.globl bmpcfg_emit_stub_1218
+.p2align 2
+.type bmpcfg_emit_stub_1218, @function
+bmpcfg_emit_stub_1218:
+    bmpcfg 1, 32, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1218, .-bmpcfg_emit_stub_1218
+
+.globl bmpcfg_emit_stub_1219
+.p2align 2
+.type bmpcfg_emit_stub_1219, @function
+bmpcfg_emit_stub_1219:
+    bmpcfg 1, 32, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1219, .-bmpcfg_emit_stub_1219
+
+.globl bmpcfg_emit_stub_1220
+.p2align 2
+.type bmpcfg_emit_stub_1220, @function
+bmpcfg_emit_stub_1220:
+    bmpcfg 1, 32, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1220, .-bmpcfg_emit_stub_1220
+
+.globl bmpcfg_emit_stub_1221
+.p2align 2
+.type bmpcfg_emit_stub_1221, @function
+bmpcfg_emit_stub_1221:
+    bmpcfg 1, 32, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1221, .-bmpcfg_emit_stub_1221
+
+.globl bmpcfg_emit_stub_1222
+.p2align 2
+.type bmpcfg_emit_stub_1222, @function
+bmpcfg_emit_stub_1222:
+    bmpcfg 1, 32, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1222, .-bmpcfg_emit_stub_1222
+
+.globl bmpcfg_emit_stub_1223
+.p2align 2
+.type bmpcfg_emit_stub_1223, @function
+bmpcfg_emit_stub_1223:
+    bmpcfg 1, 32, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1223, .-bmpcfg_emit_stub_1223
+
+.globl bmpcfg_emit_stub_1224
+.p2align 2
+.type bmpcfg_emit_stub_1224, @function
+bmpcfg_emit_stub_1224:
+    bmpcfg 1, 32, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1224, .-bmpcfg_emit_stub_1224
+
+.globl bmpcfg_emit_stub_1225
+.p2align 2
+.type bmpcfg_emit_stub_1225, @function
+bmpcfg_emit_stub_1225:
+    bmpcfg 1, 32, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1225, .-bmpcfg_emit_stub_1225
+
+.globl bmpcfg_emit_stub_1226
+.p2align 2
+.type bmpcfg_emit_stub_1226, @function
+bmpcfg_emit_stub_1226:
+    bmpcfg 1, 32, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1226, .-bmpcfg_emit_stub_1226
+
+.globl bmpcfg_emit_stub_1227
+.p2align 2
+.type bmpcfg_emit_stub_1227, @function
+bmpcfg_emit_stub_1227:
+    bmpcfg 1, 32, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1227, .-bmpcfg_emit_stub_1227
+
+.globl bmpcfg_emit_stub_1228
+.p2align 2
+.type bmpcfg_emit_stub_1228, @function
+bmpcfg_emit_stub_1228:
+    bmpcfg 1, 32, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1228, .-bmpcfg_emit_stub_1228
+
+.globl bmpcfg_emit_stub_1229
+.p2align 2
+.type bmpcfg_emit_stub_1229, @function
+bmpcfg_emit_stub_1229:
+    bmpcfg 1, 32, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1229, .-bmpcfg_emit_stub_1229
+
+.globl bmpcfg_emit_stub_1230
+.p2align 2
+.type bmpcfg_emit_stub_1230, @function
+bmpcfg_emit_stub_1230:
+    bmpcfg 1, 32, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1230, .-bmpcfg_emit_stub_1230
+
+.globl bmpcfg_emit_stub_1231
+.p2align 2
+.type bmpcfg_emit_stub_1231, @function
+bmpcfg_emit_stub_1231:
+    bmpcfg 1, 32, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1231, .-bmpcfg_emit_stub_1231
+
+.globl bmpcfg_emit_stub_1232
+.p2align 2
+.type bmpcfg_emit_stub_1232, @function
+bmpcfg_emit_stub_1232:
+    bmpcfg 1, 32, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1232, .-bmpcfg_emit_stub_1232
+
+.globl bmpcfg_emit_stub_1233
+.p2align 2
+.type bmpcfg_emit_stub_1233, @function
+bmpcfg_emit_stub_1233:
+    bmpcfg 1, 32, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1233, .-bmpcfg_emit_stub_1233
+
+.globl bmpcfg_emit_stub_1234
+.p2align 2
+.type bmpcfg_emit_stub_1234, @function
+bmpcfg_emit_stub_1234:
+    bmpcfg 1, 32, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1234, .-bmpcfg_emit_stub_1234
+
+.globl bmpcfg_emit_stub_1235
+.p2align 2
+.type bmpcfg_emit_stub_1235, @function
+bmpcfg_emit_stub_1235:
+    bmpcfg 1, 32, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1235, .-bmpcfg_emit_stub_1235
+
+.globl bmpcfg_emit_stub_1236
+.p2align 2
+.type bmpcfg_emit_stub_1236, @function
+bmpcfg_emit_stub_1236:
+    bmpcfg 1, 32, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1236, .-bmpcfg_emit_stub_1236
+
+.globl bmpcfg_emit_stub_1237
+.p2align 2
+.type bmpcfg_emit_stub_1237, @function
+bmpcfg_emit_stub_1237:
+    bmpcfg 1, 32, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1237, .-bmpcfg_emit_stub_1237
+
+.globl bmpcfg_emit_stub_1238
+.p2align 2
+.type bmpcfg_emit_stub_1238, @function
+bmpcfg_emit_stub_1238:
+    bmpcfg 1, 32, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1238, .-bmpcfg_emit_stub_1238
+
+.globl bmpcfg_emit_stub_1239
+.p2align 2
+.type bmpcfg_emit_stub_1239, @function
+bmpcfg_emit_stub_1239:
+    bmpcfg 1, 32, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1239, .-bmpcfg_emit_stub_1239
+
+.globl bmpcfg_emit_stub_1240
+.p2align 2
+.type bmpcfg_emit_stub_1240, @function
+bmpcfg_emit_stub_1240:
+    bmpcfg 1, 32, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1240, .-bmpcfg_emit_stub_1240
+
+.globl bmpcfg_emit_stub_1241
+.p2align 2
+.type bmpcfg_emit_stub_1241, @function
+bmpcfg_emit_stub_1241:
+    bmpcfg 1, 40, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1241, .-bmpcfg_emit_stub_1241
+
+.globl bmpcfg_emit_stub_1242
+.p2align 2
+.type bmpcfg_emit_stub_1242, @function
+bmpcfg_emit_stub_1242:
+    bmpcfg 1, 40, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1242, .-bmpcfg_emit_stub_1242
+
+.globl bmpcfg_emit_stub_1243
+.p2align 2
+.type bmpcfg_emit_stub_1243, @function
+bmpcfg_emit_stub_1243:
+    bmpcfg 1, 40, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1243, .-bmpcfg_emit_stub_1243
+
+.globl bmpcfg_emit_stub_1244
+.p2align 2
+.type bmpcfg_emit_stub_1244, @function
+bmpcfg_emit_stub_1244:
+    bmpcfg 1, 40, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1244, .-bmpcfg_emit_stub_1244
+
+.globl bmpcfg_emit_stub_1245
+.p2align 2
+.type bmpcfg_emit_stub_1245, @function
+bmpcfg_emit_stub_1245:
+    bmpcfg 1, 40, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1245, .-bmpcfg_emit_stub_1245
+
+.globl bmpcfg_emit_stub_1246
+.p2align 2
+.type bmpcfg_emit_stub_1246, @function
+bmpcfg_emit_stub_1246:
+    bmpcfg 1, 40, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1246, .-bmpcfg_emit_stub_1246
+
+.globl bmpcfg_emit_stub_1247
+.p2align 2
+.type bmpcfg_emit_stub_1247, @function
+bmpcfg_emit_stub_1247:
+    bmpcfg 1, 40, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1247, .-bmpcfg_emit_stub_1247
+
+.globl bmpcfg_emit_stub_1248
+.p2align 2
+.type bmpcfg_emit_stub_1248, @function
+bmpcfg_emit_stub_1248:
+    bmpcfg 1, 40, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1248, .-bmpcfg_emit_stub_1248
+
+.globl bmpcfg_emit_stub_1249
+.p2align 2
+.type bmpcfg_emit_stub_1249, @function
+bmpcfg_emit_stub_1249:
+    bmpcfg 1, 40, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1249, .-bmpcfg_emit_stub_1249
+
+.globl bmpcfg_emit_stub_1250
+.p2align 2
+.type bmpcfg_emit_stub_1250, @function
+bmpcfg_emit_stub_1250:
+    bmpcfg 1, 40, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1250, .-bmpcfg_emit_stub_1250
+
+.globl bmpcfg_emit_stub_1251
+.p2align 2
+.type bmpcfg_emit_stub_1251, @function
+bmpcfg_emit_stub_1251:
+    bmpcfg 1, 40, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1251, .-bmpcfg_emit_stub_1251
+
+.globl bmpcfg_emit_stub_1252
+.p2align 2
+.type bmpcfg_emit_stub_1252, @function
+bmpcfg_emit_stub_1252:
+    bmpcfg 1, 40, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1252, .-bmpcfg_emit_stub_1252
+
+.globl bmpcfg_emit_stub_1253
+.p2align 2
+.type bmpcfg_emit_stub_1253, @function
+bmpcfg_emit_stub_1253:
+    bmpcfg 1, 40, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1253, .-bmpcfg_emit_stub_1253
+
+.globl bmpcfg_emit_stub_1254
+.p2align 2
+.type bmpcfg_emit_stub_1254, @function
+bmpcfg_emit_stub_1254:
+    bmpcfg 1, 40, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1254, .-bmpcfg_emit_stub_1254
+
+.globl bmpcfg_emit_stub_1255
+.p2align 2
+.type bmpcfg_emit_stub_1255, @function
+bmpcfg_emit_stub_1255:
+    bmpcfg 1, 40, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1255, .-bmpcfg_emit_stub_1255
+
+.globl bmpcfg_emit_stub_1256
+.p2align 2
+.type bmpcfg_emit_stub_1256, @function
+bmpcfg_emit_stub_1256:
+    bmpcfg 1, 40, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1256, .-bmpcfg_emit_stub_1256
+
+.globl bmpcfg_emit_stub_1257
+.p2align 2
+.type bmpcfg_emit_stub_1257, @function
+bmpcfg_emit_stub_1257:
+    bmpcfg 1, 40, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1257, .-bmpcfg_emit_stub_1257
+
+.globl bmpcfg_emit_stub_1258
+.p2align 2
+.type bmpcfg_emit_stub_1258, @function
+bmpcfg_emit_stub_1258:
+    bmpcfg 1, 40, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1258, .-bmpcfg_emit_stub_1258
+
+.globl bmpcfg_emit_stub_1259
+.p2align 2
+.type bmpcfg_emit_stub_1259, @function
+bmpcfg_emit_stub_1259:
+    bmpcfg 1, 40, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1259, .-bmpcfg_emit_stub_1259
+
+.globl bmpcfg_emit_stub_1260
+.p2align 2
+.type bmpcfg_emit_stub_1260, @function
+bmpcfg_emit_stub_1260:
+    bmpcfg 1, 40, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1260, .-bmpcfg_emit_stub_1260
+
+.globl bmpcfg_emit_stub_1261
+.p2align 2
+.type bmpcfg_emit_stub_1261, @function
+bmpcfg_emit_stub_1261:
+    bmpcfg 1, 40, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1261, .-bmpcfg_emit_stub_1261
+
+.globl bmpcfg_emit_stub_1262
+.p2align 2
+.type bmpcfg_emit_stub_1262, @function
+bmpcfg_emit_stub_1262:
+    bmpcfg 1, 40, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1262, .-bmpcfg_emit_stub_1262
+
+.globl bmpcfg_emit_stub_1263
+.p2align 2
+.type bmpcfg_emit_stub_1263, @function
+bmpcfg_emit_stub_1263:
+    bmpcfg 1, 40, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1263, .-bmpcfg_emit_stub_1263
+
+.globl bmpcfg_emit_stub_1264
+.p2align 2
+.type bmpcfg_emit_stub_1264, @function
+bmpcfg_emit_stub_1264:
+    bmpcfg 1, 40, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1264, .-bmpcfg_emit_stub_1264
+
+.globl bmpcfg_emit_stub_1265
+.p2align 2
+.type bmpcfg_emit_stub_1265, @function
+bmpcfg_emit_stub_1265:
+    bmpcfg 1, 40, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1265, .-bmpcfg_emit_stub_1265
+
+.globl bmpcfg_emit_stub_1266
+.p2align 2
+.type bmpcfg_emit_stub_1266, @function
+bmpcfg_emit_stub_1266:
+    bmpcfg 1, 40, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1266, .-bmpcfg_emit_stub_1266
+
+.globl bmpcfg_emit_stub_1267
+.p2align 2
+.type bmpcfg_emit_stub_1267, @function
+bmpcfg_emit_stub_1267:
+    bmpcfg 1, 40, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1267, .-bmpcfg_emit_stub_1267
+
+.globl bmpcfg_emit_stub_1268
+.p2align 2
+.type bmpcfg_emit_stub_1268, @function
+bmpcfg_emit_stub_1268:
+    bmpcfg 1, 40, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1268, .-bmpcfg_emit_stub_1268
+
+.globl bmpcfg_emit_stub_1269
+.p2align 2
+.type bmpcfg_emit_stub_1269, @function
+bmpcfg_emit_stub_1269:
+    bmpcfg 1, 40, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1269, .-bmpcfg_emit_stub_1269
+
+.globl bmpcfg_emit_stub_1270
+.p2align 2
+.type bmpcfg_emit_stub_1270, @function
+bmpcfg_emit_stub_1270:
+    bmpcfg 1, 40, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1270, .-bmpcfg_emit_stub_1270
+
+.globl bmpcfg_emit_stub_1271
+.p2align 2
+.type bmpcfg_emit_stub_1271, @function
+bmpcfg_emit_stub_1271:
+    bmpcfg 1, 40, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1271, .-bmpcfg_emit_stub_1271
+
+.globl bmpcfg_emit_stub_1272
+.p2align 2
+.type bmpcfg_emit_stub_1272, @function
+bmpcfg_emit_stub_1272:
+    bmpcfg 1, 40, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_1272, .-bmpcfg_emit_stub_1272
+
+.globl bmpcfg_emit_stub_1273
+.p2align 2
+.type bmpcfg_emit_stub_1273, @function
+bmpcfg_emit_stub_1273:
+    bmpcfg 1, 40, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1273, .-bmpcfg_emit_stub_1273
+
+.globl bmpcfg_emit_stub_1274
+.p2align 2
+.type bmpcfg_emit_stub_1274, @function
+bmpcfg_emit_stub_1274:
+    bmpcfg 1, 40, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1274, .-bmpcfg_emit_stub_1274
+
+.globl bmpcfg_emit_stub_1275
+.p2align 2
+.type bmpcfg_emit_stub_1275, @function
+bmpcfg_emit_stub_1275:
+    bmpcfg 1, 40, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1275, .-bmpcfg_emit_stub_1275
+
+.globl bmpcfg_emit_stub_1276
+.p2align 2
+.type bmpcfg_emit_stub_1276, @function
+bmpcfg_emit_stub_1276:
+    bmpcfg 1, 40, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1276, .-bmpcfg_emit_stub_1276
+
+.globl bmpcfg_emit_stub_1277
+.p2align 2
+.type bmpcfg_emit_stub_1277, @function
+bmpcfg_emit_stub_1277:
+    bmpcfg 1, 40, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1277, .-bmpcfg_emit_stub_1277
+
+.globl bmpcfg_emit_stub_1278
+.p2align 2
+.type bmpcfg_emit_stub_1278, @function
+bmpcfg_emit_stub_1278:
+    bmpcfg 1, 40, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1278, .-bmpcfg_emit_stub_1278
+
+.globl bmpcfg_emit_stub_1279
+.p2align 2
+.type bmpcfg_emit_stub_1279, @function
+bmpcfg_emit_stub_1279:
+    bmpcfg 1, 40, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1279, .-bmpcfg_emit_stub_1279
+
+.globl bmpcfg_emit_stub_1280
+.p2align 2
+.type bmpcfg_emit_stub_1280, @function
+bmpcfg_emit_stub_1280:
+    bmpcfg 1, 40, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1280, .-bmpcfg_emit_stub_1280
+
+.globl bmpcfg_emit_stub_1281
+.p2align 2
+.type bmpcfg_emit_stub_1281, @function
+bmpcfg_emit_stub_1281:
+    bmpcfg 1, 40, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1281, .-bmpcfg_emit_stub_1281
+
+.globl bmpcfg_emit_stub_1282
+.p2align 2
+.type bmpcfg_emit_stub_1282, @function
+bmpcfg_emit_stub_1282:
+    bmpcfg 1, 40, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1282, .-bmpcfg_emit_stub_1282
+
+.globl bmpcfg_emit_stub_1283
+.p2align 2
+.type bmpcfg_emit_stub_1283, @function
+bmpcfg_emit_stub_1283:
+    bmpcfg 1, 40, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1283, .-bmpcfg_emit_stub_1283
+
+.globl bmpcfg_emit_stub_1284
+.p2align 2
+.type bmpcfg_emit_stub_1284, @function
+bmpcfg_emit_stub_1284:
+    bmpcfg 1, 40, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1284, .-bmpcfg_emit_stub_1284
+
+.globl bmpcfg_emit_stub_1285
+.p2align 2
+.type bmpcfg_emit_stub_1285, @function
+bmpcfg_emit_stub_1285:
+    bmpcfg 1, 40, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1285, .-bmpcfg_emit_stub_1285
+
+.globl bmpcfg_emit_stub_1286
+.p2align 2
+.type bmpcfg_emit_stub_1286, @function
+bmpcfg_emit_stub_1286:
+    bmpcfg 1, 40, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1286, .-bmpcfg_emit_stub_1286
+
+.globl bmpcfg_emit_stub_1287
+.p2align 2
+.type bmpcfg_emit_stub_1287, @function
+bmpcfg_emit_stub_1287:
+    bmpcfg 1, 40, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1287, .-bmpcfg_emit_stub_1287
+
+.globl bmpcfg_emit_stub_1288
+.p2align 2
+.type bmpcfg_emit_stub_1288, @function
+bmpcfg_emit_stub_1288:
+    bmpcfg 1, 40, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1288, .-bmpcfg_emit_stub_1288
+
+.globl bmpcfg_emit_stub_1289
+.p2align 2
+.type bmpcfg_emit_stub_1289, @function
+bmpcfg_emit_stub_1289:
+    bmpcfg 1, 40, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1289, .-bmpcfg_emit_stub_1289
+
+.globl bmpcfg_emit_stub_1290
+.p2align 2
+.type bmpcfg_emit_stub_1290, @function
+bmpcfg_emit_stub_1290:
+    bmpcfg 1, 40, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1290, .-bmpcfg_emit_stub_1290
+
+.globl bmpcfg_emit_stub_1291
+.p2align 2
+.type bmpcfg_emit_stub_1291, @function
+bmpcfg_emit_stub_1291:
+    bmpcfg 1, 40, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1291, .-bmpcfg_emit_stub_1291
+
+.globl bmpcfg_emit_stub_1292
+.p2align 2
+.type bmpcfg_emit_stub_1292, @function
+bmpcfg_emit_stub_1292:
+    bmpcfg 1, 40, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1292, .-bmpcfg_emit_stub_1292
+
+.globl bmpcfg_emit_stub_1293
+.p2align 2
+.type bmpcfg_emit_stub_1293, @function
+bmpcfg_emit_stub_1293:
+    bmpcfg 1, 40, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1293, .-bmpcfg_emit_stub_1293
+
+.globl bmpcfg_emit_stub_1294
+.p2align 2
+.type bmpcfg_emit_stub_1294, @function
+bmpcfg_emit_stub_1294:
+    bmpcfg 1, 40, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1294, .-bmpcfg_emit_stub_1294
+
+.globl bmpcfg_emit_stub_1295
+.p2align 2
+.type bmpcfg_emit_stub_1295, @function
+bmpcfg_emit_stub_1295:
+    bmpcfg 1, 40, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1295, .-bmpcfg_emit_stub_1295
+
+.globl bmpcfg_emit_stub_1296
+.p2align 2
+.type bmpcfg_emit_stub_1296, @function
+bmpcfg_emit_stub_1296:
+    bmpcfg 1, 40, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1296, .-bmpcfg_emit_stub_1296
+
+.globl bmpcfg_emit_stub_1297
+.p2align 2
+.type bmpcfg_emit_stub_1297, @function
+bmpcfg_emit_stub_1297:
+    bmpcfg 1, 40, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1297, .-bmpcfg_emit_stub_1297
+
+.globl bmpcfg_emit_stub_1298
+.p2align 2
+.type bmpcfg_emit_stub_1298, @function
+bmpcfg_emit_stub_1298:
+    bmpcfg 1, 40, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1298, .-bmpcfg_emit_stub_1298
+
+.globl bmpcfg_emit_stub_1299
+.p2align 2
+.type bmpcfg_emit_stub_1299, @function
+bmpcfg_emit_stub_1299:
+    bmpcfg 1, 40, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1299, .-bmpcfg_emit_stub_1299
+
+.globl bmpcfg_emit_stub_1300
+.p2align 2
+.type bmpcfg_emit_stub_1300, @function
+bmpcfg_emit_stub_1300:
+    bmpcfg 1, 40, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1300, .-bmpcfg_emit_stub_1300
+
+.globl bmpcfg_emit_stub_1301
+.p2align 2
+.type bmpcfg_emit_stub_1301, @function
+bmpcfg_emit_stub_1301:
+    bmpcfg 1, 40, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1301, .-bmpcfg_emit_stub_1301
+
+.globl bmpcfg_emit_stub_1302
+.p2align 2
+.type bmpcfg_emit_stub_1302, @function
+bmpcfg_emit_stub_1302:
+    bmpcfg 1, 40, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1302, .-bmpcfg_emit_stub_1302
+
+.globl bmpcfg_emit_stub_1303
+.p2align 2
+.type bmpcfg_emit_stub_1303, @function
+bmpcfg_emit_stub_1303:
+    bmpcfg 1, 40, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1303, .-bmpcfg_emit_stub_1303
+
+.globl bmpcfg_emit_stub_1304
+.p2align 2
+.type bmpcfg_emit_stub_1304, @function
+bmpcfg_emit_stub_1304:
+    bmpcfg 1, 40, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1304, .-bmpcfg_emit_stub_1304
+
+.globl bmpcfg_emit_stub_1305
+.p2align 2
+.type bmpcfg_emit_stub_1305, @function
+bmpcfg_emit_stub_1305:
+    bmpcfg 1, 40, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1305, .-bmpcfg_emit_stub_1305
+
+.globl bmpcfg_emit_stub_1306
+.p2align 2
+.type bmpcfg_emit_stub_1306, @function
+bmpcfg_emit_stub_1306:
+    bmpcfg 1, 40, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1306, .-bmpcfg_emit_stub_1306
+
+.globl bmpcfg_emit_stub_1307
+.p2align 2
+.type bmpcfg_emit_stub_1307, @function
+bmpcfg_emit_stub_1307:
+    bmpcfg 1, 40, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1307, .-bmpcfg_emit_stub_1307
+
+.globl bmpcfg_emit_stub_1308
+.p2align 2
+.type bmpcfg_emit_stub_1308, @function
+bmpcfg_emit_stub_1308:
+    bmpcfg 1, 40, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1308, .-bmpcfg_emit_stub_1308
+
+.globl bmpcfg_emit_stub_1309
+.p2align 2
+.type bmpcfg_emit_stub_1309, @function
+bmpcfg_emit_stub_1309:
+    bmpcfg 1, 40, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1309, .-bmpcfg_emit_stub_1309
+
+.globl bmpcfg_emit_stub_1310
+.p2align 2
+.type bmpcfg_emit_stub_1310, @function
+bmpcfg_emit_stub_1310:
+    bmpcfg 1, 40, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1310, .-bmpcfg_emit_stub_1310
+
+.globl bmpcfg_emit_stub_1311
+.p2align 2
+.type bmpcfg_emit_stub_1311, @function
+bmpcfg_emit_stub_1311:
+    bmpcfg 1, 40, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1311, .-bmpcfg_emit_stub_1311
+
+.globl bmpcfg_emit_stub_1312
+.p2align 2
+.type bmpcfg_emit_stub_1312, @function
+bmpcfg_emit_stub_1312:
+    bmpcfg 1, 40, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1312, .-bmpcfg_emit_stub_1312
+
+.globl bmpcfg_emit_stub_1313
+.p2align 2
+.type bmpcfg_emit_stub_1313, @function
+bmpcfg_emit_stub_1313:
+    bmpcfg 1, 48, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1313, .-bmpcfg_emit_stub_1313
+
+.globl bmpcfg_emit_stub_1314
+.p2align 2
+.type bmpcfg_emit_stub_1314, @function
+bmpcfg_emit_stub_1314:
+    bmpcfg 1, 48, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1314, .-bmpcfg_emit_stub_1314
+
+.globl bmpcfg_emit_stub_1315
+.p2align 2
+.type bmpcfg_emit_stub_1315, @function
+bmpcfg_emit_stub_1315:
+    bmpcfg 1, 48, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1315, .-bmpcfg_emit_stub_1315
+
+.globl bmpcfg_emit_stub_1316
+.p2align 2
+.type bmpcfg_emit_stub_1316, @function
+bmpcfg_emit_stub_1316:
+    bmpcfg 1, 48, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1316, .-bmpcfg_emit_stub_1316
+
+.globl bmpcfg_emit_stub_1317
+.p2align 2
+.type bmpcfg_emit_stub_1317, @function
+bmpcfg_emit_stub_1317:
+    bmpcfg 1, 48, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1317, .-bmpcfg_emit_stub_1317
+
+.globl bmpcfg_emit_stub_1318
+.p2align 2
+.type bmpcfg_emit_stub_1318, @function
+bmpcfg_emit_stub_1318:
+    bmpcfg 1, 48, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1318, .-bmpcfg_emit_stub_1318
+
+.globl bmpcfg_emit_stub_1319
+.p2align 2
+.type bmpcfg_emit_stub_1319, @function
+bmpcfg_emit_stub_1319:
+    bmpcfg 1, 48, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1319, .-bmpcfg_emit_stub_1319
+
+.globl bmpcfg_emit_stub_1320
+.p2align 2
+.type bmpcfg_emit_stub_1320, @function
+bmpcfg_emit_stub_1320:
+    bmpcfg 1, 48, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1320, .-bmpcfg_emit_stub_1320
+
+.globl bmpcfg_emit_stub_1321
+.p2align 2
+.type bmpcfg_emit_stub_1321, @function
+bmpcfg_emit_stub_1321:
+    bmpcfg 1, 48, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1321, .-bmpcfg_emit_stub_1321
+
+.globl bmpcfg_emit_stub_1322
+.p2align 2
+.type bmpcfg_emit_stub_1322, @function
+bmpcfg_emit_stub_1322:
+    bmpcfg 1, 48, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1322, .-bmpcfg_emit_stub_1322
+
+.globl bmpcfg_emit_stub_1323
+.p2align 2
+.type bmpcfg_emit_stub_1323, @function
+bmpcfg_emit_stub_1323:
+    bmpcfg 1, 48, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1323, .-bmpcfg_emit_stub_1323
+
+.globl bmpcfg_emit_stub_1324
+.p2align 2
+.type bmpcfg_emit_stub_1324, @function
+bmpcfg_emit_stub_1324:
+    bmpcfg 1, 48, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1324, .-bmpcfg_emit_stub_1324
+
+.globl bmpcfg_emit_stub_1325
+.p2align 2
+.type bmpcfg_emit_stub_1325, @function
+bmpcfg_emit_stub_1325:
+    bmpcfg 1, 48, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1325, .-bmpcfg_emit_stub_1325
+
+.globl bmpcfg_emit_stub_1326
+.p2align 2
+.type bmpcfg_emit_stub_1326, @function
+bmpcfg_emit_stub_1326:
+    bmpcfg 1, 48, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1326, .-bmpcfg_emit_stub_1326
+
+.globl bmpcfg_emit_stub_1327
+.p2align 2
+.type bmpcfg_emit_stub_1327, @function
+bmpcfg_emit_stub_1327:
+    bmpcfg 1, 48, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1327, .-bmpcfg_emit_stub_1327
+
+.globl bmpcfg_emit_stub_1328
+.p2align 2
+.type bmpcfg_emit_stub_1328, @function
+bmpcfg_emit_stub_1328:
+    bmpcfg 1, 48, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1328, .-bmpcfg_emit_stub_1328
+
+.globl bmpcfg_emit_stub_1329
+.p2align 2
+.type bmpcfg_emit_stub_1329, @function
+bmpcfg_emit_stub_1329:
+    bmpcfg 1, 48, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1329, .-bmpcfg_emit_stub_1329
+
+.globl bmpcfg_emit_stub_1330
+.p2align 2
+.type bmpcfg_emit_stub_1330, @function
+bmpcfg_emit_stub_1330:
+    bmpcfg 1, 48, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1330, .-bmpcfg_emit_stub_1330
+
+.globl bmpcfg_emit_stub_1331
+.p2align 2
+.type bmpcfg_emit_stub_1331, @function
+bmpcfg_emit_stub_1331:
+    bmpcfg 1, 48, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1331, .-bmpcfg_emit_stub_1331
+
+.globl bmpcfg_emit_stub_1332
+.p2align 2
+.type bmpcfg_emit_stub_1332, @function
+bmpcfg_emit_stub_1332:
+    bmpcfg 1, 48, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1332, .-bmpcfg_emit_stub_1332
+
+.globl bmpcfg_emit_stub_1333
+.p2align 2
+.type bmpcfg_emit_stub_1333, @function
+bmpcfg_emit_stub_1333:
+    bmpcfg 1, 48, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1333, .-bmpcfg_emit_stub_1333
+
+.globl bmpcfg_emit_stub_1334
+.p2align 2
+.type bmpcfg_emit_stub_1334, @function
+bmpcfg_emit_stub_1334:
+    bmpcfg 1, 48, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1334, .-bmpcfg_emit_stub_1334
+
+.globl bmpcfg_emit_stub_1335
+.p2align 2
+.type bmpcfg_emit_stub_1335, @function
+bmpcfg_emit_stub_1335:
+    bmpcfg 1, 48, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1335, .-bmpcfg_emit_stub_1335
+
+.globl bmpcfg_emit_stub_1336
+.p2align 2
+.type bmpcfg_emit_stub_1336, @function
+bmpcfg_emit_stub_1336:
+    bmpcfg 1, 48, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1336, .-bmpcfg_emit_stub_1336
+
+.globl bmpcfg_emit_stub_1337
+.p2align 2
+.type bmpcfg_emit_stub_1337, @function
+bmpcfg_emit_stub_1337:
+    bmpcfg 1, 48, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1337, .-bmpcfg_emit_stub_1337
+
+.globl bmpcfg_emit_stub_1338
+.p2align 2
+.type bmpcfg_emit_stub_1338, @function
+bmpcfg_emit_stub_1338:
+    bmpcfg 1, 48, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1338, .-bmpcfg_emit_stub_1338
+
+.globl bmpcfg_emit_stub_1339
+.p2align 2
+.type bmpcfg_emit_stub_1339, @function
+bmpcfg_emit_stub_1339:
+    bmpcfg 1, 48, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1339, .-bmpcfg_emit_stub_1339
+
+.globl bmpcfg_emit_stub_1340
+.p2align 2
+.type bmpcfg_emit_stub_1340, @function
+bmpcfg_emit_stub_1340:
+    bmpcfg 1, 48, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1340, .-bmpcfg_emit_stub_1340
+
+.globl bmpcfg_emit_stub_1341
+.p2align 2
+.type bmpcfg_emit_stub_1341, @function
+bmpcfg_emit_stub_1341:
+    bmpcfg 1, 48, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1341, .-bmpcfg_emit_stub_1341
+
+.globl bmpcfg_emit_stub_1342
+.p2align 2
+.type bmpcfg_emit_stub_1342, @function
+bmpcfg_emit_stub_1342:
+    bmpcfg 1, 48, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1342, .-bmpcfg_emit_stub_1342
+
+.globl bmpcfg_emit_stub_1343
+.p2align 2
+.type bmpcfg_emit_stub_1343, @function
+bmpcfg_emit_stub_1343:
+    bmpcfg 1, 48, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1343, .-bmpcfg_emit_stub_1343
+
+.globl bmpcfg_emit_stub_1344
+.p2align 2
+.type bmpcfg_emit_stub_1344, @function
+bmpcfg_emit_stub_1344:
+    bmpcfg 1, 48, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1344, .-bmpcfg_emit_stub_1344
+
+.globl bmpcfg_emit_stub_1345
+.p2align 2
+.type bmpcfg_emit_stub_1345, @function
+bmpcfg_emit_stub_1345:
+    bmpcfg 1, 48, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1345, .-bmpcfg_emit_stub_1345
+
+.globl bmpcfg_emit_stub_1346
+.p2align 2
+.type bmpcfg_emit_stub_1346, @function
+bmpcfg_emit_stub_1346:
+    bmpcfg 1, 48, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1346, .-bmpcfg_emit_stub_1346
+
+.globl bmpcfg_emit_stub_1347
+.p2align 2
+.type bmpcfg_emit_stub_1347, @function
+bmpcfg_emit_stub_1347:
+    bmpcfg 1, 48, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1347, .-bmpcfg_emit_stub_1347
+
+.globl bmpcfg_emit_stub_1348
+.p2align 2
+.type bmpcfg_emit_stub_1348, @function
+bmpcfg_emit_stub_1348:
+    bmpcfg 1, 48, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1348, .-bmpcfg_emit_stub_1348
+
+.globl bmpcfg_emit_stub_1349
+.p2align 2
+.type bmpcfg_emit_stub_1349, @function
+bmpcfg_emit_stub_1349:
+    bmpcfg 1, 48, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1349, .-bmpcfg_emit_stub_1349
+
+.globl bmpcfg_emit_stub_1350
+.p2align 2
+.type bmpcfg_emit_stub_1350, @function
+bmpcfg_emit_stub_1350:
+    bmpcfg 1, 48, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1350, .-bmpcfg_emit_stub_1350
+
+.globl bmpcfg_emit_stub_1351
+.p2align 2
+.type bmpcfg_emit_stub_1351, @function
+bmpcfg_emit_stub_1351:
+    bmpcfg 1, 48, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1351, .-bmpcfg_emit_stub_1351
+
+.globl bmpcfg_emit_stub_1352
+.p2align 2
+.type bmpcfg_emit_stub_1352, @function
+bmpcfg_emit_stub_1352:
+    bmpcfg 1, 48, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1352, .-bmpcfg_emit_stub_1352
+
+.globl bmpcfg_emit_stub_1353
+.p2align 2
+.type bmpcfg_emit_stub_1353, @function
+bmpcfg_emit_stub_1353:
+    bmpcfg 1, 48, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1353, .-bmpcfg_emit_stub_1353
+
+.globl bmpcfg_emit_stub_1354
+.p2align 2
+.type bmpcfg_emit_stub_1354, @function
+bmpcfg_emit_stub_1354:
+    bmpcfg 1, 48, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1354, .-bmpcfg_emit_stub_1354
+
+.globl bmpcfg_emit_stub_1355
+.p2align 2
+.type bmpcfg_emit_stub_1355, @function
+bmpcfg_emit_stub_1355:
+    bmpcfg 1, 48, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1355, .-bmpcfg_emit_stub_1355
+
+.globl bmpcfg_emit_stub_1356
+.p2align 2
+.type bmpcfg_emit_stub_1356, @function
+bmpcfg_emit_stub_1356:
+    bmpcfg 1, 48, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1356, .-bmpcfg_emit_stub_1356
+
+.globl bmpcfg_emit_stub_1357
+.p2align 2
+.type bmpcfg_emit_stub_1357, @function
+bmpcfg_emit_stub_1357:
+    bmpcfg 1, 48, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1357, .-bmpcfg_emit_stub_1357
+
+.globl bmpcfg_emit_stub_1358
+.p2align 2
+.type bmpcfg_emit_stub_1358, @function
+bmpcfg_emit_stub_1358:
+    bmpcfg 1, 48, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1358, .-bmpcfg_emit_stub_1358
+
+.globl bmpcfg_emit_stub_1359
+.p2align 2
+.type bmpcfg_emit_stub_1359, @function
+bmpcfg_emit_stub_1359:
+    bmpcfg 1, 48, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1359, .-bmpcfg_emit_stub_1359
+
+.globl bmpcfg_emit_stub_1360
+.p2align 2
+.type bmpcfg_emit_stub_1360, @function
+bmpcfg_emit_stub_1360:
+    bmpcfg 1, 48, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1360, .-bmpcfg_emit_stub_1360
+
+.globl bmpcfg_emit_stub_1361
+.p2align 2
+.type bmpcfg_emit_stub_1361, @function
+bmpcfg_emit_stub_1361:
+    bmpcfg 1, 48, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1361, .-bmpcfg_emit_stub_1361
+
+.globl bmpcfg_emit_stub_1362
+.p2align 2
+.type bmpcfg_emit_stub_1362, @function
+bmpcfg_emit_stub_1362:
+    bmpcfg 1, 48, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1362, .-bmpcfg_emit_stub_1362
+
+.globl bmpcfg_emit_stub_1363
+.p2align 2
+.type bmpcfg_emit_stub_1363, @function
+bmpcfg_emit_stub_1363:
+    bmpcfg 1, 48, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1363, .-bmpcfg_emit_stub_1363
+
+.globl bmpcfg_emit_stub_1364
+.p2align 2
+.type bmpcfg_emit_stub_1364, @function
+bmpcfg_emit_stub_1364:
+    bmpcfg 1, 48, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1364, .-bmpcfg_emit_stub_1364
+
+.globl bmpcfg_emit_stub_1365
+.p2align 2
+.type bmpcfg_emit_stub_1365, @function
+bmpcfg_emit_stub_1365:
+    bmpcfg 1, 48, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1365, .-bmpcfg_emit_stub_1365
+
+.globl bmpcfg_emit_stub_1366
+.p2align 2
+.type bmpcfg_emit_stub_1366, @function
+bmpcfg_emit_stub_1366:
+    bmpcfg 1, 48, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1366, .-bmpcfg_emit_stub_1366
+
+.globl bmpcfg_emit_stub_1367
+.p2align 2
+.type bmpcfg_emit_stub_1367, @function
+bmpcfg_emit_stub_1367:
+    bmpcfg 1, 48, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1367, .-bmpcfg_emit_stub_1367
+
+.globl bmpcfg_emit_stub_1368
+.p2align 2
+.type bmpcfg_emit_stub_1368, @function
+bmpcfg_emit_stub_1368:
+    bmpcfg 1, 48, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1368, .-bmpcfg_emit_stub_1368
+
+.globl bmpcfg_emit_stub_1369
+.p2align 2
+.type bmpcfg_emit_stub_1369, @function
+bmpcfg_emit_stub_1369:
+    bmpcfg 1, 48, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1369, .-bmpcfg_emit_stub_1369
+
+.globl bmpcfg_emit_stub_1370
+.p2align 2
+.type bmpcfg_emit_stub_1370, @function
+bmpcfg_emit_stub_1370:
+    bmpcfg 1, 48, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1370, .-bmpcfg_emit_stub_1370
+
+.globl bmpcfg_emit_stub_1371
+.p2align 2
+.type bmpcfg_emit_stub_1371, @function
+bmpcfg_emit_stub_1371:
+    bmpcfg 1, 48, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1371, .-bmpcfg_emit_stub_1371
+
+.globl bmpcfg_emit_stub_1372
+.p2align 2
+.type bmpcfg_emit_stub_1372, @function
+bmpcfg_emit_stub_1372:
+    bmpcfg 1, 48, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1372, .-bmpcfg_emit_stub_1372
+
+.globl bmpcfg_emit_stub_1373
+.p2align 2
+.type bmpcfg_emit_stub_1373, @function
+bmpcfg_emit_stub_1373:
+    bmpcfg 1, 48, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1373, .-bmpcfg_emit_stub_1373
+
+.globl bmpcfg_emit_stub_1374
+.p2align 2
+.type bmpcfg_emit_stub_1374, @function
+bmpcfg_emit_stub_1374:
+    bmpcfg 1, 48, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1374, .-bmpcfg_emit_stub_1374
+
+.globl bmpcfg_emit_stub_1375
+.p2align 2
+.type bmpcfg_emit_stub_1375, @function
+bmpcfg_emit_stub_1375:
+    bmpcfg 1, 48, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1375, .-bmpcfg_emit_stub_1375
+
+.globl bmpcfg_emit_stub_1376
+.p2align 2
+.type bmpcfg_emit_stub_1376, @function
+bmpcfg_emit_stub_1376:
+    bmpcfg 1, 48, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1376, .-bmpcfg_emit_stub_1376
+
+.globl bmpcfg_emit_stub_1377
+.p2align 2
+.type bmpcfg_emit_stub_1377, @function
+bmpcfg_emit_stub_1377:
+    bmpcfg 1, 48, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1377, .-bmpcfg_emit_stub_1377
+
+.globl bmpcfg_emit_stub_1378
+.p2align 2
+.type bmpcfg_emit_stub_1378, @function
+bmpcfg_emit_stub_1378:
+    bmpcfg 1, 48, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1378, .-bmpcfg_emit_stub_1378
+
+.globl bmpcfg_emit_stub_1379
+.p2align 2
+.type bmpcfg_emit_stub_1379, @function
+bmpcfg_emit_stub_1379:
+    bmpcfg 1, 48, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1379, .-bmpcfg_emit_stub_1379
+
+.globl bmpcfg_emit_stub_1380
+.p2align 2
+.type bmpcfg_emit_stub_1380, @function
+bmpcfg_emit_stub_1380:
+    bmpcfg 1, 56, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1380, .-bmpcfg_emit_stub_1380
+
+.globl bmpcfg_emit_stub_1381
+.p2align 2
+.type bmpcfg_emit_stub_1381, @function
+bmpcfg_emit_stub_1381:
+    bmpcfg 1, 56, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1381, .-bmpcfg_emit_stub_1381
+
+.globl bmpcfg_emit_stub_1382
+.p2align 2
+.type bmpcfg_emit_stub_1382, @function
+bmpcfg_emit_stub_1382:
+    bmpcfg 1, 56, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1382, .-bmpcfg_emit_stub_1382
+
+.globl bmpcfg_emit_stub_1383
+.p2align 2
+.type bmpcfg_emit_stub_1383, @function
+bmpcfg_emit_stub_1383:
+    bmpcfg 1, 56, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1383, .-bmpcfg_emit_stub_1383
+
+.globl bmpcfg_emit_stub_1384
+.p2align 2
+.type bmpcfg_emit_stub_1384, @function
+bmpcfg_emit_stub_1384:
+    bmpcfg 1, 56, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1384, .-bmpcfg_emit_stub_1384
+
+.globl bmpcfg_emit_stub_1385
+.p2align 2
+.type bmpcfg_emit_stub_1385, @function
+bmpcfg_emit_stub_1385:
+    bmpcfg 1, 56, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1385, .-bmpcfg_emit_stub_1385
+
+.globl bmpcfg_emit_stub_1386
+.p2align 2
+.type bmpcfg_emit_stub_1386, @function
+bmpcfg_emit_stub_1386:
+    bmpcfg 1, 56, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1386, .-bmpcfg_emit_stub_1386
+
+.globl bmpcfg_emit_stub_1387
+.p2align 2
+.type bmpcfg_emit_stub_1387, @function
+bmpcfg_emit_stub_1387:
+    bmpcfg 1, 56, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1387, .-bmpcfg_emit_stub_1387
+
+.globl bmpcfg_emit_stub_1388
+.p2align 2
+.type bmpcfg_emit_stub_1388, @function
+bmpcfg_emit_stub_1388:
+    bmpcfg 1, 56, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1388, .-bmpcfg_emit_stub_1388
+
+.globl bmpcfg_emit_stub_1389
+.p2align 2
+.type bmpcfg_emit_stub_1389, @function
+bmpcfg_emit_stub_1389:
+    bmpcfg 1, 56, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1389, .-bmpcfg_emit_stub_1389
+
+.globl bmpcfg_emit_stub_1390
+.p2align 2
+.type bmpcfg_emit_stub_1390, @function
+bmpcfg_emit_stub_1390:
+    bmpcfg 1, 56, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1390, .-bmpcfg_emit_stub_1390
+
+.globl bmpcfg_emit_stub_1391
+.p2align 2
+.type bmpcfg_emit_stub_1391, @function
+bmpcfg_emit_stub_1391:
+    bmpcfg 1, 56, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1391, .-bmpcfg_emit_stub_1391
+
+.globl bmpcfg_emit_stub_1392
+.p2align 2
+.type bmpcfg_emit_stub_1392, @function
+bmpcfg_emit_stub_1392:
+    bmpcfg 1, 56, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1392, .-bmpcfg_emit_stub_1392
+
+.globl bmpcfg_emit_stub_1393
+.p2align 2
+.type bmpcfg_emit_stub_1393, @function
+bmpcfg_emit_stub_1393:
+    bmpcfg 1, 56, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1393, .-bmpcfg_emit_stub_1393
+
+.globl bmpcfg_emit_stub_1394
+.p2align 2
+.type bmpcfg_emit_stub_1394, @function
+bmpcfg_emit_stub_1394:
+    bmpcfg 1, 56, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1394, .-bmpcfg_emit_stub_1394
+
+.globl bmpcfg_emit_stub_1395
+.p2align 2
+.type bmpcfg_emit_stub_1395, @function
+bmpcfg_emit_stub_1395:
+    bmpcfg 1, 56, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1395, .-bmpcfg_emit_stub_1395
+
+.globl bmpcfg_emit_stub_1396
+.p2align 2
+.type bmpcfg_emit_stub_1396, @function
+bmpcfg_emit_stub_1396:
+    bmpcfg 1, 56, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1396, .-bmpcfg_emit_stub_1396
+
+.globl bmpcfg_emit_stub_1397
+.p2align 2
+.type bmpcfg_emit_stub_1397, @function
+bmpcfg_emit_stub_1397:
+    bmpcfg 1, 56, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1397, .-bmpcfg_emit_stub_1397
+
+.globl bmpcfg_emit_stub_1398
+.p2align 2
+.type bmpcfg_emit_stub_1398, @function
+bmpcfg_emit_stub_1398:
+    bmpcfg 1, 56, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1398, .-bmpcfg_emit_stub_1398
+
+.globl bmpcfg_emit_stub_1399
+.p2align 2
+.type bmpcfg_emit_stub_1399, @function
+bmpcfg_emit_stub_1399:
+    bmpcfg 1, 56, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1399, .-bmpcfg_emit_stub_1399
+
+.globl bmpcfg_emit_stub_1400
+.p2align 2
+.type bmpcfg_emit_stub_1400, @function
+bmpcfg_emit_stub_1400:
+    bmpcfg 1, 56, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1400, .-bmpcfg_emit_stub_1400
+
+.globl bmpcfg_emit_stub_1401
+.p2align 2
+.type bmpcfg_emit_stub_1401, @function
+bmpcfg_emit_stub_1401:
+    bmpcfg 1, 56, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1401, .-bmpcfg_emit_stub_1401
+
+.globl bmpcfg_emit_stub_1402
+.p2align 2
+.type bmpcfg_emit_stub_1402, @function
+bmpcfg_emit_stub_1402:
+    bmpcfg 1, 56, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1402, .-bmpcfg_emit_stub_1402
+
+.globl bmpcfg_emit_stub_1403
+.p2align 2
+.type bmpcfg_emit_stub_1403, @function
+bmpcfg_emit_stub_1403:
+    bmpcfg 1, 56, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1403, .-bmpcfg_emit_stub_1403
+
+.globl bmpcfg_emit_stub_1404
+.p2align 2
+.type bmpcfg_emit_stub_1404, @function
+bmpcfg_emit_stub_1404:
+    bmpcfg 1, 56, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1404, .-bmpcfg_emit_stub_1404
+
+.globl bmpcfg_emit_stub_1405
+.p2align 2
+.type bmpcfg_emit_stub_1405, @function
+bmpcfg_emit_stub_1405:
+    bmpcfg 1, 56, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1405, .-bmpcfg_emit_stub_1405
+
+.globl bmpcfg_emit_stub_1406
+.p2align 2
+.type bmpcfg_emit_stub_1406, @function
+bmpcfg_emit_stub_1406:
+    bmpcfg 1, 56, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1406, .-bmpcfg_emit_stub_1406
+
+.globl bmpcfg_emit_stub_1407
+.p2align 2
+.type bmpcfg_emit_stub_1407, @function
+bmpcfg_emit_stub_1407:
+    bmpcfg 1, 56, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1407, .-bmpcfg_emit_stub_1407
+
+.globl bmpcfg_emit_stub_1408
+.p2align 2
+.type bmpcfg_emit_stub_1408, @function
+bmpcfg_emit_stub_1408:
+    bmpcfg 1, 56, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1408, .-bmpcfg_emit_stub_1408
+
+.globl bmpcfg_emit_stub_1409
+.p2align 2
+.type bmpcfg_emit_stub_1409, @function
+bmpcfg_emit_stub_1409:
+    bmpcfg 1, 56, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1409, .-bmpcfg_emit_stub_1409
+
+.globl bmpcfg_emit_stub_1410
+.p2align 2
+.type bmpcfg_emit_stub_1410, @function
+bmpcfg_emit_stub_1410:
+    bmpcfg 1, 56, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1410, .-bmpcfg_emit_stub_1410
+
+.globl bmpcfg_emit_stub_1411
+.p2align 2
+.type bmpcfg_emit_stub_1411, @function
+bmpcfg_emit_stub_1411:
+    bmpcfg 1, 56, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1411, .-bmpcfg_emit_stub_1411
+
+.globl bmpcfg_emit_stub_1412
+.p2align 2
+.type bmpcfg_emit_stub_1412, @function
+bmpcfg_emit_stub_1412:
+    bmpcfg 1, 56, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1412, .-bmpcfg_emit_stub_1412
+
+.globl bmpcfg_emit_stub_1413
+.p2align 2
+.type bmpcfg_emit_stub_1413, @function
+bmpcfg_emit_stub_1413:
+    bmpcfg 1, 56, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1413, .-bmpcfg_emit_stub_1413
+
+.globl bmpcfg_emit_stub_1414
+.p2align 2
+.type bmpcfg_emit_stub_1414, @function
+bmpcfg_emit_stub_1414:
+    bmpcfg 1, 56, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1414, .-bmpcfg_emit_stub_1414
+
+.globl bmpcfg_emit_stub_1415
+.p2align 2
+.type bmpcfg_emit_stub_1415, @function
+bmpcfg_emit_stub_1415:
+    bmpcfg 1, 56, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1415, .-bmpcfg_emit_stub_1415
+
+.globl bmpcfg_emit_stub_1416
+.p2align 2
+.type bmpcfg_emit_stub_1416, @function
+bmpcfg_emit_stub_1416:
+    bmpcfg 1, 56, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1416, .-bmpcfg_emit_stub_1416
+
+.globl bmpcfg_emit_stub_1417
+.p2align 2
+.type bmpcfg_emit_stub_1417, @function
+bmpcfg_emit_stub_1417:
+    bmpcfg 1, 56, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1417, .-bmpcfg_emit_stub_1417
+
+.globl bmpcfg_emit_stub_1418
+.p2align 2
+.type bmpcfg_emit_stub_1418, @function
+bmpcfg_emit_stub_1418:
+    bmpcfg 1, 56, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1418, .-bmpcfg_emit_stub_1418
+
+.globl bmpcfg_emit_stub_1419
+.p2align 2
+.type bmpcfg_emit_stub_1419, @function
+bmpcfg_emit_stub_1419:
+    bmpcfg 1, 56, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1419, .-bmpcfg_emit_stub_1419
+
+.globl bmpcfg_emit_stub_1420
+.p2align 2
+.type bmpcfg_emit_stub_1420, @function
+bmpcfg_emit_stub_1420:
+    bmpcfg 1, 56, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1420, .-bmpcfg_emit_stub_1420
+
+.globl bmpcfg_emit_stub_1421
+.p2align 2
+.type bmpcfg_emit_stub_1421, @function
+bmpcfg_emit_stub_1421:
+    bmpcfg 1, 56, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1421, .-bmpcfg_emit_stub_1421
+
+.globl bmpcfg_emit_stub_1422
+.p2align 2
+.type bmpcfg_emit_stub_1422, @function
+bmpcfg_emit_stub_1422:
+    bmpcfg 1, 56, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1422, .-bmpcfg_emit_stub_1422
+
+.globl bmpcfg_emit_stub_1423
+.p2align 2
+.type bmpcfg_emit_stub_1423, @function
+bmpcfg_emit_stub_1423:
+    bmpcfg 1, 56, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1423, .-bmpcfg_emit_stub_1423
+
+.globl bmpcfg_emit_stub_1424
+.p2align 2
+.type bmpcfg_emit_stub_1424, @function
+bmpcfg_emit_stub_1424:
+    bmpcfg 1, 56, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1424, .-bmpcfg_emit_stub_1424
+
+.globl bmpcfg_emit_stub_1425
+.p2align 2
+.type bmpcfg_emit_stub_1425, @function
+bmpcfg_emit_stub_1425:
+    bmpcfg 1, 56, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1425, .-bmpcfg_emit_stub_1425
+
+.globl bmpcfg_emit_stub_1426
+.p2align 2
+.type bmpcfg_emit_stub_1426, @function
+bmpcfg_emit_stub_1426:
+    bmpcfg 1, 56, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1426, .-bmpcfg_emit_stub_1426
+
+.globl bmpcfg_emit_stub_1427
+.p2align 2
+.type bmpcfg_emit_stub_1427, @function
+bmpcfg_emit_stub_1427:
+    bmpcfg 1, 56, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1427, .-bmpcfg_emit_stub_1427
+
+.globl bmpcfg_emit_stub_1428
+.p2align 2
+.type bmpcfg_emit_stub_1428, @function
+bmpcfg_emit_stub_1428:
+    bmpcfg 1, 56, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1428, .-bmpcfg_emit_stub_1428
+
+.globl bmpcfg_emit_stub_1429
+.p2align 2
+.type bmpcfg_emit_stub_1429, @function
+bmpcfg_emit_stub_1429:
+    bmpcfg 1, 56, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1429, .-bmpcfg_emit_stub_1429
+
+.globl bmpcfg_emit_stub_1430
+.p2align 2
+.type bmpcfg_emit_stub_1430, @function
+bmpcfg_emit_stub_1430:
+    bmpcfg 1, 56, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1430, .-bmpcfg_emit_stub_1430
+
+.globl bmpcfg_emit_stub_1431
+.p2align 2
+.type bmpcfg_emit_stub_1431, @function
+bmpcfg_emit_stub_1431:
+    bmpcfg 1, 56, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1431, .-bmpcfg_emit_stub_1431
+
+.globl bmpcfg_emit_stub_1432
+.p2align 2
+.type bmpcfg_emit_stub_1432, @function
+bmpcfg_emit_stub_1432:
+    bmpcfg 1, 56, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1432, .-bmpcfg_emit_stub_1432
+
+.globl bmpcfg_emit_stub_1433
+.p2align 2
+.type bmpcfg_emit_stub_1433, @function
+bmpcfg_emit_stub_1433:
+    bmpcfg 1, 56, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1433, .-bmpcfg_emit_stub_1433
+
+.globl bmpcfg_emit_stub_1434
+.p2align 2
+.type bmpcfg_emit_stub_1434, @function
+bmpcfg_emit_stub_1434:
+    bmpcfg 1, 56, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1434, .-bmpcfg_emit_stub_1434
+
+.globl bmpcfg_emit_stub_1435
+.p2align 2
+.type bmpcfg_emit_stub_1435, @function
+bmpcfg_emit_stub_1435:
+    bmpcfg 1, 56, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1435, .-bmpcfg_emit_stub_1435
+
+.globl bmpcfg_emit_stub_1436
+.p2align 2
+.type bmpcfg_emit_stub_1436, @function
+bmpcfg_emit_stub_1436:
+    bmpcfg 1, 56, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1436, .-bmpcfg_emit_stub_1436
+
+.globl bmpcfg_emit_stub_1437
+.p2align 2
+.type bmpcfg_emit_stub_1437, @function
+bmpcfg_emit_stub_1437:
+    bmpcfg 1, 56, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1437, .-bmpcfg_emit_stub_1437
+
+.globl bmpcfg_emit_stub_1438
+.p2align 2
+.type bmpcfg_emit_stub_1438, @function
+bmpcfg_emit_stub_1438:
+    bmpcfg 1, 64, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1438, .-bmpcfg_emit_stub_1438
+
+.globl bmpcfg_emit_stub_1439
+.p2align 2
+.type bmpcfg_emit_stub_1439, @function
+bmpcfg_emit_stub_1439:
+    bmpcfg 1, 64, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1439, .-bmpcfg_emit_stub_1439
+
+.globl bmpcfg_emit_stub_1440
+.p2align 2
+.type bmpcfg_emit_stub_1440, @function
+bmpcfg_emit_stub_1440:
+    bmpcfg 1, 64, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1440, .-bmpcfg_emit_stub_1440
+
+.globl bmpcfg_emit_stub_1441
+.p2align 2
+.type bmpcfg_emit_stub_1441, @function
+bmpcfg_emit_stub_1441:
+    bmpcfg 1, 64, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1441, .-bmpcfg_emit_stub_1441
+
+.globl bmpcfg_emit_stub_1442
+.p2align 2
+.type bmpcfg_emit_stub_1442, @function
+bmpcfg_emit_stub_1442:
+    bmpcfg 1, 64, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1442, .-bmpcfg_emit_stub_1442
+
+.globl bmpcfg_emit_stub_1443
+.p2align 2
+.type bmpcfg_emit_stub_1443, @function
+bmpcfg_emit_stub_1443:
+    bmpcfg 1, 64, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1443, .-bmpcfg_emit_stub_1443
+
+.globl bmpcfg_emit_stub_1444
+.p2align 2
+.type bmpcfg_emit_stub_1444, @function
+bmpcfg_emit_stub_1444:
+    bmpcfg 1, 64, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1444, .-bmpcfg_emit_stub_1444
+
+.globl bmpcfg_emit_stub_1445
+.p2align 2
+.type bmpcfg_emit_stub_1445, @function
+bmpcfg_emit_stub_1445:
+    bmpcfg 1, 64, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1445, .-bmpcfg_emit_stub_1445
+
+.globl bmpcfg_emit_stub_1446
+.p2align 2
+.type bmpcfg_emit_stub_1446, @function
+bmpcfg_emit_stub_1446:
+    bmpcfg 1, 64, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1446, .-bmpcfg_emit_stub_1446
+
+.globl bmpcfg_emit_stub_1447
+.p2align 2
+.type bmpcfg_emit_stub_1447, @function
+bmpcfg_emit_stub_1447:
+    bmpcfg 1, 64, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1447, .-bmpcfg_emit_stub_1447
+
+.globl bmpcfg_emit_stub_1448
+.p2align 2
+.type bmpcfg_emit_stub_1448, @function
+bmpcfg_emit_stub_1448:
+    bmpcfg 1, 64, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1448, .-bmpcfg_emit_stub_1448
+
+.globl bmpcfg_emit_stub_1449
+.p2align 2
+.type bmpcfg_emit_stub_1449, @function
+bmpcfg_emit_stub_1449:
+    bmpcfg 1, 64, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1449, .-bmpcfg_emit_stub_1449
+
+.globl bmpcfg_emit_stub_1450
+.p2align 2
+.type bmpcfg_emit_stub_1450, @function
+bmpcfg_emit_stub_1450:
+    bmpcfg 1, 64, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1450, .-bmpcfg_emit_stub_1450
+
+.globl bmpcfg_emit_stub_1451
+.p2align 2
+.type bmpcfg_emit_stub_1451, @function
+bmpcfg_emit_stub_1451:
+    bmpcfg 1, 64, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1451, .-bmpcfg_emit_stub_1451
+
+.globl bmpcfg_emit_stub_1452
+.p2align 2
+.type bmpcfg_emit_stub_1452, @function
+bmpcfg_emit_stub_1452:
+    bmpcfg 1, 64, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1452, .-bmpcfg_emit_stub_1452
+
+.globl bmpcfg_emit_stub_1453
+.p2align 2
+.type bmpcfg_emit_stub_1453, @function
+bmpcfg_emit_stub_1453:
+    bmpcfg 1, 64, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1453, .-bmpcfg_emit_stub_1453
+
+.globl bmpcfg_emit_stub_1454
+.p2align 2
+.type bmpcfg_emit_stub_1454, @function
+bmpcfg_emit_stub_1454:
+    bmpcfg 1, 64, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1454, .-bmpcfg_emit_stub_1454
+
+.globl bmpcfg_emit_stub_1455
+.p2align 2
+.type bmpcfg_emit_stub_1455, @function
+bmpcfg_emit_stub_1455:
+    bmpcfg 1, 64, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1455, .-bmpcfg_emit_stub_1455
+
+.globl bmpcfg_emit_stub_1456
+.p2align 2
+.type bmpcfg_emit_stub_1456, @function
+bmpcfg_emit_stub_1456:
+    bmpcfg 1, 64, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1456, .-bmpcfg_emit_stub_1456
+
+.globl bmpcfg_emit_stub_1457
+.p2align 2
+.type bmpcfg_emit_stub_1457, @function
+bmpcfg_emit_stub_1457:
+    bmpcfg 1, 64, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1457, .-bmpcfg_emit_stub_1457
+
+.globl bmpcfg_emit_stub_1458
+.p2align 2
+.type bmpcfg_emit_stub_1458, @function
+bmpcfg_emit_stub_1458:
+    bmpcfg 1, 64, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1458, .-bmpcfg_emit_stub_1458
+
+.globl bmpcfg_emit_stub_1459
+.p2align 2
+.type bmpcfg_emit_stub_1459, @function
+bmpcfg_emit_stub_1459:
+    bmpcfg 1, 64, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1459, .-bmpcfg_emit_stub_1459
+
+.globl bmpcfg_emit_stub_1460
+.p2align 2
+.type bmpcfg_emit_stub_1460, @function
+bmpcfg_emit_stub_1460:
+    bmpcfg 1, 64, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1460, .-bmpcfg_emit_stub_1460
+
+.globl bmpcfg_emit_stub_1461
+.p2align 2
+.type bmpcfg_emit_stub_1461, @function
+bmpcfg_emit_stub_1461:
+    bmpcfg 1, 64, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1461, .-bmpcfg_emit_stub_1461
+
+.globl bmpcfg_emit_stub_1462
+.p2align 2
+.type bmpcfg_emit_stub_1462, @function
+bmpcfg_emit_stub_1462:
+    bmpcfg 1, 64, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1462, .-bmpcfg_emit_stub_1462
+
+.globl bmpcfg_emit_stub_1463
+.p2align 2
+.type bmpcfg_emit_stub_1463, @function
+bmpcfg_emit_stub_1463:
+    bmpcfg 1, 64, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1463, .-bmpcfg_emit_stub_1463
+
+.globl bmpcfg_emit_stub_1464
+.p2align 2
+.type bmpcfg_emit_stub_1464, @function
+bmpcfg_emit_stub_1464:
+    bmpcfg 1, 64, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1464, .-bmpcfg_emit_stub_1464
+
+.globl bmpcfg_emit_stub_1465
+.p2align 2
+.type bmpcfg_emit_stub_1465, @function
+bmpcfg_emit_stub_1465:
+    bmpcfg 1, 64, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1465, .-bmpcfg_emit_stub_1465
+
+.globl bmpcfg_emit_stub_1466
+.p2align 2
+.type bmpcfg_emit_stub_1466, @function
+bmpcfg_emit_stub_1466:
+    bmpcfg 1, 64, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1466, .-bmpcfg_emit_stub_1466
+
+.globl bmpcfg_emit_stub_1467
+.p2align 2
+.type bmpcfg_emit_stub_1467, @function
+bmpcfg_emit_stub_1467:
+    bmpcfg 1, 64, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1467, .-bmpcfg_emit_stub_1467
+
+.globl bmpcfg_emit_stub_1468
+.p2align 2
+.type bmpcfg_emit_stub_1468, @function
+bmpcfg_emit_stub_1468:
+    bmpcfg 1, 64, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1468, .-bmpcfg_emit_stub_1468
+
+.globl bmpcfg_emit_stub_1469
+.p2align 2
+.type bmpcfg_emit_stub_1469, @function
+bmpcfg_emit_stub_1469:
+    bmpcfg 1, 64, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1469, .-bmpcfg_emit_stub_1469
+
+.globl bmpcfg_emit_stub_1470
+.p2align 2
+.type bmpcfg_emit_stub_1470, @function
+bmpcfg_emit_stub_1470:
+    bmpcfg 1, 64, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1470, .-bmpcfg_emit_stub_1470
+
+.globl bmpcfg_emit_stub_1471
+.p2align 2
+.type bmpcfg_emit_stub_1471, @function
+bmpcfg_emit_stub_1471:
+    bmpcfg 1, 64, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1471, .-bmpcfg_emit_stub_1471
+
+.globl bmpcfg_emit_stub_1472
+.p2align 2
+.type bmpcfg_emit_stub_1472, @function
+bmpcfg_emit_stub_1472:
+    bmpcfg 1, 64, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1472, .-bmpcfg_emit_stub_1472
+
+.globl bmpcfg_emit_stub_1473
+.p2align 2
+.type bmpcfg_emit_stub_1473, @function
+bmpcfg_emit_stub_1473:
+    bmpcfg 1, 64, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1473, .-bmpcfg_emit_stub_1473
+
+.globl bmpcfg_emit_stub_1474
+.p2align 2
+.type bmpcfg_emit_stub_1474, @function
+bmpcfg_emit_stub_1474:
+    bmpcfg 1, 64, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1474, .-bmpcfg_emit_stub_1474
+
+.globl bmpcfg_emit_stub_1475
+.p2align 2
+.type bmpcfg_emit_stub_1475, @function
+bmpcfg_emit_stub_1475:
+    bmpcfg 1, 64, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1475, .-bmpcfg_emit_stub_1475
+
+.globl bmpcfg_emit_stub_1476
+.p2align 2
+.type bmpcfg_emit_stub_1476, @function
+bmpcfg_emit_stub_1476:
+    bmpcfg 1, 64, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1476, .-bmpcfg_emit_stub_1476
+
+.globl bmpcfg_emit_stub_1477
+.p2align 2
+.type bmpcfg_emit_stub_1477, @function
+bmpcfg_emit_stub_1477:
+    bmpcfg 1, 64, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1477, .-bmpcfg_emit_stub_1477
+
+.globl bmpcfg_emit_stub_1478
+.p2align 2
+.type bmpcfg_emit_stub_1478, @function
+bmpcfg_emit_stub_1478:
+    bmpcfg 1, 64, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1478, .-bmpcfg_emit_stub_1478
+
+.globl bmpcfg_emit_stub_1479
+.p2align 2
+.type bmpcfg_emit_stub_1479, @function
+bmpcfg_emit_stub_1479:
+    bmpcfg 1, 64, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1479, .-bmpcfg_emit_stub_1479
+
+.globl bmpcfg_emit_stub_1480
+.p2align 2
+.type bmpcfg_emit_stub_1480, @function
+bmpcfg_emit_stub_1480:
+    bmpcfg 1, 64, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1480, .-bmpcfg_emit_stub_1480
+
+.globl bmpcfg_emit_stub_1481
+.p2align 2
+.type bmpcfg_emit_stub_1481, @function
+bmpcfg_emit_stub_1481:
+    bmpcfg 1, 64, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1481, .-bmpcfg_emit_stub_1481
+
+.globl bmpcfg_emit_stub_1482
+.p2align 2
+.type bmpcfg_emit_stub_1482, @function
+bmpcfg_emit_stub_1482:
+    bmpcfg 1, 64, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1482, .-bmpcfg_emit_stub_1482
+
+.globl bmpcfg_emit_stub_1483
+.p2align 2
+.type bmpcfg_emit_stub_1483, @function
+bmpcfg_emit_stub_1483:
+    bmpcfg 1, 64, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1483, .-bmpcfg_emit_stub_1483
+
+.globl bmpcfg_emit_stub_1484
+.p2align 2
+.type bmpcfg_emit_stub_1484, @function
+bmpcfg_emit_stub_1484:
+    bmpcfg 1, 64, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1484, .-bmpcfg_emit_stub_1484
+
+.globl bmpcfg_emit_stub_1485
+.p2align 2
+.type bmpcfg_emit_stub_1485, @function
+bmpcfg_emit_stub_1485:
+    bmpcfg 1, 64, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1485, .-bmpcfg_emit_stub_1485
+
+.globl bmpcfg_emit_stub_1486
+.p2align 2
+.type bmpcfg_emit_stub_1486, @function
+bmpcfg_emit_stub_1486:
+    bmpcfg 1, 64, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1486, .-bmpcfg_emit_stub_1486
+
+.globl bmpcfg_emit_stub_1487
+.p2align 2
+.type bmpcfg_emit_stub_1487, @function
+bmpcfg_emit_stub_1487:
+    bmpcfg 1, 64, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1487, .-bmpcfg_emit_stub_1487
+
+.globl bmpcfg_emit_stub_1488
+.p2align 2
+.type bmpcfg_emit_stub_1488, @function
+bmpcfg_emit_stub_1488:
+    bmpcfg 1, 64, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1488, .-bmpcfg_emit_stub_1488
+
+.globl bmpcfg_emit_stub_1489
+.p2align 2
+.type bmpcfg_emit_stub_1489, @function
+bmpcfg_emit_stub_1489:
+    bmpcfg 1, 64, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1489, .-bmpcfg_emit_stub_1489
+
+.globl bmpcfg_emit_stub_1490
+.p2align 2
+.type bmpcfg_emit_stub_1490, @function
+bmpcfg_emit_stub_1490:
+    bmpcfg 1, 64, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1490, .-bmpcfg_emit_stub_1490
+
+.globl bmpcfg_emit_stub_1491
+.p2align 2
+.type bmpcfg_emit_stub_1491, @function
+bmpcfg_emit_stub_1491:
+    bmpcfg 1, 64, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1491, .-bmpcfg_emit_stub_1491
+
+.globl bmpcfg_emit_stub_1492
+.p2align 2
+.type bmpcfg_emit_stub_1492, @function
+bmpcfg_emit_stub_1492:
+    bmpcfg 1, 64, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1492, .-bmpcfg_emit_stub_1492
+
+.globl bmpcfg_emit_stub_1493
+.p2align 2
+.type bmpcfg_emit_stub_1493, @function
+bmpcfg_emit_stub_1493:
+    bmpcfg 1, 64, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1493, .-bmpcfg_emit_stub_1493
+
+.globl bmpcfg_emit_stub_1494
+.p2align 2
+.type bmpcfg_emit_stub_1494, @function
+bmpcfg_emit_stub_1494:
+    bmpcfg 1, 64, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1494, .-bmpcfg_emit_stub_1494
+
+.globl bmpcfg_emit_stub_1495
+.p2align 2
+.type bmpcfg_emit_stub_1495, @function
+bmpcfg_emit_stub_1495:
+    bmpcfg 1, 64, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1495, .-bmpcfg_emit_stub_1495
+
+.globl bmpcfg_emit_stub_1496
+.p2align 2
+.type bmpcfg_emit_stub_1496, @function
+bmpcfg_emit_stub_1496:
+    bmpcfg 1, 72, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1496, .-bmpcfg_emit_stub_1496
+
+.globl bmpcfg_emit_stub_1497
+.p2align 2
+.type bmpcfg_emit_stub_1497, @function
+bmpcfg_emit_stub_1497:
+    bmpcfg 1, 72, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1497, .-bmpcfg_emit_stub_1497
+
+.globl bmpcfg_emit_stub_1498
+.p2align 2
+.type bmpcfg_emit_stub_1498, @function
+bmpcfg_emit_stub_1498:
+    bmpcfg 1, 72, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1498, .-bmpcfg_emit_stub_1498
+
+.globl bmpcfg_emit_stub_1499
+.p2align 2
+.type bmpcfg_emit_stub_1499, @function
+bmpcfg_emit_stub_1499:
+    bmpcfg 1, 72, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1499, .-bmpcfg_emit_stub_1499
+
+.globl bmpcfg_emit_stub_1500
+.p2align 2
+.type bmpcfg_emit_stub_1500, @function
+bmpcfg_emit_stub_1500:
+    bmpcfg 1, 72, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1500, .-bmpcfg_emit_stub_1500
+
+.globl bmpcfg_emit_stub_1501
+.p2align 2
+.type bmpcfg_emit_stub_1501, @function
+bmpcfg_emit_stub_1501:
+    bmpcfg 1, 72, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1501, .-bmpcfg_emit_stub_1501
+
+.globl bmpcfg_emit_stub_1502
+.p2align 2
+.type bmpcfg_emit_stub_1502, @function
+bmpcfg_emit_stub_1502:
+    bmpcfg 1, 72, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1502, .-bmpcfg_emit_stub_1502
+
+.globl bmpcfg_emit_stub_1503
+.p2align 2
+.type bmpcfg_emit_stub_1503, @function
+bmpcfg_emit_stub_1503:
+    bmpcfg 1, 72, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1503, .-bmpcfg_emit_stub_1503
+
+.globl bmpcfg_emit_stub_1504
+.p2align 2
+.type bmpcfg_emit_stub_1504, @function
+bmpcfg_emit_stub_1504:
+    bmpcfg 1, 72, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1504, .-bmpcfg_emit_stub_1504
+
+.globl bmpcfg_emit_stub_1505
+.p2align 2
+.type bmpcfg_emit_stub_1505, @function
+bmpcfg_emit_stub_1505:
+    bmpcfg 1, 72, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1505, .-bmpcfg_emit_stub_1505
+
+.globl bmpcfg_emit_stub_1506
+.p2align 2
+.type bmpcfg_emit_stub_1506, @function
+bmpcfg_emit_stub_1506:
+    bmpcfg 1, 72, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1506, .-bmpcfg_emit_stub_1506
+
+.globl bmpcfg_emit_stub_1507
+.p2align 2
+.type bmpcfg_emit_stub_1507, @function
+bmpcfg_emit_stub_1507:
+    bmpcfg 1, 72, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1507, .-bmpcfg_emit_stub_1507
+
+.globl bmpcfg_emit_stub_1508
+.p2align 2
+.type bmpcfg_emit_stub_1508, @function
+bmpcfg_emit_stub_1508:
+    bmpcfg 1, 72, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1508, .-bmpcfg_emit_stub_1508
+
+.globl bmpcfg_emit_stub_1509
+.p2align 2
+.type bmpcfg_emit_stub_1509, @function
+bmpcfg_emit_stub_1509:
+    bmpcfg 1, 72, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1509, .-bmpcfg_emit_stub_1509
+
+.globl bmpcfg_emit_stub_1510
+.p2align 2
+.type bmpcfg_emit_stub_1510, @function
+bmpcfg_emit_stub_1510:
+    bmpcfg 1, 72, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1510, .-bmpcfg_emit_stub_1510
+
+.globl bmpcfg_emit_stub_1511
+.p2align 2
+.type bmpcfg_emit_stub_1511, @function
+bmpcfg_emit_stub_1511:
+    bmpcfg 1, 72, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1511, .-bmpcfg_emit_stub_1511
+
+.globl bmpcfg_emit_stub_1512
+.p2align 2
+.type bmpcfg_emit_stub_1512, @function
+bmpcfg_emit_stub_1512:
+    bmpcfg 1, 72, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1512, .-bmpcfg_emit_stub_1512
+
+.globl bmpcfg_emit_stub_1513
+.p2align 2
+.type bmpcfg_emit_stub_1513, @function
+bmpcfg_emit_stub_1513:
+    bmpcfg 1, 72, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1513, .-bmpcfg_emit_stub_1513
+
+.globl bmpcfg_emit_stub_1514
+.p2align 2
+.type bmpcfg_emit_stub_1514, @function
+bmpcfg_emit_stub_1514:
+    bmpcfg 1, 72, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1514, .-bmpcfg_emit_stub_1514
+
+.globl bmpcfg_emit_stub_1515
+.p2align 2
+.type bmpcfg_emit_stub_1515, @function
+bmpcfg_emit_stub_1515:
+    bmpcfg 1, 72, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1515, .-bmpcfg_emit_stub_1515
+
+.globl bmpcfg_emit_stub_1516
+.p2align 2
+.type bmpcfg_emit_stub_1516, @function
+bmpcfg_emit_stub_1516:
+    bmpcfg 1, 72, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1516, .-bmpcfg_emit_stub_1516
+
+.globl bmpcfg_emit_stub_1517
+.p2align 2
+.type bmpcfg_emit_stub_1517, @function
+bmpcfg_emit_stub_1517:
+    bmpcfg 1, 72, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1517, .-bmpcfg_emit_stub_1517
+
+.globl bmpcfg_emit_stub_1518
+.p2align 2
+.type bmpcfg_emit_stub_1518, @function
+bmpcfg_emit_stub_1518:
+    bmpcfg 1, 72, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1518, .-bmpcfg_emit_stub_1518
+
+.globl bmpcfg_emit_stub_1519
+.p2align 2
+.type bmpcfg_emit_stub_1519, @function
+bmpcfg_emit_stub_1519:
+    bmpcfg 1, 72, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1519, .-bmpcfg_emit_stub_1519
+
+.globl bmpcfg_emit_stub_1520
+.p2align 2
+.type bmpcfg_emit_stub_1520, @function
+bmpcfg_emit_stub_1520:
+    bmpcfg 1, 72, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1520, .-bmpcfg_emit_stub_1520
+
+.globl bmpcfg_emit_stub_1521
+.p2align 2
+.type bmpcfg_emit_stub_1521, @function
+bmpcfg_emit_stub_1521:
+    bmpcfg 1, 72, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1521, .-bmpcfg_emit_stub_1521
+
+.globl bmpcfg_emit_stub_1522
+.p2align 2
+.type bmpcfg_emit_stub_1522, @function
+bmpcfg_emit_stub_1522:
+    bmpcfg 1, 72, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1522, .-bmpcfg_emit_stub_1522
+
+.globl bmpcfg_emit_stub_1523
+.p2align 2
+.type bmpcfg_emit_stub_1523, @function
+bmpcfg_emit_stub_1523:
+    bmpcfg 1, 72, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1523, .-bmpcfg_emit_stub_1523
+
+.globl bmpcfg_emit_stub_1524
+.p2align 2
+.type bmpcfg_emit_stub_1524, @function
+bmpcfg_emit_stub_1524:
+    bmpcfg 1, 72, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1524, .-bmpcfg_emit_stub_1524
+
+.globl bmpcfg_emit_stub_1525
+.p2align 2
+.type bmpcfg_emit_stub_1525, @function
+bmpcfg_emit_stub_1525:
+    bmpcfg 1, 72, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1525, .-bmpcfg_emit_stub_1525
+
+.globl bmpcfg_emit_stub_1526
+.p2align 2
+.type bmpcfg_emit_stub_1526, @function
+bmpcfg_emit_stub_1526:
+    bmpcfg 1, 72, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1526, .-bmpcfg_emit_stub_1526
+
+.globl bmpcfg_emit_stub_1527
+.p2align 2
+.type bmpcfg_emit_stub_1527, @function
+bmpcfg_emit_stub_1527:
+    bmpcfg 1, 72, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1527, .-bmpcfg_emit_stub_1527
+
+.globl bmpcfg_emit_stub_1528
+.p2align 2
+.type bmpcfg_emit_stub_1528, @function
+bmpcfg_emit_stub_1528:
+    bmpcfg 1, 72, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1528, .-bmpcfg_emit_stub_1528
+
+.globl bmpcfg_emit_stub_1529
+.p2align 2
+.type bmpcfg_emit_stub_1529, @function
+bmpcfg_emit_stub_1529:
+    bmpcfg 1, 72, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1529, .-bmpcfg_emit_stub_1529
+
+.globl bmpcfg_emit_stub_1530
+.p2align 2
+.type bmpcfg_emit_stub_1530, @function
+bmpcfg_emit_stub_1530:
+    bmpcfg 1, 72, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1530, .-bmpcfg_emit_stub_1530
+
+.globl bmpcfg_emit_stub_1531
+.p2align 2
+.type bmpcfg_emit_stub_1531, @function
+bmpcfg_emit_stub_1531:
+    bmpcfg 1, 72, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1531, .-bmpcfg_emit_stub_1531
+
+.globl bmpcfg_emit_stub_1532
+.p2align 2
+.type bmpcfg_emit_stub_1532, @function
+bmpcfg_emit_stub_1532:
+    bmpcfg 1, 72, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1532, .-bmpcfg_emit_stub_1532
+
+.globl bmpcfg_emit_stub_1533
+.p2align 2
+.type bmpcfg_emit_stub_1533, @function
+bmpcfg_emit_stub_1533:
+    bmpcfg 1, 72, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1533, .-bmpcfg_emit_stub_1533
+
+.globl bmpcfg_emit_stub_1534
+.p2align 2
+.type bmpcfg_emit_stub_1534, @function
+bmpcfg_emit_stub_1534:
+    bmpcfg 1, 72, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1534, .-bmpcfg_emit_stub_1534
+
+.globl bmpcfg_emit_stub_1535
+.p2align 2
+.type bmpcfg_emit_stub_1535, @function
+bmpcfg_emit_stub_1535:
+    bmpcfg 1, 72, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1535, .-bmpcfg_emit_stub_1535
+
+.globl bmpcfg_emit_stub_1536
+.p2align 2
+.type bmpcfg_emit_stub_1536, @function
+bmpcfg_emit_stub_1536:
+    bmpcfg 1, 72, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1536, .-bmpcfg_emit_stub_1536
+
+.globl bmpcfg_emit_stub_1537
+.p2align 2
+.type bmpcfg_emit_stub_1537, @function
+bmpcfg_emit_stub_1537:
+    bmpcfg 1, 80, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1537, .-bmpcfg_emit_stub_1537
+
+.globl bmpcfg_emit_stub_1538
+.p2align 2
+.type bmpcfg_emit_stub_1538, @function
+bmpcfg_emit_stub_1538:
+    bmpcfg 1, 80, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1538, .-bmpcfg_emit_stub_1538
+
+.globl bmpcfg_emit_stub_1539
+.p2align 2
+.type bmpcfg_emit_stub_1539, @function
+bmpcfg_emit_stub_1539:
+    bmpcfg 1, 80, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1539, .-bmpcfg_emit_stub_1539
+
+.globl bmpcfg_emit_stub_1540
+.p2align 2
+.type bmpcfg_emit_stub_1540, @function
+bmpcfg_emit_stub_1540:
+    bmpcfg 1, 80, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1540, .-bmpcfg_emit_stub_1540
+
+.globl bmpcfg_emit_stub_1541
+.p2align 2
+.type bmpcfg_emit_stub_1541, @function
+bmpcfg_emit_stub_1541:
+    bmpcfg 1, 80, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1541, .-bmpcfg_emit_stub_1541
+
+.globl bmpcfg_emit_stub_1542
+.p2align 2
+.type bmpcfg_emit_stub_1542, @function
+bmpcfg_emit_stub_1542:
+    bmpcfg 1, 80, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1542, .-bmpcfg_emit_stub_1542
+
+.globl bmpcfg_emit_stub_1543
+.p2align 2
+.type bmpcfg_emit_stub_1543, @function
+bmpcfg_emit_stub_1543:
+    bmpcfg 1, 80, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1543, .-bmpcfg_emit_stub_1543
+
+.globl bmpcfg_emit_stub_1544
+.p2align 2
+.type bmpcfg_emit_stub_1544, @function
+bmpcfg_emit_stub_1544:
+    bmpcfg 1, 80, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1544, .-bmpcfg_emit_stub_1544
+
+.globl bmpcfg_emit_stub_1545
+.p2align 2
+.type bmpcfg_emit_stub_1545, @function
+bmpcfg_emit_stub_1545:
+    bmpcfg 1, 80, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1545, .-bmpcfg_emit_stub_1545
+
+.globl bmpcfg_emit_stub_1546
+.p2align 2
+.type bmpcfg_emit_stub_1546, @function
+bmpcfg_emit_stub_1546:
+    bmpcfg 1, 80, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1546, .-bmpcfg_emit_stub_1546
+
+.globl bmpcfg_emit_stub_1547
+.p2align 2
+.type bmpcfg_emit_stub_1547, @function
+bmpcfg_emit_stub_1547:
+    bmpcfg 1, 80, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1547, .-bmpcfg_emit_stub_1547
+
+.globl bmpcfg_emit_stub_1548
+.p2align 2
+.type bmpcfg_emit_stub_1548, @function
+bmpcfg_emit_stub_1548:
+    bmpcfg 1, 80, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1548, .-bmpcfg_emit_stub_1548
+
+.globl bmpcfg_emit_stub_1549
+.p2align 2
+.type bmpcfg_emit_stub_1549, @function
+bmpcfg_emit_stub_1549:
+    bmpcfg 1, 80, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1549, .-bmpcfg_emit_stub_1549
+
+.globl bmpcfg_emit_stub_1550
+.p2align 2
+.type bmpcfg_emit_stub_1550, @function
+bmpcfg_emit_stub_1550:
+    bmpcfg 1, 80, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1550, .-bmpcfg_emit_stub_1550
+
+.globl bmpcfg_emit_stub_1551
+.p2align 2
+.type bmpcfg_emit_stub_1551, @function
+bmpcfg_emit_stub_1551:
+    bmpcfg 1, 80, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1551, .-bmpcfg_emit_stub_1551
+
+.globl bmpcfg_emit_stub_1552
+.p2align 2
+.type bmpcfg_emit_stub_1552, @function
+bmpcfg_emit_stub_1552:
+    bmpcfg 1, 80, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1552, .-bmpcfg_emit_stub_1552
+
+.globl bmpcfg_emit_stub_1553
+.p2align 2
+.type bmpcfg_emit_stub_1553, @function
+bmpcfg_emit_stub_1553:
+    bmpcfg 1, 80, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1553, .-bmpcfg_emit_stub_1553
+
+.globl bmpcfg_emit_stub_1554
+.p2align 2
+.type bmpcfg_emit_stub_1554, @function
+bmpcfg_emit_stub_1554:
+    bmpcfg 1, 80, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1554, .-bmpcfg_emit_stub_1554
+
+.globl bmpcfg_emit_stub_1555
+.p2align 2
+.type bmpcfg_emit_stub_1555, @function
+bmpcfg_emit_stub_1555:
+    bmpcfg 1, 80, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1555, .-bmpcfg_emit_stub_1555
+
+.globl bmpcfg_emit_stub_1556
+.p2align 2
+.type bmpcfg_emit_stub_1556, @function
+bmpcfg_emit_stub_1556:
+    bmpcfg 1, 80, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1556, .-bmpcfg_emit_stub_1556
+
+.globl bmpcfg_emit_stub_1557
+.p2align 2
+.type bmpcfg_emit_stub_1557, @function
+bmpcfg_emit_stub_1557:
+    bmpcfg 1, 80, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1557, .-bmpcfg_emit_stub_1557
+
+.globl bmpcfg_emit_stub_1558
+.p2align 2
+.type bmpcfg_emit_stub_1558, @function
+bmpcfg_emit_stub_1558:
+    bmpcfg 1, 80, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1558, .-bmpcfg_emit_stub_1558
+
+.globl bmpcfg_emit_stub_1559
+.p2align 2
+.type bmpcfg_emit_stub_1559, @function
+bmpcfg_emit_stub_1559:
+    bmpcfg 1, 80, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1559, .-bmpcfg_emit_stub_1559
+
+.globl bmpcfg_emit_stub_1560
+.p2align 2
+.type bmpcfg_emit_stub_1560, @function
+bmpcfg_emit_stub_1560:
+    bmpcfg 1, 80, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1560, .-bmpcfg_emit_stub_1560
+
+.globl bmpcfg_emit_stub_1561
+.p2align 2
+.type bmpcfg_emit_stub_1561, @function
+bmpcfg_emit_stub_1561:
+    bmpcfg 1, 80, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1561, .-bmpcfg_emit_stub_1561
+
+.globl bmpcfg_emit_stub_1562
+.p2align 2
+.type bmpcfg_emit_stub_1562, @function
+bmpcfg_emit_stub_1562:
+    bmpcfg 1, 80, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1562, .-bmpcfg_emit_stub_1562
+
+.globl bmpcfg_emit_stub_1563
+.p2align 2
+.type bmpcfg_emit_stub_1563, @function
+bmpcfg_emit_stub_1563:
+    bmpcfg 1, 80, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1563, .-bmpcfg_emit_stub_1563
+
+.globl bmpcfg_emit_stub_1564
+.p2align 2
+.type bmpcfg_emit_stub_1564, @function
+bmpcfg_emit_stub_1564:
+    bmpcfg 1, 80, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1564, .-bmpcfg_emit_stub_1564
+
+.globl bmpcfg_emit_stub_1565
+.p2align 2
+.type bmpcfg_emit_stub_1565, @function
+bmpcfg_emit_stub_1565:
+    bmpcfg 1, 80, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1565, .-bmpcfg_emit_stub_1565
+
+.globl bmpcfg_emit_stub_1566
+.p2align 2
+.type bmpcfg_emit_stub_1566, @function
+bmpcfg_emit_stub_1566:
+    bmpcfg 1, 80, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1566, .-bmpcfg_emit_stub_1566
+
+.globl bmpcfg_emit_stub_1567
+.p2align 2
+.type bmpcfg_emit_stub_1567, @function
+bmpcfg_emit_stub_1567:
+    bmpcfg 1, 80, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1567, .-bmpcfg_emit_stub_1567
+
+.globl bmpcfg_emit_stub_1568
+.p2align 2
+.type bmpcfg_emit_stub_1568, @function
+bmpcfg_emit_stub_1568:
+    bmpcfg 1, 80, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1568, .-bmpcfg_emit_stub_1568
+
+.globl bmpcfg_emit_stub_1569
+.p2align 2
+.type bmpcfg_emit_stub_1569, @function
+bmpcfg_emit_stub_1569:
+    bmpcfg 1, 80, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1569, .-bmpcfg_emit_stub_1569
+
+.globl bmpcfg_emit_stub_1570
+.p2align 2
+.type bmpcfg_emit_stub_1570, @function
+bmpcfg_emit_stub_1570:
+    bmpcfg 1, 80, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1570, .-bmpcfg_emit_stub_1570
+
+.globl bmpcfg_emit_stub_1571
+.p2align 2
+.type bmpcfg_emit_stub_1571, @function
+bmpcfg_emit_stub_1571:
+    bmpcfg 1, 80, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1571, .-bmpcfg_emit_stub_1571
+
+.globl bmpcfg_emit_stub_1572
+.p2align 2
+.type bmpcfg_emit_stub_1572, @function
+bmpcfg_emit_stub_1572:
+    bmpcfg 1, 80, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1572, .-bmpcfg_emit_stub_1572
+
+.globl bmpcfg_emit_stub_1573
+.p2align 2
+.type bmpcfg_emit_stub_1573, @function
+bmpcfg_emit_stub_1573:
+    bmpcfg 1, 80, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1573, .-bmpcfg_emit_stub_1573
+
+.globl bmpcfg_emit_stub_1574
+.p2align 2
+.type bmpcfg_emit_stub_1574, @function
+bmpcfg_emit_stub_1574:
+    bmpcfg 1, 80, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1574, .-bmpcfg_emit_stub_1574
+
+.globl bmpcfg_emit_stub_1575
+.p2align 2
+.type bmpcfg_emit_stub_1575, @function
+bmpcfg_emit_stub_1575:
+    bmpcfg 1, 80, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1575, .-bmpcfg_emit_stub_1575
+
+.globl bmpcfg_emit_stub_1576
+.p2align 2
+.type bmpcfg_emit_stub_1576, @function
+bmpcfg_emit_stub_1576:
+    bmpcfg 1, 80, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1576, .-bmpcfg_emit_stub_1576
+
+.globl bmpcfg_emit_stub_1577
+.p2align 2
+.type bmpcfg_emit_stub_1577, @function
+bmpcfg_emit_stub_1577:
+    bmpcfg 1, 80, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1577, .-bmpcfg_emit_stub_1577
+
+.globl bmpcfg_emit_stub_1578
+.p2align 2
+.type bmpcfg_emit_stub_1578, @function
+bmpcfg_emit_stub_1578:
+    bmpcfg 1, 88, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1578, .-bmpcfg_emit_stub_1578
+
+.globl bmpcfg_emit_stub_1579
+.p2align 2
+.type bmpcfg_emit_stub_1579, @function
+bmpcfg_emit_stub_1579:
+    bmpcfg 1, 88, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1579, .-bmpcfg_emit_stub_1579
+
+.globl bmpcfg_emit_stub_1580
+.p2align 2
+.type bmpcfg_emit_stub_1580, @function
+bmpcfg_emit_stub_1580:
+    bmpcfg 1, 88, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1580, .-bmpcfg_emit_stub_1580
+
+.globl bmpcfg_emit_stub_1581
+.p2align 2
+.type bmpcfg_emit_stub_1581, @function
+bmpcfg_emit_stub_1581:
+    bmpcfg 1, 88, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1581, .-bmpcfg_emit_stub_1581
+
+.globl bmpcfg_emit_stub_1582
+.p2align 2
+.type bmpcfg_emit_stub_1582, @function
+bmpcfg_emit_stub_1582:
+    bmpcfg 1, 88, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1582, .-bmpcfg_emit_stub_1582
+
+.globl bmpcfg_emit_stub_1583
+.p2align 2
+.type bmpcfg_emit_stub_1583, @function
+bmpcfg_emit_stub_1583:
+    bmpcfg 1, 88, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1583, .-bmpcfg_emit_stub_1583
+
+.globl bmpcfg_emit_stub_1584
+.p2align 2
+.type bmpcfg_emit_stub_1584, @function
+bmpcfg_emit_stub_1584:
+    bmpcfg 1, 88, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1584, .-bmpcfg_emit_stub_1584
+
+.globl bmpcfg_emit_stub_1585
+.p2align 2
+.type bmpcfg_emit_stub_1585, @function
+bmpcfg_emit_stub_1585:
+    bmpcfg 1, 88, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1585, .-bmpcfg_emit_stub_1585
+
+.globl bmpcfg_emit_stub_1586
+.p2align 2
+.type bmpcfg_emit_stub_1586, @function
+bmpcfg_emit_stub_1586:
+    bmpcfg 1, 88, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1586, .-bmpcfg_emit_stub_1586
+
+.globl bmpcfg_emit_stub_1587
+.p2align 2
+.type bmpcfg_emit_stub_1587, @function
+bmpcfg_emit_stub_1587:
+    bmpcfg 1, 88, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1587, .-bmpcfg_emit_stub_1587
+
+.globl bmpcfg_emit_stub_1588
+.p2align 2
+.type bmpcfg_emit_stub_1588, @function
+bmpcfg_emit_stub_1588:
+    bmpcfg 1, 88, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1588, .-bmpcfg_emit_stub_1588
+
+.globl bmpcfg_emit_stub_1589
+.p2align 2
+.type bmpcfg_emit_stub_1589, @function
+bmpcfg_emit_stub_1589:
+    bmpcfg 1, 88, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1589, .-bmpcfg_emit_stub_1589
+
+.globl bmpcfg_emit_stub_1590
+.p2align 2
+.type bmpcfg_emit_stub_1590, @function
+bmpcfg_emit_stub_1590:
+    bmpcfg 1, 88, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1590, .-bmpcfg_emit_stub_1590
+
+.globl bmpcfg_emit_stub_1591
+.p2align 2
+.type bmpcfg_emit_stub_1591, @function
+bmpcfg_emit_stub_1591:
+    bmpcfg 1, 88, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1591, .-bmpcfg_emit_stub_1591
+
+.globl bmpcfg_emit_stub_1592
+.p2align 2
+.type bmpcfg_emit_stub_1592, @function
+bmpcfg_emit_stub_1592:
+    bmpcfg 1, 88, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1592, .-bmpcfg_emit_stub_1592
+
+.globl bmpcfg_emit_stub_1593
+.p2align 2
+.type bmpcfg_emit_stub_1593, @function
+bmpcfg_emit_stub_1593:
+    bmpcfg 1, 88, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1593, .-bmpcfg_emit_stub_1593
+
+.globl bmpcfg_emit_stub_1594
+.p2align 2
+.type bmpcfg_emit_stub_1594, @function
+bmpcfg_emit_stub_1594:
+    bmpcfg 1, 88, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1594, .-bmpcfg_emit_stub_1594
+
+.globl bmpcfg_emit_stub_1595
+.p2align 2
+.type bmpcfg_emit_stub_1595, @function
+bmpcfg_emit_stub_1595:
+    bmpcfg 1, 88, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1595, .-bmpcfg_emit_stub_1595
+
+.globl bmpcfg_emit_stub_1596
+.p2align 2
+.type bmpcfg_emit_stub_1596, @function
+bmpcfg_emit_stub_1596:
+    bmpcfg 1, 88, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1596, .-bmpcfg_emit_stub_1596
+
+.globl bmpcfg_emit_stub_1597
+.p2align 2
+.type bmpcfg_emit_stub_1597, @function
+bmpcfg_emit_stub_1597:
+    bmpcfg 1, 88, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1597, .-bmpcfg_emit_stub_1597
+
+.globl bmpcfg_emit_stub_1598
+.p2align 2
+.type bmpcfg_emit_stub_1598, @function
+bmpcfg_emit_stub_1598:
+    bmpcfg 1, 88, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1598, .-bmpcfg_emit_stub_1598
+
+.globl bmpcfg_emit_stub_1599
+.p2align 2
+.type bmpcfg_emit_stub_1599, @function
+bmpcfg_emit_stub_1599:
+    bmpcfg 1, 88, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1599, .-bmpcfg_emit_stub_1599
+
+.globl bmpcfg_emit_stub_1600
+.p2align 2
+.type bmpcfg_emit_stub_1600, @function
+bmpcfg_emit_stub_1600:
+    bmpcfg 1, 88, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1600, .-bmpcfg_emit_stub_1600
+
+.globl bmpcfg_emit_stub_1601
+.p2align 2
+.type bmpcfg_emit_stub_1601, @function
+bmpcfg_emit_stub_1601:
+    bmpcfg 1, 88, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1601, .-bmpcfg_emit_stub_1601
+
+.globl bmpcfg_emit_stub_1602
+.p2align 2
+.type bmpcfg_emit_stub_1602, @function
+bmpcfg_emit_stub_1602:
+    bmpcfg 1, 96, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1602, .-bmpcfg_emit_stub_1602
+
+.globl bmpcfg_emit_stub_1603
+.p2align 2
+.type bmpcfg_emit_stub_1603, @function
+bmpcfg_emit_stub_1603:
+    bmpcfg 1, 96, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1603, .-bmpcfg_emit_stub_1603
+
+.globl bmpcfg_emit_stub_1604
+.p2align 2
+.type bmpcfg_emit_stub_1604, @function
+bmpcfg_emit_stub_1604:
+    bmpcfg 1, 96, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1604, .-bmpcfg_emit_stub_1604
+
+.globl bmpcfg_emit_stub_1605
+.p2align 2
+.type bmpcfg_emit_stub_1605, @function
+bmpcfg_emit_stub_1605:
+    bmpcfg 1, 96, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1605, .-bmpcfg_emit_stub_1605
+
+.globl bmpcfg_emit_stub_1606
+.p2align 2
+.type bmpcfg_emit_stub_1606, @function
+bmpcfg_emit_stub_1606:
+    bmpcfg 1, 96, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1606, .-bmpcfg_emit_stub_1606
+
+.globl bmpcfg_emit_stub_1607
+.p2align 2
+.type bmpcfg_emit_stub_1607, @function
+bmpcfg_emit_stub_1607:
+    bmpcfg 1, 96, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1607, .-bmpcfg_emit_stub_1607
+
+.globl bmpcfg_emit_stub_1608
+.p2align 2
+.type bmpcfg_emit_stub_1608, @function
+bmpcfg_emit_stub_1608:
+    bmpcfg 1, 96, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1608, .-bmpcfg_emit_stub_1608
+
+.globl bmpcfg_emit_stub_1609
+.p2align 2
+.type bmpcfg_emit_stub_1609, @function
+bmpcfg_emit_stub_1609:
+    bmpcfg 1, 96, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1609, .-bmpcfg_emit_stub_1609
+
+.globl bmpcfg_emit_stub_1610
+.p2align 2
+.type bmpcfg_emit_stub_1610, @function
+bmpcfg_emit_stub_1610:
+    bmpcfg 1, 96, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1610, .-bmpcfg_emit_stub_1610
+
+.globl bmpcfg_emit_stub_1611
+.p2align 2
+.type bmpcfg_emit_stub_1611, @function
+bmpcfg_emit_stub_1611:
+    bmpcfg 1, 96, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1611, .-bmpcfg_emit_stub_1611
+
+.globl bmpcfg_emit_stub_1612
+.p2align 2
+.type bmpcfg_emit_stub_1612, @function
+bmpcfg_emit_stub_1612:
+    bmpcfg 1, 96, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1612, .-bmpcfg_emit_stub_1612
+
+.globl bmpcfg_emit_stub_1613
+.p2align 2
+.type bmpcfg_emit_stub_1613, @function
+bmpcfg_emit_stub_1613:
+    bmpcfg 1, 96, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1613, .-bmpcfg_emit_stub_1613
+
+.globl bmpcfg_emit_stub_1614
+.p2align 2
+.type bmpcfg_emit_stub_1614, @function
+bmpcfg_emit_stub_1614:
+    bmpcfg 1, 96, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1614, .-bmpcfg_emit_stub_1614
+
+.globl bmpcfg_emit_stub_1615
+.p2align 2
+.type bmpcfg_emit_stub_1615, @function
+bmpcfg_emit_stub_1615:
+    bmpcfg 1, 96, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1615, .-bmpcfg_emit_stub_1615
+
+.globl bmpcfg_emit_stub_1616
+.p2align 2
+.type bmpcfg_emit_stub_1616, @function
+bmpcfg_emit_stub_1616:
+    bmpcfg 1, 96, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1616, .-bmpcfg_emit_stub_1616
+
+.globl bmpcfg_emit_stub_1617
+.p2align 2
+.type bmpcfg_emit_stub_1617, @function
+bmpcfg_emit_stub_1617:
+    bmpcfg 1, 96, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1617, .-bmpcfg_emit_stub_1617
+
+.globl bmpcfg_emit_stub_1618
+.p2align 2
+.type bmpcfg_emit_stub_1618, @function
+bmpcfg_emit_stub_1618:
+    bmpcfg 1, 96, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1618, .-bmpcfg_emit_stub_1618
+
+.globl bmpcfg_emit_stub_1619
+.p2align 2
+.type bmpcfg_emit_stub_1619, @function
+bmpcfg_emit_stub_1619:
+    bmpcfg 1, 96, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1619, .-bmpcfg_emit_stub_1619
+
+.globl bmpcfg_emit_stub_1620
+.p2align 2
+.type bmpcfg_emit_stub_1620, @function
+bmpcfg_emit_stub_1620:
+    bmpcfg 1, 96, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1620, .-bmpcfg_emit_stub_1620
+
+.globl bmpcfg_emit_stub_1621
+.p2align 2
+.type bmpcfg_emit_stub_1621, @function
+bmpcfg_emit_stub_1621:
+    bmpcfg 1, 96, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1621, .-bmpcfg_emit_stub_1621
+
+.globl bmpcfg_emit_stub_1622
+.p2align 2
+.type bmpcfg_emit_stub_1622, @function
+bmpcfg_emit_stub_1622:
+    bmpcfg 1, 96, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1622, .-bmpcfg_emit_stub_1622
+
+.globl bmpcfg_emit_stub_1623
+.p2align 2
+.type bmpcfg_emit_stub_1623, @function
+bmpcfg_emit_stub_1623:
+    bmpcfg 1, 96, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1623, .-bmpcfg_emit_stub_1623
+
+.globl bmpcfg_emit_stub_1624
+.p2align 2
+.type bmpcfg_emit_stub_1624, @function
+bmpcfg_emit_stub_1624:
+    bmpcfg 1, 96, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1624, .-bmpcfg_emit_stub_1624
+
+.globl bmpcfg_emit_stub_1625
+.p2align 2
+.type bmpcfg_emit_stub_1625, @function
+bmpcfg_emit_stub_1625:
+    bmpcfg 1, 96, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1625, .-bmpcfg_emit_stub_1625
+
+.globl bmpcfg_emit_stub_1626
+.p2align 2
+.type bmpcfg_emit_stub_1626, @function
+bmpcfg_emit_stub_1626:
+    bmpcfg 1, 104, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1626, .-bmpcfg_emit_stub_1626
+
+.globl bmpcfg_emit_stub_1627
+.p2align 2
+.type bmpcfg_emit_stub_1627, @function
+bmpcfg_emit_stub_1627:
+    bmpcfg 1, 104, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1627, .-bmpcfg_emit_stub_1627
+
+.globl bmpcfg_emit_stub_1628
+.p2align 2
+.type bmpcfg_emit_stub_1628, @function
+bmpcfg_emit_stub_1628:
+    bmpcfg 1, 104, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1628, .-bmpcfg_emit_stub_1628
+
+.globl bmpcfg_emit_stub_1629
+.p2align 2
+.type bmpcfg_emit_stub_1629, @function
+bmpcfg_emit_stub_1629:
+    bmpcfg 1, 104, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1629, .-bmpcfg_emit_stub_1629
+
+.globl bmpcfg_emit_stub_1630
+.p2align 2
+.type bmpcfg_emit_stub_1630, @function
+bmpcfg_emit_stub_1630:
+    bmpcfg 1, 104, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1630, .-bmpcfg_emit_stub_1630
+
+.globl bmpcfg_emit_stub_1631
+.p2align 2
+.type bmpcfg_emit_stub_1631, @function
+bmpcfg_emit_stub_1631:
+    bmpcfg 1, 104, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1631, .-bmpcfg_emit_stub_1631
+
+.globl bmpcfg_emit_stub_1632
+.p2align 2
+.type bmpcfg_emit_stub_1632, @function
+bmpcfg_emit_stub_1632:
+    bmpcfg 1, 104, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1632, .-bmpcfg_emit_stub_1632
+
+.globl bmpcfg_emit_stub_1633
+.p2align 2
+.type bmpcfg_emit_stub_1633, @function
+bmpcfg_emit_stub_1633:
+    bmpcfg 1, 104, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1633, .-bmpcfg_emit_stub_1633
+
+.globl bmpcfg_emit_stub_1634
+.p2align 2
+.type bmpcfg_emit_stub_1634, @function
+bmpcfg_emit_stub_1634:
+    bmpcfg 1, 104, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1634, .-bmpcfg_emit_stub_1634
+
+.globl bmpcfg_emit_stub_1635
+.p2align 2
+.type bmpcfg_emit_stub_1635, @function
+bmpcfg_emit_stub_1635:
+    bmpcfg 1, 104, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1635, .-bmpcfg_emit_stub_1635
+
+.globl bmpcfg_emit_stub_1636
+.p2align 2
+.type bmpcfg_emit_stub_1636, @function
+bmpcfg_emit_stub_1636:
+    bmpcfg 1, 104, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1636, .-bmpcfg_emit_stub_1636
+
+.globl bmpcfg_emit_stub_1637
+.p2align 2
+.type bmpcfg_emit_stub_1637, @function
+bmpcfg_emit_stub_1637:
+    bmpcfg 1, 104, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1637, .-bmpcfg_emit_stub_1637
+
+.globl bmpcfg_emit_stub_1638
+.p2align 2
+.type bmpcfg_emit_stub_1638, @function
+bmpcfg_emit_stub_1638:
+    bmpcfg 1, 104, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1638, .-bmpcfg_emit_stub_1638
+
+.globl bmpcfg_emit_stub_1639
+.p2align 2
+.type bmpcfg_emit_stub_1639, @function
+bmpcfg_emit_stub_1639:
+    bmpcfg 1, 104, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1639, .-bmpcfg_emit_stub_1639
+
+.globl bmpcfg_emit_stub_1640
+.p2align 2
+.type bmpcfg_emit_stub_1640, @function
+bmpcfg_emit_stub_1640:
+    bmpcfg 1, 104, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1640, .-bmpcfg_emit_stub_1640
+
+.globl bmpcfg_emit_stub_1641
+.p2align 2
+.type bmpcfg_emit_stub_1641, @function
+bmpcfg_emit_stub_1641:
+    bmpcfg 1, 104, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1641, .-bmpcfg_emit_stub_1641
+
+.globl bmpcfg_emit_stub_1642
+.p2align 2
+.type bmpcfg_emit_stub_1642, @function
+bmpcfg_emit_stub_1642:
+    bmpcfg 1, 104, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1642, .-bmpcfg_emit_stub_1642
+
+.globl bmpcfg_emit_stub_1643
+.p2align 2
+.type bmpcfg_emit_stub_1643, @function
+bmpcfg_emit_stub_1643:
+    bmpcfg 1, 104, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1643, .-bmpcfg_emit_stub_1643
+
+.globl bmpcfg_emit_stub_1644
+.p2align 2
+.type bmpcfg_emit_stub_1644, @function
+bmpcfg_emit_stub_1644:
+    bmpcfg 1, 104, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1644, .-bmpcfg_emit_stub_1644
+
+.globl bmpcfg_emit_stub_1645
+.p2align 2
+.type bmpcfg_emit_stub_1645, @function
+bmpcfg_emit_stub_1645:
+    bmpcfg 1, 104, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1645, .-bmpcfg_emit_stub_1645
+
+.globl bmpcfg_emit_stub_1646
+.p2align 2
+.type bmpcfg_emit_stub_1646, @function
+bmpcfg_emit_stub_1646:
+    bmpcfg 1, 104, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1646, .-bmpcfg_emit_stub_1646
+
+.globl bmpcfg_emit_stub_1647
+.p2align 2
+.type bmpcfg_emit_stub_1647, @function
+bmpcfg_emit_stub_1647:
+    bmpcfg 1, 104, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1647, .-bmpcfg_emit_stub_1647
+
+.globl bmpcfg_emit_stub_1648
+.p2align 2
+.type bmpcfg_emit_stub_1648, @function
+bmpcfg_emit_stub_1648:
+    bmpcfg 1, 104, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1648, .-bmpcfg_emit_stub_1648
+
+.globl bmpcfg_emit_stub_1649
+.p2align 2
+.type bmpcfg_emit_stub_1649, @function
+bmpcfg_emit_stub_1649:
+    bmpcfg 1, 104, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1649, .-bmpcfg_emit_stub_1649
+
+.globl bmpcfg_emit_stub_1650
+.p2align 2
+.type bmpcfg_emit_stub_1650, @function
+bmpcfg_emit_stub_1650:
+    bmpcfg 1, 112, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1650, .-bmpcfg_emit_stub_1650
+
+.globl bmpcfg_emit_stub_1651
+.p2align 2
+.type bmpcfg_emit_stub_1651, @function
+bmpcfg_emit_stub_1651:
+    bmpcfg 1, 112, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1651, .-bmpcfg_emit_stub_1651
+
+.globl bmpcfg_emit_stub_1652
+.p2align 2
+.type bmpcfg_emit_stub_1652, @function
+bmpcfg_emit_stub_1652:
+    bmpcfg 1, 112, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1652, .-bmpcfg_emit_stub_1652
+
+.globl bmpcfg_emit_stub_1653
+.p2align 2
+.type bmpcfg_emit_stub_1653, @function
+bmpcfg_emit_stub_1653:
+    bmpcfg 1, 112, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1653, .-bmpcfg_emit_stub_1653
+
+.globl bmpcfg_emit_stub_1654
+.p2align 2
+.type bmpcfg_emit_stub_1654, @function
+bmpcfg_emit_stub_1654:
+    bmpcfg 1, 112, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1654, .-bmpcfg_emit_stub_1654
+
+.globl bmpcfg_emit_stub_1655
+.p2align 2
+.type bmpcfg_emit_stub_1655, @function
+bmpcfg_emit_stub_1655:
+    bmpcfg 1, 112, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1655, .-bmpcfg_emit_stub_1655
+
+.globl bmpcfg_emit_stub_1656
+.p2align 2
+.type bmpcfg_emit_stub_1656, @function
+bmpcfg_emit_stub_1656:
+    bmpcfg 1, 112, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1656, .-bmpcfg_emit_stub_1656
+
+.globl bmpcfg_emit_stub_1657
+.p2align 2
+.type bmpcfg_emit_stub_1657, @function
+bmpcfg_emit_stub_1657:
+    bmpcfg 1, 112, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1657, .-bmpcfg_emit_stub_1657
+
+.globl bmpcfg_emit_stub_1658
+.p2align 2
+.type bmpcfg_emit_stub_1658, @function
+bmpcfg_emit_stub_1658:
+    bmpcfg 1, 112, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1658, .-bmpcfg_emit_stub_1658
+
+.globl bmpcfg_emit_stub_1659
+.p2align 2
+.type bmpcfg_emit_stub_1659, @function
+bmpcfg_emit_stub_1659:
+    bmpcfg 1, 112, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1659, .-bmpcfg_emit_stub_1659
+
+.globl bmpcfg_emit_stub_1660
+.p2align 2
+.type bmpcfg_emit_stub_1660, @function
+bmpcfg_emit_stub_1660:
+    bmpcfg 1, 112, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1660, .-bmpcfg_emit_stub_1660
+
+.globl bmpcfg_emit_stub_1661
+.p2align 2
+.type bmpcfg_emit_stub_1661, @function
+bmpcfg_emit_stub_1661:
+    bmpcfg 1, 112, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1661, .-bmpcfg_emit_stub_1661
+
+.globl bmpcfg_emit_stub_1662
+.p2align 2
+.type bmpcfg_emit_stub_1662, @function
+bmpcfg_emit_stub_1662:
+    bmpcfg 1, 112, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1662, .-bmpcfg_emit_stub_1662
+
+.globl bmpcfg_emit_stub_1663
+.p2align 2
+.type bmpcfg_emit_stub_1663, @function
+bmpcfg_emit_stub_1663:
+    bmpcfg 1, 112, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1663, .-bmpcfg_emit_stub_1663
+
+.globl bmpcfg_emit_stub_1664
+.p2align 2
+.type bmpcfg_emit_stub_1664, @function
+bmpcfg_emit_stub_1664:
+    bmpcfg 1, 112, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1664, .-bmpcfg_emit_stub_1664
+
+.globl bmpcfg_emit_stub_1665
+.p2align 2
+.type bmpcfg_emit_stub_1665, @function
+bmpcfg_emit_stub_1665:
+    bmpcfg 1, 112, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1665, .-bmpcfg_emit_stub_1665
+
+.globl bmpcfg_emit_stub_1666
+.p2align 2
+.type bmpcfg_emit_stub_1666, @function
+bmpcfg_emit_stub_1666:
+    bmpcfg 1, 112, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1666, .-bmpcfg_emit_stub_1666
+
+.globl bmpcfg_emit_stub_1667
+.p2align 2
+.type bmpcfg_emit_stub_1667, @function
+bmpcfg_emit_stub_1667:
+    bmpcfg 1, 112, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1667, .-bmpcfg_emit_stub_1667
+
+.globl bmpcfg_emit_stub_1668
+.p2align 2
+.type bmpcfg_emit_stub_1668, @function
+bmpcfg_emit_stub_1668:
+    bmpcfg 1, 112, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1668, .-bmpcfg_emit_stub_1668
+
+.globl bmpcfg_emit_stub_1669
+.p2align 2
+.type bmpcfg_emit_stub_1669, @function
+bmpcfg_emit_stub_1669:
+    bmpcfg 1, 112, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1669, .-bmpcfg_emit_stub_1669
+
+.globl bmpcfg_emit_stub_1670
+.p2align 2
+.type bmpcfg_emit_stub_1670, @function
+bmpcfg_emit_stub_1670:
+    bmpcfg 1, 112, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1670, .-bmpcfg_emit_stub_1670
+
+.globl bmpcfg_emit_stub_1671
+.p2align 2
+.type bmpcfg_emit_stub_1671, @function
+bmpcfg_emit_stub_1671:
+    bmpcfg 1, 112, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1671, .-bmpcfg_emit_stub_1671
+
+.globl bmpcfg_emit_stub_1672
+.p2align 2
+.type bmpcfg_emit_stub_1672, @function
+bmpcfg_emit_stub_1672:
+    bmpcfg 1, 112, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1672, .-bmpcfg_emit_stub_1672
+
+.globl bmpcfg_emit_stub_1673
+.p2align 2
+.type bmpcfg_emit_stub_1673, @function
+bmpcfg_emit_stub_1673:
+    bmpcfg 1, 112, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1673, .-bmpcfg_emit_stub_1673
+
+.globl bmpcfg_emit_stub_1674
+.p2align 2
+.type bmpcfg_emit_stub_1674, @function
+bmpcfg_emit_stub_1674:
+    bmpcfg 1, 120, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1674, .-bmpcfg_emit_stub_1674
+
+.globl bmpcfg_emit_stub_1675
+.p2align 2
+.type bmpcfg_emit_stub_1675, @function
+bmpcfg_emit_stub_1675:
+    bmpcfg 1, 120, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1675, .-bmpcfg_emit_stub_1675
+
+.globl bmpcfg_emit_stub_1676
+.p2align 2
+.type bmpcfg_emit_stub_1676, @function
+bmpcfg_emit_stub_1676:
+    bmpcfg 1, 120, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1676, .-bmpcfg_emit_stub_1676
+
+.globl bmpcfg_emit_stub_1677
+.p2align 2
+.type bmpcfg_emit_stub_1677, @function
+bmpcfg_emit_stub_1677:
+    bmpcfg 1, 120, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1677, .-bmpcfg_emit_stub_1677
+
+.globl bmpcfg_emit_stub_1678
+.p2align 2
+.type bmpcfg_emit_stub_1678, @function
+bmpcfg_emit_stub_1678:
+    bmpcfg 1, 120, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1678, .-bmpcfg_emit_stub_1678
+
+.globl bmpcfg_emit_stub_1679
+.p2align 2
+.type bmpcfg_emit_stub_1679, @function
+bmpcfg_emit_stub_1679:
+    bmpcfg 1, 120, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1679, .-bmpcfg_emit_stub_1679
+
+.globl bmpcfg_emit_stub_1680
+.p2align 2
+.type bmpcfg_emit_stub_1680, @function
+bmpcfg_emit_stub_1680:
+    bmpcfg 1, 120, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1680, .-bmpcfg_emit_stub_1680
+
+.globl bmpcfg_emit_stub_1681
+.p2align 2
+.type bmpcfg_emit_stub_1681, @function
+bmpcfg_emit_stub_1681:
+    bmpcfg 1, 120, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1681, .-bmpcfg_emit_stub_1681
+
+.globl bmpcfg_emit_stub_1682
+.p2align 2
+.type bmpcfg_emit_stub_1682, @function
+bmpcfg_emit_stub_1682:
+    bmpcfg 1, 120, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1682, .-bmpcfg_emit_stub_1682
+
+.globl bmpcfg_emit_stub_1683
+.p2align 2
+.type bmpcfg_emit_stub_1683, @function
+bmpcfg_emit_stub_1683:
+    bmpcfg 1, 120, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1683, .-bmpcfg_emit_stub_1683
+
+.globl bmpcfg_emit_stub_1684
+.p2align 2
+.type bmpcfg_emit_stub_1684, @function
+bmpcfg_emit_stub_1684:
+    bmpcfg 1, 120, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1684, .-bmpcfg_emit_stub_1684
+
+.globl bmpcfg_emit_stub_1685
+.p2align 2
+.type bmpcfg_emit_stub_1685, @function
+bmpcfg_emit_stub_1685:
+    bmpcfg 1, 120, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1685, .-bmpcfg_emit_stub_1685
+
+.globl bmpcfg_emit_stub_1686
+.p2align 2
+.type bmpcfg_emit_stub_1686, @function
+bmpcfg_emit_stub_1686:
+    bmpcfg 1, 120, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1686, .-bmpcfg_emit_stub_1686
+
+.globl bmpcfg_emit_stub_1687
+.p2align 2
+.type bmpcfg_emit_stub_1687, @function
+bmpcfg_emit_stub_1687:
+    bmpcfg 1, 120, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1687, .-bmpcfg_emit_stub_1687
+
+.globl bmpcfg_emit_stub_1688
+.p2align 2
+.type bmpcfg_emit_stub_1688, @function
+bmpcfg_emit_stub_1688:
+    bmpcfg 1, 120, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1688, .-bmpcfg_emit_stub_1688
+
+.globl bmpcfg_emit_stub_1689
+.p2align 2
+.type bmpcfg_emit_stub_1689, @function
+bmpcfg_emit_stub_1689:
+    bmpcfg 1, 120, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1689, .-bmpcfg_emit_stub_1689
+
+.globl bmpcfg_emit_stub_1690
+.p2align 2
+.type bmpcfg_emit_stub_1690, @function
+bmpcfg_emit_stub_1690:
+    bmpcfg 1, 120, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1690, .-bmpcfg_emit_stub_1690
+
+.globl bmpcfg_emit_stub_1691
+.p2align 2
+.type bmpcfg_emit_stub_1691, @function
+bmpcfg_emit_stub_1691:
+    bmpcfg 1, 120, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1691, .-bmpcfg_emit_stub_1691
+
+.globl bmpcfg_emit_stub_1692
+.p2align 2
+.type bmpcfg_emit_stub_1692, @function
+bmpcfg_emit_stub_1692:
+    bmpcfg 1, 120, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1692, .-bmpcfg_emit_stub_1692
+
+.globl bmpcfg_emit_stub_1693
+.p2align 2
+.type bmpcfg_emit_stub_1693, @function
+bmpcfg_emit_stub_1693:
+    bmpcfg 1, 120, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1693, .-bmpcfg_emit_stub_1693
+
+.globl bmpcfg_emit_stub_1694
+.p2align 2
+.type bmpcfg_emit_stub_1694, @function
+bmpcfg_emit_stub_1694:
+    bmpcfg 1, 120, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1694, .-bmpcfg_emit_stub_1694
+
+.globl bmpcfg_emit_stub_1695
+.p2align 2
+.type bmpcfg_emit_stub_1695, @function
+bmpcfg_emit_stub_1695:
+    bmpcfg 1, 120, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1695, .-bmpcfg_emit_stub_1695
+
+.globl bmpcfg_emit_stub_1696
+.p2align 2
+.type bmpcfg_emit_stub_1696, @function
+bmpcfg_emit_stub_1696:
+    bmpcfg 1, 120, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1696, .-bmpcfg_emit_stub_1696
+
+.globl bmpcfg_emit_stub_1697
+.p2align 2
+.type bmpcfg_emit_stub_1697, @function
+bmpcfg_emit_stub_1697:
+    bmpcfg 1, 120, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1697, .-bmpcfg_emit_stub_1697
+
+.globl bmpcfg_emit_stub_1698
+.p2align 2
+.type bmpcfg_emit_stub_1698, @function
+bmpcfg_emit_stub_1698:
+    bmpcfg 1, 128, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1698, .-bmpcfg_emit_stub_1698
+
+.globl bmpcfg_emit_stub_1699
+.p2align 2
+.type bmpcfg_emit_stub_1699, @function
+bmpcfg_emit_stub_1699:
+    bmpcfg 1, 128, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1699, .-bmpcfg_emit_stub_1699
+
+.globl bmpcfg_emit_stub_1700
+.p2align 2
+.type bmpcfg_emit_stub_1700, @function
+bmpcfg_emit_stub_1700:
+    bmpcfg 1, 128, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1700, .-bmpcfg_emit_stub_1700
+
+.globl bmpcfg_emit_stub_1701
+.p2align 2
+.type bmpcfg_emit_stub_1701, @function
+bmpcfg_emit_stub_1701:
+    bmpcfg 1, 128, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1701, .-bmpcfg_emit_stub_1701
+
+.globl bmpcfg_emit_stub_1702
+.p2align 2
+.type bmpcfg_emit_stub_1702, @function
+bmpcfg_emit_stub_1702:
+    bmpcfg 1, 128, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1702, .-bmpcfg_emit_stub_1702
+
+.globl bmpcfg_emit_stub_1703
+.p2align 2
+.type bmpcfg_emit_stub_1703, @function
+bmpcfg_emit_stub_1703:
+    bmpcfg 1, 128, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1703, .-bmpcfg_emit_stub_1703
+
+.globl bmpcfg_emit_stub_1704
+.p2align 2
+.type bmpcfg_emit_stub_1704, @function
+bmpcfg_emit_stub_1704:
+    bmpcfg 1, 128, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1704, .-bmpcfg_emit_stub_1704
+
+.globl bmpcfg_emit_stub_1705
+.p2align 2
+.type bmpcfg_emit_stub_1705, @function
+bmpcfg_emit_stub_1705:
+    bmpcfg 1, 128, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1705, .-bmpcfg_emit_stub_1705
+
+.globl bmpcfg_emit_stub_1706
+.p2align 2
+.type bmpcfg_emit_stub_1706, @function
+bmpcfg_emit_stub_1706:
+    bmpcfg 1, 128, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1706, .-bmpcfg_emit_stub_1706
+
+.globl bmpcfg_emit_stub_1707
+.p2align 2
+.type bmpcfg_emit_stub_1707, @function
+bmpcfg_emit_stub_1707:
+    bmpcfg 1, 128, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1707, .-bmpcfg_emit_stub_1707
+
+.globl bmpcfg_emit_stub_1708
+.p2align 2
+.type bmpcfg_emit_stub_1708, @function
+bmpcfg_emit_stub_1708:
+    bmpcfg 1, 128, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1708, .-bmpcfg_emit_stub_1708
+
+.globl bmpcfg_emit_stub_1709
+.p2align 2
+.type bmpcfg_emit_stub_1709, @function
+bmpcfg_emit_stub_1709:
+    bmpcfg 1, 128, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1709, .-bmpcfg_emit_stub_1709
+
+.globl bmpcfg_emit_stub_1710
+.p2align 2
+.type bmpcfg_emit_stub_1710, @function
+bmpcfg_emit_stub_1710:
+    bmpcfg 1, 128, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1710, .-bmpcfg_emit_stub_1710
+
+.globl bmpcfg_emit_stub_1711
+.p2align 2
+.type bmpcfg_emit_stub_1711, @function
+bmpcfg_emit_stub_1711:
+    bmpcfg 1, 128, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1711, .-bmpcfg_emit_stub_1711
+
+.globl bmpcfg_emit_stub_1712
+.p2align 2
+.type bmpcfg_emit_stub_1712, @function
+bmpcfg_emit_stub_1712:
+    bmpcfg 1, 128, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1712, .-bmpcfg_emit_stub_1712
+
+.globl bmpcfg_emit_stub_1713
+.p2align 2
+.type bmpcfg_emit_stub_1713, @function
+bmpcfg_emit_stub_1713:
+    bmpcfg 1, 128, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1713, .-bmpcfg_emit_stub_1713
+
+.globl bmpcfg_emit_stub_1714
+.p2align 2
+.type bmpcfg_emit_stub_1714, @function
+bmpcfg_emit_stub_1714:
+    bmpcfg 1, 128, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1714, .-bmpcfg_emit_stub_1714
+
+.globl bmpcfg_emit_stub_1715
+.p2align 2
+.type bmpcfg_emit_stub_1715, @function
+bmpcfg_emit_stub_1715:
+    bmpcfg 1, 128, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1715, .-bmpcfg_emit_stub_1715
+
+.globl bmpcfg_emit_stub_1716
+.p2align 2
+.type bmpcfg_emit_stub_1716, @function
+bmpcfg_emit_stub_1716:
+    bmpcfg 1, 128, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1716, .-bmpcfg_emit_stub_1716
+
+.globl bmpcfg_emit_stub_1717
+.p2align 2
+.type bmpcfg_emit_stub_1717, @function
+bmpcfg_emit_stub_1717:
+    bmpcfg 1, 128, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1717, .-bmpcfg_emit_stub_1717
+
+.globl bmpcfg_emit_stub_1718
+.p2align 2
+.type bmpcfg_emit_stub_1718, @function
+bmpcfg_emit_stub_1718:
+    bmpcfg 1, 128, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1718, .-bmpcfg_emit_stub_1718
+
+.globl bmpcfg_emit_stub_1719
+.p2align 2
+.type bmpcfg_emit_stub_1719, @function
+bmpcfg_emit_stub_1719:
+    bmpcfg 1, 128, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1719, .-bmpcfg_emit_stub_1719
+
+.globl bmpcfg_emit_stub_1720
+.p2align 2
+.type bmpcfg_emit_stub_1720, @function
+bmpcfg_emit_stub_1720:
+    bmpcfg 1, 128, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1720, .-bmpcfg_emit_stub_1720
+
+.globl bmpcfg_emit_stub_1721
+.p2align 2
+.type bmpcfg_emit_stub_1721, @function
+bmpcfg_emit_stub_1721:
+    bmpcfg 1, 128, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1721, .-bmpcfg_emit_stub_1721
+
+.globl bmpcfg_emit_stub_1722
+.p2align 2
+.type bmpcfg_emit_stub_1722, @function
+bmpcfg_emit_stub_1722:
+    bmpcfg 2, 8, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1722, .-bmpcfg_emit_stub_1722
+
+.globl bmpcfg_emit_stub_1723
+.p2align 2
+.type bmpcfg_emit_stub_1723, @function
+bmpcfg_emit_stub_1723:
+    bmpcfg 2, 8, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1723, .-bmpcfg_emit_stub_1723
+
+.globl bmpcfg_emit_stub_1724
+.p2align 2
+.type bmpcfg_emit_stub_1724, @function
+bmpcfg_emit_stub_1724:
+    bmpcfg 2, 8, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1724, .-bmpcfg_emit_stub_1724
+
+.globl bmpcfg_emit_stub_1725
+.p2align 2
+.type bmpcfg_emit_stub_1725, @function
+bmpcfg_emit_stub_1725:
+    bmpcfg 2, 8, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1725, .-bmpcfg_emit_stub_1725
+
+.globl bmpcfg_emit_stub_1726
+.p2align 2
+.type bmpcfg_emit_stub_1726, @function
+bmpcfg_emit_stub_1726:
+    bmpcfg 2, 8, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1726, .-bmpcfg_emit_stub_1726
+
+.globl bmpcfg_emit_stub_1727
+.p2align 2
+.type bmpcfg_emit_stub_1727, @function
+bmpcfg_emit_stub_1727:
+    bmpcfg 2, 8, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1727, .-bmpcfg_emit_stub_1727
+
+.globl bmpcfg_emit_stub_1728
+.p2align 2
+.type bmpcfg_emit_stub_1728, @function
+bmpcfg_emit_stub_1728:
+    bmpcfg 2, 8, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1728, .-bmpcfg_emit_stub_1728
+
+.globl bmpcfg_emit_stub_1729
+.p2align 2
+.type bmpcfg_emit_stub_1729, @function
+bmpcfg_emit_stub_1729:
+    bmpcfg 2, 8, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1729, .-bmpcfg_emit_stub_1729
+
+.globl bmpcfg_emit_stub_1730
+.p2align 2
+.type bmpcfg_emit_stub_1730, @function
+bmpcfg_emit_stub_1730:
+    bmpcfg 2, 8, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1730, .-bmpcfg_emit_stub_1730
+
+.globl bmpcfg_emit_stub_1731
+.p2align 2
+.type bmpcfg_emit_stub_1731, @function
+bmpcfg_emit_stub_1731:
+    bmpcfg 2, 8, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1731, .-bmpcfg_emit_stub_1731
+
+.globl bmpcfg_emit_stub_1732
+.p2align 2
+.type bmpcfg_emit_stub_1732, @function
+bmpcfg_emit_stub_1732:
+    bmpcfg 2, 8, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1732, .-bmpcfg_emit_stub_1732
+
+.globl bmpcfg_emit_stub_1733
+.p2align 2
+.type bmpcfg_emit_stub_1733, @function
+bmpcfg_emit_stub_1733:
+    bmpcfg 2, 8, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1733, .-bmpcfg_emit_stub_1733
+
+.globl bmpcfg_emit_stub_1734
+.p2align 2
+.type bmpcfg_emit_stub_1734, @function
+bmpcfg_emit_stub_1734:
+    bmpcfg 2, 8, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1734, .-bmpcfg_emit_stub_1734
+
+.globl bmpcfg_emit_stub_1735
+.p2align 2
+.type bmpcfg_emit_stub_1735, @function
+bmpcfg_emit_stub_1735:
+    bmpcfg 2, 8, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1735, .-bmpcfg_emit_stub_1735
+
+.globl bmpcfg_emit_stub_1736
+.p2align 2
+.type bmpcfg_emit_stub_1736, @function
+bmpcfg_emit_stub_1736:
+    bmpcfg 2, 8, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1736, .-bmpcfg_emit_stub_1736
+
+.globl bmpcfg_emit_stub_1737
+.p2align 2
+.type bmpcfg_emit_stub_1737, @function
+bmpcfg_emit_stub_1737:
+    bmpcfg 2, 8, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1737, .-bmpcfg_emit_stub_1737
+
+.globl bmpcfg_emit_stub_1738
+.p2align 2
+.type bmpcfg_emit_stub_1738, @function
+bmpcfg_emit_stub_1738:
+    bmpcfg 2, 8, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1738, .-bmpcfg_emit_stub_1738
+
+.globl bmpcfg_emit_stub_1739
+.p2align 2
+.type bmpcfg_emit_stub_1739, @function
+bmpcfg_emit_stub_1739:
+    bmpcfg 2, 8, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1739, .-bmpcfg_emit_stub_1739
+
+.globl bmpcfg_emit_stub_1740
+.p2align 2
+.type bmpcfg_emit_stub_1740, @function
+bmpcfg_emit_stub_1740:
+    bmpcfg 2, 8, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1740, .-bmpcfg_emit_stub_1740
+
+.globl bmpcfg_emit_stub_1741
+.p2align 2
+.type bmpcfg_emit_stub_1741, @function
+bmpcfg_emit_stub_1741:
+    bmpcfg 2, 8, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1741, .-bmpcfg_emit_stub_1741
+
+.globl bmpcfg_emit_stub_1742
+.p2align 2
+.type bmpcfg_emit_stub_1742, @function
+bmpcfg_emit_stub_1742:
+    bmpcfg 2, 8, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1742, .-bmpcfg_emit_stub_1742
+
+.globl bmpcfg_emit_stub_1743
+.p2align 2
+.type bmpcfg_emit_stub_1743, @function
+bmpcfg_emit_stub_1743:
+    bmpcfg 2, 8, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1743, .-bmpcfg_emit_stub_1743
+
+.globl bmpcfg_emit_stub_1744
+.p2align 2
+.type bmpcfg_emit_stub_1744, @function
+bmpcfg_emit_stub_1744:
+    bmpcfg 2, 8, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1744, .-bmpcfg_emit_stub_1744
+
+.globl bmpcfg_emit_stub_1745
+.p2align 2
+.type bmpcfg_emit_stub_1745, @function
+bmpcfg_emit_stub_1745:
+    bmpcfg 2, 8, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1745, .-bmpcfg_emit_stub_1745
+
+.globl bmpcfg_emit_stub_1746
+.p2align 2
+.type bmpcfg_emit_stub_1746, @function
+bmpcfg_emit_stub_1746:
+    bmpcfg 2, 8, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1746, .-bmpcfg_emit_stub_1746
+
+.globl bmpcfg_emit_stub_1747
+.p2align 2
+.type bmpcfg_emit_stub_1747, @function
+bmpcfg_emit_stub_1747:
+    bmpcfg 2, 8, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1747, .-bmpcfg_emit_stub_1747
+
+.globl bmpcfg_emit_stub_1748
+.p2align 2
+.type bmpcfg_emit_stub_1748, @function
+bmpcfg_emit_stub_1748:
+    bmpcfg 2, 8, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1748, .-bmpcfg_emit_stub_1748
+
+.globl bmpcfg_emit_stub_1749
+.p2align 2
+.type bmpcfg_emit_stub_1749, @function
+bmpcfg_emit_stub_1749:
+    bmpcfg 2, 8, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1749, .-bmpcfg_emit_stub_1749
+
+.globl bmpcfg_emit_stub_1750
+.p2align 2
+.type bmpcfg_emit_stub_1750, @function
+bmpcfg_emit_stub_1750:
+    bmpcfg 2, 8, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1750, .-bmpcfg_emit_stub_1750
+
+.globl bmpcfg_emit_stub_1751
+.p2align 2
+.type bmpcfg_emit_stub_1751, @function
+bmpcfg_emit_stub_1751:
+    bmpcfg 2, 8, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1751, .-bmpcfg_emit_stub_1751
+
+.globl bmpcfg_emit_stub_1752
+.p2align 2
+.type bmpcfg_emit_stub_1752, @function
+bmpcfg_emit_stub_1752:
+    bmpcfg 2, 8, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1752, .-bmpcfg_emit_stub_1752
+
+.globl bmpcfg_emit_stub_1753
+.p2align 2
+.type bmpcfg_emit_stub_1753, @function
+bmpcfg_emit_stub_1753:
+    bmpcfg 2, 8, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_1753, .-bmpcfg_emit_stub_1753
+
+.globl bmpcfg_emit_stub_1754
+.p2align 2
+.type bmpcfg_emit_stub_1754, @function
+bmpcfg_emit_stub_1754:
+    bmpcfg 2, 8, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_1754, .-bmpcfg_emit_stub_1754
+
+.globl bmpcfg_emit_stub_1755
+.p2align 2
+.type bmpcfg_emit_stub_1755, @function
+bmpcfg_emit_stub_1755:
+    bmpcfg 2, 8, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_1755, .-bmpcfg_emit_stub_1755
+
+.globl bmpcfg_emit_stub_1756
+.p2align 2
+.type bmpcfg_emit_stub_1756, @function
+bmpcfg_emit_stub_1756:
+    bmpcfg 2, 8, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1756, .-bmpcfg_emit_stub_1756
+
+.globl bmpcfg_emit_stub_1757
+.p2align 2
+.type bmpcfg_emit_stub_1757, @function
+bmpcfg_emit_stub_1757:
+    bmpcfg 2, 8, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1757, .-bmpcfg_emit_stub_1757
+
+.globl bmpcfg_emit_stub_1758
+.p2align 2
+.type bmpcfg_emit_stub_1758, @function
+bmpcfg_emit_stub_1758:
+    bmpcfg 2, 8, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1758, .-bmpcfg_emit_stub_1758
+
+.globl bmpcfg_emit_stub_1759
+.p2align 2
+.type bmpcfg_emit_stub_1759, @function
+bmpcfg_emit_stub_1759:
+    bmpcfg 2, 8, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1759, .-bmpcfg_emit_stub_1759
+
+.globl bmpcfg_emit_stub_1760
+.p2align 2
+.type bmpcfg_emit_stub_1760, @function
+bmpcfg_emit_stub_1760:
+    bmpcfg 2, 8, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1760, .-bmpcfg_emit_stub_1760
+
+.globl bmpcfg_emit_stub_1761
+.p2align 2
+.type bmpcfg_emit_stub_1761, @function
+bmpcfg_emit_stub_1761:
+    bmpcfg 2, 8, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1761, .-bmpcfg_emit_stub_1761
+
+.globl bmpcfg_emit_stub_1762
+.p2align 2
+.type bmpcfg_emit_stub_1762, @function
+bmpcfg_emit_stub_1762:
+    bmpcfg 2, 8, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1762, .-bmpcfg_emit_stub_1762
+
+.globl bmpcfg_emit_stub_1763
+.p2align 2
+.type bmpcfg_emit_stub_1763, @function
+bmpcfg_emit_stub_1763:
+    bmpcfg 2, 8, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1763, .-bmpcfg_emit_stub_1763
+
+.globl bmpcfg_emit_stub_1764
+.p2align 2
+.type bmpcfg_emit_stub_1764, @function
+bmpcfg_emit_stub_1764:
+    bmpcfg 2, 8, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1764, .-bmpcfg_emit_stub_1764
+
+.globl bmpcfg_emit_stub_1765
+.p2align 2
+.type bmpcfg_emit_stub_1765, @function
+bmpcfg_emit_stub_1765:
+    bmpcfg 2, 8, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1765, .-bmpcfg_emit_stub_1765
+
+.globl bmpcfg_emit_stub_1766
+.p2align 2
+.type bmpcfg_emit_stub_1766, @function
+bmpcfg_emit_stub_1766:
+    bmpcfg 2, 8, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1766, .-bmpcfg_emit_stub_1766
+
+.globl bmpcfg_emit_stub_1767
+.p2align 2
+.type bmpcfg_emit_stub_1767, @function
+bmpcfg_emit_stub_1767:
+    bmpcfg 2, 8, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1767, .-bmpcfg_emit_stub_1767
+
+.globl bmpcfg_emit_stub_1768
+.p2align 2
+.type bmpcfg_emit_stub_1768, @function
+bmpcfg_emit_stub_1768:
+    bmpcfg 2, 8, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1768, .-bmpcfg_emit_stub_1768
+
+.globl bmpcfg_emit_stub_1769
+.p2align 2
+.type bmpcfg_emit_stub_1769, @function
+bmpcfg_emit_stub_1769:
+    bmpcfg 2, 8, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1769, .-bmpcfg_emit_stub_1769
+
+.globl bmpcfg_emit_stub_1770
+.p2align 2
+.type bmpcfg_emit_stub_1770, @function
+bmpcfg_emit_stub_1770:
+    bmpcfg 2, 8, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1770, .-bmpcfg_emit_stub_1770
+
+.globl bmpcfg_emit_stub_1771
+.p2align 2
+.type bmpcfg_emit_stub_1771, @function
+bmpcfg_emit_stub_1771:
+    bmpcfg 2, 8, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1771, .-bmpcfg_emit_stub_1771
+
+.globl bmpcfg_emit_stub_1772
+.p2align 2
+.type bmpcfg_emit_stub_1772, @function
+bmpcfg_emit_stub_1772:
+    bmpcfg 2, 8, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1772, .-bmpcfg_emit_stub_1772
+
+.globl bmpcfg_emit_stub_1773
+.p2align 2
+.type bmpcfg_emit_stub_1773, @function
+bmpcfg_emit_stub_1773:
+    bmpcfg 2, 8, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1773, .-bmpcfg_emit_stub_1773
+
+.globl bmpcfg_emit_stub_1774
+.p2align 2
+.type bmpcfg_emit_stub_1774, @function
+bmpcfg_emit_stub_1774:
+    bmpcfg 2, 8, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1774, .-bmpcfg_emit_stub_1774
+
+.globl bmpcfg_emit_stub_1775
+.p2align 2
+.type bmpcfg_emit_stub_1775, @function
+bmpcfg_emit_stub_1775:
+    bmpcfg 2, 8, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1775, .-bmpcfg_emit_stub_1775
+
+.globl bmpcfg_emit_stub_1776
+.p2align 2
+.type bmpcfg_emit_stub_1776, @function
+bmpcfg_emit_stub_1776:
+    bmpcfg 2, 8, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1776, .-bmpcfg_emit_stub_1776
+
+.globl bmpcfg_emit_stub_1777
+.p2align 2
+.type bmpcfg_emit_stub_1777, @function
+bmpcfg_emit_stub_1777:
+    bmpcfg 2, 8, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1777, .-bmpcfg_emit_stub_1777
+
+.globl bmpcfg_emit_stub_1778
+.p2align 2
+.type bmpcfg_emit_stub_1778, @function
+bmpcfg_emit_stub_1778:
+    bmpcfg 2, 8, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1778, .-bmpcfg_emit_stub_1778
+
+.globl bmpcfg_emit_stub_1779
+.p2align 2
+.type bmpcfg_emit_stub_1779, @function
+bmpcfg_emit_stub_1779:
+    bmpcfg 2, 8, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1779, .-bmpcfg_emit_stub_1779
+
+.globl bmpcfg_emit_stub_1780
+.p2align 2
+.type bmpcfg_emit_stub_1780, @function
+bmpcfg_emit_stub_1780:
+    bmpcfg 2, 8, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1780, .-bmpcfg_emit_stub_1780
+
+.globl bmpcfg_emit_stub_1781
+.p2align 2
+.type bmpcfg_emit_stub_1781, @function
+bmpcfg_emit_stub_1781:
+    bmpcfg 2, 8, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1781, .-bmpcfg_emit_stub_1781
+
+.globl bmpcfg_emit_stub_1782
+.p2align 2
+.type bmpcfg_emit_stub_1782, @function
+bmpcfg_emit_stub_1782:
+    bmpcfg 2, 8, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1782, .-bmpcfg_emit_stub_1782
+
+.globl bmpcfg_emit_stub_1783
+.p2align 2
+.type bmpcfg_emit_stub_1783, @function
+bmpcfg_emit_stub_1783:
+    bmpcfg 2, 8, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1783, .-bmpcfg_emit_stub_1783
+
+.globl bmpcfg_emit_stub_1784
+.p2align 2
+.type bmpcfg_emit_stub_1784, @function
+bmpcfg_emit_stub_1784:
+    bmpcfg 2, 8, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1784, .-bmpcfg_emit_stub_1784
+
+.globl bmpcfg_emit_stub_1785
+.p2align 2
+.type bmpcfg_emit_stub_1785, @function
+bmpcfg_emit_stub_1785:
+    bmpcfg 2, 8, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1785, .-bmpcfg_emit_stub_1785
+
+.globl bmpcfg_emit_stub_1786
+.p2align 2
+.type bmpcfg_emit_stub_1786, @function
+bmpcfg_emit_stub_1786:
+    bmpcfg 2, 8, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1786, .-bmpcfg_emit_stub_1786
+
+.globl bmpcfg_emit_stub_1787
+.p2align 2
+.type bmpcfg_emit_stub_1787, @function
+bmpcfg_emit_stub_1787:
+    bmpcfg 2, 8, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1787, .-bmpcfg_emit_stub_1787
+
+.globl bmpcfg_emit_stub_1788
+.p2align 2
+.type bmpcfg_emit_stub_1788, @function
+bmpcfg_emit_stub_1788:
+    bmpcfg 2, 8, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1788, .-bmpcfg_emit_stub_1788
+
+.globl bmpcfg_emit_stub_1789
+.p2align 2
+.type bmpcfg_emit_stub_1789, @function
+bmpcfg_emit_stub_1789:
+    bmpcfg 2, 8, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1789, .-bmpcfg_emit_stub_1789
+
+.globl bmpcfg_emit_stub_1790
+.p2align 2
+.type bmpcfg_emit_stub_1790, @function
+bmpcfg_emit_stub_1790:
+    bmpcfg 2, 8, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1790, .-bmpcfg_emit_stub_1790
+
+.globl bmpcfg_emit_stub_1791
+.p2align 2
+.type bmpcfg_emit_stub_1791, @function
+bmpcfg_emit_stub_1791:
+    bmpcfg 2, 8, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1791, .-bmpcfg_emit_stub_1791
+
+.globl bmpcfg_emit_stub_1792
+.p2align 2
+.type bmpcfg_emit_stub_1792, @function
+bmpcfg_emit_stub_1792:
+    bmpcfg 2, 8, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1792, .-bmpcfg_emit_stub_1792
+
+.globl bmpcfg_emit_stub_1793
+.p2align 2
+.type bmpcfg_emit_stub_1793, @function
+bmpcfg_emit_stub_1793:
+    bmpcfg 2, 8, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1793, .-bmpcfg_emit_stub_1793
+
+.globl bmpcfg_emit_stub_1794
+.p2align 2
+.type bmpcfg_emit_stub_1794, @function
+bmpcfg_emit_stub_1794:
+    bmpcfg 2, 8, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1794, .-bmpcfg_emit_stub_1794
+
+.globl bmpcfg_emit_stub_1795
+.p2align 2
+.type bmpcfg_emit_stub_1795, @function
+bmpcfg_emit_stub_1795:
+    bmpcfg 2, 8, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1795, .-bmpcfg_emit_stub_1795
+
+.globl bmpcfg_emit_stub_1796
+.p2align 2
+.type bmpcfg_emit_stub_1796, @function
+bmpcfg_emit_stub_1796:
+    bmpcfg 2, 8, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1796, .-bmpcfg_emit_stub_1796
+
+.globl bmpcfg_emit_stub_1797
+.p2align 2
+.type bmpcfg_emit_stub_1797, @function
+bmpcfg_emit_stub_1797:
+    bmpcfg 2, 8, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1797, .-bmpcfg_emit_stub_1797
+
+.globl bmpcfg_emit_stub_1798
+.p2align 2
+.type bmpcfg_emit_stub_1798, @function
+bmpcfg_emit_stub_1798:
+    bmpcfg 2, 8, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1798, .-bmpcfg_emit_stub_1798
+
+.globl bmpcfg_emit_stub_1799
+.p2align 2
+.type bmpcfg_emit_stub_1799, @function
+bmpcfg_emit_stub_1799:
+    bmpcfg 2, 8, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1799, .-bmpcfg_emit_stub_1799
+
+.globl bmpcfg_emit_stub_1800
+.p2align 2
+.type bmpcfg_emit_stub_1800, @function
+bmpcfg_emit_stub_1800:
+    bmpcfg 2, 8, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1800, .-bmpcfg_emit_stub_1800
+
+.globl bmpcfg_emit_stub_1801
+.p2align 2
+.type bmpcfg_emit_stub_1801, @function
+bmpcfg_emit_stub_1801:
+    bmpcfg 2, 8, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1801, .-bmpcfg_emit_stub_1801
+
+.globl bmpcfg_emit_stub_1802
+.p2align 2
+.type bmpcfg_emit_stub_1802, @function
+bmpcfg_emit_stub_1802:
+    bmpcfg 2, 8, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1802, .-bmpcfg_emit_stub_1802
+
+.globl bmpcfg_emit_stub_1803
+.p2align 2
+.type bmpcfg_emit_stub_1803, @function
+bmpcfg_emit_stub_1803:
+    bmpcfg 2, 8, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1803, .-bmpcfg_emit_stub_1803
+
+.globl bmpcfg_emit_stub_1804
+.p2align 2
+.type bmpcfg_emit_stub_1804, @function
+bmpcfg_emit_stub_1804:
+    bmpcfg 2, 8, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1804, .-bmpcfg_emit_stub_1804
+
+.globl bmpcfg_emit_stub_1805
+.p2align 2
+.type bmpcfg_emit_stub_1805, @function
+bmpcfg_emit_stub_1805:
+    bmpcfg 2, 8, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1805, .-bmpcfg_emit_stub_1805
+
+.globl bmpcfg_emit_stub_1806
+.p2align 2
+.type bmpcfg_emit_stub_1806, @function
+bmpcfg_emit_stub_1806:
+    bmpcfg 2, 8, 44, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1806, .-bmpcfg_emit_stub_1806
+
+.globl bmpcfg_emit_stub_1807
+.p2align 2
+.type bmpcfg_emit_stub_1807, @function
+bmpcfg_emit_stub_1807:
+    bmpcfg 2, 8, 48, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1807, .-bmpcfg_emit_stub_1807
+
+.globl bmpcfg_emit_stub_1808
+.p2align 2
+.type bmpcfg_emit_stub_1808, @function
+bmpcfg_emit_stub_1808:
+    bmpcfg 2, 8, 52, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1808, .-bmpcfg_emit_stub_1808
+
+.globl bmpcfg_emit_stub_1809
+.p2align 2
+.type bmpcfg_emit_stub_1809, @function
+bmpcfg_emit_stub_1809:
+    bmpcfg 2, 8, 56, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1809, .-bmpcfg_emit_stub_1809
+
+.globl bmpcfg_emit_stub_1810
+.p2align 2
+.type bmpcfg_emit_stub_1810, @function
+bmpcfg_emit_stub_1810:
+    bmpcfg 2, 8, 60, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1810, .-bmpcfg_emit_stub_1810
+
+.globl bmpcfg_emit_stub_1811
+.p2align 2
+.type bmpcfg_emit_stub_1811, @function
+bmpcfg_emit_stub_1811:
+    bmpcfg 2, 8, 64, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1811, .-bmpcfg_emit_stub_1811
+
+.globl bmpcfg_emit_stub_1812
+.p2align 2
+.type bmpcfg_emit_stub_1812, @function
+bmpcfg_emit_stub_1812:
+    bmpcfg 2, 16, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1812, .-bmpcfg_emit_stub_1812
+
+.globl bmpcfg_emit_stub_1813
+.p2align 2
+.type bmpcfg_emit_stub_1813, @function
+bmpcfg_emit_stub_1813:
+    bmpcfg 2, 16, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1813, .-bmpcfg_emit_stub_1813
+
+.globl bmpcfg_emit_stub_1814
+.p2align 2
+.type bmpcfg_emit_stub_1814, @function
+bmpcfg_emit_stub_1814:
+    bmpcfg 2, 16, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1814, .-bmpcfg_emit_stub_1814
+
+.globl bmpcfg_emit_stub_1815
+.p2align 2
+.type bmpcfg_emit_stub_1815, @function
+bmpcfg_emit_stub_1815:
+    bmpcfg 2, 16, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1815, .-bmpcfg_emit_stub_1815
+
+.globl bmpcfg_emit_stub_1816
+.p2align 2
+.type bmpcfg_emit_stub_1816, @function
+bmpcfg_emit_stub_1816:
+    bmpcfg 2, 16, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1816, .-bmpcfg_emit_stub_1816
+
+.globl bmpcfg_emit_stub_1817
+.p2align 2
+.type bmpcfg_emit_stub_1817, @function
+bmpcfg_emit_stub_1817:
+    bmpcfg 2, 16, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1817, .-bmpcfg_emit_stub_1817
+
+.globl bmpcfg_emit_stub_1818
+.p2align 2
+.type bmpcfg_emit_stub_1818, @function
+bmpcfg_emit_stub_1818:
+    bmpcfg 2, 16, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1818, .-bmpcfg_emit_stub_1818
+
+.globl bmpcfg_emit_stub_1819
+.p2align 2
+.type bmpcfg_emit_stub_1819, @function
+bmpcfg_emit_stub_1819:
+    bmpcfg 2, 16, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1819, .-bmpcfg_emit_stub_1819
+
+.globl bmpcfg_emit_stub_1820
+.p2align 2
+.type bmpcfg_emit_stub_1820, @function
+bmpcfg_emit_stub_1820:
+    bmpcfg 2, 16, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1820, .-bmpcfg_emit_stub_1820
+
+.globl bmpcfg_emit_stub_1821
+.p2align 2
+.type bmpcfg_emit_stub_1821, @function
+bmpcfg_emit_stub_1821:
+    bmpcfg 2, 16, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1821, .-bmpcfg_emit_stub_1821
+
+.globl bmpcfg_emit_stub_1822
+.p2align 2
+.type bmpcfg_emit_stub_1822, @function
+bmpcfg_emit_stub_1822:
+    bmpcfg 2, 16, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1822, .-bmpcfg_emit_stub_1822
+
+.globl bmpcfg_emit_stub_1823
+.p2align 2
+.type bmpcfg_emit_stub_1823, @function
+bmpcfg_emit_stub_1823:
+    bmpcfg 2, 16, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1823, .-bmpcfg_emit_stub_1823
+
+.globl bmpcfg_emit_stub_1824
+.p2align 2
+.type bmpcfg_emit_stub_1824, @function
+bmpcfg_emit_stub_1824:
+    bmpcfg 2, 16, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1824, .-bmpcfg_emit_stub_1824
+
+.globl bmpcfg_emit_stub_1825
+.p2align 2
+.type bmpcfg_emit_stub_1825, @function
+bmpcfg_emit_stub_1825:
+    bmpcfg 2, 16, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1825, .-bmpcfg_emit_stub_1825
+
+.globl bmpcfg_emit_stub_1826
+.p2align 2
+.type bmpcfg_emit_stub_1826, @function
+bmpcfg_emit_stub_1826:
+    bmpcfg 2, 16, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1826, .-bmpcfg_emit_stub_1826
+
+.globl bmpcfg_emit_stub_1827
+.p2align 2
+.type bmpcfg_emit_stub_1827, @function
+bmpcfg_emit_stub_1827:
+    bmpcfg 2, 16, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1827, .-bmpcfg_emit_stub_1827
+
+.globl bmpcfg_emit_stub_1828
+.p2align 2
+.type bmpcfg_emit_stub_1828, @function
+bmpcfg_emit_stub_1828:
+    bmpcfg 2, 16, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1828, .-bmpcfg_emit_stub_1828
+
+.globl bmpcfg_emit_stub_1829
+.p2align 2
+.type bmpcfg_emit_stub_1829, @function
+bmpcfg_emit_stub_1829:
+    bmpcfg 2, 16, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1829, .-bmpcfg_emit_stub_1829
+
+.globl bmpcfg_emit_stub_1830
+.p2align 2
+.type bmpcfg_emit_stub_1830, @function
+bmpcfg_emit_stub_1830:
+    bmpcfg 2, 16, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1830, .-bmpcfg_emit_stub_1830
+
+.globl bmpcfg_emit_stub_1831
+.p2align 2
+.type bmpcfg_emit_stub_1831, @function
+bmpcfg_emit_stub_1831:
+    bmpcfg 2, 16, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1831, .-bmpcfg_emit_stub_1831
+
+.globl bmpcfg_emit_stub_1832
+.p2align 2
+.type bmpcfg_emit_stub_1832, @function
+bmpcfg_emit_stub_1832:
+    bmpcfg 2, 16, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1832, .-bmpcfg_emit_stub_1832
+
+.globl bmpcfg_emit_stub_1833
+.p2align 2
+.type bmpcfg_emit_stub_1833, @function
+bmpcfg_emit_stub_1833:
+    bmpcfg 2, 16, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1833, .-bmpcfg_emit_stub_1833
+
+.globl bmpcfg_emit_stub_1834
+.p2align 2
+.type bmpcfg_emit_stub_1834, @function
+bmpcfg_emit_stub_1834:
+    bmpcfg 2, 16, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1834, .-bmpcfg_emit_stub_1834
+
+.globl bmpcfg_emit_stub_1835
+.p2align 2
+.type bmpcfg_emit_stub_1835, @function
+bmpcfg_emit_stub_1835:
+    bmpcfg 2, 16, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1835, .-bmpcfg_emit_stub_1835
+
+.globl bmpcfg_emit_stub_1836
+.p2align 2
+.type bmpcfg_emit_stub_1836, @function
+bmpcfg_emit_stub_1836:
+    bmpcfg 2, 16, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1836, .-bmpcfg_emit_stub_1836
+
+.globl bmpcfg_emit_stub_1837
+.p2align 2
+.type bmpcfg_emit_stub_1837, @function
+bmpcfg_emit_stub_1837:
+    bmpcfg 2, 16, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1837, .-bmpcfg_emit_stub_1837
+
+.globl bmpcfg_emit_stub_1838
+.p2align 2
+.type bmpcfg_emit_stub_1838, @function
+bmpcfg_emit_stub_1838:
+    bmpcfg 2, 16, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1838, .-bmpcfg_emit_stub_1838
+
+.globl bmpcfg_emit_stub_1839
+.p2align 2
+.type bmpcfg_emit_stub_1839, @function
+bmpcfg_emit_stub_1839:
+    bmpcfg 2, 16, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1839, .-bmpcfg_emit_stub_1839
+
+.globl bmpcfg_emit_stub_1840
+.p2align 2
+.type bmpcfg_emit_stub_1840, @function
+bmpcfg_emit_stub_1840:
+    bmpcfg 2, 16, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1840, .-bmpcfg_emit_stub_1840
+
+.globl bmpcfg_emit_stub_1841
+.p2align 2
+.type bmpcfg_emit_stub_1841, @function
+bmpcfg_emit_stub_1841:
+    bmpcfg 2, 16, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1841, .-bmpcfg_emit_stub_1841
+
+.globl bmpcfg_emit_stub_1842
+.p2align 2
+.type bmpcfg_emit_stub_1842, @function
+bmpcfg_emit_stub_1842:
+    bmpcfg 2, 16, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1842, .-bmpcfg_emit_stub_1842
+
+.globl bmpcfg_emit_stub_1843
+.p2align 2
+.type bmpcfg_emit_stub_1843, @function
+bmpcfg_emit_stub_1843:
+    bmpcfg 2, 16, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_1843, .-bmpcfg_emit_stub_1843
+
+.globl bmpcfg_emit_stub_1844
+.p2align 2
+.type bmpcfg_emit_stub_1844, @function
+bmpcfg_emit_stub_1844:
+    bmpcfg 2, 16, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_1844, .-bmpcfg_emit_stub_1844
+
+.globl bmpcfg_emit_stub_1845
+.p2align 2
+.type bmpcfg_emit_stub_1845, @function
+bmpcfg_emit_stub_1845:
+    bmpcfg 2, 16, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_1845, .-bmpcfg_emit_stub_1845
+
+.globl bmpcfg_emit_stub_1846
+.p2align 2
+.type bmpcfg_emit_stub_1846, @function
+bmpcfg_emit_stub_1846:
+    bmpcfg 2, 16, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1846, .-bmpcfg_emit_stub_1846
+
+.globl bmpcfg_emit_stub_1847
+.p2align 2
+.type bmpcfg_emit_stub_1847, @function
+bmpcfg_emit_stub_1847:
+    bmpcfg 2, 16, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1847, .-bmpcfg_emit_stub_1847
+
+.globl bmpcfg_emit_stub_1848
+.p2align 2
+.type bmpcfg_emit_stub_1848, @function
+bmpcfg_emit_stub_1848:
+    bmpcfg 2, 16, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1848, .-bmpcfg_emit_stub_1848
+
+.globl bmpcfg_emit_stub_1849
+.p2align 2
+.type bmpcfg_emit_stub_1849, @function
+bmpcfg_emit_stub_1849:
+    bmpcfg 2, 16, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1849, .-bmpcfg_emit_stub_1849
+
+.globl bmpcfg_emit_stub_1850
+.p2align 2
+.type bmpcfg_emit_stub_1850, @function
+bmpcfg_emit_stub_1850:
+    bmpcfg 2, 16, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1850, .-bmpcfg_emit_stub_1850
+
+.globl bmpcfg_emit_stub_1851
+.p2align 2
+.type bmpcfg_emit_stub_1851, @function
+bmpcfg_emit_stub_1851:
+    bmpcfg 2, 16, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1851, .-bmpcfg_emit_stub_1851
+
+.globl bmpcfg_emit_stub_1852
+.p2align 2
+.type bmpcfg_emit_stub_1852, @function
+bmpcfg_emit_stub_1852:
+    bmpcfg 2, 16, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1852, .-bmpcfg_emit_stub_1852
+
+.globl bmpcfg_emit_stub_1853
+.p2align 2
+.type bmpcfg_emit_stub_1853, @function
+bmpcfg_emit_stub_1853:
+    bmpcfg 2, 16, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1853, .-bmpcfg_emit_stub_1853
+
+.globl bmpcfg_emit_stub_1854
+.p2align 2
+.type bmpcfg_emit_stub_1854, @function
+bmpcfg_emit_stub_1854:
+    bmpcfg 2, 16, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1854, .-bmpcfg_emit_stub_1854
+
+.globl bmpcfg_emit_stub_1855
+.p2align 2
+.type bmpcfg_emit_stub_1855, @function
+bmpcfg_emit_stub_1855:
+    bmpcfg 2, 16, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1855, .-bmpcfg_emit_stub_1855
+
+.globl bmpcfg_emit_stub_1856
+.p2align 2
+.type bmpcfg_emit_stub_1856, @function
+bmpcfg_emit_stub_1856:
+    bmpcfg 2, 16, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1856, .-bmpcfg_emit_stub_1856
+
+.globl bmpcfg_emit_stub_1857
+.p2align 2
+.type bmpcfg_emit_stub_1857, @function
+bmpcfg_emit_stub_1857:
+    bmpcfg 2, 16, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1857, .-bmpcfg_emit_stub_1857
+
+.globl bmpcfg_emit_stub_1858
+.p2align 2
+.type bmpcfg_emit_stub_1858, @function
+bmpcfg_emit_stub_1858:
+    bmpcfg 2, 16, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1858, .-bmpcfg_emit_stub_1858
+
+.globl bmpcfg_emit_stub_1859
+.p2align 2
+.type bmpcfg_emit_stub_1859, @function
+bmpcfg_emit_stub_1859:
+    bmpcfg 2, 16, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1859, .-bmpcfg_emit_stub_1859
+
+.globl bmpcfg_emit_stub_1860
+.p2align 2
+.type bmpcfg_emit_stub_1860, @function
+bmpcfg_emit_stub_1860:
+    bmpcfg 2, 16, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1860, .-bmpcfg_emit_stub_1860
+
+.globl bmpcfg_emit_stub_1861
+.p2align 2
+.type bmpcfg_emit_stub_1861, @function
+bmpcfg_emit_stub_1861:
+    bmpcfg 2, 16, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1861, .-bmpcfg_emit_stub_1861
+
+.globl bmpcfg_emit_stub_1862
+.p2align 2
+.type bmpcfg_emit_stub_1862, @function
+bmpcfg_emit_stub_1862:
+    bmpcfg 2, 16, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1862, .-bmpcfg_emit_stub_1862
+
+.globl bmpcfg_emit_stub_1863
+.p2align 2
+.type bmpcfg_emit_stub_1863, @function
+bmpcfg_emit_stub_1863:
+    bmpcfg 2, 16, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1863, .-bmpcfg_emit_stub_1863
+
+.globl bmpcfg_emit_stub_1864
+.p2align 2
+.type bmpcfg_emit_stub_1864, @function
+bmpcfg_emit_stub_1864:
+    bmpcfg 2, 16, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1864, .-bmpcfg_emit_stub_1864
+
+.globl bmpcfg_emit_stub_1865
+.p2align 2
+.type bmpcfg_emit_stub_1865, @function
+bmpcfg_emit_stub_1865:
+    bmpcfg 2, 16, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1865, .-bmpcfg_emit_stub_1865
+
+.globl bmpcfg_emit_stub_1866
+.p2align 2
+.type bmpcfg_emit_stub_1866, @function
+bmpcfg_emit_stub_1866:
+    bmpcfg 2, 16, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1866, .-bmpcfg_emit_stub_1866
+
+.globl bmpcfg_emit_stub_1867
+.p2align 2
+.type bmpcfg_emit_stub_1867, @function
+bmpcfg_emit_stub_1867:
+    bmpcfg 2, 16, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1867, .-bmpcfg_emit_stub_1867
+
+.globl bmpcfg_emit_stub_1868
+.p2align 2
+.type bmpcfg_emit_stub_1868, @function
+bmpcfg_emit_stub_1868:
+    bmpcfg 2, 16, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1868, .-bmpcfg_emit_stub_1868
+
+.globl bmpcfg_emit_stub_1869
+.p2align 2
+.type bmpcfg_emit_stub_1869, @function
+bmpcfg_emit_stub_1869:
+    bmpcfg 2, 16, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1869, .-bmpcfg_emit_stub_1869
+
+.globl bmpcfg_emit_stub_1870
+.p2align 2
+.type bmpcfg_emit_stub_1870, @function
+bmpcfg_emit_stub_1870:
+    bmpcfg 2, 16, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1870, .-bmpcfg_emit_stub_1870
+
+.globl bmpcfg_emit_stub_1871
+.p2align 2
+.type bmpcfg_emit_stub_1871, @function
+bmpcfg_emit_stub_1871:
+    bmpcfg 2, 16, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1871, .-bmpcfg_emit_stub_1871
+
+.globl bmpcfg_emit_stub_1872
+.p2align 2
+.type bmpcfg_emit_stub_1872, @function
+bmpcfg_emit_stub_1872:
+    bmpcfg 2, 16, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1872, .-bmpcfg_emit_stub_1872
+
+.globl bmpcfg_emit_stub_1873
+.p2align 2
+.type bmpcfg_emit_stub_1873, @function
+bmpcfg_emit_stub_1873:
+    bmpcfg 2, 16, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1873, .-bmpcfg_emit_stub_1873
+
+.globl bmpcfg_emit_stub_1874
+.p2align 2
+.type bmpcfg_emit_stub_1874, @function
+bmpcfg_emit_stub_1874:
+    bmpcfg 2, 16, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1874, .-bmpcfg_emit_stub_1874
+
+.globl bmpcfg_emit_stub_1875
+.p2align 2
+.type bmpcfg_emit_stub_1875, @function
+bmpcfg_emit_stub_1875:
+    bmpcfg 2, 16, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1875, .-bmpcfg_emit_stub_1875
+
+.globl bmpcfg_emit_stub_1876
+.p2align 2
+.type bmpcfg_emit_stub_1876, @function
+bmpcfg_emit_stub_1876:
+    bmpcfg 2, 16, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1876, .-bmpcfg_emit_stub_1876
+
+.globl bmpcfg_emit_stub_1877
+.p2align 2
+.type bmpcfg_emit_stub_1877, @function
+bmpcfg_emit_stub_1877:
+    bmpcfg 2, 16, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1877, .-bmpcfg_emit_stub_1877
+
+.globl bmpcfg_emit_stub_1878
+.p2align 2
+.type bmpcfg_emit_stub_1878, @function
+bmpcfg_emit_stub_1878:
+    bmpcfg 2, 16, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1878, .-bmpcfg_emit_stub_1878
+
+.globl bmpcfg_emit_stub_1879
+.p2align 2
+.type bmpcfg_emit_stub_1879, @function
+bmpcfg_emit_stub_1879:
+    bmpcfg 2, 16, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1879, .-bmpcfg_emit_stub_1879
+
+.globl bmpcfg_emit_stub_1880
+.p2align 2
+.type bmpcfg_emit_stub_1880, @function
+bmpcfg_emit_stub_1880:
+    bmpcfg 2, 16, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1880, .-bmpcfg_emit_stub_1880
+
+.globl bmpcfg_emit_stub_1881
+.p2align 2
+.type bmpcfg_emit_stub_1881, @function
+bmpcfg_emit_stub_1881:
+    bmpcfg 2, 16, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1881, .-bmpcfg_emit_stub_1881
+
+.globl bmpcfg_emit_stub_1882
+.p2align 2
+.type bmpcfg_emit_stub_1882, @function
+bmpcfg_emit_stub_1882:
+    bmpcfg 2, 16, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1882, .-bmpcfg_emit_stub_1882
+
+.globl bmpcfg_emit_stub_1883
+.p2align 2
+.type bmpcfg_emit_stub_1883, @function
+bmpcfg_emit_stub_1883:
+    bmpcfg 2, 16, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1883, .-bmpcfg_emit_stub_1883
+
+.globl bmpcfg_emit_stub_1884
+.p2align 2
+.type bmpcfg_emit_stub_1884, @function
+bmpcfg_emit_stub_1884:
+    bmpcfg 2, 16, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1884, .-bmpcfg_emit_stub_1884
+
+.globl bmpcfg_emit_stub_1885
+.p2align 2
+.type bmpcfg_emit_stub_1885, @function
+bmpcfg_emit_stub_1885:
+    bmpcfg 2, 16, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1885, .-bmpcfg_emit_stub_1885
+
+.globl bmpcfg_emit_stub_1886
+.p2align 2
+.type bmpcfg_emit_stub_1886, @function
+bmpcfg_emit_stub_1886:
+    bmpcfg 2, 16, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1886, .-bmpcfg_emit_stub_1886
+
+.globl bmpcfg_emit_stub_1887
+.p2align 2
+.type bmpcfg_emit_stub_1887, @function
+bmpcfg_emit_stub_1887:
+    bmpcfg 2, 16, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1887, .-bmpcfg_emit_stub_1887
+
+.globl bmpcfg_emit_stub_1888
+.p2align 2
+.type bmpcfg_emit_stub_1888, @function
+bmpcfg_emit_stub_1888:
+    bmpcfg 2, 16, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1888, .-bmpcfg_emit_stub_1888
+
+.globl bmpcfg_emit_stub_1889
+.p2align 2
+.type bmpcfg_emit_stub_1889, @function
+bmpcfg_emit_stub_1889:
+    bmpcfg 2, 16, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1889, .-bmpcfg_emit_stub_1889
+
+.globl bmpcfg_emit_stub_1890
+.p2align 2
+.type bmpcfg_emit_stub_1890, @function
+bmpcfg_emit_stub_1890:
+    bmpcfg 2, 16, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1890, .-bmpcfg_emit_stub_1890
+
+.globl bmpcfg_emit_stub_1891
+.p2align 2
+.type bmpcfg_emit_stub_1891, @function
+bmpcfg_emit_stub_1891:
+    bmpcfg 2, 16, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1891, .-bmpcfg_emit_stub_1891
+
+.globl bmpcfg_emit_stub_1892
+.p2align 2
+.type bmpcfg_emit_stub_1892, @function
+bmpcfg_emit_stub_1892:
+    bmpcfg 2, 16, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1892, .-bmpcfg_emit_stub_1892
+
+.globl bmpcfg_emit_stub_1893
+.p2align 2
+.type bmpcfg_emit_stub_1893, @function
+bmpcfg_emit_stub_1893:
+    bmpcfg 2, 16, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1893, .-bmpcfg_emit_stub_1893
+
+.globl bmpcfg_emit_stub_1894
+.p2align 2
+.type bmpcfg_emit_stub_1894, @function
+bmpcfg_emit_stub_1894:
+    bmpcfg 2, 16, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1894, .-bmpcfg_emit_stub_1894
+
+.globl bmpcfg_emit_stub_1895
+.p2align 2
+.type bmpcfg_emit_stub_1895, @function
+bmpcfg_emit_stub_1895:
+    bmpcfg 2, 16, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1895, .-bmpcfg_emit_stub_1895
+
+.globl bmpcfg_emit_stub_1896
+.p2align 2
+.type bmpcfg_emit_stub_1896, @function
+bmpcfg_emit_stub_1896:
+    bmpcfg 2, 16, 44, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1896, .-bmpcfg_emit_stub_1896
+
+.globl bmpcfg_emit_stub_1897
+.p2align 2
+.type bmpcfg_emit_stub_1897, @function
+bmpcfg_emit_stub_1897:
+    bmpcfg 2, 16, 48, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1897, .-bmpcfg_emit_stub_1897
+
+.globl bmpcfg_emit_stub_1898
+.p2align 2
+.type bmpcfg_emit_stub_1898, @function
+bmpcfg_emit_stub_1898:
+    bmpcfg 2, 16, 52, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1898, .-bmpcfg_emit_stub_1898
+
+.globl bmpcfg_emit_stub_1899
+.p2align 2
+.type bmpcfg_emit_stub_1899, @function
+bmpcfg_emit_stub_1899:
+    bmpcfg 2, 16, 56, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1899, .-bmpcfg_emit_stub_1899
+
+.globl bmpcfg_emit_stub_1900
+.p2align 2
+.type bmpcfg_emit_stub_1900, @function
+bmpcfg_emit_stub_1900:
+    bmpcfg 2, 16, 60, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1900, .-bmpcfg_emit_stub_1900
+
+.globl bmpcfg_emit_stub_1901
+.p2align 2
+.type bmpcfg_emit_stub_1901, @function
+bmpcfg_emit_stub_1901:
+    bmpcfg 2, 16, 64, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1901, .-bmpcfg_emit_stub_1901
+
+.globl bmpcfg_emit_stub_1902
+.p2align 2
+.type bmpcfg_emit_stub_1902, @function
+bmpcfg_emit_stub_1902:
+    bmpcfg 2, 24, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1902, .-bmpcfg_emit_stub_1902
+
+.globl bmpcfg_emit_stub_1903
+.p2align 2
+.type bmpcfg_emit_stub_1903, @function
+bmpcfg_emit_stub_1903:
+    bmpcfg 2, 24, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1903, .-bmpcfg_emit_stub_1903
+
+.globl bmpcfg_emit_stub_1904
+.p2align 2
+.type bmpcfg_emit_stub_1904, @function
+bmpcfg_emit_stub_1904:
+    bmpcfg 2, 24, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1904, .-bmpcfg_emit_stub_1904
+
+.globl bmpcfg_emit_stub_1905
+.p2align 2
+.type bmpcfg_emit_stub_1905, @function
+bmpcfg_emit_stub_1905:
+    bmpcfg 2, 24, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1905, .-bmpcfg_emit_stub_1905
+
+.globl bmpcfg_emit_stub_1906
+.p2align 2
+.type bmpcfg_emit_stub_1906, @function
+bmpcfg_emit_stub_1906:
+    bmpcfg 2, 24, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1906, .-bmpcfg_emit_stub_1906
+
+.globl bmpcfg_emit_stub_1907
+.p2align 2
+.type bmpcfg_emit_stub_1907, @function
+bmpcfg_emit_stub_1907:
+    bmpcfg 2, 24, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1907, .-bmpcfg_emit_stub_1907
+
+.globl bmpcfg_emit_stub_1908
+.p2align 2
+.type bmpcfg_emit_stub_1908, @function
+bmpcfg_emit_stub_1908:
+    bmpcfg 2, 24, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1908, .-bmpcfg_emit_stub_1908
+
+.globl bmpcfg_emit_stub_1909
+.p2align 2
+.type bmpcfg_emit_stub_1909, @function
+bmpcfg_emit_stub_1909:
+    bmpcfg 2, 24, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1909, .-bmpcfg_emit_stub_1909
+
+.globl bmpcfg_emit_stub_1910
+.p2align 2
+.type bmpcfg_emit_stub_1910, @function
+bmpcfg_emit_stub_1910:
+    bmpcfg 2, 24, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1910, .-bmpcfg_emit_stub_1910
+
+.globl bmpcfg_emit_stub_1911
+.p2align 2
+.type bmpcfg_emit_stub_1911, @function
+bmpcfg_emit_stub_1911:
+    bmpcfg 2, 24, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1911, .-bmpcfg_emit_stub_1911
+
+.globl bmpcfg_emit_stub_1912
+.p2align 2
+.type bmpcfg_emit_stub_1912, @function
+bmpcfg_emit_stub_1912:
+    bmpcfg 2, 24, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1912, .-bmpcfg_emit_stub_1912
+
+.globl bmpcfg_emit_stub_1913
+.p2align 2
+.type bmpcfg_emit_stub_1913, @function
+bmpcfg_emit_stub_1913:
+    bmpcfg 2, 24, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1913, .-bmpcfg_emit_stub_1913
+
+.globl bmpcfg_emit_stub_1914
+.p2align 2
+.type bmpcfg_emit_stub_1914, @function
+bmpcfg_emit_stub_1914:
+    bmpcfg 2, 24, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1914, .-bmpcfg_emit_stub_1914
+
+.globl bmpcfg_emit_stub_1915
+.p2align 2
+.type bmpcfg_emit_stub_1915, @function
+bmpcfg_emit_stub_1915:
+    bmpcfg 2, 24, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1915, .-bmpcfg_emit_stub_1915
+
+.globl bmpcfg_emit_stub_1916
+.p2align 2
+.type bmpcfg_emit_stub_1916, @function
+bmpcfg_emit_stub_1916:
+    bmpcfg 2, 24, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_1916, .-bmpcfg_emit_stub_1916
+
+.globl bmpcfg_emit_stub_1917
+.p2align 2
+.type bmpcfg_emit_stub_1917, @function
+bmpcfg_emit_stub_1917:
+    bmpcfg 2, 24, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_1917, .-bmpcfg_emit_stub_1917
+
+.globl bmpcfg_emit_stub_1918
+.p2align 2
+.type bmpcfg_emit_stub_1918, @function
+bmpcfg_emit_stub_1918:
+    bmpcfg 2, 24, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1918, .-bmpcfg_emit_stub_1918
+
+.globl bmpcfg_emit_stub_1919
+.p2align 2
+.type bmpcfg_emit_stub_1919, @function
+bmpcfg_emit_stub_1919:
+    bmpcfg 2, 24, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1919, .-bmpcfg_emit_stub_1919
+
+.globl bmpcfg_emit_stub_1920
+.p2align 2
+.type bmpcfg_emit_stub_1920, @function
+bmpcfg_emit_stub_1920:
+    bmpcfg 2, 24, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_1920, .-bmpcfg_emit_stub_1920
+
+.globl bmpcfg_emit_stub_1921
+.p2align 2
+.type bmpcfg_emit_stub_1921, @function
+bmpcfg_emit_stub_1921:
+    bmpcfg 2, 24, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_1921, .-bmpcfg_emit_stub_1921
+
+.globl bmpcfg_emit_stub_1922
+.p2align 2
+.type bmpcfg_emit_stub_1922, @function
+bmpcfg_emit_stub_1922:
+    bmpcfg 2, 24, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1922, .-bmpcfg_emit_stub_1922
+
+.globl bmpcfg_emit_stub_1923
+.p2align 2
+.type bmpcfg_emit_stub_1923, @function
+bmpcfg_emit_stub_1923:
+    bmpcfg 2, 24, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_1923, .-bmpcfg_emit_stub_1923
+
+.globl bmpcfg_emit_stub_1924
+.p2align 2
+.type bmpcfg_emit_stub_1924, @function
+bmpcfg_emit_stub_1924:
+    bmpcfg 2, 24, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_1924, .-bmpcfg_emit_stub_1924
+
+.globl bmpcfg_emit_stub_1925
+.p2align 2
+.type bmpcfg_emit_stub_1925, @function
+bmpcfg_emit_stub_1925:
+    bmpcfg 2, 24, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_1925, .-bmpcfg_emit_stub_1925
+
+.globl bmpcfg_emit_stub_1926
+.p2align 2
+.type bmpcfg_emit_stub_1926, @function
+bmpcfg_emit_stub_1926:
+    bmpcfg 2, 24, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1926, .-bmpcfg_emit_stub_1926
+
+.globl bmpcfg_emit_stub_1927
+.p2align 2
+.type bmpcfg_emit_stub_1927, @function
+bmpcfg_emit_stub_1927:
+    bmpcfg 2, 24, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_1927, .-bmpcfg_emit_stub_1927
+
+.globl bmpcfg_emit_stub_1928
+.p2align 2
+.type bmpcfg_emit_stub_1928, @function
+bmpcfg_emit_stub_1928:
+    bmpcfg 2, 24, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_1928, .-bmpcfg_emit_stub_1928
+
+.globl bmpcfg_emit_stub_1929
+.p2align 2
+.type bmpcfg_emit_stub_1929, @function
+bmpcfg_emit_stub_1929:
+    bmpcfg 2, 24, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1929, .-bmpcfg_emit_stub_1929
+
+.globl bmpcfg_emit_stub_1930
+.p2align 2
+.type bmpcfg_emit_stub_1930, @function
+bmpcfg_emit_stub_1930:
+    bmpcfg 2, 24, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_1930, .-bmpcfg_emit_stub_1930
+
+.globl bmpcfg_emit_stub_1931
+.p2align 2
+.type bmpcfg_emit_stub_1931, @function
+bmpcfg_emit_stub_1931:
+    bmpcfg 2, 24, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_1931, .-bmpcfg_emit_stub_1931
+
+.globl bmpcfg_emit_stub_1932
+.p2align 2
+.type bmpcfg_emit_stub_1932, @function
+bmpcfg_emit_stub_1932:
+    bmpcfg 2, 24, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1932, .-bmpcfg_emit_stub_1932
+
+.globl bmpcfg_emit_stub_1933
+.p2align 2
+.type bmpcfg_emit_stub_1933, @function
+bmpcfg_emit_stub_1933:
+    bmpcfg 2, 24, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_1933, .-bmpcfg_emit_stub_1933
+
+.globl bmpcfg_emit_stub_1934
+.p2align 2
+.type bmpcfg_emit_stub_1934, @function
+bmpcfg_emit_stub_1934:
+    bmpcfg 2, 24, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_1934, .-bmpcfg_emit_stub_1934
+
+.globl bmpcfg_emit_stub_1935
+.p2align 2
+.type bmpcfg_emit_stub_1935, @function
+bmpcfg_emit_stub_1935:
+    bmpcfg 2, 24, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_1935, .-bmpcfg_emit_stub_1935
+
+.globl bmpcfg_emit_stub_1936
+.p2align 2
+.type bmpcfg_emit_stub_1936, @function
+bmpcfg_emit_stub_1936:
+    bmpcfg 2, 24, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1936, .-bmpcfg_emit_stub_1936
+
+.globl bmpcfg_emit_stub_1937
+.p2align 2
+.type bmpcfg_emit_stub_1937, @function
+bmpcfg_emit_stub_1937:
+    bmpcfg 2, 24, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1937, .-bmpcfg_emit_stub_1937
+
+.globl bmpcfg_emit_stub_1938
+.p2align 2
+.type bmpcfg_emit_stub_1938, @function
+bmpcfg_emit_stub_1938:
+    bmpcfg 2, 24, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1938, .-bmpcfg_emit_stub_1938
+
+.globl bmpcfg_emit_stub_1939
+.p2align 2
+.type bmpcfg_emit_stub_1939, @function
+bmpcfg_emit_stub_1939:
+    bmpcfg 2, 24, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1939, .-bmpcfg_emit_stub_1939
+
+.globl bmpcfg_emit_stub_1940
+.p2align 2
+.type bmpcfg_emit_stub_1940, @function
+bmpcfg_emit_stub_1940:
+    bmpcfg 2, 24, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1940, .-bmpcfg_emit_stub_1940
+
+.globl bmpcfg_emit_stub_1941
+.p2align 2
+.type bmpcfg_emit_stub_1941, @function
+bmpcfg_emit_stub_1941:
+    bmpcfg 2, 24, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1941, .-bmpcfg_emit_stub_1941
+
+.globl bmpcfg_emit_stub_1942
+.p2align 2
+.type bmpcfg_emit_stub_1942, @function
+bmpcfg_emit_stub_1942:
+    bmpcfg 2, 24, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1942, .-bmpcfg_emit_stub_1942
+
+.globl bmpcfg_emit_stub_1943
+.p2align 2
+.type bmpcfg_emit_stub_1943, @function
+bmpcfg_emit_stub_1943:
+    bmpcfg 2, 24, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1943, .-bmpcfg_emit_stub_1943
+
+.globl bmpcfg_emit_stub_1944
+.p2align 2
+.type bmpcfg_emit_stub_1944, @function
+bmpcfg_emit_stub_1944:
+    bmpcfg 2, 24, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1944, .-bmpcfg_emit_stub_1944
+
+.globl bmpcfg_emit_stub_1945
+.p2align 2
+.type bmpcfg_emit_stub_1945, @function
+bmpcfg_emit_stub_1945:
+    bmpcfg 2, 24, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1945, .-bmpcfg_emit_stub_1945
+
+.globl bmpcfg_emit_stub_1946
+.p2align 2
+.type bmpcfg_emit_stub_1946, @function
+bmpcfg_emit_stub_1946:
+    bmpcfg 2, 24, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1946, .-bmpcfg_emit_stub_1946
+
+.globl bmpcfg_emit_stub_1947
+.p2align 2
+.type bmpcfg_emit_stub_1947, @function
+bmpcfg_emit_stub_1947:
+    bmpcfg 2, 24, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1947, .-bmpcfg_emit_stub_1947
+
+.globl bmpcfg_emit_stub_1948
+.p2align 2
+.type bmpcfg_emit_stub_1948, @function
+bmpcfg_emit_stub_1948:
+    bmpcfg 2, 24, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1948, .-bmpcfg_emit_stub_1948
+
+.globl bmpcfg_emit_stub_1949
+.p2align 2
+.type bmpcfg_emit_stub_1949, @function
+bmpcfg_emit_stub_1949:
+    bmpcfg 2, 24, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1949, .-bmpcfg_emit_stub_1949
+
+.globl bmpcfg_emit_stub_1950
+.p2align 2
+.type bmpcfg_emit_stub_1950, @function
+bmpcfg_emit_stub_1950:
+    bmpcfg 2, 24, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1950, .-bmpcfg_emit_stub_1950
+
+.globl bmpcfg_emit_stub_1951
+.p2align 2
+.type bmpcfg_emit_stub_1951, @function
+bmpcfg_emit_stub_1951:
+    bmpcfg 2, 24, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_1951, .-bmpcfg_emit_stub_1951
+
+.globl bmpcfg_emit_stub_1952
+.p2align 2
+.type bmpcfg_emit_stub_1952, @function
+bmpcfg_emit_stub_1952:
+    bmpcfg 2, 24, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1952, .-bmpcfg_emit_stub_1952
+
+.globl bmpcfg_emit_stub_1953
+.p2align 2
+.type bmpcfg_emit_stub_1953, @function
+bmpcfg_emit_stub_1953:
+    bmpcfg 2, 24, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1953, .-bmpcfg_emit_stub_1953
+
+.globl bmpcfg_emit_stub_1954
+.p2align 2
+.type bmpcfg_emit_stub_1954, @function
+bmpcfg_emit_stub_1954:
+    bmpcfg 2, 24, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1954, .-bmpcfg_emit_stub_1954
+
+.globl bmpcfg_emit_stub_1955
+.p2align 2
+.type bmpcfg_emit_stub_1955, @function
+bmpcfg_emit_stub_1955:
+    bmpcfg 2, 24, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1955, .-bmpcfg_emit_stub_1955
+
+.globl bmpcfg_emit_stub_1956
+.p2align 2
+.type bmpcfg_emit_stub_1956, @function
+bmpcfg_emit_stub_1956:
+    bmpcfg 2, 24, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1956, .-bmpcfg_emit_stub_1956
+
+.globl bmpcfg_emit_stub_1957
+.p2align 2
+.type bmpcfg_emit_stub_1957, @function
+bmpcfg_emit_stub_1957:
+    bmpcfg 2, 24, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1957, .-bmpcfg_emit_stub_1957
+
+.globl bmpcfg_emit_stub_1958
+.p2align 2
+.type bmpcfg_emit_stub_1958, @function
+bmpcfg_emit_stub_1958:
+    bmpcfg 2, 24, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1958, .-bmpcfg_emit_stub_1958
+
+.globl bmpcfg_emit_stub_1959
+.p2align 2
+.type bmpcfg_emit_stub_1959, @function
+bmpcfg_emit_stub_1959:
+    bmpcfg 2, 24, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1959, .-bmpcfg_emit_stub_1959
+
+.globl bmpcfg_emit_stub_1960
+.p2align 2
+.type bmpcfg_emit_stub_1960, @function
+bmpcfg_emit_stub_1960:
+    bmpcfg 2, 24, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1960, .-bmpcfg_emit_stub_1960
+
+.globl bmpcfg_emit_stub_1961
+.p2align 2
+.type bmpcfg_emit_stub_1961, @function
+bmpcfg_emit_stub_1961:
+    bmpcfg 2, 24, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_1961, .-bmpcfg_emit_stub_1961
+
+.globl bmpcfg_emit_stub_1962
+.p2align 2
+.type bmpcfg_emit_stub_1962, @function
+bmpcfg_emit_stub_1962:
+    bmpcfg 2, 24, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_1962, .-bmpcfg_emit_stub_1962
+
+.globl bmpcfg_emit_stub_1963
+.p2align 2
+.type bmpcfg_emit_stub_1963, @function
+bmpcfg_emit_stub_1963:
+    bmpcfg 2, 24, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1963, .-bmpcfg_emit_stub_1963
+
+.globl bmpcfg_emit_stub_1964
+.p2align 2
+.type bmpcfg_emit_stub_1964, @function
+bmpcfg_emit_stub_1964:
+    bmpcfg 2, 24, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_1964, .-bmpcfg_emit_stub_1964
+
+.globl bmpcfg_emit_stub_1965
+.p2align 2
+.type bmpcfg_emit_stub_1965, @function
+bmpcfg_emit_stub_1965:
+    bmpcfg 2, 24, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1965, .-bmpcfg_emit_stub_1965
+
+.globl bmpcfg_emit_stub_1966
+.p2align 2
+.type bmpcfg_emit_stub_1966, @function
+bmpcfg_emit_stub_1966:
+    bmpcfg 2, 24, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1966, .-bmpcfg_emit_stub_1966
+
+.globl bmpcfg_emit_stub_1967
+.p2align 2
+.type bmpcfg_emit_stub_1967, @function
+bmpcfg_emit_stub_1967:
+    bmpcfg 2, 24, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1967, .-bmpcfg_emit_stub_1967
+
+.globl bmpcfg_emit_stub_1968
+.p2align 2
+.type bmpcfg_emit_stub_1968, @function
+bmpcfg_emit_stub_1968:
+    bmpcfg 2, 24, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1968, .-bmpcfg_emit_stub_1968
+
+.globl bmpcfg_emit_stub_1969
+.p2align 2
+.type bmpcfg_emit_stub_1969, @function
+bmpcfg_emit_stub_1969:
+    bmpcfg 2, 24, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1969, .-bmpcfg_emit_stub_1969
+
+.globl bmpcfg_emit_stub_1970
+.p2align 2
+.type bmpcfg_emit_stub_1970, @function
+bmpcfg_emit_stub_1970:
+    bmpcfg 2, 24, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1970, .-bmpcfg_emit_stub_1970
+
+.globl bmpcfg_emit_stub_1971
+.p2align 2
+.type bmpcfg_emit_stub_1971, @function
+bmpcfg_emit_stub_1971:
+    bmpcfg 2, 24, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_1971, .-bmpcfg_emit_stub_1971
+
+.globl bmpcfg_emit_stub_1972
+.p2align 2
+.type bmpcfg_emit_stub_1972, @function
+bmpcfg_emit_stub_1972:
+    bmpcfg 2, 24, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1972, .-bmpcfg_emit_stub_1972
+
+.globl bmpcfg_emit_stub_1973
+.p2align 2
+.type bmpcfg_emit_stub_1973, @function
+bmpcfg_emit_stub_1973:
+    bmpcfg 2, 24, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1973, .-bmpcfg_emit_stub_1973
+
+.globl bmpcfg_emit_stub_1974
+.p2align 2
+.type bmpcfg_emit_stub_1974, @function
+bmpcfg_emit_stub_1974:
+    bmpcfg 2, 24, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1974, .-bmpcfg_emit_stub_1974
+
+.globl bmpcfg_emit_stub_1975
+.p2align 2
+.type bmpcfg_emit_stub_1975, @function
+bmpcfg_emit_stub_1975:
+    bmpcfg 2, 24, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1975, .-bmpcfg_emit_stub_1975
+
+.globl bmpcfg_emit_stub_1976
+.p2align 2
+.type bmpcfg_emit_stub_1976, @function
+bmpcfg_emit_stub_1976:
+    bmpcfg 2, 24, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1976, .-bmpcfg_emit_stub_1976
+
+.globl bmpcfg_emit_stub_1977
+.p2align 2
+.type bmpcfg_emit_stub_1977, @function
+bmpcfg_emit_stub_1977:
+    bmpcfg 2, 24, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1977, .-bmpcfg_emit_stub_1977
+
+.globl bmpcfg_emit_stub_1978
+.p2align 2
+.type bmpcfg_emit_stub_1978, @function
+bmpcfg_emit_stub_1978:
+    bmpcfg 2, 24, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1978, .-bmpcfg_emit_stub_1978
+
+.globl bmpcfg_emit_stub_1979
+.p2align 2
+.type bmpcfg_emit_stub_1979, @function
+bmpcfg_emit_stub_1979:
+    bmpcfg 2, 24, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1979, .-bmpcfg_emit_stub_1979
+
+.globl bmpcfg_emit_stub_1980
+.p2align 2
+.type bmpcfg_emit_stub_1980, @function
+bmpcfg_emit_stub_1980:
+    bmpcfg 2, 24, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1980, .-bmpcfg_emit_stub_1980
+
+.globl bmpcfg_emit_stub_1981
+.p2align 2
+.type bmpcfg_emit_stub_1981, @function
+bmpcfg_emit_stub_1981:
+    bmpcfg 2, 24, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1981, .-bmpcfg_emit_stub_1981
+
+.globl bmpcfg_emit_stub_1982
+.p2align 2
+.type bmpcfg_emit_stub_1982, @function
+bmpcfg_emit_stub_1982:
+    bmpcfg 2, 24, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1982, .-bmpcfg_emit_stub_1982
+
+.globl bmpcfg_emit_stub_1983
+.p2align 2
+.type bmpcfg_emit_stub_1983, @function
+bmpcfg_emit_stub_1983:
+    bmpcfg 2, 24, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_1983, .-bmpcfg_emit_stub_1983
+
+.globl bmpcfg_emit_stub_1984
+.p2align 2
+.type bmpcfg_emit_stub_1984, @function
+bmpcfg_emit_stub_1984:
+    bmpcfg 2, 24, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1984, .-bmpcfg_emit_stub_1984
+
+.globl bmpcfg_emit_stub_1985
+.p2align 2
+.type bmpcfg_emit_stub_1985, @function
+bmpcfg_emit_stub_1985:
+    bmpcfg 2, 24, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1985, .-bmpcfg_emit_stub_1985
+
+.globl bmpcfg_emit_stub_1986
+.p2align 2
+.type bmpcfg_emit_stub_1986, @function
+bmpcfg_emit_stub_1986:
+    bmpcfg 2, 32, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_1986, .-bmpcfg_emit_stub_1986
+
+.globl bmpcfg_emit_stub_1987
+.p2align 2
+.type bmpcfg_emit_stub_1987, @function
+bmpcfg_emit_stub_1987:
+    bmpcfg 2, 32, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_1987, .-bmpcfg_emit_stub_1987
+
+.globl bmpcfg_emit_stub_1988
+.p2align 2
+.type bmpcfg_emit_stub_1988, @function
+bmpcfg_emit_stub_1988:
+    bmpcfg 2, 32, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_1988, .-bmpcfg_emit_stub_1988
+
+.globl bmpcfg_emit_stub_1989
+.p2align 2
+.type bmpcfg_emit_stub_1989, @function
+bmpcfg_emit_stub_1989:
+    bmpcfg 2, 32, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_1989, .-bmpcfg_emit_stub_1989
+
+.globl bmpcfg_emit_stub_1990
+.p2align 2
+.type bmpcfg_emit_stub_1990, @function
+bmpcfg_emit_stub_1990:
+    bmpcfg 2, 32, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_1990, .-bmpcfg_emit_stub_1990
+
+.globl bmpcfg_emit_stub_1991
+.p2align 2
+.type bmpcfg_emit_stub_1991, @function
+bmpcfg_emit_stub_1991:
+    bmpcfg 2, 32, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_1991, .-bmpcfg_emit_stub_1991
+
+.globl bmpcfg_emit_stub_1992
+.p2align 2
+.type bmpcfg_emit_stub_1992, @function
+bmpcfg_emit_stub_1992:
+    bmpcfg 2, 32, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_1992, .-bmpcfg_emit_stub_1992
+
+.globl bmpcfg_emit_stub_1993
+.p2align 2
+.type bmpcfg_emit_stub_1993, @function
+bmpcfg_emit_stub_1993:
+    bmpcfg 2, 32, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_1993, .-bmpcfg_emit_stub_1993
+
+.globl bmpcfg_emit_stub_1994
+.p2align 2
+.type bmpcfg_emit_stub_1994, @function
+bmpcfg_emit_stub_1994:
+    bmpcfg 2, 32, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_1994, .-bmpcfg_emit_stub_1994
+
+.globl bmpcfg_emit_stub_1995
+.p2align 2
+.type bmpcfg_emit_stub_1995, @function
+bmpcfg_emit_stub_1995:
+    bmpcfg 2, 32, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_1995, .-bmpcfg_emit_stub_1995
+
+.globl bmpcfg_emit_stub_1996
+.p2align 2
+.type bmpcfg_emit_stub_1996, @function
+bmpcfg_emit_stub_1996:
+    bmpcfg 2, 32, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_1996, .-bmpcfg_emit_stub_1996
+
+.globl bmpcfg_emit_stub_1997
+.p2align 2
+.type bmpcfg_emit_stub_1997, @function
+bmpcfg_emit_stub_1997:
+    bmpcfg 2, 32, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_1997, .-bmpcfg_emit_stub_1997
+
+.globl bmpcfg_emit_stub_1998
+.p2align 2
+.type bmpcfg_emit_stub_1998, @function
+bmpcfg_emit_stub_1998:
+    bmpcfg 2, 32, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_1998, .-bmpcfg_emit_stub_1998
+
+.globl bmpcfg_emit_stub_1999
+.p2align 2
+.type bmpcfg_emit_stub_1999, @function
+bmpcfg_emit_stub_1999:
+    bmpcfg 2, 32, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_1999, .-bmpcfg_emit_stub_1999
+
+.globl bmpcfg_emit_stub_2000
+.p2align 2
+.type bmpcfg_emit_stub_2000, @function
+bmpcfg_emit_stub_2000:
+    bmpcfg 2, 32, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2000, .-bmpcfg_emit_stub_2000
+
+.globl bmpcfg_emit_stub_2001
+.p2align 2
+.type bmpcfg_emit_stub_2001, @function
+bmpcfg_emit_stub_2001:
+    bmpcfg 2, 32, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2001, .-bmpcfg_emit_stub_2001
+
+.globl bmpcfg_emit_stub_2002
+.p2align 2
+.type bmpcfg_emit_stub_2002, @function
+bmpcfg_emit_stub_2002:
+    bmpcfg 2, 32, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2002, .-bmpcfg_emit_stub_2002
+
+.globl bmpcfg_emit_stub_2003
+.p2align 2
+.type bmpcfg_emit_stub_2003, @function
+bmpcfg_emit_stub_2003:
+    bmpcfg 2, 32, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2003, .-bmpcfg_emit_stub_2003
+
+.globl bmpcfg_emit_stub_2004
+.p2align 2
+.type bmpcfg_emit_stub_2004, @function
+bmpcfg_emit_stub_2004:
+    bmpcfg 2, 32, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2004, .-bmpcfg_emit_stub_2004
+
+.globl bmpcfg_emit_stub_2005
+.p2align 2
+.type bmpcfg_emit_stub_2005, @function
+bmpcfg_emit_stub_2005:
+    bmpcfg 2, 32, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2005, .-bmpcfg_emit_stub_2005
+
+.globl bmpcfg_emit_stub_2006
+.p2align 2
+.type bmpcfg_emit_stub_2006, @function
+bmpcfg_emit_stub_2006:
+    bmpcfg 2, 32, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2006, .-bmpcfg_emit_stub_2006
+
+.globl bmpcfg_emit_stub_2007
+.p2align 2
+.type bmpcfg_emit_stub_2007, @function
+bmpcfg_emit_stub_2007:
+    bmpcfg 2, 32, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2007, .-bmpcfg_emit_stub_2007
+
+.globl bmpcfg_emit_stub_2008
+.p2align 2
+.type bmpcfg_emit_stub_2008, @function
+bmpcfg_emit_stub_2008:
+    bmpcfg 2, 32, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2008, .-bmpcfg_emit_stub_2008
+
+.globl bmpcfg_emit_stub_2009
+.p2align 2
+.type bmpcfg_emit_stub_2009, @function
+bmpcfg_emit_stub_2009:
+    bmpcfg 2, 32, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2009, .-bmpcfg_emit_stub_2009
+
+.globl bmpcfg_emit_stub_2010
+.p2align 2
+.type bmpcfg_emit_stub_2010, @function
+bmpcfg_emit_stub_2010:
+    bmpcfg 2, 32, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2010, .-bmpcfg_emit_stub_2010
+
+.globl bmpcfg_emit_stub_2011
+.p2align 2
+.type bmpcfg_emit_stub_2011, @function
+bmpcfg_emit_stub_2011:
+    bmpcfg 2, 32, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2011, .-bmpcfg_emit_stub_2011
+
+.globl bmpcfg_emit_stub_2012
+.p2align 2
+.type bmpcfg_emit_stub_2012, @function
+bmpcfg_emit_stub_2012:
+    bmpcfg 2, 32, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2012, .-bmpcfg_emit_stub_2012
+
+.globl bmpcfg_emit_stub_2013
+.p2align 2
+.type bmpcfg_emit_stub_2013, @function
+bmpcfg_emit_stub_2013:
+    bmpcfg 2, 32, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2013, .-bmpcfg_emit_stub_2013
+
+.globl bmpcfg_emit_stub_2014
+.p2align 2
+.type bmpcfg_emit_stub_2014, @function
+bmpcfg_emit_stub_2014:
+    bmpcfg 2, 32, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2014, .-bmpcfg_emit_stub_2014
+
+.globl bmpcfg_emit_stub_2015
+.p2align 2
+.type bmpcfg_emit_stub_2015, @function
+bmpcfg_emit_stub_2015:
+    bmpcfg 2, 32, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2015, .-bmpcfg_emit_stub_2015
+
+.globl bmpcfg_emit_stub_2016
+.p2align 2
+.type bmpcfg_emit_stub_2016, @function
+bmpcfg_emit_stub_2016:
+    bmpcfg 2, 32, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2016, .-bmpcfg_emit_stub_2016
+
+.globl bmpcfg_emit_stub_2017
+.p2align 2
+.type bmpcfg_emit_stub_2017, @function
+bmpcfg_emit_stub_2017:
+    bmpcfg 2, 32, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_2017, .-bmpcfg_emit_stub_2017
+
+.globl bmpcfg_emit_stub_2018
+.p2align 2
+.type bmpcfg_emit_stub_2018, @function
+bmpcfg_emit_stub_2018:
+    bmpcfg 2, 32, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_2018, .-bmpcfg_emit_stub_2018
+
+.globl bmpcfg_emit_stub_2019
+.p2align 2
+.type bmpcfg_emit_stub_2019, @function
+bmpcfg_emit_stub_2019:
+    bmpcfg 2, 32, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_2019, .-bmpcfg_emit_stub_2019
+
+.globl bmpcfg_emit_stub_2020
+.p2align 2
+.type bmpcfg_emit_stub_2020, @function
+bmpcfg_emit_stub_2020:
+    bmpcfg 2, 32, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2020, .-bmpcfg_emit_stub_2020
+
+.globl bmpcfg_emit_stub_2021
+.p2align 2
+.type bmpcfg_emit_stub_2021, @function
+bmpcfg_emit_stub_2021:
+    bmpcfg 2, 32, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2021, .-bmpcfg_emit_stub_2021
+
+.globl bmpcfg_emit_stub_2022
+.p2align 2
+.type bmpcfg_emit_stub_2022, @function
+bmpcfg_emit_stub_2022:
+    bmpcfg 2, 32, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2022, .-bmpcfg_emit_stub_2022
+
+.globl bmpcfg_emit_stub_2023
+.p2align 2
+.type bmpcfg_emit_stub_2023, @function
+bmpcfg_emit_stub_2023:
+    bmpcfg 2, 32, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2023, .-bmpcfg_emit_stub_2023
+
+.globl bmpcfg_emit_stub_2024
+.p2align 2
+.type bmpcfg_emit_stub_2024, @function
+bmpcfg_emit_stub_2024:
+    bmpcfg 2, 32, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2024, .-bmpcfg_emit_stub_2024
+
+.globl bmpcfg_emit_stub_2025
+.p2align 2
+.type bmpcfg_emit_stub_2025, @function
+bmpcfg_emit_stub_2025:
+    bmpcfg 2, 32, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2025, .-bmpcfg_emit_stub_2025
+
+.globl bmpcfg_emit_stub_2026
+.p2align 2
+.type bmpcfg_emit_stub_2026, @function
+bmpcfg_emit_stub_2026:
+    bmpcfg 2, 32, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2026, .-bmpcfg_emit_stub_2026
+
+.globl bmpcfg_emit_stub_2027
+.p2align 2
+.type bmpcfg_emit_stub_2027, @function
+bmpcfg_emit_stub_2027:
+    bmpcfg 2, 32, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2027, .-bmpcfg_emit_stub_2027
+
+.globl bmpcfg_emit_stub_2028
+.p2align 2
+.type bmpcfg_emit_stub_2028, @function
+bmpcfg_emit_stub_2028:
+    bmpcfg 2, 32, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2028, .-bmpcfg_emit_stub_2028
+
+.globl bmpcfg_emit_stub_2029
+.p2align 2
+.type bmpcfg_emit_stub_2029, @function
+bmpcfg_emit_stub_2029:
+    bmpcfg 2, 32, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2029, .-bmpcfg_emit_stub_2029
+
+.globl bmpcfg_emit_stub_2030
+.p2align 2
+.type bmpcfg_emit_stub_2030, @function
+bmpcfg_emit_stub_2030:
+    bmpcfg 2, 32, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2030, .-bmpcfg_emit_stub_2030
+
+.globl bmpcfg_emit_stub_2031
+.p2align 2
+.type bmpcfg_emit_stub_2031, @function
+bmpcfg_emit_stub_2031:
+    bmpcfg 2, 32, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2031, .-bmpcfg_emit_stub_2031
+
+.globl bmpcfg_emit_stub_2032
+.p2align 2
+.type bmpcfg_emit_stub_2032, @function
+bmpcfg_emit_stub_2032:
+    bmpcfg 2, 32, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2032, .-bmpcfg_emit_stub_2032
+
+.globl bmpcfg_emit_stub_2033
+.p2align 2
+.type bmpcfg_emit_stub_2033, @function
+bmpcfg_emit_stub_2033:
+    bmpcfg 2, 32, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2033, .-bmpcfg_emit_stub_2033
+
+.globl bmpcfg_emit_stub_2034
+.p2align 2
+.type bmpcfg_emit_stub_2034, @function
+bmpcfg_emit_stub_2034:
+    bmpcfg 2, 32, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2034, .-bmpcfg_emit_stub_2034
+
+.globl bmpcfg_emit_stub_2035
+.p2align 2
+.type bmpcfg_emit_stub_2035, @function
+bmpcfg_emit_stub_2035:
+    bmpcfg 2, 32, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2035, .-bmpcfg_emit_stub_2035
+
+.globl bmpcfg_emit_stub_2036
+.p2align 2
+.type bmpcfg_emit_stub_2036, @function
+bmpcfg_emit_stub_2036:
+    bmpcfg 2, 32, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2036, .-bmpcfg_emit_stub_2036
+
+.globl bmpcfg_emit_stub_2037
+.p2align 2
+.type bmpcfg_emit_stub_2037, @function
+bmpcfg_emit_stub_2037:
+    bmpcfg 2, 32, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2037, .-bmpcfg_emit_stub_2037
+
+.globl bmpcfg_emit_stub_2038
+.p2align 2
+.type bmpcfg_emit_stub_2038, @function
+bmpcfg_emit_stub_2038:
+    bmpcfg 2, 32, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2038, .-bmpcfg_emit_stub_2038
+
+.globl bmpcfg_emit_stub_2039
+.p2align 2
+.type bmpcfg_emit_stub_2039, @function
+bmpcfg_emit_stub_2039:
+    bmpcfg 2, 32, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2039, .-bmpcfg_emit_stub_2039
+
+.globl bmpcfg_emit_stub_2040
+.p2align 2
+.type bmpcfg_emit_stub_2040, @function
+bmpcfg_emit_stub_2040:
+    bmpcfg 2, 32, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2040, .-bmpcfg_emit_stub_2040
+
+.globl bmpcfg_emit_stub_2041
+.p2align 2
+.type bmpcfg_emit_stub_2041, @function
+bmpcfg_emit_stub_2041:
+    bmpcfg 2, 32, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2041, .-bmpcfg_emit_stub_2041
+
+.globl bmpcfg_emit_stub_2042
+.p2align 2
+.type bmpcfg_emit_stub_2042, @function
+bmpcfg_emit_stub_2042:
+    bmpcfg 2, 32, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2042, .-bmpcfg_emit_stub_2042
+
+.globl bmpcfg_emit_stub_2043
+.p2align 2
+.type bmpcfg_emit_stub_2043, @function
+bmpcfg_emit_stub_2043:
+    bmpcfg 2, 32, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2043, .-bmpcfg_emit_stub_2043
+
+.globl bmpcfg_emit_stub_2044
+.p2align 2
+.type bmpcfg_emit_stub_2044, @function
+bmpcfg_emit_stub_2044:
+    bmpcfg 2, 32, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2044, .-bmpcfg_emit_stub_2044
+
+.globl bmpcfg_emit_stub_2045
+.p2align 2
+.type bmpcfg_emit_stub_2045, @function
+bmpcfg_emit_stub_2045:
+    bmpcfg 2, 32, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2045, .-bmpcfg_emit_stub_2045
+
+.globl bmpcfg_emit_stub_2046
+.p2align 2
+.type bmpcfg_emit_stub_2046, @function
+bmpcfg_emit_stub_2046:
+    bmpcfg 2, 32, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2046, .-bmpcfg_emit_stub_2046
+
+.globl bmpcfg_emit_stub_2047
+.p2align 2
+.type bmpcfg_emit_stub_2047, @function
+bmpcfg_emit_stub_2047:
+    bmpcfg 2, 32, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2047, .-bmpcfg_emit_stub_2047
+
+.globl bmpcfg_emit_stub_2048
+.p2align 2
+.type bmpcfg_emit_stub_2048, @function
+bmpcfg_emit_stub_2048:
+    bmpcfg 2, 32, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2048, .-bmpcfg_emit_stub_2048
+
+.globl bmpcfg_emit_stub_2049
+.p2align 2
+.type bmpcfg_emit_stub_2049, @function
+bmpcfg_emit_stub_2049:
+    bmpcfg 2, 32, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2049, .-bmpcfg_emit_stub_2049
+
+.globl bmpcfg_emit_stub_2050
+.p2align 2
+.type bmpcfg_emit_stub_2050, @function
+bmpcfg_emit_stub_2050:
+    bmpcfg 2, 32, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2050, .-bmpcfg_emit_stub_2050
+
+.globl bmpcfg_emit_stub_2051
+.p2align 2
+.type bmpcfg_emit_stub_2051, @function
+bmpcfg_emit_stub_2051:
+    bmpcfg 2, 32, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2051, .-bmpcfg_emit_stub_2051
+
+.globl bmpcfg_emit_stub_2052
+.p2align 2
+.type bmpcfg_emit_stub_2052, @function
+bmpcfg_emit_stub_2052:
+    bmpcfg 2, 32, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2052, .-bmpcfg_emit_stub_2052
+
+.globl bmpcfg_emit_stub_2053
+.p2align 2
+.type bmpcfg_emit_stub_2053, @function
+bmpcfg_emit_stub_2053:
+    bmpcfg 2, 32, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2053, .-bmpcfg_emit_stub_2053
+
+.globl bmpcfg_emit_stub_2054
+.p2align 2
+.type bmpcfg_emit_stub_2054, @function
+bmpcfg_emit_stub_2054:
+    bmpcfg 2, 32, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2054, .-bmpcfg_emit_stub_2054
+
+.globl bmpcfg_emit_stub_2055
+.p2align 2
+.type bmpcfg_emit_stub_2055, @function
+bmpcfg_emit_stub_2055:
+    bmpcfg 2, 32, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2055, .-bmpcfg_emit_stub_2055
+
+.globl bmpcfg_emit_stub_2056
+.p2align 2
+.type bmpcfg_emit_stub_2056, @function
+bmpcfg_emit_stub_2056:
+    bmpcfg 2, 32, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2056, .-bmpcfg_emit_stub_2056
+
+.globl bmpcfg_emit_stub_2057
+.p2align 2
+.type bmpcfg_emit_stub_2057, @function
+bmpcfg_emit_stub_2057:
+    bmpcfg 2, 32, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2057, .-bmpcfg_emit_stub_2057
+
+.globl bmpcfg_emit_stub_2058
+.p2align 2
+.type bmpcfg_emit_stub_2058, @function
+bmpcfg_emit_stub_2058:
+    bmpcfg 2, 32, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2058, .-bmpcfg_emit_stub_2058
+
+.globl bmpcfg_emit_stub_2059
+.p2align 2
+.type bmpcfg_emit_stub_2059, @function
+bmpcfg_emit_stub_2059:
+    bmpcfg 2, 32, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2059, .-bmpcfg_emit_stub_2059
+
+.globl bmpcfg_emit_stub_2060
+.p2align 2
+.type bmpcfg_emit_stub_2060, @function
+bmpcfg_emit_stub_2060:
+    bmpcfg 2, 32, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2060, .-bmpcfg_emit_stub_2060
+
+.globl bmpcfg_emit_stub_2061
+.p2align 2
+.type bmpcfg_emit_stub_2061, @function
+bmpcfg_emit_stub_2061:
+    bmpcfg 2, 32, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2061, .-bmpcfg_emit_stub_2061
+
+.globl bmpcfg_emit_stub_2062
+.p2align 2
+.type bmpcfg_emit_stub_2062, @function
+bmpcfg_emit_stub_2062:
+    bmpcfg 2, 32, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2062, .-bmpcfg_emit_stub_2062
+
+.globl bmpcfg_emit_stub_2063
+.p2align 2
+.type bmpcfg_emit_stub_2063, @function
+bmpcfg_emit_stub_2063:
+    bmpcfg 2, 32, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2063, .-bmpcfg_emit_stub_2063
+
+.globl bmpcfg_emit_stub_2064
+.p2align 2
+.type bmpcfg_emit_stub_2064, @function
+bmpcfg_emit_stub_2064:
+    bmpcfg 2, 32, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2064, .-bmpcfg_emit_stub_2064
+
+.globl bmpcfg_emit_stub_2065
+.p2align 2
+.type bmpcfg_emit_stub_2065, @function
+bmpcfg_emit_stub_2065:
+    bmpcfg 2, 32, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2065, .-bmpcfg_emit_stub_2065
+
+.globl bmpcfg_emit_stub_2066
+.p2align 2
+.type bmpcfg_emit_stub_2066, @function
+bmpcfg_emit_stub_2066:
+    bmpcfg 2, 32, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2066, .-bmpcfg_emit_stub_2066
+
+.globl bmpcfg_emit_stub_2067
+.p2align 2
+.type bmpcfg_emit_stub_2067, @function
+bmpcfg_emit_stub_2067:
+    bmpcfg 2, 32, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2067, .-bmpcfg_emit_stub_2067
+
+.globl bmpcfg_emit_stub_2068
+.p2align 2
+.type bmpcfg_emit_stub_2068, @function
+bmpcfg_emit_stub_2068:
+    bmpcfg 2, 40, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2068, .-bmpcfg_emit_stub_2068
+
+.globl bmpcfg_emit_stub_2069
+.p2align 2
+.type bmpcfg_emit_stub_2069, @function
+bmpcfg_emit_stub_2069:
+    bmpcfg 2, 40, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2069, .-bmpcfg_emit_stub_2069
+
+.globl bmpcfg_emit_stub_2070
+.p2align 2
+.type bmpcfg_emit_stub_2070, @function
+bmpcfg_emit_stub_2070:
+    bmpcfg 2, 40, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2070, .-bmpcfg_emit_stub_2070
+
+.globl bmpcfg_emit_stub_2071
+.p2align 2
+.type bmpcfg_emit_stub_2071, @function
+bmpcfg_emit_stub_2071:
+    bmpcfg 2, 40, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2071, .-bmpcfg_emit_stub_2071
+
+.globl bmpcfg_emit_stub_2072
+.p2align 2
+.type bmpcfg_emit_stub_2072, @function
+bmpcfg_emit_stub_2072:
+    bmpcfg 2, 40, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2072, .-bmpcfg_emit_stub_2072
+
+.globl bmpcfg_emit_stub_2073
+.p2align 2
+.type bmpcfg_emit_stub_2073, @function
+bmpcfg_emit_stub_2073:
+    bmpcfg 2, 40, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2073, .-bmpcfg_emit_stub_2073
+
+.globl bmpcfg_emit_stub_2074
+.p2align 2
+.type bmpcfg_emit_stub_2074, @function
+bmpcfg_emit_stub_2074:
+    bmpcfg 2, 40, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2074, .-bmpcfg_emit_stub_2074
+
+.globl bmpcfg_emit_stub_2075
+.p2align 2
+.type bmpcfg_emit_stub_2075, @function
+bmpcfg_emit_stub_2075:
+    bmpcfg 2, 40, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2075, .-bmpcfg_emit_stub_2075
+
+.globl bmpcfg_emit_stub_2076
+.p2align 2
+.type bmpcfg_emit_stub_2076, @function
+bmpcfg_emit_stub_2076:
+    bmpcfg 2, 40, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2076, .-bmpcfg_emit_stub_2076
+
+.globl bmpcfg_emit_stub_2077
+.p2align 2
+.type bmpcfg_emit_stub_2077, @function
+bmpcfg_emit_stub_2077:
+    bmpcfg 2, 40, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2077, .-bmpcfg_emit_stub_2077
+
+.globl bmpcfg_emit_stub_2078
+.p2align 2
+.type bmpcfg_emit_stub_2078, @function
+bmpcfg_emit_stub_2078:
+    bmpcfg 2, 40, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2078, .-bmpcfg_emit_stub_2078
+
+.globl bmpcfg_emit_stub_2079
+.p2align 2
+.type bmpcfg_emit_stub_2079, @function
+bmpcfg_emit_stub_2079:
+    bmpcfg 2, 40, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2079, .-bmpcfg_emit_stub_2079
+
+.globl bmpcfg_emit_stub_2080
+.p2align 2
+.type bmpcfg_emit_stub_2080, @function
+bmpcfg_emit_stub_2080:
+    bmpcfg 2, 40, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2080, .-bmpcfg_emit_stub_2080
+
+.globl bmpcfg_emit_stub_2081
+.p2align 2
+.type bmpcfg_emit_stub_2081, @function
+bmpcfg_emit_stub_2081:
+    bmpcfg 2, 40, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2081, .-bmpcfg_emit_stub_2081
+
+.globl bmpcfg_emit_stub_2082
+.p2align 2
+.type bmpcfg_emit_stub_2082, @function
+bmpcfg_emit_stub_2082:
+    bmpcfg 2, 40, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2082, .-bmpcfg_emit_stub_2082
+
+.globl bmpcfg_emit_stub_2083
+.p2align 2
+.type bmpcfg_emit_stub_2083, @function
+bmpcfg_emit_stub_2083:
+    bmpcfg 2, 40, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2083, .-bmpcfg_emit_stub_2083
+
+.globl bmpcfg_emit_stub_2084
+.p2align 2
+.type bmpcfg_emit_stub_2084, @function
+bmpcfg_emit_stub_2084:
+    bmpcfg 2, 40, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2084, .-bmpcfg_emit_stub_2084
+
+.globl bmpcfg_emit_stub_2085
+.p2align 2
+.type bmpcfg_emit_stub_2085, @function
+bmpcfg_emit_stub_2085:
+    bmpcfg 2, 40, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2085, .-bmpcfg_emit_stub_2085
+
+.globl bmpcfg_emit_stub_2086
+.p2align 2
+.type bmpcfg_emit_stub_2086, @function
+bmpcfg_emit_stub_2086:
+    bmpcfg 2, 40, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2086, .-bmpcfg_emit_stub_2086
+
+.globl bmpcfg_emit_stub_2087
+.p2align 2
+.type bmpcfg_emit_stub_2087, @function
+bmpcfg_emit_stub_2087:
+    bmpcfg 2, 40, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2087, .-bmpcfg_emit_stub_2087
+
+.globl bmpcfg_emit_stub_2088
+.p2align 2
+.type bmpcfg_emit_stub_2088, @function
+bmpcfg_emit_stub_2088:
+    bmpcfg 2, 40, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2088, .-bmpcfg_emit_stub_2088
+
+.globl bmpcfg_emit_stub_2089
+.p2align 2
+.type bmpcfg_emit_stub_2089, @function
+bmpcfg_emit_stub_2089:
+    bmpcfg 2, 40, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2089, .-bmpcfg_emit_stub_2089
+
+.globl bmpcfg_emit_stub_2090
+.p2align 2
+.type bmpcfg_emit_stub_2090, @function
+bmpcfg_emit_stub_2090:
+    bmpcfg 2, 40, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2090, .-bmpcfg_emit_stub_2090
+
+.globl bmpcfg_emit_stub_2091
+.p2align 2
+.type bmpcfg_emit_stub_2091, @function
+bmpcfg_emit_stub_2091:
+    bmpcfg 2, 40, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2091, .-bmpcfg_emit_stub_2091
+
+.globl bmpcfg_emit_stub_2092
+.p2align 2
+.type bmpcfg_emit_stub_2092, @function
+bmpcfg_emit_stub_2092:
+    bmpcfg 2, 40, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2092, .-bmpcfg_emit_stub_2092
+
+.globl bmpcfg_emit_stub_2093
+.p2align 2
+.type bmpcfg_emit_stub_2093, @function
+bmpcfg_emit_stub_2093:
+    bmpcfg 2, 40, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2093, .-bmpcfg_emit_stub_2093
+
+.globl bmpcfg_emit_stub_2094
+.p2align 2
+.type bmpcfg_emit_stub_2094, @function
+bmpcfg_emit_stub_2094:
+    bmpcfg 2, 40, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2094, .-bmpcfg_emit_stub_2094
+
+.globl bmpcfg_emit_stub_2095
+.p2align 2
+.type bmpcfg_emit_stub_2095, @function
+bmpcfg_emit_stub_2095:
+    bmpcfg 2, 40, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2095, .-bmpcfg_emit_stub_2095
+
+.globl bmpcfg_emit_stub_2096
+.p2align 2
+.type bmpcfg_emit_stub_2096, @function
+bmpcfg_emit_stub_2096:
+    bmpcfg 2, 40, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2096, .-bmpcfg_emit_stub_2096
+
+.globl bmpcfg_emit_stub_2097
+.p2align 2
+.type bmpcfg_emit_stub_2097, @function
+bmpcfg_emit_stub_2097:
+    bmpcfg 2, 40, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2097, .-bmpcfg_emit_stub_2097
+
+.globl bmpcfg_emit_stub_2098
+.p2align 2
+.type bmpcfg_emit_stub_2098, @function
+bmpcfg_emit_stub_2098:
+    bmpcfg 2, 40, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2098, .-bmpcfg_emit_stub_2098
+
+.globl bmpcfg_emit_stub_2099
+.p2align 2
+.type bmpcfg_emit_stub_2099, @function
+bmpcfg_emit_stub_2099:
+    bmpcfg 2, 40, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_2099, .-bmpcfg_emit_stub_2099
+
+.globl bmpcfg_emit_stub_2100
+.p2align 2
+.type bmpcfg_emit_stub_2100, @function
+bmpcfg_emit_stub_2100:
+    bmpcfg 2, 40, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2100, .-bmpcfg_emit_stub_2100
+
+.globl bmpcfg_emit_stub_2101
+.p2align 2
+.type bmpcfg_emit_stub_2101, @function
+bmpcfg_emit_stub_2101:
+    bmpcfg 2, 40, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2101, .-bmpcfg_emit_stub_2101
+
+.globl bmpcfg_emit_stub_2102
+.p2align 2
+.type bmpcfg_emit_stub_2102, @function
+bmpcfg_emit_stub_2102:
+    bmpcfg 2, 40, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2102, .-bmpcfg_emit_stub_2102
+
+.globl bmpcfg_emit_stub_2103
+.p2align 2
+.type bmpcfg_emit_stub_2103, @function
+bmpcfg_emit_stub_2103:
+    bmpcfg 2, 40, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2103, .-bmpcfg_emit_stub_2103
+
+.globl bmpcfg_emit_stub_2104
+.p2align 2
+.type bmpcfg_emit_stub_2104, @function
+bmpcfg_emit_stub_2104:
+    bmpcfg 2, 40, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2104, .-bmpcfg_emit_stub_2104
+
+.globl bmpcfg_emit_stub_2105
+.p2align 2
+.type bmpcfg_emit_stub_2105, @function
+bmpcfg_emit_stub_2105:
+    bmpcfg 2, 40, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2105, .-bmpcfg_emit_stub_2105
+
+.globl bmpcfg_emit_stub_2106
+.p2align 2
+.type bmpcfg_emit_stub_2106, @function
+bmpcfg_emit_stub_2106:
+    bmpcfg 2, 40, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2106, .-bmpcfg_emit_stub_2106
+
+.globl bmpcfg_emit_stub_2107
+.p2align 2
+.type bmpcfg_emit_stub_2107, @function
+bmpcfg_emit_stub_2107:
+    bmpcfg 2, 40, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2107, .-bmpcfg_emit_stub_2107
+
+.globl bmpcfg_emit_stub_2108
+.p2align 2
+.type bmpcfg_emit_stub_2108, @function
+bmpcfg_emit_stub_2108:
+    bmpcfg 2, 40, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2108, .-bmpcfg_emit_stub_2108
+
+.globl bmpcfg_emit_stub_2109
+.p2align 2
+.type bmpcfg_emit_stub_2109, @function
+bmpcfg_emit_stub_2109:
+    bmpcfg 2, 40, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2109, .-bmpcfg_emit_stub_2109
+
+.globl bmpcfg_emit_stub_2110
+.p2align 2
+.type bmpcfg_emit_stub_2110, @function
+bmpcfg_emit_stub_2110:
+    bmpcfg 2, 40, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2110, .-bmpcfg_emit_stub_2110
+
+.globl bmpcfg_emit_stub_2111
+.p2align 2
+.type bmpcfg_emit_stub_2111, @function
+bmpcfg_emit_stub_2111:
+    bmpcfg 2, 40, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2111, .-bmpcfg_emit_stub_2111
+
+.globl bmpcfg_emit_stub_2112
+.p2align 2
+.type bmpcfg_emit_stub_2112, @function
+bmpcfg_emit_stub_2112:
+    bmpcfg 2, 40, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2112, .-bmpcfg_emit_stub_2112
+
+.globl bmpcfg_emit_stub_2113
+.p2align 2
+.type bmpcfg_emit_stub_2113, @function
+bmpcfg_emit_stub_2113:
+    bmpcfg 2, 40, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2113, .-bmpcfg_emit_stub_2113
+
+.globl bmpcfg_emit_stub_2114
+.p2align 2
+.type bmpcfg_emit_stub_2114, @function
+bmpcfg_emit_stub_2114:
+    bmpcfg 2, 40, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2114, .-bmpcfg_emit_stub_2114
+
+.globl bmpcfg_emit_stub_2115
+.p2align 2
+.type bmpcfg_emit_stub_2115, @function
+bmpcfg_emit_stub_2115:
+    bmpcfg 2, 40, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2115, .-bmpcfg_emit_stub_2115
+
+.globl bmpcfg_emit_stub_2116
+.p2align 2
+.type bmpcfg_emit_stub_2116, @function
+bmpcfg_emit_stub_2116:
+    bmpcfg 2, 40, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2116, .-bmpcfg_emit_stub_2116
+
+.globl bmpcfg_emit_stub_2117
+.p2align 2
+.type bmpcfg_emit_stub_2117, @function
+bmpcfg_emit_stub_2117:
+    bmpcfg 2, 40, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2117, .-bmpcfg_emit_stub_2117
+
+.globl bmpcfg_emit_stub_2118
+.p2align 2
+.type bmpcfg_emit_stub_2118, @function
+bmpcfg_emit_stub_2118:
+    bmpcfg 2, 40, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2118, .-bmpcfg_emit_stub_2118
+
+.globl bmpcfg_emit_stub_2119
+.p2align 2
+.type bmpcfg_emit_stub_2119, @function
+bmpcfg_emit_stub_2119:
+    bmpcfg 2, 40, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2119, .-bmpcfg_emit_stub_2119
+
+.globl bmpcfg_emit_stub_2120
+.p2align 2
+.type bmpcfg_emit_stub_2120, @function
+bmpcfg_emit_stub_2120:
+    bmpcfg 2, 40, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2120, .-bmpcfg_emit_stub_2120
+
+.globl bmpcfg_emit_stub_2121
+.p2align 2
+.type bmpcfg_emit_stub_2121, @function
+bmpcfg_emit_stub_2121:
+    bmpcfg 2, 40, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2121, .-bmpcfg_emit_stub_2121
+
+.globl bmpcfg_emit_stub_2122
+.p2align 2
+.type bmpcfg_emit_stub_2122, @function
+bmpcfg_emit_stub_2122:
+    bmpcfg 2, 40, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2122, .-bmpcfg_emit_stub_2122
+
+.globl bmpcfg_emit_stub_2123
+.p2align 2
+.type bmpcfg_emit_stub_2123, @function
+bmpcfg_emit_stub_2123:
+    bmpcfg 2, 40, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2123, .-bmpcfg_emit_stub_2123
+
+.globl bmpcfg_emit_stub_2124
+.p2align 2
+.type bmpcfg_emit_stub_2124, @function
+bmpcfg_emit_stub_2124:
+    bmpcfg 2, 40, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2124, .-bmpcfg_emit_stub_2124
+
+.globl bmpcfg_emit_stub_2125
+.p2align 2
+.type bmpcfg_emit_stub_2125, @function
+bmpcfg_emit_stub_2125:
+    bmpcfg 2, 40, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2125, .-bmpcfg_emit_stub_2125
+
+.globl bmpcfg_emit_stub_2126
+.p2align 2
+.type bmpcfg_emit_stub_2126, @function
+bmpcfg_emit_stub_2126:
+    bmpcfg 2, 40, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2126, .-bmpcfg_emit_stub_2126
+
+.globl bmpcfg_emit_stub_2127
+.p2align 2
+.type bmpcfg_emit_stub_2127, @function
+bmpcfg_emit_stub_2127:
+    bmpcfg 2, 40, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2127, .-bmpcfg_emit_stub_2127
+
+.globl bmpcfg_emit_stub_2128
+.p2align 2
+.type bmpcfg_emit_stub_2128, @function
+bmpcfg_emit_stub_2128:
+    bmpcfg 2, 40, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2128, .-bmpcfg_emit_stub_2128
+
+.globl bmpcfg_emit_stub_2129
+.p2align 2
+.type bmpcfg_emit_stub_2129, @function
+bmpcfg_emit_stub_2129:
+    bmpcfg 2, 40, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2129, .-bmpcfg_emit_stub_2129
+
+.globl bmpcfg_emit_stub_2130
+.p2align 2
+.type bmpcfg_emit_stub_2130, @function
+bmpcfg_emit_stub_2130:
+    bmpcfg 2, 40, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2130, .-bmpcfg_emit_stub_2130
+
+.globl bmpcfg_emit_stub_2131
+.p2align 2
+.type bmpcfg_emit_stub_2131, @function
+bmpcfg_emit_stub_2131:
+    bmpcfg 2, 40, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2131, .-bmpcfg_emit_stub_2131
+
+.globl bmpcfg_emit_stub_2132
+.p2align 2
+.type bmpcfg_emit_stub_2132, @function
+bmpcfg_emit_stub_2132:
+    bmpcfg 2, 40, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2132, .-bmpcfg_emit_stub_2132
+
+.globl bmpcfg_emit_stub_2133
+.p2align 2
+.type bmpcfg_emit_stub_2133, @function
+bmpcfg_emit_stub_2133:
+    bmpcfg 2, 40, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2133, .-bmpcfg_emit_stub_2133
+
+.globl bmpcfg_emit_stub_2134
+.p2align 2
+.type bmpcfg_emit_stub_2134, @function
+bmpcfg_emit_stub_2134:
+    bmpcfg 2, 40, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2134, .-bmpcfg_emit_stub_2134
+
+.globl bmpcfg_emit_stub_2135
+.p2align 2
+.type bmpcfg_emit_stub_2135, @function
+bmpcfg_emit_stub_2135:
+    bmpcfg 2, 40, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2135, .-bmpcfg_emit_stub_2135
+
+.globl bmpcfg_emit_stub_2136
+.p2align 2
+.type bmpcfg_emit_stub_2136, @function
+bmpcfg_emit_stub_2136:
+    bmpcfg 2, 40, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2136, .-bmpcfg_emit_stub_2136
+
+.globl bmpcfg_emit_stub_2137
+.p2align 2
+.type bmpcfg_emit_stub_2137, @function
+bmpcfg_emit_stub_2137:
+    bmpcfg 2, 40, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2137, .-bmpcfg_emit_stub_2137
+
+.globl bmpcfg_emit_stub_2138
+.p2align 2
+.type bmpcfg_emit_stub_2138, @function
+bmpcfg_emit_stub_2138:
+    bmpcfg 2, 40, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2138, .-bmpcfg_emit_stub_2138
+
+.globl bmpcfg_emit_stub_2139
+.p2align 2
+.type bmpcfg_emit_stub_2139, @function
+bmpcfg_emit_stub_2139:
+    bmpcfg 2, 40, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2139, .-bmpcfg_emit_stub_2139
+
+.globl bmpcfg_emit_stub_2140
+.p2align 2
+.type bmpcfg_emit_stub_2140, @function
+bmpcfg_emit_stub_2140:
+    bmpcfg 2, 48, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2140, .-bmpcfg_emit_stub_2140
+
+.globl bmpcfg_emit_stub_2141
+.p2align 2
+.type bmpcfg_emit_stub_2141, @function
+bmpcfg_emit_stub_2141:
+    bmpcfg 2, 48, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2141, .-bmpcfg_emit_stub_2141
+
+.globl bmpcfg_emit_stub_2142
+.p2align 2
+.type bmpcfg_emit_stub_2142, @function
+bmpcfg_emit_stub_2142:
+    bmpcfg 2, 48, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2142, .-bmpcfg_emit_stub_2142
+
+.globl bmpcfg_emit_stub_2143
+.p2align 2
+.type bmpcfg_emit_stub_2143, @function
+bmpcfg_emit_stub_2143:
+    bmpcfg 2, 48, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2143, .-bmpcfg_emit_stub_2143
+
+.globl bmpcfg_emit_stub_2144
+.p2align 2
+.type bmpcfg_emit_stub_2144, @function
+bmpcfg_emit_stub_2144:
+    bmpcfg 2, 48, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2144, .-bmpcfg_emit_stub_2144
+
+.globl bmpcfg_emit_stub_2145
+.p2align 2
+.type bmpcfg_emit_stub_2145, @function
+bmpcfg_emit_stub_2145:
+    bmpcfg 2, 48, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2145, .-bmpcfg_emit_stub_2145
+
+.globl bmpcfg_emit_stub_2146
+.p2align 2
+.type bmpcfg_emit_stub_2146, @function
+bmpcfg_emit_stub_2146:
+    bmpcfg 2, 48, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2146, .-bmpcfg_emit_stub_2146
+
+.globl bmpcfg_emit_stub_2147
+.p2align 2
+.type bmpcfg_emit_stub_2147, @function
+bmpcfg_emit_stub_2147:
+    bmpcfg 2, 48, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2147, .-bmpcfg_emit_stub_2147
+
+.globl bmpcfg_emit_stub_2148
+.p2align 2
+.type bmpcfg_emit_stub_2148, @function
+bmpcfg_emit_stub_2148:
+    bmpcfg 2, 48, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2148, .-bmpcfg_emit_stub_2148
+
+.globl bmpcfg_emit_stub_2149
+.p2align 2
+.type bmpcfg_emit_stub_2149, @function
+bmpcfg_emit_stub_2149:
+    bmpcfg 2, 48, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2149, .-bmpcfg_emit_stub_2149
+
+.globl bmpcfg_emit_stub_2150
+.p2align 2
+.type bmpcfg_emit_stub_2150, @function
+bmpcfg_emit_stub_2150:
+    bmpcfg 2, 48, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2150, .-bmpcfg_emit_stub_2150
+
+.globl bmpcfg_emit_stub_2151
+.p2align 2
+.type bmpcfg_emit_stub_2151, @function
+bmpcfg_emit_stub_2151:
+    bmpcfg 2, 48, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2151, .-bmpcfg_emit_stub_2151
+
+.globl bmpcfg_emit_stub_2152
+.p2align 2
+.type bmpcfg_emit_stub_2152, @function
+bmpcfg_emit_stub_2152:
+    bmpcfg 2, 48, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2152, .-bmpcfg_emit_stub_2152
+
+.globl bmpcfg_emit_stub_2153
+.p2align 2
+.type bmpcfg_emit_stub_2153, @function
+bmpcfg_emit_stub_2153:
+    bmpcfg 2, 48, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2153, .-bmpcfg_emit_stub_2153
+
+.globl bmpcfg_emit_stub_2154
+.p2align 2
+.type bmpcfg_emit_stub_2154, @function
+bmpcfg_emit_stub_2154:
+    bmpcfg 2, 48, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2154, .-bmpcfg_emit_stub_2154
+
+.globl bmpcfg_emit_stub_2155
+.p2align 2
+.type bmpcfg_emit_stub_2155, @function
+bmpcfg_emit_stub_2155:
+    bmpcfg 2, 48, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2155, .-bmpcfg_emit_stub_2155
+
+.globl bmpcfg_emit_stub_2156
+.p2align 2
+.type bmpcfg_emit_stub_2156, @function
+bmpcfg_emit_stub_2156:
+    bmpcfg 2, 48, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2156, .-bmpcfg_emit_stub_2156
+
+.globl bmpcfg_emit_stub_2157
+.p2align 2
+.type bmpcfg_emit_stub_2157, @function
+bmpcfg_emit_stub_2157:
+    bmpcfg 2, 48, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2157, .-bmpcfg_emit_stub_2157
+
+.globl bmpcfg_emit_stub_2158
+.p2align 2
+.type bmpcfg_emit_stub_2158, @function
+bmpcfg_emit_stub_2158:
+    bmpcfg 2, 48, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2158, .-bmpcfg_emit_stub_2158
+
+.globl bmpcfg_emit_stub_2159
+.p2align 2
+.type bmpcfg_emit_stub_2159, @function
+bmpcfg_emit_stub_2159:
+    bmpcfg 2, 48, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2159, .-bmpcfg_emit_stub_2159
+
+.globl bmpcfg_emit_stub_2160
+.p2align 2
+.type bmpcfg_emit_stub_2160, @function
+bmpcfg_emit_stub_2160:
+    bmpcfg 2, 48, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2160, .-bmpcfg_emit_stub_2160
+
+.globl bmpcfg_emit_stub_2161
+.p2align 2
+.type bmpcfg_emit_stub_2161, @function
+bmpcfg_emit_stub_2161:
+    bmpcfg 2, 48, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2161, .-bmpcfg_emit_stub_2161
+
+.globl bmpcfg_emit_stub_2162
+.p2align 2
+.type bmpcfg_emit_stub_2162, @function
+bmpcfg_emit_stub_2162:
+    bmpcfg 2, 48, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2162, .-bmpcfg_emit_stub_2162
+
+.globl bmpcfg_emit_stub_2163
+.p2align 2
+.type bmpcfg_emit_stub_2163, @function
+bmpcfg_emit_stub_2163:
+    bmpcfg 2, 48, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2163, .-bmpcfg_emit_stub_2163
+
+.globl bmpcfg_emit_stub_2164
+.p2align 2
+.type bmpcfg_emit_stub_2164, @function
+bmpcfg_emit_stub_2164:
+    bmpcfg 2, 48, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2164, .-bmpcfg_emit_stub_2164
+
+.globl bmpcfg_emit_stub_2165
+.p2align 2
+.type bmpcfg_emit_stub_2165, @function
+bmpcfg_emit_stub_2165:
+    bmpcfg 2, 48, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2165, .-bmpcfg_emit_stub_2165
+
+.globl bmpcfg_emit_stub_2166
+.p2align 2
+.type bmpcfg_emit_stub_2166, @function
+bmpcfg_emit_stub_2166:
+    bmpcfg 2, 48, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2166, .-bmpcfg_emit_stub_2166
+
+.globl bmpcfg_emit_stub_2167
+.p2align 2
+.type bmpcfg_emit_stub_2167, @function
+bmpcfg_emit_stub_2167:
+    bmpcfg 2, 48, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2167, .-bmpcfg_emit_stub_2167
+
+.globl bmpcfg_emit_stub_2168
+.p2align 2
+.type bmpcfg_emit_stub_2168, @function
+bmpcfg_emit_stub_2168:
+    bmpcfg 2, 48, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2168, .-bmpcfg_emit_stub_2168
+
+.globl bmpcfg_emit_stub_2169
+.p2align 2
+.type bmpcfg_emit_stub_2169, @function
+bmpcfg_emit_stub_2169:
+    bmpcfg 2, 48, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2169, .-bmpcfg_emit_stub_2169
+
+.globl bmpcfg_emit_stub_2170
+.p2align 2
+.type bmpcfg_emit_stub_2170, @function
+bmpcfg_emit_stub_2170:
+    bmpcfg 2, 48, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2170, .-bmpcfg_emit_stub_2170
+
+.globl bmpcfg_emit_stub_2171
+.p2align 2
+.type bmpcfg_emit_stub_2171, @function
+bmpcfg_emit_stub_2171:
+    bmpcfg 2, 48, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2171, .-bmpcfg_emit_stub_2171
+
+.globl bmpcfg_emit_stub_2172
+.p2align 2
+.type bmpcfg_emit_stub_2172, @function
+bmpcfg_emit_stub_2172:
+    bmpcfg 2, 48, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2172, .-bmpcfg_emit_stub_2172
+
+.globl bmpcfg_emit_stub_2173
+.p2align 2
+.type bmpcfg_emit_stub_2173, @function
+bmpcfg_emit_stub_2173:
+    bmpcfg 2, 48, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2173, .-bmpcfg_emit_stub_2173
+
+.globl bmpcfg_emit_stub_2174
+.p2align 2
+.type bmpcfg_emit_stub_2174, @function
+bmpcfg_emit_stub_2174:
+    bmpcfg 2, 48, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2174, .-bmpcfg_emit_stub_2174
+
+.globl bmpcfg_emit_stub_2175
+.p2align 2
+.type bmpcfg_emit_stub_2175, @function
+bmpcfg_emit_stub_2175:
+    bmpcfg 2, 48, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2175, .-bmpcfg_emit_stub_2175
+
+.globl bmpcfg_emit_stub_2176
+.p2align 2
+.type bmpcfg_emit_stub_2176, @function
+bmpcfg_emit_stub_2176:
+    bmpcfg 2, 48, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2176, .-bmpcfg_emit_stub_2176
+
+.globl bmpcfg_emit_stub_2177
+.p2align 2
+.type bmpcfg_emit_stub_2177, @function
+bmpcfg_emit_stub_2177:
+    bmpcfg 2, 48, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2177, .-bmpcfg_emit_stub_2177
+
+.globl bmpcfg_emit_stub_2178
+.p2align 2
+.type bmpcfg_emit_stub_2178, @function
+bmpcfg_emit_stub_2178:
+    bmpcfg 2, 48, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2178, .-bmpcfg_emit_stub_2178
+
+.globl bmpcfg_emit_stub_2179
+.p2align 2
+.type bmpcfg_emit_stub_2179, @function
+bmpcfg_emit_stub_2179:
+    bmpcfg 2, 48, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2179, .-bmpcfg_emit_stub_2179
+
+.globl bmpcfg_emit_stub_2180
+.p2align 2
+.type bmpcfg_emit_stub_2180, @function
+bmpcfg_emit_stub_2180:
+    bmpcfg 2, 48, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2180, .-bmpcfg_emit_stub_2180
+
+.globl bmpcfg_emit_stub_2181
+.p2align 2
+.type bmpcfg_emit_stub_2181, @function
+bmpcfg_emit_stub_2181:
+    bmpcfg 2, 48, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2181, .-bmpcfg_emit_stub_2181
+
+.globl bmpcfg_emit_stub_2182
+.p2align 2
+.type bmpcfg_emit_stub_2182, @function
+bmpcfg_emit_stub_2182:
+    bmpcfg 2, 48, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2182, .-bmpcfg_emit_stub_2182
+
+.globl bmpcfg_emit_stub_2183
+.p2align 2
+.type bmpcfg_emit_stub_2183, @function
+bmpcfg_emit_stub_2183:
+    bmpcfg 2, 48, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2183, .-bmpcfg_emit_stub_2183
+
+.globl bmpcfg_emit_stub_2184
+.p2align 2
+.type bmpcfg_emit_stub_2184, @function
+bmpcfg_emit_stub_2184:
+    bmpcfg 2, 48, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2184, .-bmpcfg_emit_stub_2184
+
+.globl bmpcfg_emit_stub_2185
+.p2align 2
+.type bmpcfg_emit_stub_2185, @function
+bmpcfg_emit_stub_2185:
+    bmpcfg 2, 48, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2185, .-bmpcfg_emit_stub_2185
+
+.globl bmpcfg_emit_stub_2186
+.p2align 2
+.type bmpcfg_emit_stub_2186, @function
+bmpcfg_emit_stub_2186:
+    bmpcfg 2, 48, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2186, .-bmpcfg_emit_stub_2186
+
+.globl bmpcfg_emit_stub_2187
+.p2align 2
+.type bmpcfg_emit_stub_2187, @function
+bmpcfg_emit_stub_2187:
+    bmpcfg 2, 48, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2187, .-bmpcfg_emit_stub_2187
+
+.globl bmpcfg_emit_stub_2188
+.p2align 2
+.type bmpcfg_emit_stub_2188, @function
+bmpcfg_emit_stub_2188:
+    bmpcfg 2, 48, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2188, .-bmpcfg_emit_stub_2188
+
+.globl bmpcfg_emit_stub_2189
+.p2align 2
+.type bmpcfg_emit_stub_2189, @function
+bmpcfg_emit_stub_2189:
+    bmpcfg 2, 48, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2189, .-bmpcfg_emit_stub_2189
+
+.globl bmpcfg_emit_stub_2190
+.p2align 2
+.type bmpcfg_emit_stub_2190, @function
+bmpcfg_emit_stub_2190:
+    bmpcfg 2, 48, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2190, .-bmpcfg_emit_stub_2190
+
+.globl bmpcfg_emit_stub_2191
+.p2align 2
+.type bmpcfg_emit_stub_2191, @function
+bmpcfg_emit_stub_2191:
+    bmpcfg 2, 48, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2191, .-bmpcfg_emit_stub_2191
+
+.globl bmpcfg_emit_stub_2192
+.p2align 2
+.type bmpcfg_emit_stub_2192, @function
+bmpcfg_emit_stub_2192:
+    bmpcfg 2, 48, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2192, .-bmpcfg_emit_stub_2192
+
+.globl bmpcfg_emit_stub_2193
+.p2align 2
+.type bmpcfg_emit_stub_2193, @function
+bmpcfg_emit_stub_2193:
+    bmpcfg 2, 48, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2193, .-bmpcfg_emit_stub_2193
+
+.globl bmpcfg_emit_stub_2194
+.p2align 2
+.type bmpcfg_emit_stub_2194, @function
+bmpcfg_emit_stub_2194:
+    bmpcfg 2, 48, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2194, .-bmpcfg_emit_stub_2194
+
+.globl bmpcfg_emit_stub_2195
+.p2align 2
+.type bmpcfg_emit_stub_2195, @function
+bmpcfg_emit_stub_2195:
+    bmpcfg 2, 48, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2195, .-bmpcfg_emit_stub_2195
+
+.globl bmpcfg_emit_stub_2196
+.p2align 2
+.type bmpcfg_emit_stub_2196, @function
+bmpcfg_emit_stub_2196:
+    bmpcfg 2, 48, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2196, .-bmpcfg_emit_stub_2196
+
+.globl bmpcfg_emit_stub_2197
+.p2align 2
+.type bmpcfg_emit_stub_2197, @function
+bmpcfg_emit_stub_2197:
+    bmpcfg 2, 48, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2197, .-bmpcfg_emit_stub_2197
+
+.globl bmpcfg_emit_stub_2198
+.p2align 2
+.type bmpcfg_emit_stub_2198, @function
+bmpcfg_emit_stub_2198:
+    bmpcfg 2, 48, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2198, .-bmpcfg_emit_stub_2198
+
+.globl bmpcfg_emit_stub_2199
+.p2align 2
+.type bmpcfg_emit_stub_2199, @function
+bmpcfg_emit_stub_2199:
+    bmpcfg 2, 48, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2199, .-bmpcfg_emit_stub_2199
+
+.globl bmpcfg_emit_stub_2200
+.p2align 2
+.type bmpcfg_emit_stub_2200, @function
+bmpcfg_emit_stub_2200:
+    bmpcfg 2, 48, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2200, .-bmpcfg_emit_stub_2200
+
+.globl bmpcfg_emit_stub_2201
+.p2align 2
+.type bmpcfg_emit_stub_2201, @function
+bmpcfg_emit_stub_2201:
+    bmpcfg 2, 48, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2201, .-bmpcfg_emit_stub_2201
+
+.globl bmpcfg_emit_stub_2202
+.p2align 2
+.type bmpcfg_emit_stub_2202, @function
+bmpcfg_emit_stub_2202:
+    bmpcfg 2, 48, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2202, .-bmpcfg_emit_stub_2202
+
+.globl bmpcfg_emit_stub_2203
+.p2align 2
+.type bmpcfg_emit_stub_2203, @function
+bmpcfg_emit_stub_2203:
+    bmpcfg 2, 48, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2203, .-bmpcfg_emit_stub_2203
+
+.globl bmpcfg_emit_stub_2204
+.p2align 2
+.type bmpcfg_emit_stub_2204, @function
+bmpcfg_emit_stub_2204:
+    bmpcfg 2, 48, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2204, .-bmpcfg_emit_stub_2204
+
+.globl bmpcfg_emit_stub_2205
+.p2align 2
+.type bmpcfg_emit_stub_2205, @function
+bmpcfg_emit_stub_2205:
+    bmpcfg 2, 48, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2205, .-bmpcfg_emit_stub_2205
+
+.globl bmpcfg_emit_stub_2206
+.p2align 2
+.type bmpcfg_emit_stub_2206, @function
+bmpcfg_emit_stub_2206:
+    bmpcfg 2, 48, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2206, .-bmpcfg_emit_stub_2206
+
+.globl bmpcfg_emit_stub_2207
+.p2align 2
+.type bmpcfg_emit_stub_2207, @function
+bmpcfg_emit_stub_2207:
+    bmpcfg 2, 56, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2207, .-bmpcfg_emit_stub_2207
+
+.globl bmpcfg_emit_stub_2208
+.p2align 2
+.type bmpcfg_emit_stub_2208, @function
+bmpcfg_emit_stub_2208:
+    bmpcfg 2, 56, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2208, .-bmpcfg_emit_stub_2208
+
+.globl bmpcfg_emit_stub_2209
+.p2align 2
+.type bmpcfg_emit_stub_2209, @function
+bmpcfg_emit_stub_2209:
+    bmpcfg 2, 56, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2209, .-bmpcfg_emit_stub_2209
+
+.globl bmpcfg_emit_stub_2210
+.p2align 2
+.type bmpcfg_emit_stub_2210, @function
+bmpcfg_emit_stub_2210:
+    bmpcfg 2, 56, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2210, .-bmpcfg_emit_stub_2210
+
+.globl bmpcfg_emit_stub_2211
+.p2align 2
+.type bmpcfg_emit_stub_2211, @function
+bmpcfg_emit_stub_2211:
+    bmpcfg 2, 56, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2211, .-bmpcfg_emit_stub_2211
+
+.globl bmpcfg_emit_stub_2212
+.p2align 2
+.type bmpcfg_emit_stub_2212, @function
+bmpcfg_emit_stub_2212:
+    bmpcfg 2, 56, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2212, .-bmpcfg_emit_stub_2212
+
+.globl bmpcfg_emit_stub_2213
+.p2align 2
+.type bmpcfg_emit_stub_2213, @function
+bmpcfg_emit_stub_2213:
+    bmpcfg 2, 56, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2213, .-bmpcfg_emit_stub_2213
+
+.globl bmpcfg_emit_stub_2214
+.p2align 2
+.type bmpcfg_emit_stub_2214, @function
+bmpcfg_emit_stub_2214:
+    bmpcfg 2, 56, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2214, .-bmpcfg_emit_stub_2214
+
+.globl bmpcfg_emit_stub_2215
+.p2align 2
+.type bmpcfg_emit_stub_2215, @function
+bmpcfg_emit_stub_2215:
+    bmpcfg 2, 56, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2215, .-bmpcfg_emit_stub_2215
+
+.globl bmpcfg_emit_stub_2216
+.p2align 2
+.type bmpcfg_emit_stub_2216, @function
+bmpcfg_emit_stub_2216:
+    bmpcfg 2, 56, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2216, .-bmpcfg_emit_stub_2216
+
+.globl bmpcfg_emit_stub_2217
+.p2align 2
+.type bmpcfg_emit_stub_2217, @function
+bmpcfg_emit_stub_2217:
+    bmpcfg 2, 56, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2217, .-bmpcfg_emit_stub_2217
+
+.globl bmpcfg_emit_stub_2218
+.p2align 2
+.type bmpcfg_emit_stub_2218, @function
+bmpcfg_emit_stub_2218:
+    bmpcfg 2, 56, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2218, .-bmpcfg_emit_stub_2218
+
+.globl bmpcfg_emit_stub_2219
+.p2align 2
+.type bmpcfg_emit_stub_2219, @function
+bmpcfg_emit_stub_2219:
+    bmpcfg 2, 56, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2219, .-bmpcfg_emit_stub_2219
+
+.globl bmpcfg_emit_stub_2220
+.p2align 2
+.type bmpcfg_emit_stub_2220, @function
+bmpcfg_emit_stub_2220:
+    bmpcfg 2, 56, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2220, .-bmpcfg_emit_stub_2220
+
+.globl bmpcfg_emit_stub_2221
+.p2align 2
+.type bmpcfg_emit_stub_2221, @function
+bmpcfg_emit_stub_2221:
+    bmpcfg 2, 56, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2221, .-bmpcfg_emit_stub_2221
+
+.globl bmpcfg_emit_stub_2222
+.p2align 2
+.type bmpcfg_emit_stub_2222, @function
+bmpcfg_emit_stub_2222:
+    bmpcfg 2, 56, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2222, .-bmpcfg_emit_stub_2222
+
+.globl bmpcfg_emit_stub_2223
+.p2align 2
+.type bmpcfg_emit_stub_2223, @function
+bmpcfg_emit_stub_2223:
+    bmpcfg 2, 56, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2223, .-bmpcfg_emit_stub_2223
+
+.globl bmpcfg_emit_stub_2224
+.p2align 2
+.type bmpcfg_emit_stub_2224, @function
+bmpcfg_emit_stub_2224:
+    bmpcfg 2, 56, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2224, .-bmpcfg_emit_stub_2224
+
+.globl bmpcfg_emit_stub_2225
+.p2align 2
+.type bmpcfg_emit_stub_2225, @function
+bmpcfg_emit_stub_2225:
+    bmpcfg 2, 56, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2225, .-bmpcfg_emit_stub_2225
+
+.globl bmpcfg_emit_stub_2226
+.p2align 2
+.type bmpcfg_emit_stub_2226, @function
+bmpcfg_emit_stub_2226:
+    bmpcfg 2, 56, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2226, .-bmpcfg_emit_stub_2226
+
+.globl bmpcfg_emit_stub_2227
+.p2align 2
+.type bmpcfg_emit_stub_2227, @function
+bmpcfg_emit_stub_2227:
+    bmpcfg 2, 56, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2227, .-bmpcfg_emit_stub_2227
+
+.globl bmpcfg_emit_stub_2228
+.p2align 2
+.type bmpcfg_emit_stub_2228, @function
+bmpcfg_emit_stub_2228:
+    bmpcfg 2, 56, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2228, .-bmpcfg_emit_stub_2228
+
+.globl bmpcfg_emit_stub_2229
+.p2align 2
+.type bmpcfg_emit_stub_2229, @function
+bmpcfg_emit_stub_2229:
+    bmpcfg 2, 56, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2229, .-bmpcfg_emit_stub_2229
+
+.globl bmpcfg_emit_stub_2230
+.p2align 2
+.type bmpcfg_emit_stub_2230, @function
+bmpcfg_emit_stub_2230:
+    bmpcfg 2, 56, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2230, .-bmpcfg_emit_stub_2230
+
+.globl bmpcfg_emit_stub_2231
+.p2align 2
+.type bmpcfg_emit_stub_2231, @function
+bmpcfg_emit_stub_2231:
+    bmpcfg 2, 56, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2231, .-bmpcfg_emit_stub_2231
+
+.globl bmpcfg_emit_stub_2232
+.p2align 2
+.type bmpcfg_emit_stub_2232, @function
+bmpcfg_emit_stub_2232:
+    bmpcfg 2, 56, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2232, .-bmpcfg_emit_stub_2232
+
+.globl bmpcfg_emit_stub_2233
+.p2align 2
+.type bmpcfg_emit_stub_2233, @function
+bmpcfg_emit_stub_2233:
+    bmpcfg 2, 56, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2233, .-bmpcfg_emit_stub_2233
+
+.globl bmpcfg_emit_stub_2234
+.p2align 2
+.type bmpcfg_emit_stub_2234, @function
+bmpcfg_emit_stub_2234:
+    bmpcfg 2, 56, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2234, .-bmpcfg_emit_stub_2234
+
+.globl bmpcfg_emit_stub_2235
+.p2align 2
+.type bmpcfg_emit_stub_2235, @function
+bmpcfg_emit_stub_2235:
+    bmpcfg 2, 56, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2235, .-bmpcfg_emit_stub_2235
+
+.globl bmpcfg_emit_stub_2236
+.p2align 2
+.type bmpcfg_emit_stub_2236, @function
+bmpcfg_emit_stub_2236:
+    bmpcfg 2, 56, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2236, .-bmpcfg_emit_stub_2236
+
+.globl bmpcfg_emit_stub_2237
+.p2align 2
+.type bmpcfg_emit_stub_2237, @function
+bmpcfg_emit_stub_2237:
+    bmpcfg 2, 56, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2237, .-bmpcfg_emit_stub_2237
+
+.globl bmpcfg_emit_stub_2238
+.p2align 2
+.type bmpcfg_emit_stub_2238, @function
+bmpcfg_emit_stub_2238:
+    bmpcfg 2, 56, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2238, .-bmpcfg_emit_stub_2238
+
+.globl bmpcfg_emit_stub_2239
+.p2align 2
+.type bmpcfg_emit_stub_2239, @function
+bmpcfg_emit_stub_2239:
+    bmpcfg 2, 56, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2239, .-bmpcfg_emit_stub_2239
+
+.globl bmpcfg_emit_stub_2240
+.p2align 2
+.type bmpcfg_emit_stub_2240, @function
+bmpcfg_emit_stub_2240:
+    bmpcfg 2, 56, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2240, .-bmpcfg_emit_stub_2240
+
+.globl bmpcfg_emit_stub_2241
+.p2align 2
+.type bmpcfg_emit_stub_2241, @function
+bmpcfg_emit_stub_2241:
+    bmpcfg 2, 56, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2241, .-bmpcfg_emit_stub_2241
+
+.globl bmpcfg_emit_stub_2242
+.p2align 2
+.type bmpcfg_emit_stub_2242, @function
+bmpcfg_emit_stub_2242:
+    bmpcfg 2, 56, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2242, .-bmpcfg_emit_stub_2242
+
+.globl bmpcfg_emit_stub_2243
+.p2align 2
+.type bmpcfg_emit_stub_2243, @function
+bmpcfg_emit_stub_2243:
+    bmpcfg 2, 56, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2243, .-bmpcfg_emit_stub_2243
+
+.globl bmpcfg_emit_stub_2244
+.p2align 2
+.type bmpcfg_emit_stub_2244, @function
+bmpcfg_emit_stub_2244:
+    bmpcfg 2, 56, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2244, .-bmpcfg_emit_stub_2244
+
+.globl bmpcfg_emit_stub_2245
+.p2align 2
+.type bmpcfg_emit_stub_2245, @function
+bmpcfg_emit_stub_2245:
+    bmpcfg 2, 56, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2245, .-bmpcfg_emit_stub_2245
+
+.globl bmpcfg_emit_stub_2246
+.p2align 2
+.type bmpcfg_emit_stub_2246, @function
+bmpcfg_emit_stub_2246:
+    bmpcfg 2, 56, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2246, .-bmpcfg_emit_stub_2246
+
+.globl bmpcfg_emit_stub_2247
+.p2align 2
+.type bmpcfg_emit_stub_2247, @function
+bmpcfg_emit_stub_2247:
+    bmpcfg 2, 56, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2247, .-bmpcfg_emit_stub_2247
+
+.globl bmpcfg_emit_stub_2248
+.p2align 2
+.type bmpcfg_emit_stub_2248, @function
+bmpcfg_emit_stub_2248:
+    bmpcfg 2, 56, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2248, .-bmpcfg_emit_stub_2248
+
+.globl bmpcfg_emit_stub_2249
+.p2align 2
+.type bmpcfg_emit_stub_2249, @function
+bmpcfg_emit_stub_2249:
+    bmpcfg 2, 56, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2249, .-bmpcfg_emit_stub_2249
+
+.globl bmpcfg_emit_stub_2250
+.p2align 2
+.type bmpcfg_emit_stub_2250, @function
+bmpcfg_emit_stub_2250:
+    bmpcfg 2, 56, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2250, .-bmpcfg_emit_stub_2250
+
+.globl bmpcfg_emit_stub_2251
+.p2align 2
+.type bmpcfg_emit_stub_2251, @function
+bmpcfg_emit_stub_2251:
+    bmpcfg 2, 56, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2251, .-bmpcfg_emit_stub_2251
+
+.globl bmpcfg_emit_stub_2252
+.p2align 2
+.type bmpcfg_emit_stub_2252, @function
+bmpcfg_emit_stub_2252:
+    bmpcfg 2, 56, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2252, .-bmpcfg_emit_stub_2252
+
+.globl bmpcfg_emit_stub_2253
+.p2align 2
+.type bmpcfg_emit_stub_2253, @function
+bmpcfg_emit_stub_2253:
+    bmpcfg 2, 56, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2253, .-bmpcfg_emit_stub_2253
+
+.globl bmpcfg_emit_stub_2254
+.p2align 2
+.type bmpcfg_emit_stub_2254, @function
+bmpcfg_emit_stub_2254:
+    bmpcfg 2, 56, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2254, .-bmpcfg_emit_stub_2254
+
+.globl bmpcfg_emit_stub_2255
+.p2align 2
+.type bmpcfg_emit_stub_2255, @function
+bmpcfg_emit_stub_2255:
+    bmpcfg 2, 56, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2255, .-bmpcfg_emit_stub_2255
+
+.globl bmpcfg_emit_stub_2256
+.p2align 2
+.type bmpcfg_emit_stub_2256, @function
+bmpcfg_emit_stub_2256:
+    bmpcfg 2, 56, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2256, .-bmpcfg_emit_stub_2256
+
+.globl bmpcfg_emit_stub_2257
+.p2align 2
+.type bmpcfg_emit_stub_2257, @function
+bmpcfg_emit_stub_2257:
+    bmpcfg 2, 56, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2257, .-bmpcfg_emit_stub_2257
+
+.globl bmpcfg_emit_stub_2258
+.p2align 2
+.type bmpcfg_emit_stub_2258, @function
+bmpcfg_emit_stub_2258:
+    bmpcfg 2, 56, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2258, .-bmpcfg_emit_stub_2258
+
+.globl bmpcfg_emit_stub_2259
+.p2align 2
+.type bmpcfg_emit_stub_2259, @function
+bmpcfg_emit_stub_2259:
+    bmpcfg 2, 56, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2259, .-bmpcfg_emit_stub_2259
+
+.globl bmpcfg_emit_stub_2260
+.p2align 2
+.type bmpcfg_emit_stub_2260, @function
+bmpcfg_emit_stub_2260:
+    bmpcfg 2, 56, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2260, .-bmpcfg_emit_stub_2260
+
+.globl bmpcfg_emit_stub_2261
+.p2align 2
+.type bmpcfg_emit_stub_2261, @function
+bmpcfg_emit_stub_2261:
+    bmpcfg 2, 56, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2261, .-bmpcfg_emit_stub_2261
+
+.globl bmpcfg_emit_stub_2262
+.p2align 2
+.type bmpcfg_emit_stub_2262, @function
+bmpcfg_emit_stub_2262:
+    bmpcfg 2, 56, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2262, .-bmpcfg_emit_stub_2262
+
+.globl bmpcfg_emit_stub_2263
+.p2align 2
+.type bmpcfg_emit_stub_2263, @function
+bmpcfg_emit_stub_2263:
+    bmpcfg 2, 56, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2263, .-bmpcfg_emit_stub_2263
+
+.globl bmpcfg_emit_stub_2264
+.p2align 2
+.type bmpcfg_emit_stub_2264, @function
+bmpcfg_emit_stub_2264:
+    bmpcfg 2, 56, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2264, .-bmpcfg_emit_stub_2264
+
+.globl bmpcfg_emit_stub_2265
+.p2align 2
+.type bmpcfg_emit_stub_2265, @function
+bmpcfg_emit_stub_2265:
+    bmpcfg 2, 64, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2265, .-bmpcfg_emit_stub_2265
+
+.globl bmpcfg_emit_stub_2266
+.p2align 2
+.type bmpcfg_emit_stub_2266, @function
+bmpcfg_emit_stub_2266:
+    bmpcfg 2, 64, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2266, .-bmpcfg_emit_stub_2266
+
+.globl bmpcfg_emit_stub_2267
+.p2align 2
+.type bmpcfg_emit_stub_2267, @function
+bmpcfg_emit_stub_2267:
+    bmpcfg 2, 64, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2267, .-bmpcfg_emit_stub_2267
+
+.globl bmpcfg_emit_stub_2268
+.p2align 2
+.type bmpcfg_emit_stub_2268, @function
+bmpcfg_emit_stub_2268:
+    bmpcfg 2, 64, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2268, .-bmpcfg_emit_stub_2268
+
+.globl bmpcfg_emit_stub_2269
+.p2align 2
+.type bmpcfg_emit_stub_2269, @function
+bmpcfg_emit_stub_2269:
+    bmpcfg 2, 64, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2269, .-bmpcfg_emit_stub_2269
+
+.globl bmpcfg_emit_stub_2270
+.p2align 2
+.type bmpcfg_emit_stub_2270, @function
+bmpcfg_emit_stub_2270:
+    bmpcfg 2, 64, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2270, .-bmpcfg_emit_stub_2270
+
+.globl bmpcfg_emit_stub_2271
+.p2align 2
+.type bmpcfg_emit_stub_2271, @function
+bmpcfg_emit_stub_2271:
+    bmpcfg 2, 64, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2271, .-bmpcfg_emit_stub_2271
+
+.globl bmpcfg_emit_stub_2272
+.p2align 2
+.type bmpcfg_emit_stub_2272, @function
+bmpcfg_emit_stub_2272:
+    bmpcfg 2, 64, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2272, .-bmpcfg_emit_stub_2272
+
+.globl bmpcfg_emit_stub_2273
+.p2align 2
+.type bmpcfg_emit_stub_2273, @function
+bmpcfg_emit_stub_2273:
+    bmpcfg 2, 64, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2273, .-bmpcfg_emit_stub_2273
+
+.globl bmpcfg_emit_stub_2274
+.p2align 2
+.type bmpcfg_emit_stub_2274, @function
+bmpcfg_emit_stub_2274:
+    bmpcfg 2, 64, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2274, .-bmpcfg_emit_stub_2274
+
+.globl bmpcfg_emit_stub_2275
+.p2align 2
+.type bmpcfg_emit_stub_2275, @function
+bmpcfg_emit_stub_2275:
+    bmpcfg 2, 64, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2275, .-bmpcfg_emit_stub_2275
+
+.globl bmpcfg_emit_stub_2276
+.p2align 2
+.type bmpcfg_emit_stub_2276, @function
+bmpcfg_emit_stub_2276:
+    bmpcfg 2, 64, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2276, .-bmpcfg_emit_stub_2276
+
+.globl bmpcfg_emit_stub_2277
+.p2align 2
+.type bmpcfg_emit_stub_2277, @function
+bmpcfg_emit_stub_2277:
+    bmpcfg 2, 64, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2277, .-bmpcfg_emit_stub_2277
+
+.globl bmpcfg_emit_stub_2278
+.p2align 2
+.type bmpcfg_emit_stub_2278, @function
+bmpcfg_emit_stub_2278:
+    bmpcfg 2, 64, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2278, .-bmpcfg_emit_stub_2278
+
+.globl bmpcfg_emit_stub_2279
+.p2align 2
+.type bmpcfg_emit_stub_2279, @function
+bmpcfg_emit_stub_2279:
+    bmpcfg 2, 64, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2279, .-bmpcfg_emit_stub_2279
+
+.globl bmpcfg_emit_stub_2280
+.p2align 2
+.type bmpcfg_emit_stub_2280, @function
+bmpcfg_emit_stub_2280:
+    bmpcfg 2, 64, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2280, .-bmpcfg_emit_stub_2280
+
+.globl bmpcfg_emit_stub_2281
+.p2align 2
+.type bmpcfg_emit_stub_2281, @function
+bmpcfg_emit_stub_2281:
+    bmpcfg 2, 64, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2281, .-bmpcfg_emit_stub_2281
+
+.globl bmpcfg_emit_stub_2282
+.p2align 2
+.type bmpcfg_emit_stub_2282, @function
+bmpcfg_emit_stub_2282:
+    bmpcfg 2, 64, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2282, .-bmpcfg_emit_stub_2282
+
+.globl bmpcfg_emit_stub_2283
+.p2align 2
+.type bmpcfg_emit_stub_2283, @function
+bmpcfg_emit_stub_2283:
+    bmpcfg 2, 64, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2283, .-bmpcfg_emit_stub_2283
+
+.globl bmpcfg_emit_stub_2284
+.p2align 2
+.type bmpcfg_emit_stub_2284, @function
+bmpcfg_emit_stub_2284:
+    bmpcfg 2, 64, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2284, .-bmpcfg_emit_stub_2284
+
+.globl bmpcfg_emit_stub_2285
+.p2align 2
+.type bmpcfg_emit_stub_2285, @function
+bmpcfg_emit_stub_2285:
+    bmpcfg 2, 64, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2285, .-bmpcfg_emit_stub_2285
+
+.globl bmpcfg_emit_stub_2286
+.p2align 2
+.type bmpcfg_emit_stub_2286, @function
+bmpcfg_emit_stub_2286:
+    bmpcfg 2, 64, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2286, .-bmpcfg_emit_stub_2286
+
+.globl bmpcfg_emit_stub_2287
+.p2align 2
+.type bmpcfg_emit_stub_2287, @function
+bmpcfg_emit_stub_2287:
+    bmpcfg 2, 64, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2287, .-bmpcfg_emit_stub_2287
+
+.globl bmpcfg_emit_stub_2288
+.p2align 2
+.type bmpcfg_emit_stub_2288, @function
+bmpcfg_emit_stub_2288:
+    bmpcfg 2, 64, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2288, .-bmpcfg_emit_stub_2288
+
+.globl bmpcfg_emit_stub_2289
+.p2align 2
+.type bmpcfg_emit_stub_2289, @function
+bmpcfg_emit_stub_2289:
+    bmpcfg 2, 64, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2289, .-bmpcfg_emit_stub_2289
+
+.globl bmpcfg_emit_stub_2290
+.p2align 2
+.type bmpcfg_emit_stub_2290, @function
+bmpcfg_emit_stub_2290:
+    bmpcfg 2, 64, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2290, .-bmpcfg_emit_stub_2290
+
+.globl bmpcfg_emit_stub_2291
+.p2align 2
+.type bmpcfg_emit_stub_2291, @function
+bmpcfg_emit_stub_2291:
+    bmpcfg 2, 64, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2291, .-bmpcfg_emit_stub_2291
+
+.globl bmpcfg_emit_stub_2292
+.p2align 2
+.type bmpcfg_emit_stub_2292, @function
+bmpcfg_emit_stub_2292:
+    bmpcfg 2, 64, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2292, .-bmpcfg_emit_stub_2292
+
+.globl bmpcfg_emit_stub_2293
+.p2align 2
+.type bmpcfg_emit_stub_2293, @function
+bmpcfg_emit_stub_2293:
+    bmpcfg 2, 64, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2293, .-bmpcfg_emit_stub_2293
+
+.globl bmpcfg_emit_stub_2294
+.p2align 2
+.type bmpcfg_emit_stub_2294, @function
+bmpcfg_emit_stub_2294:
+    bmpcfg 2, 64, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2294, .-bmpcfg_emit_stub_2294
+
+.globl bmpcfg_emit_stub_2295
+.p2align 2
+.type bmpcfg_emit_stub_2295, @function
+bmpcfg_emit_stub_2295:
+    bmpcfg 2, 64, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2295, .-bmpcfg_emit_stub_2295
+
+.globl bmpcfg_emit_stub_2296
+.p2align 2
+.type bmpcfg_emit_stub_2296, @function
+bmpcfg_emit_stub_2296:
+    bmpcfg 2, 64, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2296, .-bmpcfg_emit_stub_2296
+
+.globl bmpcfg_emit_stub_2297
+.p2align 2
+.type bmpcfg_emit_stub_2297, @function
+bmpcfg_emit_stub_2297:
+    bmpcfg 2, 64, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2297, .-bmpcfg_emit_stub_2297
+
+.globl bmpcfg_emit_stub_2298
+.p2align 2
+.type bmpcfg_emit_stub_2298, @function
+bmpcfg_emit_stub_2298:
+    bmpcfg 2, 64, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2298, .-bmpcfg_emit_stub_2298
+
+.globl bmpcfg_emit_stub_2299
+.p2align 2
+.type bmpcfg_emit_stub_2299, @function
+bmpcfg_emit_stub_2299:
+    bmpcfg 2, 64, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2299, .-bmpcfg_emit_stub_2299
+
+.globl bmpcfg_emit_stub_2300
+.p2align 2
+.type bmpcfg_emit_stub_2300, @function
+bmpcfg_emit_stub_2300:
+    bmpcfg 2, 64, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2300, .-bmpcfg_emit_stub_2300
+
+.globl bmpcfg_emit_stub_2301
+.p2align 2
+.type bmpcfg_emit_stub_2301, @function
+bmpcfg_emit_stub_2301:
+    bmpcfg 2, 64, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2301, .-bmpcfg_emit_stub_2301
+
+.globl bmpcfg_emit_stub_2302
+.p2align 2
+.type bmpcfg_emit_stub_2302, @function
+bmpcfg_emit_stub_2302:
+    bmpcfg 2, 64, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2302, .-bmpcfg_emit_stub_2302
+
+.globl bmpcfg_emit_stub_2303
+.p2align 2
+.type bmpcfg_emit_stub_2303, @function
+bmpcfg_emit_stub_2303:
+    bmpcfg 2, 64, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2303, .-bmpcfg_emit_stub_2303
+
+.globl bmpcfg_emit_stub_2304
+.p2align 2
+.type bmpcfg_emit_stub_2304, @function
+bmpcfg_emit_stub_2304:
+    bmpcfg 2, 64, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2304, .-bmpcfg_emit_stub_2304
+
+.globl bmpcfg_emit_stub_2305
+.p2align 2
+.type bmpcfg_emit_stub_2305, @function
+bmpcfg_emit_stub_2305:
+    bmpcfg 2, 64, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2305, .-bmpcfg_emit_stub_2305
+
+.globl bmpcfg_emit_stub_2306
+.p2align 2
+.type bmpcfg_emit_stub_2306, @function
+bmpcfg_emit_stub_2306:
+    bmpcfg 2, 64, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2306, .-bmpcfg_emit_stub_2306
+
+.globl bmpcfg_emit_stub_2307
+.p2align 2
+.type bmpcfg_emit_stub_2307, @function
+bmpcfg_emit_stub_2307:
+    bmpcfg 2, 64, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2307, .-bmpcfg_emit_stub_2307
+
+.globl bmpcfg_emit_stub_2308
+.p2align 2
+.type bmpcfg_emit_stub_2308, @function
+bmpcfg_emit_stub_2308:
+    bmpcfg 2, 64, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2308, .-bmpcfg_emit_stub_2308
+
+.globl bmpcfg_emit_stub_2309
+.p2align 2
+.type bmpcfg_emit_stub_2309, @function
+bmpcfg_emit_stub_2309:
+    bmpcfg 2, 64, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2309, .-bmpcfg_emit_stub_2309
+
+.globl bmpcfg_emit_stub_2310
+.p2align 2
+.type bmpcfg_emit_stub_2310, @function
+bmpcfg_emit_stub_2310:
+    bmpcfg 2, 64, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2310, .-bmpcfg_emit_stub_2310
+
+.globl bmpcfg_emit_stub_2311
+.p2align 2
+.type bmpcfg_emit_stub_2311, @function
+bmpcfg_emit_stub_2311:
+    bmpcfg 2, 64, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2311, .-bmpcfg_emit_stub_2311
+
+.globl bmpcfg_emit_stub_2312
+.p2align 2
+.type bmpcfg_emit_stub_2312, @function
+bmpcfg_emit_stub_2312:
+    bmpcfg 2, 64, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2312, .-bmpcfg_emit_stub_2312
+
+.globl bmpcfg_emit_stub_2313
+.p2align 2
+.type bmpcfg_emit_stub_2313, @function
+bmpcfg_emit_stub_2313:
+    bmpcfg 2, 64, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2313, .-bmpcfg_emit_stub_2313
+
+.globl bmpcfg_emit_stub_2314
+.p2align 2
+.type bmpcfg_emit_stub_2314, @function
+bmpcfg_emit_stub_2314:
+    bmpcfg 2, 64, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2314, .-bmpcfg_emit_stub_2314
+
+.globl bmpcfg_emit_stub_2315
+.p2align 2
+.type bmpcfg_emit_stub_2315, @function
+bmpcfg_emit_stub_2315:
+    bmpcfg 2, 64, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2315, .-bmpcfg_emit_stub_2315
+
+.globl bmpcfg_emit_stub_2316
+.p2align 2
+.type bmpcfg_emit_stub_2316, @function
+bmpcfg_emit_stub_2316:
+    bmpcfg 2, 64, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2316, .-bmpcfg_emit_stub_2316
+
+.globl bmpcfg_emit_stub_2317
+.p2align 2
+.type bmpcfg_emit_stub_2317, @function
+bmpcfg_emit_stub_2317:
+    bmpcfg 2, 64, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2317, .-bmpcfg_emit_stub_2317
+
+.globl bmpcfg_emit_stub_2318
+.p2align 2
+.type bmpcfg_emit_stub_2318, @function
+bmpcfg_emit_stub_2318:
+    bmpcfg 2, 64, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2318, .-bmpcfg_emit_stub_2318
+
+.globl bmpcfg_emit_stub_2319
+.p2align 2
+.type bmpcfg_emit_stub_2319, @function
+bmpcfg_emit_stub_2319:
+    bmpcfg 2, 64, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2319, .-bmpcfg_emit_stub_2319
+
+.globl bmpcfg_emit_stub_2320
+.p2align 2
+.type bmpcfg_emit_stub_2320, @function
+bmpcfg_emit_stub_2320:
+    bmpcfg 2, 64, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2320, .-bmpcfg_emit_stub_2320
+
+.globl bmpcfg_emit_stub_2321
+.p2align 2
+.type bmpcfg_emit_stub_2321, @function
+bmpcfg_emit_stub_2321:
+    bmpcfg 2, 64, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2321, .-bmpcfg_emit_stub_2321
+
+.globl bmpcfg_emit_stub_2322
+.p2align 2
+.type bmpcfg_emit_stub_2322, @function
+bmpcfg_emit_stub_2322:
+    bmpcfg 2, 64, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2322, .-bmpcfg_emit_stub_2322
+
+.globl bmpcfg_emit_stub_2323
+.p2align 2
+.type bmpcfg_emit_stub_2323, @function
+bmpcfg_emit_stub_2323:
+    bmpcfg 2, 72, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2323, .-bmpcfg_emit_stub_2323
+
+.globl bmpcfg_emit_stub_2324
+.p2align 2
+.type bmpcfg_emit_stub_2324, @function
+bmpcfg_emit_stub_2324:
+    bmpcfg 2, 72, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2324, .-bmpcfg_emit_stub_2324
+
+.globl bmpcfg_emit_stub_2325
+.p2align 2
+.type bmpcfg_emit_stub_2325, @function
+bmpcfg_emit_stub_2325:
+    bmpcfg 2, 72, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2325, .-bmpcfg_emit_stub_2325
+
+.globl bmpcfg_emit_stub_2326
+.p2align 2
+.type bmpcfg_emit_stub_2326, @function
+bmpcfg_emit_stub_2326:
+    bmpcfg 2, 72, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2326, .-bmpcfg_emit_stub_2326
+
+.globl bmpcfg_emit_stub_2327
+.p2align 2
+.type bmpcfg_emit_stub_2327, @function
+bmpcfg_emit_stub_2327:
+    bmpcfg 2, 72, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2327, .-bmpcfg_emit_stub_2327
+
+.globl bmpcfg_emit_stub_2328
+.p2align 2
+.type bmpcfg_emit_stub_2328, @function
+bmpcfg_emit_stub_2328:
+    bmpcfg 2, 72, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2328, .-bmpcfg_emit_stub_2328
+
+.globl bmpcfg_emit_stub_2329
+.p2align 2
+.type bmpcfg_emit_stub_2329, @function
+bmpcfg_emit_stub_2329:
+    bmpcfg 2, 72, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2329, .-bmpcfg_emit_stub_2329
+
+.globl bmpcfg_emit_stub_2330
+.p2align 2
+.type bmpcfg_emit_stub_2330, @function
+bmpcfg_emit_stub_2330:
+    bmpcfg 2, 72, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2330, .-bmpcfg_emit_stub_2330
+
+.globl bmpcfg_emit_stub_2331
+.p2align 2
+.type bmpcfg_emit_stub_2331, @function
+bmpcfg_emit_stub_2331:
+    bmpcfg 2, 72, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2331, .-bmpcfg_emit_stub_2331
+
+.globl bmpcfg_emit_stub_2332
+.p2align 2
+.type bmpcfg_emit_stub_2332, @function
+bmpcfg_emit_stub_2332:
+    bmpcfg 2, 72, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2332, .-bmpcfg_emit_stub_2332
+
+.globl bmpcfg_emit_stub_2333
+.p2align 2
+.type bmpcfg_emit_stub_2333, @function
+bmpcfg_emit_stub_2333:
+    bmpcfg 2, 72, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2333, .-bmpcfg_emit_stub_2333
+
+.globl bmpcfg_emit_stub_2334
+.p2align 2
+.type bmpcfg_emit_stub_2334, @function
+bmpcfg_emit_stub_2334:
+    bmpcfg 2, 72, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2334, .-bmpcfg_emit_stub_2334
+
+.globl bmpcfg_emit_stub_2335
+.p2align 2
+.type bmpcfg_emit_stub_2335, @function
+bmpcfg_emit_stub_2335:
+    bmpcfg 2, 72, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2335, .-bmpcfg_emit_stub_2335
+
+.globl bmpcfg_emit_stub_2336
+.p2align 2
+.type bmpcfg_emit_stub_2336, @function
+bmpcfg_emit_stub_2336:
+    bmpcfg 2, 72, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2336, .-bmpcfg_emit_stub_2336
+
+.globl bmpcfg_emit_stub_2337
+.p2align 2
+.type bmpcfg_emit_stub_2337, @function
+bmpcfg_emit_stub_2337:
+    bmpcfg 2, 72, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2337, .-bmpcfg_emit_stub_2337
+
+.globl bmpcfg_emit_stub_2338
+.p2align 2
+.type bmpcfg_emit_stub_2338, @function
+bmpcfg_emit_stub_2338:
+    bmpcfg 2, 72, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2338, .-bmpcfg_emit_stub_2338
+
+.globl bmpcfg_emit_stub_2339
+.p2align 2
+.type bmpcfg_emit_stub_2339, @function
+bmpcfg_emit_stub_2339:
+    bmpcfg 2, 72, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2339, .-bmpcfg_emit_stub_2339
+
+.globl bmpcfg_emit_stub_2340
+.p2align 2
+.type bmpcfg_emit_stub_2340, @function
+bmpcfg_emit_stub_2340:
+    bmpcfg 2, 72, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2340, .-bmpcfg_emit_stub_2340
+
+.globl bmpcfg_emit_stub_2341
+.p2align 2
+.type bmpcfg_emit_stub_2341, @function
+bmpcfg_emit_stub_2341:
+    bmpcfg 2, 72, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2341, .-bmpcfg_emit_stub_2341
+
+.globl bmpcfg_emit_stub_2342
+.p2align 2
+.type bmpcfg_emit_stub_2342, @function
+bmpcfg_emit_stub_2342:
+    bmpcfg 2, 72, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2342, .-bmpcfg_emit_stub_2342
+
+.globl bmpcfg_emit_stub_2343
+.p2align 2
+.type bmpcfg_emit_stub_2343, @function
+bmpcfg_emit_stub_2343:
+    bmpcfg 2, 72, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2343, .-bmpcfg_emit_stub_2343
+
+.globl bmpcfg_emit_stub_2344
+.p2align 2
+.type bmpcfg_emit_stub_2344, @function
+bmpcfg_emit_stub_2344:
+    bmpcfg 2, 72, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2344, .-bmpcfg_emit_stub_2344
+
+.globl bmpcfg_emit_stub_2345
+.p2align 2
+.type bmpcfg_emit_stub_2345, @function
+bmpcfg_emit_stub_2345:
+    bmpcfg 2, 72, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2345, .-bmpcfg_emit_stub_2345
+
+.globl bmpcfg_emit_stub_2346
+.p2align 2
+.type bmpcfg_emit_stub_2346, @function
+bmpcfg_emit_stub_2346:
+    bmpcfg 2, 72, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2346, .-bmpcfg_emit_stub_2346
+
+.globl bmpcfg_emit_stub_2347
+.p2align 2
+.type bmpcfg_emit_stub_2347, @function
+bmpcfg_emit_stub_2347:
+    bmpcfg 2, 72, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2347, .-bmpcfg_emit_stub_2347
+
+.globl bmpcfg_emit_stub_2348
+.p2align 2
+.type bmpcfg_emit_stub_2348, @function
+bmpcfg_emit_stub_2348:
+    bmpcfg 2, 72, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2348, .-bmpcfg_emit_stub_2348
+
+.globl bmpcfg_emit_stub_2349
+.p2align 2
+.type bmpcfg_emit_stub_2349, @function
+bmpcfg_emit_stub_2349:
+    bmpcfg 2, 72, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2349, .-bmpcfg_emit_stub_2349
+
+.globl bmpcfg_emit_stub_2350
+.p2align 2
+.type bmpcfg_emit_stub_2350, @function
+bmpcfg_emit_stub_2350:
+    bmpcfg 2, 72, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2350, .-bmpcfg_emit_stub_2350
+
+.globl bmpcfg_emit_stub_2351
+.p2align 2
+.type bmpcfg_emit_stub_2351, @function
+bmpcfg_emit_stub_2351:
+    bmpcfg 2, 72, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2351, .-bmpcfg_emit_stub_2351
+
+.globl bmpcfg_emit_stub_2352
+.p2align 2
+.type bmpcfg_emit_stub_2352, @function
+bmpcfg_emit_stub_2352:
+    bmpcfg 2, 72, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2352, .-bmpcfg_emit_stub_2352
+
+.globl bmpcfg_emit_stub_2353
+.p2align 2
+.type bmpcfg_emit_stub_2353, @function
+bmpcfg_emit_stub_2353:
+    bmpcfg 2, 72, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2353, .-bmpcfg_emit_stub_2353
+
+.globl bmpcfg_emit_stub_2354
+.p2align 2
+.type bmpcfg_emit_stub_2354, @function
+bmpcfg_emit_stub_2354:
+    bmpcfg 2, 72, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2354, .-bmpcfg_emit_stub_2354
+
+.globl bmpcfg_emit_stub_2355
+.p2align 2
+.type bmpcfg_emit_stub_2355, @function
+bmpcfg_emit_stub_2355:
+    bmpcfg 2, 72, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2355, .-bmpcfg_emit_stub_2355
+
+.globl bmpcfg_emit_stub_2356
+.p2align 2
+.type bmpcfg_emit_stub_2356, @function
+bmpcfg_emit_stub_2356:
+    bmpcfg 2, 72, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2356, .-bmpcfg_emit_stub_2356
+
+.globl bmpcfg_emit_stub_2357
+.p2align 2
+.type bmpcfg_emit_stub_2357, @function
+bmpcfg_emit_stub_2357:
+    bmpcfg 2, 72, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2357, .-bmpcfg_emit_stub_2357
+
+.globl bmpcfg_emit_stub_2358
+.p2align 2
+.type bmpcfg_emit_stub_2358, @function
+bmpcfg_emit_stub_2358:
+    bmpcfg 2, 72, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2358, .-bmpcfg_emit_stub_2358
+
+.globl bmpcfg_emit_stub_2359
+.p2align 2
+.type bmpcfg_emit_stub_2359, @function
+bmpcfg_emit_stub_2359:
+    bmpcfg 2, 72, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2359, .-bmpcfg_emit_stub_2359
+
+.globl bmpcfg_emit_stub_2360
+.p2align 2
+.type bmpcfg_emit_stub_2360, @function
+bmpcfg_emit_stub_2360:
+    bmpcfg 2, 72, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2360, .-bmpcfg_emit_stub_2360
+
+.globl bmpcfg_emit_stub_2361
+.p2align 2
+.type bmpcfg_emit_stub_2361, @function
+bmpcfg_emit_stub_2361:
+    bmpcfg 2, 72, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2361, .-bmpcfg_emit_stub_2361
+
+.globl bmpcfg_emit_stub_2362
+.p2align 2
+.type bmpcfg_emit_stub_2362, @function
+bmpcfg_emit_stub_2362:
+    bmpcfg 2, 72, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2362, .-bmpcfg_emit_stub_2362
+
+.globl bmpcfg_emit_stub_2363
+.p2align 2
+.type bmpcfg_emit_stub_2363, @function
+bmpcfg_emit_stub_2363:
+    bmpcfg 2, 72, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2363, .-bmpcfg_emit_stub_2363
+
+.globl bmpcfg_emit_stub_2364
+.p2align 2
+.type bmpcfg_emit_stub_2364, @function
+bmpcfg_emit_stub_2364:
+    bmpcfg 2, 80, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2364, .-bmpcfg_emit_stub_2364
+
+.globl bmpcfg_emit_stub_2365
+.p2align 2
+.type bmpcfg_emit_stub_2365, @function
+bmpcfg_emit_stub_2365:
+    bmpcfg 2, 80, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2365, .-bmpcfg_emit_stub_2365
+
+.globl bmpcfg_emit_stub_2366
+.p2align 2
+.type bmpcfg_emit_stub_2366, @function
+bmpcfg_emit_stub_2366:
+    bmpcfg 2, 80, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2366, .-bmpcfg_emit_stub_2366
+
+.globl bmpcfg_emit_stub_2367
+.p2align 2
+.type bmpcfg_emit_stub_2367, @function
+bmpcfg_emit_stub_2367:
+    bmpcfg 2, 80, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2367, .-bmpcfg_emit_stub_2367
+
+.globl bmpcfg_emit_stub_2368
+.p2align 2
+.type bmpcfg_emit_stub_2368, @function
+bmpcfg_emit_stub_2368:
+    bmpcfg 2, 80, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2368, .-bmpcfg_emit_stub_2368
+
+.globl bmpcfg_emit_stub_2369
+.p2align 2
+.type bmpcfg_emit_stub_2369, @function
+bmpcfg_emit_stub_2369:
+    bmpcfg 2, 80, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2369, .-bmpcfg_emit_stub_2369
+
+.globl bmpcfg_emit_stub_2370
+.p2align 2
+.type bmpcfg_emit_stub_2370, @function
+bmpcfg_emit_stub_2370:
+    bmpcfg 2, 80, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2370, .-bmpcfg_emit_stub_2370
+
+.globl bmpcfg_emit_stub_2371
+.p2align 2
+.type bmpcfg_emit_stub_2371, @function
+bmpcfg_emit_stub_2371:
+    bmpcfg 2, 80, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2371, .-bmpcfg_emit_stub_2371
+
+.globl bmpcfg_emit_stub_2372
+.p2align 2
+.type bmpcfg_emit_stub_2372, @function
+bmpcfg_emit_stub_2372:
+    bmpcfg 2, 80, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2372, .-bmpcfg_emit_stub_2372
+
+.globl bmpcfg_emit_stub_2373
+.p2align 2
+.type bmpcfg_emit_stub_2373, @function
+bmpcfg_emit_stub_2373:
+    bmpcfg 2, 80, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2373, .-bmpcfg_emit_stub_2373
+
+.globl bmpcfg_emit_stub_2374
+.p2align 2
+.type bmpcfg_emit_stub_2374, @function
+bmpcfg_emit_stub_2374:
+    bmpcfg 2, 80, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2374, .-bmpcfg_emit_stub_2374
+
+.globl bmpcfg_emit_stub_2375
+.p2align 2
+.type bmpcfg_emit_stub_2375, @function
+bmpcfg_emit_stub_2375:
+    bmpcfg 2, 80, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2375, .-bmpcfg_emit_stub_2375
+
+.globl bmpcfg_emit_stub_2376
+.p2align 2
+.type bmpcfg_emit_stub_2376, @function
+bmpcfg_emit_stub_2376:
+    bmpcfg 2, 80, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2376, .-bmpcfg_emit_stub_2376
+
+.globl bmpcfg_emit_stub_2377
+.p2align 2
+.type bmpcfg_emit_stub_2377, @function
+bmpcfg_emit_stub_2377:
+    bmpcfg 2, 80, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2377, .-bmpcfg_emit_stub_2377
+
+.globl bmpcfg_emit_stub_2378
+.p2align 2
+.type bmpcfg_emit_stub_2378, @function
+bmpcfg_emit_stub_2378:
+    bmpcfg 2, 80, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2378, .-bmpcfg_emit_stub_2378
+
+.globl bmpcfg_emit_stub_2379
+.p2align 2
+.type bmpcfg_emit_stub_2379, @function
+bmpcfg_emit_stub_2379:
+    bmpcfg 2, 80, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2379, .-bmpcfg_emit_stub_2379
+
+.globl bmpcfg_emit_stub_2380
+.p2align 2
+.type bmpcfg_emit_stub_2380, @function
+bmpcfg_emit_stub_2380:
+    bmpcfg 2, 80, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2380, .-bmpcfg_emit_stub_2380
+
+.globl bmpcfg_emit_stub_2381
+.p2align 2
+.type bmpcfg_emit_stub_2381, @function
+bmpcfg_emit_stub_2381:
+    bmpcfg 2, 80, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2381, .-bmpcfg_emit_stub_2381
+
+.globl bmpcfg_emit_stub_2382
+.p2align 2
+.type bmpcfg_emit_stub_2382, @function
+bmpcfg_emit_stub_2382:
+    bmpcfg 2, 80, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2382, .-bmpcfg_emit_stub_2382
+
+.globl bmpcfg_emit_stub_2383
+.p2align 2
+.type bmpcfg_emit_stub_2383, @function
+bmpcfg_emit_stub_2383:
+    bmpcfg 2, 80, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2383, .-bmpcfg_emit_stub_2383
+
+.globl bmpcfg_emit_stub_2384
+.p2align 2
+.type bmpcfg_emit_stub_2384, @function
+bmpcfg_emit_stub_2384:
+    bmpcfg 2, 80, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2384, .-bmpcfg_emit_stub_2384
+
+.globl bmpcfg_emit_stub_2385
+.p2align 2
+.type bmpcfg_emit_stub_2385, @function
+bmpcfg_emit_stub_2385:
+    bmpcfg 2, 80, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2385, .-bmpcfg_emit_stub_2385
+
+.globl bmpcfg_emit_stub_2386
+.p2align 2
+.type bmpcfg_emit_stub_2386, @function
+bmpcfg_emit_stub_2386:
+    bmpcfg 2, 80, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2386, .-bmpcfg_emit_stub_2386
+
+.globl bmpcfg_emit_stub_2387
+.p2align 2
+.type bmpcfg_emit_stub_2387, @function
+bmpcfg_emit_stub_2387:
+    bmpcfg 2, 80, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2387, .-bmpcfg_emit_stub_2387
+
+.globl bmpcfg_emit_stub_2388
+.p2align 2
+.type bmpcfg_emit_stub_2388, @function
+bmpcfg_emit_stub_2388:
+    bmpcfg 2, 80, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2388, .-bmpcfg_emit_stub_2388
+
+.globl bmpcfg_emit_stub_2389
+.p2align 2
+.type bmpcfg_emit_stub_2389, @function
+bmpcfg_emit_stub_2389:
+    bmpcfg 2, 80, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2389, .-bmpcfg_emit_stub_2389
+
+.globl bmpcfg_emit_stub_2390
+.p2align 2
+.type bmpcfg_emit_stub_2390, @function
+bmpcfg_emit_stub_2390:
+    bmpcfg 2, 80, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2390, .-bmpcfg_emit_stub_2390
+
+.globl bmpcfg_emit_stub_2391
+.p2align 2
+.type bmpcfg_emit_stub_2391, @function
+bmpcfg_emit_stub_2391:
+    bmpcfg 2, 80, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2391, .-bmpcfg_emit_stub_2391
+
+.globl bmpcfg_emit_stub_2392
+.p2align 2
+.type bmpcfg_emit_stub_2392, @function
+bmpcfg_emit_stub_2392:
+    bmpcfg 2, 80, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2392, .-bmpcfg_emit_stub_2392
+
+.globl bmpcfg_emit_stub_2393
+.p2align 2
+.type bmpcfg_emit_stub_2393, @function
+bmpcfg_emit_stub_2393:
+    bmpcfg 2, 80, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2393, .-bmpcfg_emit_stub_2393
+
+.globl bmpcfg_emit_stub_2394
+.p2align 2
+.type bmpcfg_emit_stub_2394, @function
+bmpcfg_emit_stub_2394:
+    bmpcfg 2, 80, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2394, .-bmpcfg_emit_stub_2394
+
+.globl bmpcfg_emit_stub_2395
+.p2align 2
+.type bmpcfg_emit_stub_2395, @function
+bmpcfg_emit_stub_2395:
+    bmpcfg 2, 80, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2395, .-bmpcfg_emit_stub_2395
+
+.globl bmpcfg_emit_stub_2396
+.p2align 2
+.type bmpcfg_emit_stub_2396, @function
+bmpcfg_emit_stub_2396:
+    bmpcfg 2, 80, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2396, .-bmpcfg_emit_stub_2396
+
+.globl bmpcfg_emit_stub_2397
+.p2align 2
+.type bmpcfg_emit_stub_2397, @function
+bmpcfg_emit_stub_2397:
+    bmpcfg 2, 80, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2397, .-bmpcfg_emit_stub_2397
+
+.globl bmpcfg_emit_stub_2398
+.p2align 2
+.type bmpcfg_emit_stub_2398, @function
+bmpcfg_emit_stub_2398:
+    bmpcfg 2, 80, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2398, .-bmpcfg_emit_stub_2398
+
+.globl bmpcfg_emit_stub_2399
+.p2align 2
+.type bmpcfg_emit_stub_2399, @function
+bmpcfg_emit_stub_2399:
+    bmpcfg 2, 80, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2399, .-bmpcfg_emit_stub_2399
+
+.globl bmpcfg_emit_stub_2400
+.p2align 2
+.type bmpcfg_emit_stub_2400, @function
+bmpcfg_emit_stub_2400:
+    bmpcfg 2, 80, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2400, .-bmpcfg_emit_stub_2400
+
+.globl bmpcfg_emit_stub_2401
+.p2align 2
+.type bmpcfg_emit_stub_2401, @function
+bmpcfg_emit_stub_2401:
+    bmpcfg 2, 80, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2401, .-bmpcfg_emit_stub_2401
+
+.globl bmpcfg_emit_stub_2402
+.p2align 2
+.type bmpcfg_emit_stub_2402, @function
+bmpcfg_emit_stub_2402:
+    bmpcfg 2, 80, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2402, .-bmpcfg_emit_stub_2402
+
+.globl bmpcfg_emit_stub_2403
+.p2align 2
+.type bmpcfg_emit_stub_2403, @function
+bmpcfg_emit_stub_2403:
+    bmpcfg 2, 80, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2403, .-bmpcfg_emit_stub_2403
+
+.globl bmpcfg_emit_stub_2404
+.p2align 2
+.type bmpcfg_emit_stub_2404, @function
+bmpcfg_emit_stub_2404:
+    bmpcfg 2, 80, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2404, .-bmpcfg_emit_stub_2404
+
+.globl bmpcfg_emit_stub_2405
+.p2align 2
+.type bmpcfg_emit_stub_2405, @function
+bmpcfg_emit_stub_2405:
+    bmpcfg 2, 88, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2405, .-bmpcfg_emit_stub_2405
+
+.globl bmpcfg_emit_stub_2406
+.p2align 2
+.type bmpcfg_emit_stub_2406, @function
+bmpcfg_emit_stub_2406:
+    bmpcfg 2, 88, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2406, .-bmpcfg_emit_stub_2406
+
+.globl bmpcfg_emit_stub_2407
+.p2align 2
+.type bmpcfg_emit_stub_2407, @function
+bmpcfg_emit_stub_2407:
+    bmpcfg 2, 88, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2407, .-bmpcfg_emit_stub_2407
+
+.globl bmpcfg_emit_stub_2408
+.p2align 2
+.type bmpcfg_emit_stub_2408, @function
+bmpcfg_emit_stub_2408:
+    bmpcfg 2, 88, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2408, .-bmpcfg_emit_stub_2408
+
+.globl bmpcfg_emit_stub_2409
+.p2align 2
+.type bmpcfg_emit_stub_2409, @function
+bmpcfg_emit_stub_2409:
+    bmpcfg 2, 88, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2409, .-bmpcfg_emit_stub_2409
+
+.globl bmpcfg_emit_stub_2410
+.p2align 2
+.type bmpcfg_emit_stub_2410, @function
+bmpcfg_emit_stub_2410:
+    bmpcfg 2, 88, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2410, .-bmpcfg_emit_stub_2410
+
+.globl bmpcfg_emit_stub_2411
+.p2align 2
+.type bmpcfg_emit_stub_2411, @function
+bmpcfg_emit_stub_2411:
+    bmpcfg 2, 88, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2411, .-bmpcfg_emit_stub_2411
+
+.globl bmpcfg_emit_stub_2412
+.p2align 2
+.type bmpcfg_emit_stub_2412, @function
+bmpcfg_emit_stub_2412:
+    bmpcfg 2, 88, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2412, .-bmpcfg_emit_stub_2412
+
+.globl bmpcfg_emit_stub_2413
+.p2align 2
+.type bmpcfg_emit_stub_2413, @function
+bmpcfg_emit_stub_2413:
+    bmpcfg 2, 88, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2413, .-bmpcfg_emit_stub_2413
+
+.globl bmpcfg_emit_stub_2414
+.p2align 2
+.type bmpcfg_emit_stub_2414, @function
+bmpcfg_emit_stub_2414:
+    bmpcfg 2, 88, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2414, .-bmpcfg_emit_stub_2414
+
+.globl bmpcfg_emit_stub_2415
+.p2align 2
+.type bmpcfg_emit_stub_2415, @function
+bmpcfg_emit_stub_2415:
+    bmpcfg 2, 88, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2415, .-bmpcfg_emit_stub_2415
+
+.globl bmpcfg_emit_stub_2416
+.p2align 2
+.type bmpcfg_emit_stub_2416, @function
+bmpcfg_emit_stub_2416:
+    bmpcfg 2, 88, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2416, .-bmpcfg_emit_stub_2416
+
+.globl bmpcfg_emit_stub_2417
+.p2align 2
+.type bmpcfg_emit_stub_2417, @function
+bmpcfg_emit_stub_2417:
+    bmpcfg 2, 88, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2417, .-bmpcfg_emit_stub_2417
+
+.globl bmpcfg_emit_stub_2418
+.p2align 2
+.type bmpcfg_emit_stub_2418, @function
+bmpcfg_emit_stub_2418:
+    bmpcfg 2, 88, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2418, .-bmpcfg_emit_stub_2418
+
+.globl bmpcfg_emit_stub_2419
+.p2align 2
+.type bmpcfg_emit_stub_2419, @function
+bmpcfg_emit_stub_2419:
+    bmpcfg 2, 88, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2419, .-bmpcfg_emit_stub_2419
+
+.globl bmpcfg_emit_stub_2420
+.p2align 2
+.type bmpcfg_emit_stub_2420, @function
+bmpcfg_emit_stub_2420:
+    bmpcfg 2, 88, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2420, .-bmpcfg_emit_stub_2420
+
+.globl bmpcfg_emit_stub_2421
+.p2align 2
+.type bmpcfg_emit_stub_2421, @function
+bmpcfg_emit_stub_2421:
+    bmpcfg 2, 88, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2421, .-bmpcfg_emit_stub_2421
+
+.globl bmpcfg_emit_stub_2422
+.p2align 2
+.type bmpcfg_emit_stub_2422, @function
+bmpcfg_emit_stub_2422:
+    bmpcfg 2, 88, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2422, .-bmpcfg_emit_stub_2422
+
+.globl bmpcfg_emit_stub_2423
+.p2align 2
+.type bmpcfg_emit_stub_2423, @function
+bmpcfg_emit_stub_2423:
+    bmpcfg 2, 88, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2423, .-bmpcfg_emit_stub_2423
+
+.globl bmpcfg_emit_stub_2424
+.p2align 2
+.type bmpcfg_emit_stub_2424, @function
+bmpcfg_emit_stub_2424:
+    bmpcfg 2, 88, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2424, .-bmpcfg_emit_stub_2424
+
+.globl bmpcfg_emit_stub_2425
+.p2align 2
+.type bmpcfg_emit_stub_2425, @function
+bmpcfg_emit_stub_2425:
+    bmpcfg 2, 88, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2425, .-bmpcfg_emit_stub_2425
+
+.globl bmpcfg_emit_stub_2426
+.p2align 2
+.type bmpcfg_emit_stub_2426, @function
+bmpcfg_emit_stub_2426:
+    bmpcfg 2, 88, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2426, .-bmpcfg_emit_stub_2426
+
+.globl bmpcfg_emit_stub_2427
+.p2align 2
+.type bmpcfg_emit_stub_2427, @function
+bmpcfg_emit_stub_2427:
+    bmpcfg 2, 88, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2427, .-bmpcfg_emit_stub_2427
+
+.globl bmpcfg_emit_stub_2428
+.p2align 2
+.type bmpcfg_emit_stub_2428, @function
+bmpcfg_emit_stub_2428:
+    bmpcfg 2, 88, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2428, .-bmpcfg_emit_stub_2428
+
+.globl bmpcfg_emit_stub_2429
+.p2align 2
+.type bmpcfg_emit_stub_2429, @function
+bmpcfg_emit_stub_2429:
+    bmpcfg 2, 96, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2429, .-bmpcfg_emit_stub_2429
+
+.globl bmpcfg_emit_stub_2430
+.p2align 2
+.type bmpcfg_emit_stub_2430, @function
+bmpcfg_emit_stub_2430:
+    bmpcfg 2, 96, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2430, .-bmpcfg_emit_stub_2430
+
+.globl bmpcfg_emit_stub_2431
+.p2align 2
+.type bmpcfg_emit_stub_2431, @function
+bmpcfg_emit_stub_2431:
+    bmpcfg 2, 96, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2431, .-bmpcfg_emit_stub_2431
+
+.globl bmpcfg_emit_stub_2432
+.p2align 2
+.type bmpcfg_emit_stub_2432, @function
+bmpcfg_emit_stub_2432:
+    bmpcfg 2, 96, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2432, .-bmpcfg_emit_stub_2432
+
+.globl bmpcfg_emit_stub_2433
+.p2align 2
+.type bmpcfg_emit_stub_2433, @function
+bmpcfg_emit_stub_2433:
+    bmpcfg 2, 96, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2433, .-bmpcfg_emit_stub_2433
+
+.globl bmpcfg_emit_stub_2434
+.p2align 2
+.type bmpcfg_emit_stub_2434, @function
+bmpcfg_emit_stub_2434:
+    bmpcfg 2, 96, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2434, .-bmpcfg_emit_stub_2434
+
+.globl bmpcfg_emit_stub_2435
+.p2align 2
+.type bmpcfg_emit_stub_2435, @function
+bmpcfg_emit_stub_2435:
+    bmpcfg 2, 96, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2435, .-bmpcfg_emit_stub_2435
+
+.globl bmpcfg_emit_stub_2436
+.p2align 2
+.type bmpcfg_emit_stub_2436, @function
+bmpcfg_emit_stub_2436:
+    bmpcfg 2, 96, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2436, .-bmpcfg_emit_stub_2436
+
+.globl bmpcfg_emit_stub_2437
+.p2align 2
+.type bmpcfg_emit_stub_2437, @function
+bmpcfg_emit_stub_2437:
+    bmpcfg 2, 96, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2437, .-bmpcfg_emit_stub_2437
+
+.globl bmpcfg_emit_stub_2438
+.p2align 2
+.type bmpcfg_emit_stub_2438, @function
+bmpcfg_emit_stub_2438:
+    bmpcfg 2, 96, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2438, .-bmpcfg_emit_stub_2438
+
+.globl bmpcfg_emit_stub_2439
+.p2align 2
+.type bmpcfg_emit_stub_2439, @function
+bmpcfg_emit_stub_2439:
+    bmpcfg 2, 96, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2439, .-bmpcfg_emit_stub_2439
+
+.globl bmpcfg_emit_stub_2440
+.p2align 2
+.type bmpcfg_emit_stub_2440, @function
+bmpcfg_emit_stub_2440:
+    bmpcfg 2, 96, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2440, .-bmpcfg_emit_stub_2440
+
+.globl bmpcfg_emit_stub_2441
+.p2align 2
+.type bmpcfg_emit_stub_2441, @function
+bmpcfg_emit_stub_2441:
+    bmpcfg 2, 96, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2441, .-bmpcfg_emit_stub_2441
+
+.globl bmpcfg_emit_stub_2442
+.p2align 2
+.type bmpcfg_emit_stub_2442, @function
+bmpcfg_emit_stub_2442:
+    bmpcfg 2, 96, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2442, .-bmpcfg_emit_stub_2442
+
+.globl bmpcfg_emit_stub_2443
+.p2align 2
+.type bmpcfg_emit_stub_2443, @function
+bmpcfg_emit_stub_2443:
+    bmpcfg 2, 96, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2443, .-bmpcfg_emit_stub_2443
+
+.globl bmpcfg_emit_stub_2444
+.p2align 2
+.type bmpcfg_emit_stub_2444, @function
+bmpcfg_emit_stub_2444:
+    bmpcfg 2, 96, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2444, .-bmpcfg_emit_stub_2444
+
+.globl bmpcfg_emit_stub_2445
+.p2align 2
+.type bmpcfg_emit_stub_2445, @function
+bmpcfg_emit_stub_2445:
+    bmpcfg 2, 96, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2445, .-bmpcfg_emit_stub_2445
+
+.globl bmpcfg_emit_stub_2446
+.p2align 2
+.type bmpcfg_emit_stub_2446, @function
+bmpcfg_emit_stub_2446:
+    bmpcfg 2, 96, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2446, .-bmpcfg_emit_stub_2446
+
+.globl bmpcfg_emit_stub_2447
+.p2align 2
+.type bmpcfg_emit_stub_2447, @function
+bmpcfg_emit_stub_2447:
+    bmpcfg 2, 96, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2447, .-bmpcfg_emit_stub_2447
+
+.globl bmpcfg_emit_stub_2448
+.p2align 2
+.type bmpcfg_emit_stub_2448, @function
+bmpcfg_emit_stub_2448:
+    bmpcfg 2, 96, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2448, .-bmpcfg_emit_stub_2448
+
+.globl bmpcfg_emit_stub_2449
+.p2align 2
+.type bmpcfg_emit_stub_2449, @function
+bmpcfg_emit_stub_2449:
+    bmpcfg 2, 96, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2449, .-bmpcfg_emit_stub_2449
+
+.globl bmpcfg_emit_stub_2450
+.p2align 2
+.type bmpcfg_emit_stub_2450, @function
+bmpcfg_emit_stub_2450:
+    bmpcfg 2, 96, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2450, .-bmpcfg_emit_stub_2450
+
+.globl bmpcfg_emit_stub_2451
+.p2align 2
+.type bmpcfg_emit_stub_2451, @function
+bmpcfg_emit_stub_2451:
+    bmpcfg 2, 96, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2451, .-bmpcfg_emit_stub_2451
+
+.globl bmpcfg_emit_stub_2452
+.p2align 2
+.type bmpcfg_emit_stub_2452, @function
+bmpcfg_emit_stub_2452:
+    bmpcfg 2, 96, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2452, .-bmpcfg_emit_stub_2452
+
+.globl bmpcfg_emit_stub_2453
+.p2align 2
+.type bmpcfg_emit_stub_2453, @function
+bmpcfg_emit_stub_2453:
+    bmpcfg 2, 104, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2453, .-bmpcfg_emit_stub_2453
+
+.globl bmpcfg_emit_stub_2454
+.p2align 2
+.type bmpcfg_emit_stub_2454, @function
+bmpcfg_emit_stub_2454:
+    bmpcfg 2, 104, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2454, .-bmpcfg_emit_stub_2454
+
+.globl bmpcfg_emit_stub_2455
+.p2align 2
+.type bmpcfg_emit_stub_2455, @function
+bmpcfg_emit_stub_2455:
+    bmpcfg 2, 104, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2455, .-bmpcfg_emit_stub_2455
+
+.globl bmpcfg_emit_stub_2456
+.p2align 2
+.type bmpcfg_emit_stub_2456, @function
+bmpcfg_emit_stub_2456:
+    bmpcfg 2, 104, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2456, .-bmpcfg_emit_stub_2456
+
+.globl bmpcfg_emit_stub_2457
+.p2align 2
+.type bmpcfg_emit_stub_2457, @function
+bmpcfg_emit_stub_2457:
+    bmpcfg 2, 104, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2457, .-bmpcfg_emit_stub_2457
+
+.globl bmpcfg_emit_stub_2458
+.p2align 2
+.type bmpcfg_emit_stub_2458, @function
+bmpcfg_emit_stub_2458:
+    bmpcfg 2, 104, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2458, .-bmpcfg_emit_stub_2458
+
+.globl bmpcfg_emit_stub_2459
+.p2align 2
+.type bmpcfg_emit_stub_2459, @function
+bmpcfg_emit_stub_2459:
+    bmpcfg 2, 104, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2459, .-bmpcfg_emit_stub_2459
+
+.globl bmpcfg_emit_stub_2460
+.p2align 2
+.type bmpcfg_emit_stub_2460, @function
+bmpcfg_emit_stub_2460:
+    bmpcfg 2, 104, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2460, .-bmpcfg_emit_stub_2460
+
+.globl bmpcfg_emit_stub_2461
+.p2align 2
+.type bmpcfg_emit_stub_2461, @function
+bmpcfg_emit_stub_2461:
+    bmpcfg 2, 104, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2461, .-bmpcfg_emit_stub_2461
+
+.globl bmpcfg_emit_stub_2462
+.p2align 2
+.type bmpcfg_emit_stub_2462, @function
+bmpcfg_emit_stub_2462:
+    bmpcfg 2, 104, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2462, .-bmpcfg_emit_stub_2462
+
+.globl bmpcfg_emit_stub_2463
+.p2align 2
+.type bmpcfg_emit_stub_2463, @function
+bmpcfg_emit_stub_2463:
+    bmpcfg 2, 104, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2463, .-bmpcfg_emit_stub_2463
+
+.globl bmpcfg_emit_stub_2464
+.p2align 2
+.type bmpcfg_emit_stub_2464, @function
+bmpcfg_emit_stub_2464:
+    bmpcfg 2, 104, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2464, .-bmpcfg_emit_stub_2464
+
+.globl bmpcfg_emit_stub_2465
+.p2align 2
+.type bmpcfg_emit_stub_2465, @function
+bmpcfg_emit_stub_2465:
+    bmpcfg 2, 104, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2465, .-bmpcfg_emit_stub_2465
+
+.globl bmpcfg_emit_stub_2466
+.p2align 2
+.type bmpcfg_emit_stub_2466, @function
+bmpcfg_emit_stub_2466:
+    bmpcfg 2, 104, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2466, .-bmpcfg_emit_stub_2466
+
+.globl bmpcfg_emit_stub_2467
+.p2align 2
+.type bmpcfg_emit_stub_2467, @function
+bmpcfg_emit_stub_2467:
+    bmpcfg 2, 104, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2467, .-bmpcfg_emit_stub_2467
+
+.globl bmpcfg_emit_stub_2468
+.p2align 2
+.type bmpcfg_emit_stub_2468, @function
+bmpcfg_emit_stub_2468:
+    bmpcfg 2, 104, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2468, .-bmpcfg_emit_stub_2468
+
+.globl bmpcfg_emit_stub_2469
+.p2align 2
+.type bmpcfg_emit_stub_2469, @function
+bmpcfg_emit_stub_2469:
+    bmpcfg 2, 104, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2469, .-bmpcfg_emit_stub_2469
+
+.globl bmpcfg_emit_stub_2470
+.p2align 2
+.type bmpcfg_emit_stub_2470, @function
+bmpcfg_emit_stub_2470:
+    bmpcfg 2, 104, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2470, .-bmpcfg_emit_stub_2470
+
+.globl bmpcfg_emit_stub_2471
+.p2align 2
+.type bmpcfg_emit_stub_2471, @function
+bmpcfg_emit_stub_2471:
+    bmpcfg 2, 104, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2471, .-bmpcfg_emit_stub_2471
+
+.globl bmpcfg_emit_stub_2472
+.p2align 2
+.type bmpcfg_emit_stub_2472, @function
+bmpcfg_emit_stub_2472:
+    bmpcfg 2, 104, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2472, .-bmpcfg_emit_stub_2472
+
+.globl bmpcfg_emit_stub_2473
+.p2align 2
+.type bmpcfg_emit_stub_2473, @function
+bmpcfg_emit_stub_2473:
+    bmpcfg 2, 104, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2473, .-bmpcfg_emit_stub_2473
+
+.globl bmpcfg_emit_stub_2474
+.p2align 2
+.type bmpcfg_emit_stub_2474, @function
+bmpcfg_emit_stub_2474:
+    bmpcfg 2, 104, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2474, .-bmpcfg_emit_stub_2474
+
+.globl bmpcfg_emit_stub_2475
+.p2align 2
+.type bmpcfg_emit_stub_2475, @function
+bmpcfg_emit_stub_2475:
+    bmpcfg 2, 104, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2475, .-bmpcfg_emit_stub_2475
+
+.globl bmpcfg_emit_stub_2476
+.p2align 2
+.type bmpcfg_emit_stub_2476, @function
+bmpcfg_emit_stub_2476:
+    bmpcfg 2, 104, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2476, .-bmpcfg_emit_stub_2476
+
+.globl bmpcfg_emit_stub_2477
+.p2align 2
+.type bmpcfg_emit_stub_2477, @function
+bmpcfg_emit_stub_2477:
+    bmpcfg 2, 112, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2477, .-bmpcfg_emit_stub_2477
+
+.globl bmpcfg_emit_stub_2478
+.p2align 2
+.type bmpcfg_emit_stub_2478, @function
+bmpcfg_emit_stub_2478:
+    bmpcfg 2, 112, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2478, .-bmpcfg_emit_stub_2478
+
+.globl bmpcfg_emit_stub_2479
+.p2align 2
+.type bmpcfg_emit_stub_2479, @function
+bmpcfg_emit_stub_2479:
+    bmpcfg 2, 112, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2479, .-bmpcfg_emit_stub_2479
+
+.globl bmpcfg_emit_stub_2480
+.p2align 2
+.type bmpcfg_emit_stub_2480, @function
+bmpcfg_emit_stub_2480:
+    bmpcfg 2, 112, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2480, .-bmpcfg_emit_stub_2480
+
+.globl bmpcfg_emit_stub_2481
+.p2align 2
+.type bmpcfg_emit_stub_2481, @function
+bmpcfg_emit_stub_2481:
+    bmpcfg 2, 112, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2481, .-bmpcfg_emit_stub_2481
+
+.globl bmpcfg_emit_stub_2482
+.p2align 2
+.type bmpcfg_emit_stub_2482, @function
+bmpcfg_emit_stub_2482:
+    bmpcfg 2, 112, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2482, .-bmpcfg_emit_stub_2482
+
+.globl bmpcfg_emit_stub_2483
+.p2align 2
+.type bmpcfg_emit_stub_2483, @function
+bmpcfg_emit_stub_2483:
+    bmpcfg 2, 112, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2483, .-bmpcfg_emit_stub_2483
+
+.globl bmpcfg_emit_stub_2484
+.p2align 2
+.type bmpcfg_emit_stub_2484, @function
+bmpcfg_emit_stub_2484:
+    bmpcfg 2, 112, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2484, .-bmpcfg_emit_stub_2484
+
+.globl bmpcfg_emit_stub_2485
+.p2align 2
+.type bmpcfg_emit_stub_2485, @function
+bmpcfg_emit_stub_2485:
+    bmpcfg 2, 112, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2485, .-bmpcfg_emit_stub_2485
+
+.globl bmpcfg_emit_stub_2486
+.p2align 2
+.type bmpcfg_emit_stub_2486, @function
+bmpcfg_emit_stub_2486:
+    bmpcfg 2, 112, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2486, .-bmpcfg_emit_stub_2486
+
+.globl bmpcfg_emit_stub_2487
+.p2align 2
+.type bmpcfg_emit_stub_2487, @function
+bmpcfg_emit_stub_2487:
+    bmpcfg 2, 112, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2487, .-bmpcfg_emit_stub_2487
+
+.globl bmpcfg_emit_stub_2488
+.p2align 2
+.type bmpcfg_emit_stub_2488, @function
+bmpcfg_emit_stub_2488:
+    bmpcfg 2, 112, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2488, .-bmpcfg_emit_stub_2488
+
+.globl bmpcfg_emit_stub_2489
+.p2align 2
+.type bmpcfg_emit_stub_2489, @function
+bmpcfg_emit_stub_2489:
+    bmpcfg 2, 112, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2489, .-bmpcfg_emit_stub_2489
+
+.globl bmpcfg_emit_stub_2490
+.p2align 2
+.type bmpcfg_emit_stub_2490, @function
+bmpcfg_emit_stub_2490:
+    bmpcfg 2, 112, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2490, .-bmpcfg_emit_stub_2490
+
+.globl bmpcfg_emit_stub_2491
+.p2align 2
+.type bmpcfg_emit_stub_2491, @function
+bmpcfg_emit_stub_2491:
+    bmpcfg 2, 112, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2491, .-bmpcfg_emit_stub_2491
+
+.globl bmpcfg_emit_stub_2492
+.p2align 2
+.type bmpcfg_emit_stub_2492, @function
+bmpcfg_emit_stub_2492:
+    bmpcfg 2, 112, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2492, .-bmpcfg_emit_stub_2492
+
+.globl bmpcfg_emit_stub_2493
+.p2align 2
+.type bmpcfg_emit_stub_2493, @function
+bmpcfg_emit_stub_2493:
+    bmpcfg 2, 112, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2493, .-bmpcfg_emit_stub_2493
+
+.globl bmpcfg_emit_stub_2494
+.p2align 2
+.type bmpcfg_emit_stub_2494, @function
+bmpcfg_emit_stub_2494:
+    bmpcfg 2, 112, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2494, .-bmpcfg_emit_stub_2494
+
+.globl bmpcfg_emit_stub_2495
+.p2align 2
+.type bmpcfg_emit_stub_2495, @function
+bmpcfg_emit_stub_2495:
+    bmpcfg 2, 112, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2495, .-bmpcfg_emit_stub_2495
+
+.globl bmpcfg_emit_stub_2496
+.p2align 2
+.type bmpcfg_emit_stub_2496, @function
+bmpcfg_emit_stub_2496:
+    bmpcfg 2, 112, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2496, .-bmpcfg_emit_stub_2496
+
+.globl bmpcfg_emit_stub_2497
+.p2align 2
+.type bmpcfg_emit_stub_2497, @function
+bmpcfg_emit_stub_2497:
+    bmpcfg 2, 112, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2497, .-bmpcfg_emit_stub_2497
+
+.globl bmpcfg_emit_stub_2498
+.p2align 2
+.type bmpcfg_emit_stub_2498, @function
+bmpcfg_emit_stub_2498:
+    bmpcfg 2, 112, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2498, .-bmpcfg_emit_stub_2498
+
+.globl bmpcfg_emit_stub_2499
+.p2align 2
+.type bmpcfg_emit_stub_2499, @function
+bmpcfg_emit_stub_2499:
+    bmpcfg 2, 112, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2499, .-bmpcfg_emit_stub_2499
+
+.globl bmpcfg_emit_stub_2500
+.p2align 2
+.type bmpcfg_emit_stub_2500, @function
+bmpcfg_emit_stub_2500:
+    bmpcfg 2, 112, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2500, .-bmpcfg_emit_stub_2500
+
+.globl bmpcfg_emit_stub_2501
+.p2align 2
+.type bmpcfg_emit_stub_2501, @function
+bmpcfg_emit_stub_2501:
+    bmpcfg 2, 120, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2501, .-bmpcfg_emit_stub_2501
+
+.globl bmpcfg_emit_stub_2502
+.p2align 2
+.type bmpcfg_emit_stub_2502, @function
+bmpcfg_emit_stub_2502:
+    bmpcfg 2, 120, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2502, .-bmpcfg_emit_stub_2502
+
+.globl bmpcfg_emit_stub_2503
+.p2align 2
+.type bmpcfg_emit_stub_2503, @function
+bmpcfg_emit_stub_2503:
+    bmpcfg 2, 120, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2503, .-bmpcfg_emit_stub_2503
+
+.globl bmpcfg_emit_stub_2504
+.p2align 2
+.type bmpcfg_emit_stub_2504, @function
+bmpcfg_emit_stub_2504:
+    bmpcfg 2, 120, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2504, .-bmpcfg_emit_stub_2504
+
+.globl bmpcfg_emit_stub_2505
+.p2align 2
+.type bmpcfg_emit_stub_2505, @function
+bmpcfg_emit_stub_2505:
+    bmpcfg 2, 120, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2505, .-bmpcfg_emit_stub_2505
+
+.globl bmpcfg_emit_stub_2506
+.p2align 2
+.type bmpcfg_emit_stub_2506, @function
+bmpcfg_emit_stub_2506:
+    bmpcfg 2, 120, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2506, .-bmpcfg_emit_stub_2506
+
+.globl bmpcfg_emit_stub_2507
+.p2align 2
+.type bmpcfg_emit_stub_2507, @function
+bmpcfg_emit_stub_2507:
+    bmpcfg 2, 120, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2507, .-bmpcfg_emit_stub_2507
+
+.globl bmpcfg_emit_stub_2508
+.p2align 2
+.type bmpcfg_emit_stub_2508, @function
+bmpcfg_emit_stub_2508:
+    bmpcfg 2, 120, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2508, .-bmpcfg_emit_stub_2508
+
+.globl bmpcfg_emit_stub_2509
+.p2align 2
+.type bmpcfg_emit_stub_2509, @function
+bmpcfg_emit_stub_2509:
+    bmpcfg 2, 120, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2509, .-bmpcfg_emit_stub_2509
+
+.globl bmpcfg_emit_stub_2510
+.p2align 2
+.type bmpcfg_emit_stub_2510, @function
+bmpcfg_emit_stub_2510:
+    bmpcfg 2, 120, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2510, .-bmpcfg_emit_stub_2510
+
+.globl bmpcfg_emit_stub_2511
+.p2align 2
+.type bmpcfg_emit_stub_2511, @function
+bmpcfg_emit_stub_2511:
+    bmpcfg 2, 120, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2511, .-bmpcfg_emit_stub_2511
+
+.globl bmpcfg_emit_stub_2512
+.p2align 2
+.type bmpcfg_emit_stub_2512, @function
+bmpcfg_emit_stub_2512:
+    bmpcfg 2, 120, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2512, .-bmpcfg_emit_stub_2512
+
+.globl bmpcfg_emit_stub_2513
+.p2align 2
+.type bmpcfg_emit_stub_2513, @function
+bmpcfg_emit_stub_2513:
+    bmpcfg 2, 120, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2513, .-bmpcfg_emit_stub_2513
+
+.globl bmpcfg_emit_stub_2514
+.p2align 2
+.type bmpcfg_emit_stub_2514, @function
+bmpcfg_emit_stub_2514:
+    bmpcfg 2, 120, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2514, .-bmpcfg_emit_stub_2514
+
+.globl bmpcfg_emit_stub_2515
+.p2align 2
+.type bmpcfg_emit_stub_2515, @function
+bmpcfg_emit_stub_2515:
+    bmpcfg 2, 120, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2515, .-bmpcfg_emit_stub_2515
+
+.globl bmpcfg_emit_stub_2516
+.p2align 2
+.type bmpcfg_emit_stub_2516, @function
+bmpcfg_emit_stub_2516:
+    bmpcfg 2, 120, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2516, .-bmpcfg_emit_stub_2516
+
+.globl bmpcfg_emit_stub_2517
+.p2align 2
+.type bmpcfg_emit_stub_2517, @function
+bmpcfg_emit_stub_2517:
+    bmpcfg 2, 120, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2517, .-bmpcfg_emit_stub_2517
+
+.globl bmpcfg_emit_stub_2518
+.p2align 2
+.type bmpcfg_emit_stub_2518, @function
+bmpcfg_emit_stub_2518:
+    bmpcfg 2, 120, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2518, .-bmpcfg_emit_stub_2518
+
+.globl bmpcfg_emit_stub_2519
+.p2align 2
+.type bmpcfg_emit_stub_2519, @function
+bmpcfg_emit_stub_2519:
+    bmpcfg 2, 120, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2519, .-bmpcfg_emit_stub_2519
+
+.globl bmpcfg_emit_stub_2520
+.p2align 2
+.type bmpcfg_emit_stub_2520, @function
+bmpcfg_emit_stub_2520:
+    bmpcfg 2, 120, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2520, .-bmpcfg_emit_stub_2520
+
+.globl bmpcfg_emit_stub_2521
+.p2align 2
+.type bmpcfg_emit_stub_2521, @function
+bmpcfg_emit_stub_2521:
+    bmpcfg 2, 120, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2521, .-bmpcfg_emit_stub_2521
+
+.globl bmpcfg_emit_stub_2522
+.p2align 2
+.type bmpcfg_emit_stub_2522, @function
+bmpcfg_emit_stub_2522:
+    bmpcfg 2, 120, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2522, .-bmpcfg_emit_stub_2522
+
+.globl bmpcfg_emit_stub_2523
+.p2align 2
+.type bmpcfg_emit_stub_2523, @function
+bmpcfg_emit_stub_2523:
+    bmpcfg 2, 120, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2523, .-bmpcfg_emit_stub_2523
+
+.globl bmpcfg_emit_stub_2524
+.p2align 2
+.type bmpcfg_emit_stub_2524, @function
+bmpcfg_emit_stub_2524:
+    bmpcfg 2, 120, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2524, .-bmpcfg_emit_stub_2524
+
+.globl bmpcfg_emit_stub_2525
+.p2align 2
+.type bmpcfg_emit_stub_2525, @function
+bmpcfg_emit_stub_2525:
+    bmpcfg 2, 128, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2525, .-bmpcfg_emit_stub_2525
+
+.globl bmpcfg_emit_stub_2526
+.p2align 2
+.type bmpcfg_emit_stub_2526, @function
+bmpcfg_emit_stub_2526:
+    bmpcfg 2, 128, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2526, .-bmpcfg_emit_stub_2526
+
+.globl bmpcfg_emit_stub_2527
+.p2align 2
+.type bmpcfg_emit_stub_2527, @function
+bmpcfg_emit_stub_2527:
+    bmpcfg 2, 128, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2527, .-bmpcfg_emit_stub_2527
+
+.globl bmpcfg_emit_stub_2528
+.p2align 2
+.type bmpcfg_emit_stub_2528, @function
+bmpcfg_emit_stub_2528:
+    bmpcfg 2, 128, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2528, .-bmpcfg_emit_stub_2528
+
+.globl bmpcfg_emit_stub_2529
+.p2align 2
+.type bmpcfg_emit_stub_2529, @function
+bmpcfg_emit_stub_2529:
+    bmpcfg 2, 128, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2529, .-bmpcfg_emit_stub_2529
+
+.globl bmpcfg_emit_stub_2530
+.p2align 2
+.type bmpcfg_emit_stub_2530, @function
+bmpcfg_emit_stub_2530:
+    bmpcfg 2, 128, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2530, .-bmpcfg_emit_stub_2530
+
+.globl bmpcfg_emit_stub_2531
+.p2align 2
+.type bmpcfg_emit_stub_2531, @function
+bmpcfg_emit_stub_2531:
+    bmpcfg 2, 128, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2531, .-bmpcfg_emit_stub_2531
+
+.globl bmpcfg_emit_stub_2532
+.p2align 2
+.type bmpcfg_emit_stub_2532, @function
+bmpcfg_emit_stub_2532:
+    bmpcfg 2, 128, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2532, .-bmpcfg_emit_stub_2532
+
+.globl bmpcfg_emit_stub_2533
+.p2align 2
+.type bmpcfg_emit_stub_2533, @function
+bmpcfg_emit_stub_2533:
+    bmpcfg 2, 128, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2533, .-bmpcfg_emit_stub_2533
+
+.globl bmpcfg_emit_stub_2534
+.p2align 2
+.type bmpcfg_emit_stub_2534, @function
+bmpcfg_emit_stub_2534:
+    bmpcfg 2, 128, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2534, .-bmpcfg_emit_stub_2534
+
+.globl bmpcfg_emit_stub_2535
+.p2align 2
+.type bmpcfg_emit_stub_2535, @function
+bmpcfg_emit_stub_2535:
+    bmpcfg 2, 128, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2535, .-bmpcfg_emit_stub_2535
+
+.globl bmpcfg_emit_stub_2536
+.p2align 2
+.type bmpcfg_emit_stub_2536, @function
+bmpcfg_emit_stub_2536:
+    bmpcfg 2, 128, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2536, .-bmpcfg_emit_stub_2536
+
+.globl bmpcfg_emit_stub_2537
+.p2align 2
+.type bmpcfg_emit_stub_2537, @function
+bmpcfg_emit_stub_2537:
+    bmpcfg 2, 128, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2537, .-bmpcfg_emit_stub_2537
+
+.globl bmpcfg_emit_stub_2538
+.p2align 2
+.type bmpcfg_emit_stub_2538, @function
+bmpcfg_emit_stub_2538:
+    bmpcfg 2, 128, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2538, .-bmpcfg_emit_stub_2538
+
+.globl bmpcfg_emit_stub_2539
+.p2align 2
+.type bmpcfg_emit_stub_2539, @function
+bmpcfg_emit_stub_2539:
+    bmpcfg 2, 128, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2539, .-bmpcfg_emit_stub_2539
+
+.globl bmpcfg_emit_stub_2540
+.p2align 2
+.type bmpcfg_emit_stub_2540, @function
+bmpcfg_emit_stub_2540:
+    bmpcfg 2, 128, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2540, .-bmpcfg_emit_stub_2540
+
+.globl bmpcfg_emit_stub_2541
+.p2align 2
+.type bmpcfg_emit_stub_2541, @function
+bmpcfg_emit_stub_2541:
+    bmpcfg 2, 128, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2541, .-bmpcfg_emit_stub_2541
+
+.globl bmpcfg_emit_stub_2542
+.p2align 2
+.type bmpcfg_emit_stub_2542, @function
+bmpcfg_emit_stub_2542:
+    bmpcfg 2, 128, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2542, .-bmpcfg_emit_stub_2542
+
+.globl bmpcfg_emit_stub_2543
+.p2align 2
+.type bmpcfg_emit_stub_2543, @function
+bmpcfg_emit_stub_2543:
+    bmpcfg 2, 128, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2543, .-bmpcfg_emit_stub_2543
+
+.globl bmpcfg_emit_stub_2544
+.p2align 2
+.type bmpcfg_emit_stub_2544, @function
+bmpcfg_emit_stub_2544:
+    bmpcfg 2, 128, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2544, .-bmpcfg_emit_stub_2544
+
+.globl bmpcfg_emit_stub_2545
+.p2align 2
+.type bmpcfg_emit_stub_2545, @function
+bmpcfg_emit_stub_2545:
+    bmpcfg 2, 128, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2545, .-bmpcfg_emit_stub_2545
+
+.globl bmpcfg_emit_stub_2546
+.p2align 2
+.type bmpcfg_emit_stub_2546, @function
+bmpcfg_emit_stub_2546:
+    bmpcfg 2, 128, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2546, .-bmpcfg_emit_stub_2546
+
+.globl bmpcfg_emit_stub_2547
+.p2align 2
+.type bmpcfg_emit_stub_2547, @function
+bmpcfg_emit_stub_2547:
+    bmpcfg 2, 128, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2547, .-bmpcfg_emit_stub_2547
+
+.globl bmpcfg_emit_stub_2548
+.p2align 2
+.type bmpcfg_emit_stub_2548, @function
+bmpcfg_emit_stub_2548:
+    bmpcfg 2, 128, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2548, .-bmpcfg_emit_stub_2548
+
+.globl bmpcfg_emit_stub_2549
+.p2align 2
+.type bmpcfg_emit_stub_2549, @function
+bmpcfg_emit_stub_2549:
+    bmpcfg 3, 8, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2549, .-bmpcfg_emit_stub_2549
+
+.globl bmpcfg_emit_stub_2550
+.p2align 2
+.type bmpcfg_emit_stub_2550, @function
+bmpcfg_emit_stub_2550:
+    bmpcfg 3, 8, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2550, .-bmpcfg_emit_stub_2550
+
+.globl bmpcfg_emit_stub_2551
+.p2align 2
+.type bmpcfg_emit_stub_2551, @function
+bmpcfg_emit_stub_2551:
+    bmpcfg 3, 8, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2551, .-bmpcfg_emit_stub_2551
+
+.globl bmpcfg_emit_stub_2552
+.p2align 2
+.type bmpcfg_emit_stub_2552, @function
+bmpcfg_emit_stub_2552:
+    bmpcfg 3, 8, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2552, .-bmpcfg_emit_stub_2552
+
+.globl bmpcfg_emit_stub_2553
+.p2align 2
+.type bmpcfg_emit_stub_2553, @function
+bmpcfg_emit_stub_2553:
+    bmpcfg 3, 8, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2553, .-bmpcfg_emit_stub_2553
+
+.globl bmpcfg_emit_stub_2554
+.p2align 2
+.type bmpcfg_emit_stub_2554, @function
+bmpcfg_emit_stub_2554:
+    bmpcfg 3, 8, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2554, .-bmpcfg_emit_stub_2554
+
+.globl bmpcfg_emit_stub_2555
+.p2align 2
+.type bmpcfg_emit_stub_2555, @function
+bmpcfg_emit_stub_2555:
+    bmpcfg 3, 8, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2555, .-bmpcfg_emit_stub_2555
+
+.globl bmpcfg_emit_stub_2556
+.p2align 2
+.type bmpcfg_emit_stub_2556, @function
+bmpcfg_emit_stub_2556:
+    bmpcfg 3, 8, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2556, .-bmpcfg_emit_stub_2556
+
+.globl bmpcfg_emit_stub_2557
+.p2align 2
+.type bmpcfg_emit_stub_2557, @function
+bmpcfg_emit_stub_2557:
+    bmpcfg 3, 8, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2557, .-bmpcfg_emit_stub_2557
+
+.globl bmpcfg_emit_stub_2558
+.p2align 2
+.type bmpcfg_emit_stub_2558, @function
+bmpcfg_emit_stub_2558:
+    bmpcfg 3, 8, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2558, .-bmpcfg_emit_stub_2558
+
+.globl bmpcfg_emit_stub_2559
+.p2align 2
+.type bmpcfg_emit_stub_2559, @function
+bmpcfg_emit_stub_2559:
+    bmpcfg 3, 8, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2559, .-bmpcfg_emit_stub_2559
+
+.globl bmpcfg_emit_stub_2560
+.p2align 2
+.type bmpcfg_emit_stub_2560, @function
+bmpcfg_emit_stub_2560:
+    bmpcfg 3, 8, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2560, .-bmpcfg_emit_stub_2560
+
+.globl bmpcfg_emit_stub_2561
+.p2align 2
+.type bmpcfg_emit_stub_2561, @function
+bmpcfg_emit_stub_2561:
+    bmpcfg 3, 8, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2561, .-bmpcfg_emit_stub_2561
+
+.globl bmpcfg_emit_stub_2562
+.p2align 2
+.type bmpcfg_emit_stub_2562, @function
+bmpcfg_emit_stub_2562:
+    bmpcfg 3, 8, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2562, .-bmpcfg_emit_stub_2562
+
+.globl bmpcfg_emit_stub_2563
+.p2align 2
+.type bmpcfg_emit_stub_2563, @function
+bmpcfg_emit_stub_2563:
+    bmpcfg 3, 8, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2563, .-bmpcfg_emit_stub_2563
+
+.globl bmpcfg_emit_stub_2564
+.p2align 2
+.type bmpcfg_emit_stub_2564, @function
+bmpcfg_emit_stub_2564:
+    bmpcfg 3, 8, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2564, .-bmpcfg_emit_stub_2564
+
+.globl bmpcfg_emit_stub_2565
+.p2align 2
+.type bmpcfg_emit_stub_2565, @function
+bmpcfg_emit_stub_2565:
+    bmpcfg 3, 8, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2565, .-bmpcfg_emit_stub_2565
+
+.globl bmpcfg_emit_stub_2566
+.p2align 2
+.type bmpcfg_emit_stub_2566, @function
+bmpcfg_emit_stub_2566:
+    bmpcfg 3, 8, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2566, .-bmpcfg_emit_stub_2566
+
+.globl bmpcfg_emit_stub_2567
+.p2align 2
+.type bmpcfg_emit_stub_2567, @function
+bmpcfg_emit_stub_2567:
+    bmpcfg 3, 8, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2567, .-bmpcfg_emit_stub_2567
+
+.globl bmpcfg_emit_stub_2568
+.p2align 2
+.type bmpcfg_emit_stub_2568, @function
+bmpcfg_emit_stub_2568:
+    bmpcfg 3, 8, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2568, .-bmpcfg_emit_stub_2568
+
+.globl bmpcfg_emit_stub_2569
+.p2align 2
+.type bmpcfg_emit_stub_2569, @function
+bmpcfg_emit_stub_2569:
+    bmpcfg 3, 8, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2569, .-bmpcfg_emit_stub_2569
+
+.globl bmpcfg_emit_stub_2570
+.p2align 2
+.type bmpcfg_emit_stub_2570, @function
+bmpcfg_emit_stub_2570:
+    bmpcfg 3, 8, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2570, .-bmpcfg_emit_stub_2570
+
+.globl bmpcfg_emit_stub_2571
+.p2align 2
+.type bmpcfg_emit_stub_2571, @function
+bmpcfg_emit_stub_2571:
+    bmpcfg 3, 8, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2571, .-bmpcfg_emit_stub_2571
+
+.globl bmpcfg_emit_stub_2572
+.p2align 2
+.type bmpcfg_emit_stub_2572, @function
+bmpcfg_emit_stub_2572:
+    bmpcfg 3, 8, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2572, .-bmpcfg_emit_stub_2572
+
+.globl bmpcfg_emit_stub_2573
+.p2align 2
+.type bmpcfg_emit_stub_2573, @function
+bmpcfg_emit_stub_2573:
+    bmpcfg 3, 8, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2573, .-bmpcfg_emit_stub_2573
+
+.globl bmpcfg_emit_stub_2574
+.p2align 2
+.type bmpcfg_emit_stub_2574, @function
+bmpcfg_emit_stub_2574:
+    bmpcfg 3, 8, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2574, .-bmpcfg_emit_stub_2574
+
+.globl bmpcfg_emit_stub_2575
+.p2align 2
+.type bmpcfg_emit_stub_2575, @function
+bmpcfg_emit_stub_2575:
+    bmpcfg 3, 8, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2575, .-bmpcfg_emit_stub_2575
+
+.globl bmpcfg_emit_stub_2576
+.p2align 2
+.type bmpcfg_emit_stub_2576, @function
+bmpcfg_emit_stub_2576:
+    bmpcfg 3, 8, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2576, .-bmpcfg_emit_stub_2576
+
+.globl bmpcfg_emit_stub_2577
+.p2align 2
+.type bmpcfg_emit_stub_2577, @function
+bmpcfg_emit_stub_2577:
+    bmpcfg 3, 8, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2577, .-bmpcfg_emit_stub_2577
+
+.globl bmpcfg_emit_stub_2578
+.p2align 2
+.type bmpcfg_emit_stub_2578, @function
+bmpcfg_emit_stub_2578:
+    bmpcfg 3, 8, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2578, .-bmpcfg_emit_stub_2578
+
+.globl bmpcfg_emit_stub_2579
+.p2align 2
+.type bmpcfg_emit_stub_2579, @function
+bmpcfg_emit_stub_2579:
+    bmpcfg 3, 8, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2579, .-bmpcfg_emit_stub_2579
+
+.globl bmpcfg_emit_stub_2580
+.p2align 2
+.type bmpcfg_emit_stub_2580, @function
+bmpcfg_emit_stub_2580:
+    bmpcfg 3, 8, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_2580, .-bmpcfg_emit_stub_2580
+
+.globl bmpcfg_emit_stub_2581
+.p2align 2
+.type bmpcfg_emit_stub_2581, @function
+bmpcfg_emit_stub_2581:
+    bmpcfg 3, 8, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_2581, .-bmpcfg_emit_stub_2581
+
+.globl bmpcfg_emit_stub_2582
+.p2align 2
+.type bmpcfg_emit_stub_2582, @function
+bmpcfg_emit_stub_2582:
+    bmpcfg 3, 8, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_2582, .-bmpcfg_emit_stub_2582
+
+.globl bmpcfg_emit_stub_2583
+.p2align 2
+.type bmpcfg_emit_stub_2583, @function
+bmpcfg_emit_stub_2583:
+    bmpcfg 3, 8, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2583, .-bmpcfg_emit_stub_2583
+
+.globl bmpcfg_emit_stub_2584
+.p2align 2
+.type bmpcfg_emit_stub_2584, @function
+bmpcfg_emit_stub_2584:
+    bmpcfg 3, 8, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2584, .-bmpcfg_emit_stub_2584
+
+.globl bmpcfg_emit_stub_2585
+.p2align 2
+.type bmpcfg_emit_stub_2585, @function
+bmpcfg_emit_stub_2585:
+    bmpcfg 3, 8, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2585, .-bmpcfg_emit_stub_2585
+
+.globl bmpcfg_emit_stub_2586
+.p2align 2
+.type bmpcfg_emit_stub_2586, @function
+bmpcfg_emit_stub_2586:
+    bmpcfg 3, 8, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2586, .-bmpcfg_emit_stub_2586
+
+.globl bmpcfg_emit_stub_2587
+.p2align 2
+.type bmpcfg_emit_stub_2587, @function
+bmpcfg_emit_stub_2587:
+    bmpcfg 3, 8, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2587, .-bmpcfg_emit_stub_2587
+
+.globl bmpcfg_emit_stub_2588
+.p2align 2
+.type bmpcfg_emit_stub_2588, @function
+bmpcfg_emit_stub_2588:
+    bmpcfg 3, 8, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2588, .-bmpcfg_emit_stub_2588
+
+.globl bmpcfg_emit_stub_2589
+.p2align 2
+.type bmpcfg_emit_stub_2589, @function
+bmpcfg_emit_stub_2589:
+    bmpcfg 3, 8, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2589, .-bmpcfg_emit_stub_2589
+
+.globl bmpcfg_emit_stub_2590
+.p2align 2
+.type bmpcfg_emit_stub_2590, @function
+bmpcfg_emit_stub_2590:
+    bmpcfg 3, 8, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2590, .-bmpcfg_emit_stub_2590
+
+.globl bmpcfg_emit_stub_2591
+.p2align 2
+.type bmpcfg_emit_stub_2591, @function
+bmpcfg_emit_stub_2591:
+    bmpcfg 3, 8, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2591, .-bmpcfg_emit_stub_2591
+
+.globl bmpcfg_emit_stub_2592
+.p2align 2
+.type bmpcfg_emit_stub_2592, @function
+bmpcfg_emit_stub_2592:
+    bmpcfg 3, 8, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2592, .-bmpcfg_emit_stub_2592
+
+.globl bmpcfg_emit_stub_2593
+.p2align 2
+.type bmpcfg_emit_stub_2593, @function
+bmpcfg_emit_stub_2593:
+    bmpcfg 3, 8, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2593, .-bmpcfg_emit_stub_2593
+
+.globl bmpcfg_emit_stub_2594
+.p2align 2
+.type bmpcfg_emit_stub_2594, @function
+bmpcfg_emit_stub_2594:
+    bmpcfg 3, 8, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2594, .-bmpcfg_emit_stub_2594
+
+.globl bmpcfg_emit_stub_2595
+.p2align 2
+.type bmpcfg_emit_stub_2595, @function
+bmpcfg_emit_stub_2595:
+    bmpcfg 3, 8, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2595, .-bmpcfg_emit_stub_2595
+
+.globl bmpcfg_emit_stub_2596
+.p2align 2
+.type bmpcfg_emit_stub_2596, @function
+bmpcfg_emit_stub_2596:
+    bmpcfg 3, 8, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2596, .-bmpcfg_emit_stub_2596
+
+.globl bmpcfg_emit_stub_2597
+.p2align 2
+.type bmpcfg_emit_stub_2597, @function
+bmpcfg_emit_stub_2597:
+    bmpcfg 3, 8, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2597, .-bmpcfg_emit_stub_2597
+
+.globl bmpcfg_emit_stub_2598
+.p2align 2
+.type bmpcfg_emit_stub_2598, @function
+bmpcfg_emit_stub_2598:
+    bmpcfg 3, 8, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2598, .-bmpcfg_emit_stub_2598
+
+.globl bmpcfg_emit_stub_2599
+.p2align 2
+.type bmpcfg_emit_stub_2599, @function
+bmpcfg_emit_stub_2599:
+    bmpcfg 3, 8, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2599, .-bmpcfg_emit_stub_2599
+
+.globl bmpcfg_emit_stub_2600
+.p2align 2
+.type bmpcfg_emit_stub_2600, @function
+bmpcfg_emit_stub_2600:
+    bmpcfg 3, 8, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2600, .-bmpcfg_emit_stub_2600
+
+.globl bmpcfg_emit_stub_2601
+.p2align 2
+.type bmpcfg_emit_stub_2601, @function
+bmpcfg_emit_stub_2601:
+    bmpcfg 3, 8, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2601, .-bmpcfg_emit_stub_2601
+
+.globl bmpcfg_emit_stub_2602
+.p2align 2
+.type bmpcfg_emit_stub_2602, @function
+bmpcfg_emit_stub_2602:
+    bmpcfg 3, 8, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2602, .-bmpcfg_emit_stub_2602
+
+.globl bmpcfg_emit_stub_2603
+.p2align 2
+.type bmpcfg_emit_stub_2603, @function
+bmpcfg_emit_stub_2603:
+    bmpcfg 3, 8, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2603, .-bmpcfg_emit_stub_2603
+
+.globl bmpcfg_emit_stub_2604
+.p2align 2
+.type bmpcfg_emit_stub_2604, @function
+bmpcfg_emit_stub_2604:
+    bmpcfg 3, 8, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2604, .-bmpcfg_emit_stub_2604
+
+.globl bmpcfg_emit_stub_2605
+.p2align 2
+.type bmpcfg_emit_stub_2605, @function
+bmpcfg_emit_stub_2605:
+    bmpcfg 3, 8, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2605, .-bmpcfg_emit_stub_2605
+
+.globl bmpcfg_emit_stub_2606
+.p2align 2
+.type bmpcfg_emit_stub_2606, @function
+bmpcfg_emit_stub_2606:
+    bmpcfg 3, 8, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2606, .-bmpcfg_emit_stub_2606
+
+.globl bmpcfg_emit_stub_2607
+.p2align 2
+.type bmpcfg_emit_stub_2607, @function
+bmpcfg_emit_stub_2607:
+    bmpcfg 3, 8, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2607, .-bmpcfg_emit_stub_2607
+
+.globl bmpcfg_emit_stub_2608
+.p2align 2
+.type bmpcfg_emit_stub_2608, @function
+bmpcfg_emit_stub_2608:
+    bmpcfg 3, 8, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2608, .-bmpcfg_emit_stub_2608
+
+.globl bmpcfg_emit_stub_2609
+.p2align 2
+.type bmpcfg_emit_stub_2609, @function
+bmpcfg_emit_stub_2609:
+    bmpcfg 3, 8, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2609, .-bmpcfg_emit_stub_2609
+
+.globl bmpcfg_emit_stub_2610
+.p2align 2
+.type bmpcfg_emit_stub_2610, @function
+bmpcfg_emit_stub_2610:
+    bmpcfg 3, 8, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2610, .-bmpcfg_emit_stub_2610
+
+.globl bmpcfg_emit_stub_2611
+.p2align 2
+.type bmpcfg_emit_stub_2611, @function
+bmpcfg_emit_stub_2611:
+    bmpcfg 3, 8, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2611, .-bmpcfg_emit_stub_2611
+
+.globl bmpcfg_emit_stub_2612
+.p2align 2
+.type bmpcfg_emit_stub_2612, @function
+bmpcfg_emit_stub_2612:
+    bmpcfg 3, 8, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2612, .-bmpcfg_emit_stub_2612
+
+.globl bmpcfg_emit_stub_2613
+.p2align 2
+.type bmpcfg_emit_stub_2613, @function
+bmpcfg_emit_stub_2613:
+    bmpcfg 3, 8, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2613, .-bmpcfg_emit_stub_2613
+
+.globl bmpcfg_emit_stub_2614
+.p2align 2
+.type bmpcfg_emit_stub_2614, @function
+bmpcfg_emit_stub_2614:
+    bmpcfg 3, 8, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2614, .-bmpcfg_emit_stub_2614
+
+.globl bmpcfg_emit_stub_2615
+.p2align 2
+.type bmpcfg_emit_stub_2615, @function
+bmpcfg_emit_stub_2615:
+    bmpcfg 3, 8, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2615, .-bmpcfg_emit_stub_2615
+
+.globl bmpcfg_emit_stub_2616
+.p2align 2
+.type bmpcfg_emit_stub_2616, @function
+bmpcfg_emit_stub_2616:
+    bmpcfg 3, 8, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2616, .-bmpcfg_emit_stub_2616
+
+.globl bmpcfg_emit_stub_2617
+.p2align 2
+.type bmpcfg_emit_stub_2617, @function
+bmpcfg_emit_stub_2617:
+    bmpcfg 3, 8, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2617, .-bmpcfg_emit_stub_2617
+
+.globl bmpcfg_emit_stub_2618
+.p2align 2
+.type bmpcfg_emit_stub_2618, @function
+bmpcfg_emit_stub_2618:
+    bmpcfg 3, 8, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2618, .-bmpcfg_emit_stub_2618
+
+.globl bmpcfg_emit_stub_2619
+.p2align 2
+.type bmpcfg_emit_stub_2619, @function
+bmpcfg_emit_stub_2619:
+    bmpcfg 3, 8, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2619, .-bmpcfg_emit_stub_2619
+
+.globl bmpcfg_emit_stub_2620
+.p2align 2
+.type bmpcfg_emit_stub_2620, @function
+bmpcfg_emit_stub_2620:
+    bmpcfg 3, 8, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2620, .-bmpcfg_emit_stub_2620
+
+.globl bmpcfg_emit_stub_2621
+.p2align 2
+.type bmpcfg_emit_stub_2621, @function
+bmpcfg_emit_stub_2621:
+    bmpcfg 3, 8, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2621, .-bmpcfg_emit_stub_2621
+
+.globl bmpcfg_emit_stub_2622
+.p2align 2
+.type bmpcfg_emit_stub_2622, @function
+bmpcfg_emit_stub_2622:
+    bmpcfg 3, 8, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2622, .-bmpcfg_emit_stub_2622
+
+.globl bmpcfg_emit_stub_2623
+.p2align 2
+.type bmpcfg_emit_stub_2623, @function
+bmpcfg_emit_stub_2623:
+    bmpcfg 3, 8, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2623, .-bmpcfg_emit_stub_2623
+
+.globl bmpcfg_emit_stub_2624
+.p2align 2
+.type bmpcfg_emit_stub_2624, @function
+bmpcfg_emit_stub_2624:
+    bmpcfg 3, 8, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2624, .-bmpcfg_emit_stub_2624
+
+.globl bmpcfg_emit_stub_2625
+.p2align 2
+.type bmpcfg_emit_stub_2625, @function
+bmpcfg_emit_stub_2625:
+    bmpcfg 3, 8, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2625, .-bmpcfg_emit_stub_2625
+
+.globl bmpcfg_emit_stub_2626
+.p2align 2
+.type bmpcfg_emit_stub_2626, @function
+bmpcfg_emit_stub_2626:
+    bmpcfg 3, 8, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2626, .-bmpcfg_emit_stub_2626
+
+.globl bmpcfg_emit_stub_2627
+.p2align 2
+.type bmpcfg_emit_stub_2627, @function
+bmpcfg_emit_stub_2627:
+    bmpcfg 3, 8, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2627, .-bmpcfg_emit_stub_2627
+
+.globl bmpcfg_emit_stub_2628
+.p2align 2
+.type bmpcfg_emit_stub_2628, @function
+bmpcfg_emit_stub_2628:
+    bmpcfg 3, 8, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2628, .-bmpcfg_emit_stub_2628
+
+.globl bmpcfg_emit_stub_2629
+.p2align 2
+.type bmpcfg_emit_stub_2629, @function
+bmpcfg_emit_stub_2629:
+    bmpcfg 3, 8, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2629, .-bmpcfg_emit_stub_2629
+
+.globl bmpcfg_emit_stub_2630
+.p2align 2
+.type bmpcfg_emit_stub_2630, @function
+bmpcfg_emit_stub_2630:
+    bmpcfg 3, 8, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2630, .-bmpcfg_emit_stub_2630
+
+.globl bmpcfg_emit_stub_2631
+.p2align 2
+.type bmpcfg_emit_stub_2631, @function
+bmpcfg_emit_stub_2631:
+    bmpcfg 3, 8, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2631, .-bmpcfg_emit_stub_2631
+
+.globl bmpcfg_emit_stub_2632
+.p2align 2
+.type bmpcfg_emit_stub_2632, @function
+bmpcfg_emit_stub_2632:
+    bmpcfg 3, 8, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2632, .-bmpcfg_emit_stub_2632
+
+.globl bmpcfg_emit_stub_2633
+.p2align 2
+.type bmpcfg_emit_stub_2633, @function
+bmpcfg_emit_stub_2633:
+    bmpcfg 3, 8, 44, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2633, .-bmpcfg_emit_stub_2633
+
+.globl bmpcfg_emit_stub_2634
+.p2align 2
+.type bmpcfg_emit_stub_2634, @function
+bmpcfg_emit_stub_2634:
+    bmpcfg 3, 8, 48, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2634, .-bmpcfg_emit_stub_2634
+
+.globl bmpcfg_emit_stub_2635
+.p2align 2
+.type bmpcfg_emit_stub_2635, @function
+bmpcfg_emit_stub_2635:
+    bmpcfg 3, 8, 52, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2635, .-bmpcfg_emit_stub_2635
+
+.globl bmpcfg_emit_stub_2636
+.p2align 2
+.type bmpcfg_emit_stub_2636, @function
+bmpcfg_emit_stub_2636:
+    bmpcfg 3, 8, 56, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2636, .-bmpcfg_emit_stub_2636
+
+.globl bmpcfg_emit_stub_2637
+.p2align 2
+.type bmpcfg_emit_stub_2637, @function
+bmpcfg_emit_stub_2637:
+    bmpcfg 3, 8, 60, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2637, .-bmpcfg_emit_stub_2637
+
+.globl bmpcfg_emit_stub_2638
+.p2align 2
+.type bmpcfg_emit_stub_2638, @function
+bmpcfg_emit_stub_2638:
+    bmpcfg 3, 8, 64, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2638, .-bmpcfg_emit_stub_2638
+
+.globl bmpcfg_emit_stub_2639
+.p2align 2
+.type bmpcfg_emit_stub_2639, @function
+bmpcfg_emit_stub_2639:
+    bmpcfg 3, 16, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2639, .-bmpcfg_emit_stub_2639
+
+.globl bmpcfg_emit_stub_2640
+.p2align 2
+.type bmpcfg_emit_stub_2640, @function
+bmpcfg_emit_stub_2640:
+    bmpcfg 3, 16, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2640, .-bmpcfg_emit_stub_2640
+
+.globl bmpcfg_emit_stub_2641
+.p2align 2
+.type bmpcfg_emit_stub_2641, @function
+bmpcfg_emit_stub_2641:
+    bmpcfg 3, 16, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2641, .-bmpcfg_emit_stub_2641
+
+.globl bmpcfg_emit_stub_2642
+.p2align 2
+.type bmpcfg_emit_stub_2642, @function
+bmpcfg_emit_stub_2642:
+    bmpcfg 3, 16, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2642, .-bmpcfg_emit_stub_2642
+
+.globl bmpcfg_emit_stub_2643
+.p2align 2
+.type bmpcfg_emit_stub_2643, @function
+bmpcfg_emit_stub_2643:
+    bmpcfg 3, 16, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2643, .-bmpcfg_emit_stub_2643
+
+.globl bmpcfg_emit_stub_2644
+.p2align 2
+.type bmpcfg_emit_stub_2644, @function
+bmpcfg_emit_stub_2644:
+    bmpcfg 3, 16, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2644, .-bmpcfg_emit_stub_2644
+
+.globl bmpcfg_emit_stub_2645
+.p2align 2
+.type bmpcfg_emit_stub_2645, @function
+bmpcfg_emit_stub_2645:
+    bmpcfg 3, 16, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2645, .-bmpcfg_emit_stub_2645
+
+.globl bmpcfg_emit_stub_2646
+.p2align 2
+.type bmpcfg_emit_stub_2646, @function
+bmpcfg_emit_stub_2646:
+    bmpcfg 3, 16, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2646, .-bmpcfg_emit_stub_2646
+
+.globl bmpcfg_emit_stub_2647
+.p2align 2
+.type bmpcfg_emit_stub_2647, @function
+bmpcfg_emit_stub_2647:
+    bmpcfg 3, 16, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2647, .-bmpcfg_emit_stub_2647
+
+.globl bmpcfg_emit_stub_2648
+.p2align 2
+.type bmpcfg_emit_stub_2648, @function
+bmpcfg_emit_stub_2648:
+    bmpcfg 3, 16, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2648, .-bmpcfg_emit_stub_2648
+
+.globl bmpcfg_emit_stub_2649
+.p2align 2
+.type bmpcfg_emit_stub_2649, @function
+bmpcfg_emit_stub_2649:
+    bmpcfg 3, 16, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2649, .-bmpcfg_emit_stub_2649
+
+.globl bmpcfg_emit_stub_2650
+.p2align 2
+.type bmpcfg_emit_stub_2650, @function
+bmpcfg_emit_stub_2650:
+    bmpcfg 3, 16, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2650, .-bmpcfg_emit_stub_2650
+
+.globl bmpcfg_emit_stub_2651
+.p2align 2
+.type bmpcfg_emit_stub_2651, @function
+bmpcfg_emit_stub_2651:
+    bmpcfg 3, 16, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2651, .-bmpcfg_emit_stub_2651
+
+.globl bmpcfg_emit_stub_2652
+.p2align 2
+.type bmpcfg_emit_stub_2652, @function
+bmpcfg_emit_stub_2652:
+    bmpcfg 3, 16, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2652, .-bmpcfg_emit_stub_2652
+
+.globl bmpcfg_emit_stub_2653
+.p2align 2
+.type bmpcfg_emit_stub_2653, @function
+bmpcfg_emit_stub_2653:
+    bmpcfg 3, 16, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2653, .-bmpcfg_emit_stub_2653
+
+.globl bmpcfg_emit_stub_2654
+.p2align 2
+.type bmpcfg_emit_stub_2654, @function
+bmpcfg_emit_stub_2654:
+    bmpcfg 3, 16, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2654, .-bmpcfg_emit_stub_2654
+
+.globl bmpcfg_emit_stub_2655
+.p2align 2
+.type bmpcfg_emit_stub_2655, @function
+bmpcfg_emit_stub_2655:
+    bmpcfg 3, 16, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2655, .-bmpcfg_emit_stub_2655
+
+.globl bmpcfg_emit_stub_2656
+.p2align 2
+.type bmpcfg_emit_stub_2656, @function
+bmpcfg_emit_stub_2656:
+    bmpcfg 3, 16, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2656, .-bmpcfg_emit_stub_2656
+
+.globl bmpcfg_emit_stub_2657
+.p2align 2
+.type bmpcfg_emit_stub_2657, @function
+bmpcfg_emit_stub_2657:
+    bmpcfg 3, 16, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2657, .-bmpcfg_emit_stub_2657
+
+.globl bmpcfg_emit_stub_2658
+.p2align 2
+.type bmpcfg_emit_stub_2658, @function
+bmpcfg_emit_stub_2658:
+    bmpcfg 3, 16, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2658, .-bmpcfg_emit_stub_2658
+
+.globl bmpcfg_emit_stub_2659
+.p2align 2
+.type bmpcfg_emit_stub_2659, @function
+bmpcfg_emit_stub_2659:
+    bmpcfg 3, 16, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2659, .-bmpcfg_emit_stub_2659
+
+.globl bmpcfg_emit_stub_2660
+.p2align 2
+.type bmpcfg_emit_stub_2660, @function
+bmpcfg_emit_stub_2660:
+    bmpcfg 3, 16, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2660, .-bmpcfg_emit_stub_2660
+
+.globl bmpcfg_emit_stub_2661
+.p2align 2
+.type bmpcfg_emit_stub_2661, @function
+bmpcfg_emit_stub_2661:
+    bmpcfg 3, 16, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2661, .-bmpcfg_emit_stub_2661
+
+.globl bmpcfg_emit_stub_2662
+.p2align 2
+.type bmpcfg_emit_stub_2662, @function
+bmpcfg_emit_stub_2662:
+    bmpcfg 3, 16, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2662, .-bmpcfg_emit_stub_2662
+
+.globl bmpcfg_emit_stub_2663
+.p2align 2
+.type bmpcfg_emit_stub_2663, @function
+bmpcfg_emit_stub_2663:
+    bmpcfg 3, 16, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2663, .-bmpcfg_emit_stub_2663
+
+.globl bmpcfg_emit_stub_2664
+.p2align 2
+.type bmpcfg_emit_stub_2664, @function
+bmpcfg_emit_stub_2664:
+    bmpcfg 3, 16, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2664, .-bmpcfg_emit_stub_2664
+
+.globl bmpcfg_emit_stub_2665
+.p2align 2
+.type bmpcfg_emit_stub_2665, @function
+bmpcfg_emit_stub_2665:
+    bmpcfg 3, 16, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2665, .-bmpcfg_emit_stub_2665
+
+.globl bmpcfg_emit_stub_2666
+.p2align 2
+.type bmpcfg_emit_stub_2666, @function
+bmpcfg_emit_stub_2666:
+    bmpcfg 3, 16, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2666, .-bmpcfg_emit_stub_2666
+
+.globl bmpcfg_emit_stub_2667
+.p2align 2
+.type bmpcfg_emit_stub_2667, @function
+bmpcfg_emit_stub_2667:
+    bmpcfg 3, 16, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2667, .-bmpcfg_emit_stub_2667
+
+.globl bmpcfg_emit_stub_2668
+.p2align 2
+.type bmpcfg_emit_stub_2668, @function
+bmpcfg_emit_stub_2668:
+    bmpcfg 3, 16, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2668, .-bmpcfg_emit_stub_2668
+
+.globl bmpcfg_emit_stub_2669
+.p2align 2
+.type bmpcfg_emit_stub_2669, @function
+bmpcfg_emit_stub_2669:
+    bmpcfg 3, 16, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2669, .-bmpcfg_emit_stub_2669
+
+.globl bmpcfg_emit_stub_2670
+.p2align 2
+.type bmpcfg_emit_stub_2670, @function
+bmpcfg_emit_stub_2670:
+    bmpcfg 3, 16, 8, 96, 1, 1
+    ret
+.size bmpcfg_emit_stub_2670, .-bmpcfg_emit_stub_2670
+
+.globl bmpcfg_emit_stub_2671
+.p2align 2
+.type bmpcfg_emit_stub_2671, @function
+bmpcfg_emit_stub_2671:
+    bmpcfg 3, 16, 8, 112, 1, 1
+    ret
+.size bmpcfg_emit_stub_2671, .-bmpcfg_emit_stub_2671
+
+.globl bmpcfg_emit_stub_2672
+.p2align 2
+.type bmpcfg_emit_stub_2672, @function
+bmpcfg_emit_stub_2672:
+    bmpcfg 3, 16, 8, 128, 1, 1
+    ret
+.size bmpcfg_emit_stub_2672, .-bmpcfg_emit_stub_2672
+
+.globl bmpcfg_emit_stub_2673
+.p2align 2
+.type bmpcfg_emit_stub_2673, @function
+bmpcfg_emit_stub_2673:
+    bmpcfg 3, 16, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2673, .-bmpcfg_emit_stub_2673
+
+.globl bmpcfg_emit_stub_2674
+.p2align 2
+.type bmpcfg_emit_stub_2674, @function
+bmpcfg_emit_stub_2674:
+    bmpcfg 3, 16, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2674, .-bmpcfg_emit_stub_2674
+
+.globl bmpcfg_emit_stub_2675
+.p2align 2
+.type bmpcfg_emit_stub_2675, @function
+bmpcfg_emit_stub_2675:
+    bmpcfg 3, 16, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2675, .-bmpcfg_emit_stub_2675
+
+.globl bmpcfg_emit_stub_2676
+.p2align 2
+.type bmpcfg_emit_stub_2676, @function
+bmpcfg_emit_stub_2676:
+    bmpcfg 3, 16, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2676, .-bmpcfg_emit_stub_2676
+
+.globl bmpcfg_emit_stub_2677
+.p2align 2
+.type bmpcfg_emit_stub_2677, @function
+bmpcfg_emit_stub_2677:
+    bmpcfg 3, 16, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2677, .-bmpcfg_emit_stub_2677
+
+.globl bmpcfg_emit_stub_2678
+.p2align 2
+.type bmpcfg_emit_stub_2678, @function
+bmpcfg_emit_stub_2678:
+    bmpcfg 3, 16, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2678, .-bmpcfg_emit_stub_2678
+
+.globl bmpcfg_emit_stub_2679
+.p2align 2
+.type bmpcfg_emit_stub_2679, @function
+bmpcfg_emit_stub_2679:
+    bmpcfg 3, 16, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2679, .-bmpcfg_emit_stub_2679
+
+.globl bmpcfg_emit_stub_2680
+.p2align 2
+.type bmpcfg_emit_stub_2680, @function
+bmpcfg_emit_stub_2680:
+    bmpcfg 3, 16, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2680, .-bmpcfg_emit_stub_2680
+
+.globl bmpcfg_emit_stub_2681
+.p2align 2
+.type bmpcfg_emit_stub_2681, @function
+bmpcfg_emit_stub_2681:
+    bmpcfg 3, 16, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2681, .-bmpcfg_emit_stub_2681
+
+.globl bmpcfg_emit_stub_2682
+.p2align 2
+.type bmpcfg_emit_stub_2682, @function
+bmpcfg_emit_stub_2682:
+    bmpcfg 3, 16, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2682, .-bmpcfg_emit_stub_2682
+
+.globl bmpcfg_emit_stub_2683
+.p2align 2
+.type bmpcfg_emit_stub_2683, @function
+bmpcfg_emit_stub_2683:
+    bmpcfg 3, 16, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2683, .-bmpcfg_emit_stub_2683
+
+.globl bmpcfg_emit_stub_2684
+.p2align 2
+.type bmpcfg_emit_stub_2684, @function
+bmpcfg_emit_stub_2684:
+    bmpcfg 3, 16, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2684, .-bmpcfg_emit_stub_2684
+
+.globl bmpcfg_emit_stub_2685
+.p2align 2
+.type bmpcfg_emit_stub_2685, @function
+bmpcfg_emit_stub_2685:
+    bmpcfg 3, 16, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2685, .-bmpcfg_emit_stub_2685
+
+.globl bmpcfg_emit_stub_2686
+.p2align 2
+.type bmpcfg_emit_stub_2686, @function
+bmpcfg_emit_stub_2686:
+    bmpcfg 3, 16, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2686, .-bmpcfg_emit_stub_2686
+
+.globl bmpcfg_emit_stub_2687
+.p2align 2
+.type bmpcfg_emit_stub_2687, @function
+bmpcfg_emit_stub_2687:
+    bmpcfg 3, 16, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2687, .-bmpcfg_emit_stub_2687
+
+.globl bmpcfg_emit_stub_2688
+.p2align 2
+.type bmpcfg_emit_stub_2688, @function
+bmpcfg_emit_stub_2688:
+    bmpcfg 3, 16, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2688, .-bmpcfg_emit_stub_2688
+
+.globl bmpcfg_emit_stub_2689
+.p2align 2
+.type bmpcfg_emit_stub_2689, @function
+bmpcfg_emit_stub_2689:
+    bmpcfg 3, 16, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2689, .-bmpcfg_emit_stub_2689
+
+.globl bmpcfg_emit_stub_2690
+.p2align 2
+.type bmpcfg_emit_stub_2690, @function
+bmpcfg_emit_stub_2690:
+    bmpcfg 3, 16, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2690, .-bmpcfg_emit_stub_2690
+
+.globl bmpcfg_emit_stub_2691
+.p2align 2
+.type bmpcfg_emit_stub_2691, @function
+bmpcfg_emit_stub_2691:
+    bmpcfg 3, 16, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2691, .-bmpcfg_emit_stub_2691
+
+.globl bmpcfg_emit_stub_2692
+.p2align 2
+.type bmpcfg_emit_stub_2692, @function
+bmpcfg_emit_stub_2692:
+    bmpcfg 3, 16, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2692, .-bmpcfg_emit_stub_2692
+
+.globl bmpcfg_emit_stub_2693
+.p2align 2
+.type bmpcfg_emit_stub_2693, @function
+bmpcfg_emit_stub_2693:
+    bmpcfg 3, 16, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2693, .-bmpcfg_emit_stub_2693
+
+.globl bmpcfg_emit_stub_2694
+.p2align 2
+.type bmpcfg_emit_stub_2694, @function
+bmpcfg_emit_stub_2694:
+    bmpcfg 3, 16, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2694, .-bmpcfg_emit_stub_2694
+
+.globl bmpcfg_emit_stub_2695
+.p2align 2
+.type bmpcfg_emit_stub_2695, @function
+bmpcfg_emit_stub_2695:
+    bmpcfg 3, 16, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2695, .-bmpcfg_emit_stub_2695
+
+.globl bmpcfg_emit_stub_2696
+.p2align 2
+.type bmpcfg_emit_stub_2696, @function
+bmpcfg_emit_stub_2696:
+    bmpcfg 3, 16, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2696, .-bmpcfg_emit_stub_2696
+
+.globl bmpcfg_emit_stub_2697
+.p2align 2
+.type bmpcfg_emit_stub_2697, @function
+bmpcfg_emit_stub_2697:
+    bmpcfg 3, 16, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2697, .-bmpcfg_emit_stub_2697
+
+.globl bmpcfg_emit_stub_2698
+.p2align 2
+.type bmpcfg_emit_stub_2698, @function
+bmpcfg_emit_stub_2698:
+    bmpcfg 3, 16, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2698, .-bmpcfg_emit_stub_2698
+
+.globl bmpcfg_emit_stub_2699
+.p2align 2
+.type bmpcfg_emit_stub_2699, @function
+bmpcfg_emit_stub_2699:
+    bmpcfg 3, 16, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2699, .-bmpcfg_emit_stub_2699
+
+.globl bmpcfg_emit_stub_2700
+.p2align 2
+.type bmpcfg_emit_stub_2700, @function
+bmpcfg_emit_stub_2700:
+    bmpcfg 3, 16, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2700, .-bmpcfg_emit_stub_2700
+
+.globl bmpcfg_emit_stub_2701
+.p2align 2
+.type bmpcfg_emit_stub_2701, @function
+bmpcfg_emit_stub_2701:
+    bmpcfg 3, 16, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2701, .-bmpcfg_emit_stub_2701
+
+.globl bmpcfg_emit_stub_2702
+.p2align 2
+.type bmpcfg_emit_stub_2702, @function
+bmpcfg_emit_stub_2702:
+    bmpcfg 3, 16, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2702, .-bmpcfg_emit_stub_2702
+
+.globl bmpcfg_emit_stub_2703
+.p2align 2
+.type bmpcfg_emit_stub_2703, @function
+bmpcfg_emit_stub_2703:
+    bmpcfg 3, 16, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2703, .-bmpcfg_emit_stub_2703
+
+.globl bmpcfg_emit_stub_2704
+.p2align 2
+.type bmpcfg_emit_stub_2704, @function
+bmpcfg_emit_stub_2704:
+    bmpcfg 3, 16, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2704, .-bmpcfg_emit_stub_2704
+
+.globl bmpcfg_emit_stub_2705
+.p2align 2
+.type bmpcfg_emit_stub_2705, @function
+bmpcfg_emit_stub_2705:
+    bmpcfg 3, 16, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2705, .-bmpcfg_emit_stub_2705
+
+.globl bmpcfg_emit_stub_2706
+.p2align 2
+.type bmpcfg_emit_stub_2706, @function
+bmpcfg_emit_stub_2706:
+    bmpcfg 3, 16, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2706, .-bmpcfg_emit_stub_2706
+
+.globl bmpcfg_emit_stub_2707
+.p2align 2
+.type bmpcfg_emit_stub_2707, @function
+bmpcfg_emit_stub_2707:
+    bmpcfg 3, 16, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2707, .-bmpcfg_emit_stub_2707
+
+.globl bmpcfg_emit_stub_2708
+.p2align 2
+.type bmpcfg_emit_stub_2708, @function
+bmpcfg_emit_stub_2708:
+    bmpcfg 3, 16, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2708, .-bmpcfg_emit_stub_2708
+
+.globl bmpcfg_emit_stub_2709
+.p2align 2
+.type bmpcfg_emit_stub_2709, @function
+bmpcfg_emit_stub_2709:
+    bmpcfg 3, 16, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2709, .-bmpcfg_emit_stub_2709
+
+.globl bmpcfg_emit_stub_2710
+.p2align 2
+.type bmpcfg_emit_stub_2710, @function
+bmpcfg_emit_stub_2710:
+    bmpcfg 3, 16, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2710, .-bmpcfg_emit_stub_2710
+
+.globl bmpcfg_emit_stub_2711
+.p2align 2
+.type bmpcfg_emit_stub_2711, @function
+bmpcfg_emit_stub_2711:
+    bmpcfg 3, 16, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2711, .-bmpcfg_emit_stub_2711
+
+.globl bmpcfg_emit_stub_2712
+.p2align 2
+.type bmpcfg_emit_stub_2712, @function
+bmpcfg_emit_stub_2712:
+    bmpcfg 3, 16, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2712, .-bmpcfg_emit_stub_2712
+
+.globl bmpcfg_emit_stub_2713
+.p2align 2
+.type bmpcfg_emit_stub_2713, @function
+bmpcfg_emit_stub_2713:
+    bmpcfg 3, 16, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2713, .-bmpcfg_emit_stub_2713
+
+.globl bmpcfg_emit_stub_2714
+.p2align 2
+.type bmpcfg_emit_stub_2714, @function
+bmpcfg_emit_stub_2714:
+    bmpcfg 3, 16, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2714, .-bmpcfg_emit_stub_2714
+
+.globl bmpcfg_emit_stub_2715
+.p2align 2
+.type bmpcfg_emit_stub_2715, @function
+bmpcfg_emit_stub_2715:
+    bmpcfg 3, 16, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2715, .-bmpcfg_emit_stub_2715
+
+.globl bmpcfg_emit_stub_2716
+.p2align 2
+.type bmpcfg_emit_stub_2716, @function
+bmpcfg_emit_stub_2716:
+    bmpcfg 3, 16, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2716, .-bmpcfg_emit_stub_2716
+
+.globl bmpcfg_emit_stub_2717
+.p2align 2
+.type bmpcfg_emit_stub_2717, @function
+bmpcfg_emit_stub_2717:
+    bmpcfg 3, 16, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2717, .-bmpcfg_emit_stub_2717
+
+.globl bmpcfg_emit_stub_2718
+.p2align 2
+.type bmpcfg_emit_stub_2718, @function
+bmpcfg_emit_stub_2718:
+    bmpcfg 3, 16, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2718, .-bmpcfg_emit_stub_2718
+
+.globl bmpcfg_emit_stub_2719
+.p2align 2
+.type bmpcfg_emit_stub_2719, @function
+bmpcfg_emit_stub_2719:
+    bmpcfg 3, 16, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2719, .-bmpcfg_emit_stub_2719
+
+.globl bmpcfg_emit_stub_2720
+.p2align 2
+.type bmpcfg_emit_stub_2720, @function
+bmpcfg_emit_stub_2720:
+    bmpcfg 3, 16, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2720, .-bmpcfg_emit_stub_2720
+
+.globl bmpcfg_emit_stub_2721
+.p2align 2
+.type bmpcfg_emit_stub_2721, @function
+bmpcfg_emit_stub_2721:
+    bmpcfg 3, 16, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2721, .-bmpcfg_emit_stub_2721
+
+.globl bmpcfg_emit_stub_2722
+.p2align 2
+.type bmpcfg_emit_stub_2722, @function
+bmpcfg_emit_stub_2722:
+    bmpcfg 3, 16, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2722, .-bmpcfg_emit_stub_2722
+
+.globl bmpcfg_emit_stub_2723
+.p2align 2
+.type bmpcfg_emit_stub_2723, @function
+bmpcfg_emit_stub_2723:
+    bmpcfg 3, 16, 44, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2723, .-bmpcfg_emit_stub_2723
+
+.globl bmpcfg_emit_stub_2724
+.p2align 2
+.type bmpcfg_emit_stub_2724, @function
+bmpcfg_emit_stub_2724:
+    bmpcfg 3, 16, 48, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2724, .-bmpcfg_emit_stub_2724
+
+.globl bmpcfg_emit_stub_2725
+.p2align 2
+.type bmpcfg_emit_stub_2725, @function
+bmpcfg_emit_stub_2725:
+    bmpcfg 3, 16, 52, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2725, .-bmpcfg_emit_stub_2725
+
+.globl bmpcfg_emit_stub_2726
+.p2align 2
+.type bmpcfg_emit_stub_2726, @function
+bmpcfg_emit_stub_2726:
+    bmpcfg 3, 16, 56, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2726, .-bmpcfg_emit_stub_2726
+
+.globl bmpcfg_emit_stub_2727
+.p2align 2
+.type bmpcfg_emit_stub_2727, @function
+bmpcfg_emit_stub_2727:
+    bmpcfg 3, 16, 60, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2727, .-bmpcfg_emit_stub_2727
+
+.globl bmpcfg_emit_stub_2728
+.p2align 2
+.type bmpcfg_emit_stub_2728, @function
+bmpcfg_emit_stub_2728:
+    bmpcfg 3, 16, 64, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2728, .-bmpcfg_emit_stub_2728
+
+.globl bmpcfg_emit_stub_2729
+.p2align 2
+.type bmpcfg_emit_stub_2729, @function
+bmpcfg_emit_stub_2729:
+    bmpcfg 3, 24, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2729, .-bmpcfg_emit_stub_2729
+
+.globl bmpcfg_emit_stub_2730
+.p2align 2
+.type bmpcfg_emit_stub_2730, @function
+bmpcfg_emit_stub_2730:
+    bmpcfg 3, 24, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2730, .-bmpcfg_emit_stub_2730
+
+.globl bmpcfg_emit_stub_2731
+.p2align 2
+.type bmpcfg_emit_stub_2731, @function
+bmpcfg_emit_stub_2731:
+    bmpcfg 3, 24, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2731, .-bmpcfg_emit_stub_2731
+
+.globl bmpcfg_emit_stub_2732
+.p2align 2
+.type bmpcfg_emit_stub_2732, @function
+bmpcfg_emit_stub_2732:
+    bmpcfg 3, 24, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2732, .-bmpcfg_emit_stub_2732
+
+.globl bmpcfg_emit_stub_2733
+.p2align 2
+.type bmpcfg_emit_stub_2733, @function
+bmpcfg_emit_stub_2733:
+    bmpcfg 3, 24, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2733, .-bmpcfg_emit_stub_2733
+
+.globl bmpcfg_emit_stub_2734
+.p2align 2
+.type bmpcfg_emit_stub_2734, @function
+bmpcfg_emit_stub_2734:
+    bmpcfg 3, 24, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2734, .-bmpcfg_emit_stub_2734
+
+.globl bmpcfg_emit_stub_2735
+.p2align 2
+.type bmpcfg_emit_stub_2735, @function
+bmpcfg_emit_stub_2735:
+    bmpcfg 3, 24, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2735, .-bmpcfg_emit_stub_2735
+
+.globl bmpcfg_emit_stub_2736
+.p2align 2
+.type bmpcfg_emit_stub_2736, @function
+bmpcfg_emit_stub_2736:
+    bmpcfg 3, 24, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2736, .-bmpcfg_emit_stub_2736
+
+.globl bmpcfg_emit_stub_2737
+.p2align 2
+.type bmpcfg_emit_stub_2737, @function
+bmpcfg_emit_stub_2737:
+    bmpcfg 3, 24, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2737, .-bmpcfg_emit_stub_2737
+
+.globl bmpcfg_emit_stub_2738
+.p2align 2
+.type bmpcfg_emit_stub_2738, @function
+bmpcfg_emit_stub_2738:
+    bmpcfg 3, 24, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2738, .-bmpcfg_emit_stub_2738
+
+.globl bmpcfg_emit_stub_2739
+.p2align 2
+.type bmpcfg_emit_stub_2739, @function
+bmpcfg_emit_stub_2739:
+    bmpcfg 3, 24, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2739, .-bmpcfg_emit_stub_2739
+
+.globl bmpcfg_emit_stub_2740
+.p2align 2
+.type bmpcfg_emit_stub_2740, @function
+bmpcfg_emit_stub_2740:
+    bmpcfg 3, 24, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2740, .-bmpcfg_emit_stub_2740
+
+.globl bmpcfg_emit_stub_2741
+.p2align 2
+.type bmpcfg_emit_stub_2741, @function
+bmpcfg_emit_stub_2741:
+    bmpcfg 3, 24, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2741, .-bmpcfg_emit_stub_2741
+
+.globl bmpcfg_emit_stub_2742
+.p2align 2
+.type bmpcfg_emit_stub_2742, @function
+bmpcfg_emit_stub_2742:
+    bmpcfg 3, 24, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2742, .-bmpcfg_emit_stub_2742
+
+.globl bmpcfg_emit_stub_2743
+.p2align 2
+.type bmpcfg_emit_stub_2743, @function
+bmpcfg_emit_stub_2743:
+    bmpcfg 3, 24, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2743, .-bmpcfg_emit_stub_2743
+
+.globl bmpcfg_emit_stub_2744
+.p2align 2
+.type bmpcfg_emit_stub_2744, @function
+bmpcfg_emit_stub_2744:
+    bmpcfg 3, 24, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2744, .-bmpcfg_emit_stub_2744
+
+.globl bmpcfg_emit_stub_2745
+.p2align 2
+.type bmpcfg_emit_stub_2745, @function
+bmpcfg_emit_stub_2745:
+    bmpcfg 3, 24, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2745, .-bmpcfg_emit_stub_2745
+
+.globl bmpcfg_emit_stub_2746
+.p2align 2
+.type bmpcfg_emit_stub_2746, @function
+bmpcfg_emit_stub_2746:
+    bmpcfg 3, 24, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2746, .-bmpcfg_emit_stub_2746
+
+.globl bmpcfg_emit_stub_2747
+.p2align 2
+.type bmpcfg_emit_stub_2747, @function
+bmpcfg_emit_stub_2747:
+    bmpcfg 3, 24, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2747, .-bmpcfg_emit_stub_2747
+
+.globl bmpcfg_emit_stub_2748
+.p2align 2
+.type bmpcfg_emit_stub_2748, @function
+bmpcfg_emit_stub_2748:
+    bmpcfg 3, 24, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2748, .-bmpcfg_emit_stub_2748
+
+.globl bmpcfg_emit_stub_2749
+.p2align 2
+.type bmpcfg_emit_stub_2749, @function
+bmpcfg_emit_stub_2749:
+    bmpcfg 3, 24, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2749, .-bmpcfg_emit_stub_2749
+
+.globl bmpcfg_emit_stub_2750
+.p2align 2
+.type bmpcfg_emit_stub_2750, @function
+bmpcfg_emit_stub_2750:
+    bmpcfg 3, 24, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2750, .-bmpcfg_emit_stub_2750
+
+.globl bmpcfg_emit_stub_2751
+.p2align 2
+.type bmpcfg_emit_stub_2751, @function
+bmpcfg_emit_stub_2751:
+    bmpcfg 3, 24, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2751, .-bmpcfg_emit_stub_2751
+
+.globl bmpcfg_emit_stub_2752
+.p2align 2
+.type bmpcfg_emit_stub_2752, @function
+bmpcfg_emit_stub_2752:
+    bmpcfg 3, 24, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2752, .-bmpcfg_emit_stub_2752
+
+.globl bmpcfg_emit_stub_2753
+.p2align 2
+.type bmpcfg_emit_stub_2753, @function
+bmpcfg_emit_stub_2753:
+    bmpcfg 3, 24, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2753, .-bmpcfg_emit_stub_2753
+
+.globl bmpcfg_emit_stub_2754
+.p2align 2
+.type bmpcfg_emit_stub_2754, @function
+bmpcfg_emit_stub_2754:
+    bmpcfg 3, 24, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2754, .-bmpcfg_emit_stub_2754
+
+.globl bmpcfg_emit_stub_2755
+.p2align 2
+.type bmpcfg_emit_stub_2755, @function
+bmpcfg_emit_stub_2755:
+    bmpcfg 3, 24, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2755, .-bmpcfg_emit_stub_2755
+
+.globl bmpcfg_emit_stub_2756
+.p2align 2
+.type bmpcfg_emit_stub_2756, @function
+bmpcfg_emit_stub_2756:
+    bmpcfg 3, 24, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2756, .-bmpcfg_emit_stub_2756
+
+.globl bmpcfg_emit_stub_2757
+.p2align 2
+.type bmpcfg_emit_stub_2757, @function
+bmpcfg_emit_stub_2757:
+    bmpcfg 3, 24, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2757, .-bmpcfg_emit_stub_2757
+
+.globl bmpcfg_emit_stub_2758
+.p2align 2
+.type bmpcfg_emit_stub_2758, @function
+bmpcfg_emit_stub_2758:
+    bmpcfg 3, 24, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2758, .-bmpcfg_emit_stub_2758
+
+.globl bmpcfg_emit_stub_2759
+.p2align 2
+.type bmpcfg_emit_stub_2759, @function
+bmpcfg_emit_stub_2759:
+    bmpcfg 3, 24, 8, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2759, .-bmpcfg_emit_stub_2759
+
+.globl bmpcfg_emit_stub_2760
+.p2align 2
+.type bmpcfg_emit_stub_2760, @function
+bmpcfg_emit_stub_2760:
+    bmpcfg 3, 24, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2760, .-bmpcfg_emit_stub_2760
+
+.globl bmpcfg_emit_stub_2761
+.p2align 2
+.type bmpcfg_emit_stub_2761, @function
+bmpcfg_emit_stub_2761:
+    bmpcfg 3, 24, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2761, .-bmpcfg_emit_stub_2761
+
+.globl bmpcfg_emit_stub_2762
+.p2align 2
+.type bmpcfg_emit_stub_2762, @function
+bmpcfg_emit_stub_2762:
+    bmpcfg 3, 24, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2762, .-bmpcfg_emit_stub_2762
+
+.globl bmpcfg_emit_stub_2763
+.p2align 2
+.type bmpcfg_emit_stub_2763, @function
+bmpcfg_emit_stub_2763:
+    bmpcfg 3, 24, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2763, .-bmpcfg_emit_stub_2763
+
+.globl bmpcfg_emit_stub_2764
+.p2align 2
+.type bmpcfg_emit_stub_2764, @function
+bmpcfg_emit_stub_2764:
+    bmpcfg 3, 24, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2764, .-bmpcfg_emit_stub_2764
+
+.globl bmpcfg_emit_stub_2765
+.p2align 2
+.type bmpcfg_emit_stub_2765, @function
+bmpcfg_emit_stub_2765:
+    bmpcfg 3, 24, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2765, .-bmpcfg_emit_stub_2765
+
+.globl bmpcfg_emit_stub_2766
+.p2align 2
+.type bmpcfg_emit_stub_2766, @function
+bmpcfg_emit_stub_2766:
+    bmpcfg 3, 24, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2766, .-bmpcfg_emit_stub_2766
+
+.globl bmpcfg_emit_stub_2767
+.p2align 2
+.type bmpcfg_emit_stub_2767, @function
+bmpcfg_emit_stub_2767:
+    bmpcfg 3, 24, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2767, .-bmpcfg_emit_stub_2767
+
+.globl bmpcfg_emit_stub_2768
+.p2align 2
+.type bmpcfg_emit_stub_2768, @function
+bmpcfg_emit_stub_2768:
+    bmpcfg 3, 24, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2768, .-bmpcfg_emit_stub_2768
+
+.globl bmpcfg_emit_stub_2769
+.p2align 2
+.type bmpcfg_emit_stub_2769, @function
+bmpcfg_emit_stub_2769:
+    bmpcfg 3, 24, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2769, .-bmpcfg_emit_stub_2769
+
+.globl bmpcfg_emit_stub_2770
+.p2align 2
+.type bmpcfg_emit_stub_2770, @function
+bmpcfg_emit_stub_2770:
+    bmpcfg 3, 24, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2770, .-bmpcfg_emit_stub_2770
+
+.globl bmpcfg_emit_stub_2771
+.p2align 2
+.type bmpcfg_emit_stub_2771, @function
+bmpcfg_emit_stub_2771:
+    bmpcfg 3, 24, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2771, .-bmpcfg_emit_stub_2771
+
+.globl bmpcfg_emit_stub_2772
+.p2align 2
+.type bmpcfg_emit_stub_2772, @function
+bmpcfg_emit_stub_2772:
+    bmpcfg 3, 24, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2772, .-bmpcfg_emit_stub_2772
+
+.globl bmpcfg_emit_stub_2773
+.p2align 2
+.type bmpcfg_emit_stub_2773, @function
+bmpcfg_emit_stub_2773:
+    bmpcfg 3, 24, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2773, .-bmpcfg_emit_stub_2773
+
+.globl bmpcfg_emit_stub_2774
+.p2align 2
+.type bmpcfg_emit_stub_2774, @function
+bmpcfg_emit_stub_2774:
+    bmpcfg 3, 24, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2774, .-bmpcfg_emit_stub_2774
+
+.globl bmpcfg_emit_stub_2775
+.p2align 2
+.type bmpcfg_emit_stub_2775, @function
+bmpcfg_emit_stub_2775:
+    bmpcfg 3, 24, 12, 80, 1, 1
+    ret
+.size bmpcfg_emit_stub_2775, .-bmpcfg_emit_stub_2775
+
+.globl bmpcfg_emit_stub_2776
+.p2align 2
+.type bmpcfg_emit_stub_2776, @function
+bmpcfg_emit_stub_2776:
+    bmpcfg 3, 24, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2776, .-bmpcfg_emit_stub_2776
+
+.globl bmpcfg_emit_stub_2777
+.p2align 2
+.type bmpcfg_emit_stub_2777, @function
+bmpcfg_emit_stub_2777:
+    bmpcfg 3, 24, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2777, .-bmpcfg_emit_stub_2777
+
+.globl bmpcfg_emit_stub_2778
+.p2align 2
+.type bmpcfg_emit_stub_2778, @function
+bmpcfg_emit_stub_2778:
+    bmpcfg 3, 24, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2778, .-bmpcfg_emit_stub_2778
+
+.globl bmpcfg_emit_stub_2779
+.p2align 2
+.type bmpcfg_emit_stub_2779, @function
+bmpcfg_emit_stub_2779:
+    bmpcfg 3, 24, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2779, .-bmpcfg_emit_stub_2779
+
+.globl bmpcfg_emit_stub_2780
+.p2align 2
+.type bmpcfg_emit_stub_2780, @function
+bmpcfg_emit_stub_2780:
+    bmpcfg 3, 24, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2780, .-bmpcfg_emit_stub_2780
+
+.globl bmpcfg_emit_stub_2781
+.p2align 2
+.type bmpcfg_emit_stub_2781, @function
+bmpcfg_emit_stub_2781:
+    bmpcfg 3, 24, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2781, .-bmpcfg_emit_stub_2781
+
+.globl bmpcfg_emit_stub_2782
+.p2align 2
+.type bmpcfg_emit_stub_2782, @function
+bmpcfg_emit_stub_2782:
+    bmpcfg 3, 24, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2782, .-bmpcfg_emit_stub_2782
+
+.globl bmpcfg_emit_stub_2783
+.p2align 2
+.type bmpcfg_emit_stub_2783, @function
+bmpcfg_emit_stub_2783:
+    bmpcfg 3, 24, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2783, .-bmpcfg_emit_stub_2783
+
+.globl bmpcfg_emit_stub_2784
+.p2align 2
+.type bmpcfg_emit_stub_2784, @function
+bmpcfg_emit_stub_2784:
+    bmpcfg 3, 24, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2784, .-bmpcfg_emit_stub_2784
+
+.globl bmpcfg_emit_stub_2785
+.p2align 2
+.type bmpcfg_emit_stub_2785, @function
+bmpcfg_emit_stub_2785:
+    bmpcfg 3, 24, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2785, .-bmpcfg_emit_stub_2785
+
+.globl bmpcfg_emit_stub_2786
+.p2align 2
+.type bmpcfg_emit_stub_2786, @function
+bmpcfg_emit_stub_2786:
+    bmpcfg 3, 24, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2786, .-bmpcfg_emit_stub_2786
+
+.globl bmpcfg_emit_stub_2787
+.p2align 2
+.type bmpcfg_emit_stub_2787, @function
+bmpcfg_emit_stub_2787:
+    bmpcfg 3, 24, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2787, .-bmpcfg_emit_stub_2787
+
+.globl bmpcfg_emit_stub_2788
+.p2align 2
+.type bmpcfg_emit_stub_2788, @function
+bmpcfg_emit_stub_2788:
+    bmpcfg 3, 24, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2788, .-bmpcfg_emit_stub_2788
+
+.globl bmpcfg_emit_stub_2789
+.p2align 2
+.type bmpcfg_emit_stub_2789, @function
+bmpcfg_emit_stub_2789:
+    bmpcfg 3, 24, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2789, .-bmpcfg_emit_stub_2789
+
+.globl bmpcfg_emit_stub_2790
+.p2align 2
+.type bmpcfg_emit_stub_2790, @function
+bmpcfg_emit_stub_2790:
+    bmpcfg 3, 24, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2790, .-bmpcfg_emit_stub_2790
+
+.globl bmpcfg_emit_stub_2791
+.p2align 2
+.type bmpcfg_emit_stub_2791, @function
+bmpcfg_emit_stub_2791:
+    bmpcfg 3, 24, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2791, .-bmpcfg_emit_stub_2791
+
+.globl bmpcfg_emit_stub_2792
+.p2align 2
+.type bmpcfg_emit_stub_2792, @function
+bmpcfg_emit_stub_2792:
+    bmpcfg 3, 24, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2792, .-bmpcfg_emit_stub_2792
+
+.globl bmpcfg_emit_stub_2793
+.p2align 2
+.type bmpcfg_emit_stub_2793, @function
+bmpcfg_emit_stub_2793:
+    bmpcfg 3, 24, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2793, .-bmpcfg_emit_stub_2793
+
+.globl bmpcfg_emit_stub_2794
+.p2align 2
+.type bmpcfg_emit_stub_2794, @function
+bmpcfg_emit_stub_2794:
+    bmpcfg 3, 24, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2794, .-bmpcfg_emit_stub_2794
+
+.globl bmpcfg_emit_stub_2795
+.p2align 2
+.type bmpcfg_emit_stub_2795, @function
+bmpcfg_emit_stub_2795:
+    bmpcfg 3, 24, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2795, .-bmpcfg_emit_stub_2795
+
+.globl bmpcfg_emit_stub_2796
+.p2align 2
+.type bmpcfg_emit_stub_2796, @function
+bmpcfg_emit_stub_2796:
+    bmpcfg 3, 24, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2796, .-bmpcfg_emit_stub_2796
+
+.globl bmpcfg_emit_stub_2797
+.p2align 2
+.type bmpcfg_emit_stub_2797, @function
+bmpcfg_emit_stub_2797:
+    bmpcfg 3, 24, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2797, .-bmpcfg_emit_stub_2797
+
+.globl bmpcfg_emit_stub_2798
+.p2align 2
+.type bmpcfg_emit_stub_2798, @function
+bmpcfg_emit_stub_2798:
+    bmpcfg 3, 24, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2798, .-bmpcfg_emit_stub_2798
+
+.globl bmpcfg_emit_stub_2799
+.p2align 2
+.type bmpcfg_emit_stub_2799, @function
+bmpcfg_emit_stub_2799:
+    bmpcfg 3, 24, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2799, .-bmpcfg_emit_stub_2799
+
+.globl bmpcfg_emit_stub_2800
+.p2align 2
+.type bmpcfg_emit_stub_2800, @function
+bmpcfg_emit_stub_2800:
+    bmpcfg 3, 24, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2800, .-bmpcfg_emit_stub_2800
+
+.globl bmpcfg_emit_stub_2801
+.p2align 2
+.type bmpcfg_emit_stub_2801, @function
+bmpcfg_emit_stub_2801:
+    bmpcfg 3, 24, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2801, .-bmpcfg_emit_stub_2801
+
+.globl bmpcfg_emit_stub_2802
+.p2align 2
+.type bmpcfg_emit_stub_2802, @function
+bmpcfg_emit_stub_2802:
+    bmpcfg 3, 24, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2802, .-bmpcfg_emit_stub_2802
+
+.globl bmpcfg_emit_stub_2803
+.p2align 2
+.type bmpcfg_emit_stub_2803, @function
+bmpcfg_emit_stub_2803:
+    bmpcfg 3, 24, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2803, .-bmpcfg_emit_stub_2803
+
+.globl bmpcfg_emit_stub_2804
+.p2align 2
+.type bmpcfg_emit_stub_2804, @function
+bmpcfg_emit_stub_2804:
+    bmpcfg 3, 24, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2804, .-bmpcfg_emit_stub_2804
+
+.globl bmpcfg_emit_stub_2805
+.p2align 2
+.type bmpcfg_emit_stub_2805, @function
+bmpcfg_emit_stub_2805:
+    bmpcfg 3, 24, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2805, .-bmpcfg_emit_stub_2805
+
+.globl bmpcfg_emit_stub_2806
+.p2align 2
+.type bmpcfg_emit_stub_2806, @function
+bmpcfg_emit_stub_2806:
+    bmpcfg 3, 24, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2806, .-bmpcfg_emit_stub_2806
+
+.globl bmpcfg_emit_stub_2807
+.p2align 2
+.type bmpcfg_emit_stub_2807, @function
+bmpcfg_emit_stub_2807:
+    bmpcfg 3, 24, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2807, .-bmpcfg_emit_stub_2807
+
+.globl bmpcfg_emit_stub_2808
+.p2align 2
+.type bmpcfg_emit_stub_2808, @function
+bmpcfg_emit_stub_2808:
+    bmpcfg 3, 24, 36, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2808, .-bmpcfg_emit_stub_2808
+
+.globl bmpcfg_emit_stub_2809
+.p2align 2
+.type bmpcfg_emit_stub_2809, @function
+bmpcfg_emit_stub_2809:
+    bmpcfg 3, 24, 40, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2809, .-bmpcfg_emit_stub_2809
+
+.globl bmpcfg_emit_stub_2810
+.p2align 2
+.type bmpcfg_emit_stub_2810, @function
+bmpcfg_emit_stub_2810:
+    bmpcfg 3, 32, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2810, .-bmpcfg_emit_stub_2810
+
+.globl bmpcfg_emit_stub_2811
+.p2align 2
+.type bmpcfg_emit_stub_2811, @function
+bmpcfg_emit_stub_2811:
+    bmpcfg 3, 32, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2811, .-bmpcfg_emit_stub_2811
+
+.globl bmpcfg_emit_stub_2812
+.p2align 2
+.type bmpcfg_emit_stub_2812, @function
+bmpcfg_emit_stub_2812:
+    bmpcfg 3, 32, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2812, .-bmpcfg_emit_stub_2812
+
+.globl bmpcfg_emit_stub_2813
+.p2align 2
+.type bmpcfg_emit_stub_2813, @function
+bmpcfg_emit_stub_2813:
+    bmpcfg 3, 32, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2813, .-bmpcfg_emit_stub_2813
+
+.globl bmpcfg_emit_stub_2814
+.p2align 2
+.type bmpcfg_emit_stub_2814, @function
+bmpcfg_emit_stub_2814:
+    bmpcfg 3, 32, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2814, .-bmpcfg_emit_stub_2814
+
+.globl bmpcfg_emit_stub_2815
+.p2align 2
+.type bmpcfg_emit_stub_2815, @function
+bmpcfg_emit_stub_2815:
+    bmpcfg 3, 32, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2815, .-bmpcfg_emit_stub_2815
+
+.globl bmpcfg_emit_stub_2816
+.p2align 2
+.type bmpcfg_emit_stub_2816, @function
+bmpcfg_emit_stub_2816:
+    bmpcfg 3, 32, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2816, .-bmpcfg_emit_stub_2816
+
+.globl bmpcfg_emit_stub_2817
+.p2align 2
+.type bmpcfg_emit_stub_2817, @function
+bmpcfg_emit_stub_2817:
+    bmpcfg 3, 32, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2817, .-bmpcfg_emit_stub_2817
+
+.globl bmpcfg_emit_stub_2818
+.p2align 2
+.type bmpcfg_emit_stub_2818, @function
+bmpcfg_emit_stub_2818:
+    bmpcfg 3, 32, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2818, .-bmpcfg_emit_stub_2818
+
+.globl bmpcfg_emit_stub_2819
+.p2align 2
+.type bmpcfg_emit_stub_2819, @function
+bmpcfg_emit_stub_2819:
+    bmpcfg 3, 32, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2819, .-bmpcfg_emit_stub_2819
+
+.globl bmpcfg_emit_stub_2820
+.p2align 2
+.type bmpcfg_emit_stub_2820, @function
+bmpcfg_emit_stub_2820:
+    bmpcfg 3, 32, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2820, .-bmpcfg_emit_stub_2820
+
+.globl bmpcfg_emit_stub_2821
+.p2align 2
+.type bmpcfg_emit_stub_2821, @function
+bmpcfg_emit_stub_2821:
+    bmpcfg 3, 32, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2821, .-bmpcfg_emit_stub_2821
+
+.globl bmpcfg_emit_stub_2822
+.p2align 2
+.type bmpcfg_emit_stub_2822, @function
+bmpcfg_emit_stub_2822:
+    bmpcfg 3, 32, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2822, .-bmpcfg_emit_stub_2822
+
+.globl bmpcfg_emit_stub_2823
+.p2align 2
+.type bmpcfg_emit_stub_2823, @function
+bmpcfg_emit_stub_2823:
+    bmpcfg 3, 32, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2823, .-bmpcfg_emit_stub_2823
+
+.globl bmpcfg_emit_stub_2824
+.p2align 2
+.type bmpcfg_emit_stub_2824, @function
+bmpcfg_emit_stub_2824:
+    bmpcfg 3, 32, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2824, .-bmpcfg_emit_stub_2824
+
+.globl bmpcfg_emit_stub_2825
+.p2align 2
+.type bmpcfg_emit_stub_2825, @function
+bmpcfg_emit_stub_2825:
+    bmpcfg 3, 32, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2825, .-bmpcfg_emit_stub_2825
+
+.globl bmpcfg_emit_stub_2826
+.p2align 2
+.type bmpcfg_emit_stub_2826, @function
+bmpcfg_emit_stub_2826:
+    bmpcfg 3, 32, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2826, .-bmpcfg_emit_stub_2826
+
+.globl bmpcfg_emit_stub_2827
+.p2align 2
+.type bmpcfg_emit_stub_2827, @function
+bmpcfg_emit_stub_2827:
+    bmpcfg 3, 32, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2827, .-bmpcfg_emit_stub_2827
+
+.globl bmpcfg_emit_stub_2828
+.p2align 2
+.type bmpcfg_emit_stub_2828, @function
+bmpcfg_emit_stub_2828:
+    bmpcfg 3, 32, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2828, .-bmpcfg_emit_stub_2828
+
+.globl bmpcfg_emit_stub_2829
+.p2align 2
+.type bmpcfg_emit_stub_2829, @function
+bmpcfg_emit_stub_2829:
+    bmpcfg 3, 32, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2829, .-bmpcfg_emit_stub_2829
+
+.globl bmpcfg_emit_stub_2830
+.p2align 2
+.type bmpcfg_emit_stub_2830, @function
+bmpcfg_emit_stub_2830:
+    bmpcfg 3, 32, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2830, .-bmpcfg_emit_stub_2830
+
+.globl bmpcfg_emit_stub_2831
+.p2align 2
+.type bmpcfg_emit_stub_2831, @function
+bmpcfg_emit_stub_2831:
+    bmpcfg 3, 32, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2831, .-bmpcfg_emit_stub_2831
+
+.globl bmpcfg_emit_stub_2832
+.p2align 2
+.type bmpcfg_emit_stub_2832, @function
+bmpcfg_emit_stub_2832:
+    bmpcfg 3, 32, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2832, .-bmpcfg_emit_stub_2832
+
+.globl bmpcfg_emit_stub_2833
+.p2align 2
+.type bmpcfg_emit_stub_2833, @function
+bmpcfg_emit_stub_2833:
+    bmpcfg 3, 32, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2833, .-bmpcfg_emit_stub_2833
+
+.globl bmpcfg_emit_stub_2834
+.p2align 2
+.type bmpcfg_emit_stub_2834, @function
+bmpcfg_emit_stub_2834:
+    bmpcfg 3, 32, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2834, .-bmpcfg_emit_stub_2834
+
+.globl bmpcfg_emit_stub_2835
+.p2align 2
+.type bmpcfg_emit_stub_2835, @function
+bmpcfg_emit_stub_2835:
+    bmpcfg 3, 32, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2835, .-bmpcfg_emit_stub_2835
+
+.globl bmpcfg_emit_stub_2836
+.p2align 2
+.type bmpcfg_emit_stub_2836, @function
+bmpcfg_emit_stub_2836:
+    bmpcfg 3, 32, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2836, .-bmpcfg_emit_stub_2836
+
+.globl bmpcfg_emit_stub_2837
+.p2align 2
+.type bmpcfg_emit_stub_2837, @function
+bmpcfg_emit_stub_2837:
+    bmpcfg 3, 32, 8, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2837, .-bmpcfg_emit_stub_2837
+
+.globl bmpcfg_emit_stub_2838
+.p2align 2
+.type bmpcfg_emit_stub_2838, @function
+bmpcfg_emit_stub_2838:
+    bmpcfg 3, 32, 8, 64, 1, 2
+    ret
+.size bmpcfg_emit_stub_2838, .-bmpcfg_emit_stub_2838
+
+.globl bmpcfg_emit_stub_2839
+.p2align 2
+.type bmpcfg_emit_stub_2839, @function
+bmpcfg_emit_stub_2839:
+    bmpcfg 3, 32, 8, 64, 2, 1
+    ret
+.size bmpcfg_emit_stub_2839, .-bmpcfg_emit_stub_2839
+
+.globl bmpcfg_emit_stub_2840
+.p2align 2
+.type bmpcfg_emit_stub_2840, @function
+bmpcfg_emit_stub_2840:
+    bmpcfg 3, 32, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2840, .-bmpcfg_emit_stub_2840
+
+.globl bmpcfg_emit_stub_2841
+.p2align 2
+.type bmpcfg_emit_stub_2841, @function
+bmpcfg_emit_stub_2841:
+    bmpcfg 3, 32, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2841, .-bmpcfg_emit_stub_2841
+
+.globl bmpcfg_emit_stub_2842
+.p2align 2
+.type bmpcfg_emit_stub_2842, @function
+bmpcfg_emit_stub_2842:
+    bmpcfg 3, 32, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2842, .-bmpcfg_emit_stub_2842
+
+.globl bmpcfg_emit_stub_2843
+.p2align 2
+.type bmpcfg_emit_stub_2843, @function
+bmpcfg_emit_stub_2843:
+    bmpcfg 3, 32, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2843, .-bmpcfg_emit_stub_2843
+
+.globl bmpcfg_emit_stub_2844
+.p2align 2
+.type bmpcfg_emit_stub_2844, @function
+bmpcfg_emit_stub_2844:
+    bmpcfg 3, 32, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2844, .-bmpcfg_emit_stub_2844
+
+.globl bmpcfg_emit_stub_2845
+.p2align 2
+.type bmpcfg_emit_stub_2845, @function
+bmpcfg_emit_stub_2845:
+    bmpcfg 3, 32, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2845, .-bmpcfg_emit_stub_2845
+
+.globl bmpcfg_emit_stub_2846
+.p2align 2
+.type bmpcfg_emit_stub_2846, @function
+bmpcfg_emit_stub_2846:
+    bmpcfg 3, 32, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2846, .-bmpcfg_emit_stub_2846
+
+.globl bmpcfg_emit_stub_2847
+.p2align 2
+.type bmpcfg_emit_stub_2847, @function
+bmpcfg_emit_stub_2847:
+    bmpcfg 3, 32, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2847, .-bmpcfg_emit_stub_2847
+
+.globl bmpcfg_emit_stub_2848
+.p2align 2
+.type bmpcfg_emit_stub_2848, @function
+bmpcfg_emit_stub_2848:
+    bmpcfg 3, 32, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2848, .-bmpcfg_emit_stub_2848
+
+.globl bmpcfg_emit_stub_2849
+.p2align 2
+.type bmpcfg_emit_stub_2849, @function
+bmpcfg_emit_stub_2849:
+    bmpcfg 3, 32, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2849, .-bmpcfg_emit_stub_2849
+
+.globl bmpcfg_emit_stub_2850
+.p2align 2
+.type bmpcfg_emit_stub_2850, @function
+bmpcfg_emit_stub_2850:
+    bmpcfg 3, 32, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2850, .-bmpcfg_emit_stub_2850
+
+.globl bmpcfg_emit_stub_2851
+.p2align 2
+.type bmpcfg_emit_stub_2851, @function
+bmpcfg_emit_stub_2851:
+    bmpcfg 3, 32, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2851, .-bmpcfg_emit_stub_2851
+
+.globl bmpcfg_emit_stub_2852
+.p2align 2
+.type bmpcfg_emit_stub_2852, @function
+bmpcfg_emit_stub_2852:
+    bmpcfg 3, 32, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2852, .-bmpcfg_emit_stub_2852
+
+.globl bmpcfg_emit_stub_2853
+.p2align 2
+.type bmpcfg_emit_stub_2853, @function
+bmpcfg_emit_stub_2853:
+    bmpcfg 3, 32, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2853, .-bmpcfg_emit_stub_2853
+
+.globl bmpcfg_emit_stub_2854
+.p2align 2
+.type bmpcfg_emit_stub_2854, @function
+bmpcfg_emit_stub_2854:
+    bmpcfg 3, 32, 12, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2854, .-bmpcfg_emit_stub_2854
+
+.globl bmpcfg_emit_stub_2855
+.p2align 2
+.type bmpcfg_emit_stub_2855, @function
+bmpcfg_emit_stub_2855:
+    bmpcfg 3, 32, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2855, .-bmpcfg_emit_stub_2855
+
+.globl bmpcfg_emit_stub_2856
+.p2align 2
+.type bmpcfg_emit_stub_2856, @function
+bmpcfg_emit_stub_2856:
+    bmpcfg 3, 32, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2856, .-bmpcfg_emit_stub_2856
+
+.globl bmpcfg_emit_stub_2857
+.p2align 2
+.type bmpcfg_emit_stub_2857, @function
+bmpcfg_emit_stub_2857:
+    bmpcfg 3, 32, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2857, .-bmpcfg_emit_stub_2857
+
+.globl bmpcfg_emit_stub_2858
+.p2align 2
+.type bmpcfg_emit_stub_2858, @function
+bmpcfg_emit_stub_2858:
+    bmpcfg 3, 32, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2858, .-bmpcfg_emit_stub_2858
+
+.globl bmpcfg_emit_stub_2859
+.p2align 2
+.type bmpcfg_emit_stub_2859, @function
+bmpcfg_emit_stub_2859:
+    bmpcfg 3, 32, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2859, .-bmpcfg_emit_stub_2859
+
+.globl bmpcfg_emit_stub_2860
+.p2align 2
+.type bmpcfg_emit_stub_2860, @function
+bmpcfg_emit_stub_2860:
+    bmpcfg 3, 32, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2860, .-bmpcfg_emit_stub_2860
+
+.globl bmpcfg_emit_stub_2861
+.p2align 2
+.type bmpcfg_emit_stub_2861, @function
+bmpcfg_emit_stub_2861:
+    bmpcfg 3, 32, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2861, .-bmpcfg_emit_stub_2861
+
+.globl bmpcfg_emit_stub_2862
+.p2align 2
+.type bmpcfg_emit_stub_2862, @function
+bmpcfg_emit_stub_2862:
+    bmpcfg 3, 32, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2862, .-bmpcfg_emit_stub_2862
+
+.globl bmpcfg_emit_stub_2863
+.p2align 2
+.type bmpcfg_emit_stub_2863, @function
+bmpcfg_emit_stub_2863:
+    bmpcfg 3, 32, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2863, .-bmpcfg_emit_stub_2863
+
+.globl bmpcfg_emit_stub_2864
+.p2align 2
+.type bmpcfg_emit_stub_2864, @function
+bmpcfg_emit_stub_2864:
+    bmpcfg 3, 32, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2864, .-bmpcfg_emit_stub_2864
+
+.globl bmpcfg_emit_stub_2865
+.p2align 2
+.type bmpcfg_emit_stub_2865, @function
+bmpcfg_emit_stub_2865:
+    bmpcfg 3, 32, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2865, .-bmpcfg_emit_stub_2865
+
+.globl bmpcfg_emit_stub_2866
+.p2align 2
+.type bmpcfg_emit_stub_2866, @function
+bmpcfg_emit_stub_2866:
+    bmpcfg 3, 32, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2866, .-bmpcfg_emit_stub_2866
+
+.globl bmpcfg_emit_stub_2867
+.p2align 2
+.type bmpcfg_emit_stub_2867, @function
+bmpcfg_emit_stub_2867:
+    bmpcfg 3, 32, 16, 64, 1, 1
+    ret
+.size bmpcfg_emit_stub_2867, .-bmpcfg_emit_stub_2867
+
+.globl bmpcfg_emit_stub_2868
+.p2align 2
+.type bmpcfg_emit_stub_2868, @function
+bmpcfg_emit_stub_2868:
+    bmpcfg 3, 32, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2868, .-bmpcfg_emit_stub_2868
+
+.globl bmpcfg_emit_stub_2869
+.p2align 2
+.type bmpcfg_emit_stub_2869, @function
+bmpcfg_emit_stub_2869:
+    bmpcfg 3, 32, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2869, .-bmpcfg_emit_stub_2869
+
+.globl bmpcfg_emit_stub_2870
+.p2align 2
+.type bmpcfg_emit_stub_2870, @function
+bmpcfg_emit_stub_2870:
+    bmpcfg 3, 32, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2870, .-bmpcfg_emit_stub_2870
+
+.globl bmpcfg_emit_stub_2871
+.p2align 2
+.type bmpcfg_emit_stub_2871, @function
+bmpcfg_emit_stub_2871:
+    bmpcfg 3, 32, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2871, .-bmpcfg_emit_stub_2871
+
+.globl bmpcfg_emit_stub_2872
+.p2align 2
+.type bmpcfg_emit_stub_2872, @function
+bmpcfg_emit_stub_2872:
+    bmpcfg 3, 32, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2872, .-bmpcfg_emit_stub_2872
+
+.globl bmpcfg_emit_stub_2873
+.p2align 2
+.type bmpcfg_emit_stub_2873, @function
+bmpcfg_emit_stub_2873:
+    bmpcfg 3, 32, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2873, .-bmpcfg_emit_stub_2873
+
+.globl bmpcfg_emit_stub_2874
+.p2align 2
+.type bmpcfg_emit_stub_2874, @function
+bmpcfg_emit_stub_2874:
+    bmpcfg 3, 32, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2874, .-bmpcfg_emit_stub_2874
+
+.globl bmpcfg_emit_stub_2875
+.p2align 2
+.type bmpcfg_emit_stub_2875, @function
+bmpcfg_emit_stub_2875:
+    bmpcfg 3, 32, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2875, .-bmpcfg_emit_stub_2875
+
+.globl bmpcfg_emit_stub_2876
+.p2align 2
+.type bmpcfg_emit_stub_2876, @function
+bmpcfg_emit_stub_2876:
+    bmpcfg 3, 32, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2876, .-bmpcfg_emit_stub_2876
+
+.globl bmpcfg_emit_stub_2877
+.p2align 2
+.type bmpcfg_emit_stub_2877, @function
+bmpcfg_emit_stub_2877:
+    bmpcfg 3, 32, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2877, .-bmpcfg_emit_stub_2877
+
+.globl bmpcfg_emit_stub_2878
+.p2align 2
+.type bmpcfg_emit_stub_2878, @function
+bmpcfg_emit_stub_2878:
+    bmpcfg 3, 32, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2878, .-bmpcfg_emit_stub_2878
+
+.globl bmpcfg_emit_stub_2879
+.p2align 2
+.type bmpcfg_emit_stub_2879, @function
+bmpcfg_emit_stub_2879:
+    bmpcfg 3, 32, 28, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2879, .-bmpcfg_emit_stub_2879
+
+.globl bmpcfg_emit_stub_2880
+.p2align 2
+.type bmpcfg_emit_stub_2880, @function
+bmpcfg_emit_stub_2880:
+    bmpcfg 3, 32, 28, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2880, .-bmpcfg_emit_stub_2880
+
+.globl bmpcfg_emit_stub_2881
+.p2align 2
+.type bmpcfg_emit_stub_2881, @function
+bmpcfg_emit_stub_2881:
+    bmpcfg 3, 32, 28, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2881, .-bmpcfg_emit_stub_2881
+
+.globl bmpcfg_emit_stub_2882
+.p2align 2
+.type bmpcfg_emit_stub_2882, @function
+bmpcfg_emit_stub_2882:
+    bmpcfg 3, 32, 28, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2882, .-bmpcfg_emit_stub_2882
+
+.globl bmpcfg_emit_stub_2883
+.p2align 2
+.type bmpcfg_emit_stub_2883, @function
+bmpcfg_emit_stub_2883:
+    bmpcfg 3, 32, 32, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2883, .-bmpcfg_emit_stub_2883
+
+.globl bmpcfg_emit_stub_2884
+.p2align 2
+.type bmpcfg_emit_stub_2884, @function
+bmpcfg_emit_stub_2884:
+    bmpcfg 3, 32, 32, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2884, .-bmpcfg_emit_stub_2884
+
+.globl bmpcfg_emit_stub_2885
+.p2align 2
+.type bmpcfg_emit_stub_2885, @function
+bmpcfg_emit_stub_2885:
+    bmpcfg 3, 32, 32, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2885, .-bmpcfg_emit_stub_2885
+
+.globl bmpcfg_emit_stub_2886
+.p2align 2
+.type bmpcfg_emit_stub_2886, @function
+bmpcfg_emit_stub_2886:
+    bmpcfg 3, 32, 32, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2886, .-bmpcfg_emit_stub_2886
+
+.globl bmpcfg_emit_stub_2887
+.p2align 2
+.type bmpcfg_emit_stub_2887, @function
+bmpcfg_emit_stub_2887:
+    bmpcfg 3, 40, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2887, .-bmpcfg_emit_stub_2887
+
+.globl bmpcfg_emit_stub_2888
+.p2align 2
+.type bmpcfg_emit_stub_2888, @function
+bmpcfg_emit_stub_2888:
+    bmpcfg 3, 40, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2888, .-bmpcfg_emit_stub_2888
+
+.globl bmpcfg_emit_stub_2889
+.p2align 2
+.type bmpcfg_emit_stub_2889, @function
+bmpcfg_emit_stub_2889:
+    bmpcfg 3, 40, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2889, .-bmpcfg_emit_stub_2889
+
+.globl bmpcfg_emit_stub_2890
+.p2align 2
+.type bmpcfg_emit_stub_2890, @function
+bmpcfg_emit_stub_2890:
+    bmpcfg 3, 40, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2890, .-bmpcfg_emit_stub_2890
+
+.globl bmpcfg_emit_stub_2891
+.p2align 2
+.type bmpcfg_emit_stub_2891, @function
+bmpcfg_emit_stub_2891:
+    bmpcfg 3, 40, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2891, .-bmpcfg_emit_stub_2891
+
+.globl bmpcfg_emit_stub_2892
+.p2align 2
+.type bmpcfg_emit_stub_2892, @function
+bmpcfg_emit_stub_2892:
+    bmpcfg 3, 40, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2892, .-bmpcfg_emit_stub_2892
+
+.globl bmpcfg_emit_stub_2893
+.p2align 2
+.type bmpcfg_emit_stub_2893, @function
+bmpcfg_emit_stub_2893:
+    bmpcfg 3, 40, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2893, .-bmpcfg_emit_stub_2893
+
+.globl bmpcfg_emit_stub_2894
+.p2align 2
+.type bmpcfg_emit_stub_2894, @function
+bmpcfg_emit_stub_2894:
+    bmpcfg 3, 40, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2894, .-bmpcfg_emit_stub_2894
+
+.globl bmpcfg_emit_stub_2895
+.p2align 2
+.type bmpcfg_emit_stub_2895, @function
+bmpcfg_emit_stub_2895:
+    bmpcfg 3, 40, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2895, .-bmpcfg_emit_stub_2895
+
+.globl bmpcfg_emit_stub_2896
+.p2align 2
+.type bmpcfg_emit_stub_2896, @function
+bmpcfg_emit_stub_2896:
+    bmpcfg 3, 40, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2896, .-bmpcfg_emit_stub_2896
+
+.globl bmpcfg_emit_stub_2897
+.p2align 2
+.type bmpcfg_emit_stub_2897, @function
+bmpcfg_emit_stub_2897:
+    bmpcfg 3, 40, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2897, .-bmpcfg_emit_stub_2897
+
+.globl bmpcfg_emit_stub_2898
+.p2align 2
+.type bmpcfg_emit_stub_2898, @function
+bmpcfg_emit_stub_2898:
+    bmpcfg 3, 40, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2898, .-bmpcfg_emit_stub_2898
+
+.globl bmpcfg_emit_stub_2899
+.p2align 2
+.type bmpcfg_emit_stub_2899, @function
+bmpcfg_emit_stub_2899:
+    bmpcfg 3, 40, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2899, .-bmpcfg_emit_stub_2899
+
+.globl bmpcfg_emit_stub_2900
+.p2align 2
+.type bmpcfg_emit_stub_2900, @function
+bmpcfg_emit_stub_2900:
+    bmpcfg 3, 40, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2900, .-bmpcfg_emit_stub_2900
+
+.globl bmpcfg_emit_stub_2901
+.p2align 2
+.type bmpcfg_emit_stub_2901, @function
+bmpcfg_emit_stub_2901:
+    bmpcfg 3, 40, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2901, .-bmpcfg_emit_stub_2901
+
+.globl bmpcfg_emit_stub_2902
+.p2align 2
+.type bmpcfg_emit_stub_2902, @function
+bmpcfg_emit_stub_2902:
+    bmpcfg 3, 40, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2902, .-bmpcfg_emit_stub_2902
+
+.globl bmpcfg_emit_stub_2903
+.p2align 2
+.type bmpcfg_emit_stub_2903, @function
+bmpcfg_emit_stub_2903:
+    bmpcfg 3, 40, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2903, .-bmpcfg_emit_stub_2903
+
+.globl bmpcfg_emit_stub_2904
+.p2align 2
+.type bmpcfg_emit_stub_2904, @function
+bmpcfg_emit_stub_2904:
+    bmpcfg 3, 40, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2904, .-bmpcfg_emit_stub_2904
+
+.globl bmpcfg_emit_stub_2905
+.p2align 2
+.type bmpcfg_emit_stub_2905, @function
+bmpcfg_emit_stub_2905:
+    bmpcfg 3, 40, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2905, .-bmpcfg_emit_stub_2905
+
+.globl bmpcfg_emit_stub_2906
+.p2align 2
+.type bmpcfg_emit_stub_2906, @function
+bmpcfg_emit_stub_2906:
+    bmpcfg 3, 40, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2906, .-bmpcfg_emit_stub_2906
+
+.globl bmpcfg_emit_stub_2907
+.p2align 2
+.type bmpcfg_emit_stub_2907, @function
+bmpcfg_emit_stub_2907:
+    bmpcfg 3, 40, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2907, .-bmpcfg_emit_stub_2907
+
+.globl bmpcfg_emit_stub_2908
+.p2align 2
+.type bmpcfg_emit_stub_2908, @function
+bmpcfg_emit_stub_2908:
+    bmpcfg 3, 40, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2908, .-bmpcfg_emit_stub_2908
+
+.globl bmpcfg_emit_stub_2909
+.p2align 2
+.type bmpcfg_emit_stub_2909, @function
+bmpcfg_emit_stub_2909:
+    bmpcfg 3, 40, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2909, .-bmpcfg_emit_stub_2909
+
+.globl bmpcfg_emit_stub_2910
+.p2align 2
+.type bmpcfg_emit_stub_2910, @function
+bmpcfg_emit_stub_2910:
+    bmpcfg 3, 40, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2910, .-bmpcfg_emit_stub_2910
+
+.globl bmpcfg_emit_stub_2911
+.p2align 2
+.type bmpcfg_emit_stub_2911, @function
+bmpcfg_emit_stub_2911:
+    bmpcfg 3, 40, 8, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2911, .-bmpcfg_emit_stub_2911
+
+.globl bmpcfg_emit_stub_2912
+.p2align 2
+.type bmpcfg_emit_stub_2912, @function
+bmpcfg_emit_stub_2912:
+    bmpcfg 3, 40, 8, 48, 1, 2
+    ret
+.size bmpcfg_emit_stub_2912, .-bmpcfg_emit_stub_2912
+
+.globl bmpcfg_emit_stub_2913
+.p2align 2
+.type bmpcfg_emit_stub_2913, @function
+bmpcfg_emit_stub_2913:
+    bmpcfg 3, 40, 8, 48, 2, 1
+    ret
+.size bmpcfg_emit_stub_2913, .-bmpcfg_emit_stub_2913
+
+.globl bmpcfg_emit_stub_2914
+.p2align 2
+.type bmpcfg_emit_stub_2914, @function
+bmpcfg_emit_stub_2914:
+    bmpcfg 3, 40, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2914, .-bmpcfg_emit_stub_2914
+
+.globl bmpcfg_emit_stub_2915
+.p2align 2
+.type bmpcfg_emit_stub_2915, @function
+bmpcfg_emit_stub_2915:
+    bmpcfg 3, 40, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2915, .-bmpcfg_emit_stub_2915
+
+.globl bmpcfg_emit_stub_2916
+.p2align 2
+.type bmpcfg_emit_stub_2916, @function
+bmpcfg_emit_stub_2916:
+    bmpcfg 3, 40, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2916, .-bmpcfg_emit_stub_2916
+
+.globl bmpcfg_emit_stub_2917
+.p2align 2
+.type bmpcfg_emit_stub_2917, @function
+bmpcfg_emit_stub_2917:
+    bmpcfg 3, 40, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2917, .-bmpcfg_emit_stub_2917
+
+.globl bmpcfg_emit_stub_2918
+.p2align 2
+.type bmpcfg_emit_stub_2918, @function
+bmpcfg_emit_stub_2918:
+    bmpcfg 3, 40, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2918, .-bmpcfg_emit_stub_2918
+
+.globl bmpcfg_emit_stub_2919
+.p2align 2
+.type bmpcfg_emit_stub_2919, @function
+bmpcfg_emit_stub_2919:
+    bmpcfg 3, 40, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2919, .-bmpcfg_emit_stub_2919
+
+.globl bmpcfg_emit_stub_2920
+.p2align 2
+.type bmpcfg_emit_stub_2920, @function
+bmpcfg_emit_stub_2920:
+    bmpcfg 3, 40, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2920, .-bmpcfg_emit_stub_2920
+
+.globl bmpcfg_emit_stub_2921
+.p2align 2
+.type bmpcfg_emit_stub_2921, @function
+bmpcfg_emit_stub_2921:
+    bmpcfg 3, 40, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2921, .-bmpcfg_emit_stub_2921
+
+.globl bmpcfg_emit_stub_2922
+.p2align 2
+.type bmpcfg_emit_stub_2922, @function
+bmpcfg_emit_stub_2922:
+    bmpcfg 3, 40, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2922, .-bmpcfg_emit_stub_2922
+
+.globl bmpcfg_emit_stub_2923
+.p2align 2
+.type bmpcfg_emit_stub_2923, @function
+bmpcfg_emit_stub_2923:
+    bmpcfg 3, 40, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2923, .-bmpcfg_emit_stub_2923
+
+.globl bmpcfg_emit_stub_2924
+.p2align 2
+.type bmpcfg_emit_stub_2924, @function
+bmpcfg_emit_stub_2924:
+    bmpcfg 3, 40, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2924, .-bmpcfg_emit_stub_2924
+
+.globl bmpcfg_emit_stub_2925
+.p2align 2
+.type bmpcfg_emit_stub_2925, @function
+bmpcfg_emit_stub_2925:
+    bmpcfg 3, 40, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2925, .-bmpcfg_emit_stub_2925
+
+.globl bmpcfg_emit_stub_2926
+.p2align 2
+.type bmpcfg_emit_stub_2926, @function
+bmpcfg_emit_stub_2926:
+    bmpcfg 3, 40, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2926, .-bmpcfg_emit_stub_2926
+
+.globl bmpcfg_emit_stub_2927
+.p2align 2
+.type bmpcfg_emit_stub_2927, @function
+bmpcfg_emit_stub_2927:
+    bmpcfg 3, 40, 12, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2927, .-bmpcfg_emit_stub_2927
+
+.globl bmpcfg_emit_stub_2928
+.p2align 2
+.type bmpcfg_emit_stub_2928, @function
+bmpcfg_emit_stub_2928:
+    bmpcfg 3, 40, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2928, .-bmpcfg_emit_stub_2928
+
+.globl bmpcfg_emit_stub_2929
+.p2align 2
+.type bmpcfg_emit_stub_2929, @function
+bmpcfg_emit_stub_2929:
+    bmpcfg 3, 40, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2929, .-bmpcfg_emit_stub_2929
+
+.globl bmpcfg_emit_stub_2930
+.p2align 2
+.type bmpcfg_emit_stub_2930, @function
+bmpcfg_emit_stub_2930:
+    bmpcfg 3, 40, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2930, .-bmpcfg_emit_stub_2930
+
+.globl bmpcfg_emit_stub_2931
+.p2align 2
+.type bmpcfg_emit_stub_2931, @function
+bmpcfg_emit_stub_2931:
+    bmpcfg 3, 40, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2931, .-bmpcfg_emit_stub_2931
+
+.globl bmpcfg_emit_stub_2932
+.p2align 2
+.type bmpcfg_emit_stub_2932, @function
+bmpcfg_emit_stub_2932:
+    bmpcfg 3, 40, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2932, .-bmpcfg_emit_stub_2932
+
+.globl bmpcfg_emit_stub_2933
+.p2align 2
+.type bmpcfg_emit_stub_2933, @function
+bmpcfg_emit_stub_2933:
+    bmpcfg 3, 40, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2933, .-bmpcfg_emit_stub_2933
+
+.globl bmpcfg_emit_stub_2934
+.p2align 2
+.type bmpcfg_emit_stub_2934, @function
+bmpcfg_emit_stub_2934:
+    bmpcfg 3, 40, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2934, .-bmpcfg_emit_stub_2934
+
+.globl bmpcfg_emit_stub_2935
+.p2align 2
+.type bmpcfg_emit_stub_2935, @function
+bmpcfg_emit_stub_2935:
+    bmpcfg 3, 40, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2935, .-bmpcfg_emit_stub_2935
+
+.globl bmpcfg_emit_stub_2936
+.p2align 2
+.type bmpcfg_emit_stub_2936, @function
+bmpcfg_emit_stub_2936:
+    bmpcfg 3, 40, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2936, .-bmpcfg_emit_stub_2936
+
+.globl bmpcfg_emit_stub_2937
+.p2align 2
+.type bmpcfg_emit_stub_2937, @function
+bmpcfg_emit_stub_2937:
+    bmpcfg 3, 40, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2937, .-bmpcfg_emit_stub_2937
+
+.globl bmpcfg_emit_stub_2938
+.p2align 2
+.type bmpcfg_emit_stub_2938, @function
+bmpcfg_emit_stub_2938:
+    bmpcfg 3, 40, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2938, .-bmpcfg_emit_stub_2938
+
+.globl bmpcfg_emit_stub_2939
+.p2align 2
+.type bmpcfg_emit_stub_2939, @function
+bmpcfg_emit_stub_2939:
+    bmpcfg 3, 40, 16, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2939, .-bmpcfg_emit_stub_2939
+
+.globl bmpcfg_emit_stub_2940
+.p2align 2
+.type bmpcfg_emit_stub_2940, @function
+bmpcfg_emit_stub_2940:
+    bmpcfg 3, 40, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2940, .-bmpcfg_emit_stub_2940
+
+.globl bmpcfg_emit_stub_2941
+.p2align 2
+.type bmpcfg_emit_stub_2941, @function
+bmpcfg_emit_stub_2941:
+    bmpcfg 3, 40, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2941, .-bmpcfg_emit_stub_2941
+
+.globl bmpcfg_emit_stub_2942
+.p2align 2
+.type bmpcfg_emit_stub_2942, @function
+bmpcfg_emit_stub_2942:
+    bmpcfg 3, 40, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2942, .-bmpcfg_emit_stub_2942
+
+.globl bmpcfg_emit_stub_2943
+.p2align 2
+.type bmpcfg_emit_stub_2943, @function
+bmpcfg_emit_stub_2943:
+    bmpcfg 3, 40, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2943, .-bmpcfg_emit_stub_2943
+
+.globl bmpcfg_emit_stub_2944
+.p2align 2
+.type bmpcfg_emit_stub_2944, @function
+bmpcfg_emit_stub_2944:
+    bmpcfg 3, 40, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2944, .-bmpcfg_emit_stub_2944
+
+.globl bmpcfg_emit_stub_2945
+.p2align 2
+.type bmpcfg_emit_stub_2945, @function
+bmpcfg_emit_stub_2945:
+    bmpcfg 3, 40, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2945, .-bmpcfg_emit_stub_2945
+
+.globl bmpcfg_emit_stub_2946
+.p2align 2
+.type bmpcfg_emit_stub_2946, @function
+bmpcfg_emit_stub_2946:
+    bmpcfg 3, 40, 20, 48, 1, 1
+    ret
+.size bmpcfg_emit_stub_2946, .-bmpcfg_emit_stub_2946
+
+.globl bmpcfg_emit_stub_2947
+.p2align 2
+.type bmpcfg_emit_stub_2947, @function
+bmpcfg_emit_stub_2947:
+    bmpcfg 3, 40, 24, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2947, .-bmpcfg_emit_stub_2947
+
+.globl bmpcfg_emit_stub_2948
+.p2align 2
+.type bmpcfg_emit_stub_2948, @function
+bmpcfg_emit_stub_2948:
+    bmpcfg 3, 40, 24, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2948, .-bmpcfg_emit_stub_2948
+
+.globl bmpcfg_emit_stub_2949
+.p2align 2
+.type bmpcfg_emit_stub_2949, @function
+bmpcfg_emit_stub_2949:
+    bmpcfg 3, 40, 24, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2949, .-bmpcfg_emit_stub_2949
+
+.globl bmpcfg_emit_stub_2950
+.p2align 2
+.type bmpcfg_emit_stub_2950, @function
+bmpcfg_emit_stub_2950:
+    bmpcfg 3, 40, 24, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2950, .-bmpcfg_emit_stub_2950
+
+.globl bmpcfg_emit_stub_2951
+.p2align 2
+.type bmpcfg_emit_stub_2951, @function
+bmpcfg_emit_stub_2951:
+    bmpcfg 3, 48, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2951, .-bmpcfg_emit_stub_2951
+
+.globl bmpcfg_emit_stub_2952
+.p2align 2
+.type bmpcfg_emit_stub_2952, @function
+bmpcfg_emit_stub_2952:
+    bmpcfg 3, 48, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2952, .-bmpcfg_emit_stub_2952
+
+.globl bmpcfg_emit_stub_2953
+.p2align 2
+.type bmpcfg_emit_stub_2953, @function
+bmpcfg_emit_stub_2953:
+    bmpcfg 3, 48, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2953, .-bmpcfg_emit_stub_2953
+
+.globl bmpcfg_emit_stub_2954
+.p2align 2
+.type bmpcfg_emit_stub_2954, @function
+bmpcfg_emit_stub_2954:
+    bmpcfg 3, 48, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2954, .-bmpcfg_emit_stub_2954
+
+.globl bmpcfg_emit_stub_2955
+.p2align 2
+.type bmpcfg_emit_stub_2955, @function
+bmpcfg_emit_stub_2955:
+    bmpcfg 3, 48, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2955, .-bmpcfg_emit_stub_2955
+
+.globl bmpcfg_emit_stub_2956
+.p2align 2
+.type bmpcfg_emit_stub_2956, @function
+bmpcfg_emit_stub_2956:
+    bmpcfg 3, 48, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_2956, .-bmpcfg_emit_stub_2956
+
+.globl bmpcfg_emit_stub_2957
+.p2align 2
+.type bmpcfg_emit_stub_2957, @function
+bmpcfg_emit_stub_2957:
+    bmpcfg 3, 48, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_2957, .-bmpcfg_emit_stub_2957
+
+.globl bmpcfg_emit_stub_2958
+.p2align 2
+.type bmpcfg_emit_stub_2958, @function
+bmpcfg_emit_stub_2958:
+    bmpcfg 3, 48, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2958, .-bmpcfg_emit_stub_2958
+
+.globl bmpcfg_emit_stub_2959
+.p2align 2
+.type bmpcfg_emit_stub_2959, @function
+bmpcfg_emit_stub_2959:
+    bmpcfg 3, 48, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2959, .-bmpcfg_emit_stub_2959
+
+.globl bmpcfg_emit_stub_2960
+.p2align 2
+.type bmpcfg_emit_stub_2960, @function
+bmpcfg_emit_stub_2960:
+    bmpcfg 3, 48, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_2960, .-bmpcfg_emit_stub_2960
+
+.globl bmpcfg_emit_stub_2961
+.p2align 2
+.type bmpcfg_emit_stub_2961, @function
+bmpcfg_emit_stub_2961:
+    bmpcfg 3, 48, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2961, .-bmpcfg_emit_stub_2961
+
+.globl bmpcfg_emit_stub_2962
+.p2align 2
+.type bmpcfg_emit_stub_2962, @function
+bmpcfg_emit_stub_2962:
+    bmpcfg 3, 48, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_2962, .-bmpcfg_emit_stub_2962
+
+.globl bmpcfg_emit_stub_2963
+.p2align 2
+.type bmpcfg_emit_stub_2963, @function
+bmpcfg_emit_stub_2963:
+    bmpcfg 3, 48, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2963, .-bmpcfg_emit_stub_2963
+
+.globl bmpcfg_emit_stub_2964
+.p2align 2
+.type bmpcfg_emit_stub_2964, @function
+bmpcfg_emit_stub_2964:
+    bmpcfg 3, 48, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2964, .-bmpcfg_emit_stub_2964
+
+.globl bmpcfg_emit_stub_2965
+.p2align 2
+.type bmpcfg_emit_stub_2965, @function
+bmpcfg_emit_stub_2965:
+    bmpcfg 3, 48, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_2965, .-bmpcfg_emit_stub_2965
+
+.globl bmpcfg_emit_stub_2966
+.p2align 2
+.type bmpcfg_emit_stub_2966, @function
+bmpcfg_emit_stub_2966:
+    bmpcfg 3, 48, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_2966, .-bmpcfg_emit_stub_2966
+
+.globl bmpcfg_emit_stub_2967
+.p2align 2
+.type bmpcfg_emit_stub_2967, @function
+bmpcfg_emit_stub_2967:
+    bmpcfg 3, 48, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2967, .-bmpcfg_emit_stub_2967
+
+.globl bmpcfg_emit_stub_2968
+.p2align 2
+.type bmpcfg_emit_stub_2968, @function
+bmpcfg_emit_stub_2968:
+    bmpcfg 3, 48, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2968, .-bmpcfg_emit_stub_2968
+
+.globl bmpcfg_emit_stub_2969
+.p2align 2
+.type bmpcfg_emit_stub_2969, @function
+bmpcfg_emit_stub_2969:
+    bmpcfg 3, 48, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_2969, .-bmpcfg_emit_stub_2969
+
+.globl bmpcfg_emit_stub_2970
+.p2align 2
+.type bmpcfg_emit_stub_2970, @function
+bmpcfg_emit_stub_2970:
+    bmpcfg 3, 48, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_2970, .-bmpcfg_emit_stub_2970
+
+.globl bmpcfg_emit_stub_2971
+.p2align 2
+.type bmpcfg_emit_stub_2971, @function
+bmpcfg_emit_stub_2971:
+    bmpcfg 3, 48, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2971, .-bmpcfg_emit_stub_2971
+
+.globl bmpcfg_emit_stub_2972
+.p2align 2
+.type bmpcfg_emit_stub_2972, @function
+bmpcfg_emit_stub_2972:
+    bmpcfg 3, 48, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_2972, .-bmpcfg_emit_stub_2972
+
+.globl bmpcfg_emit_stub_2973
+.p2align 2
+.type bmpcfg_emit_stub_2973, @function
+bmpcfg_emit_stub_2973:
+    bmpcfg 3, 48, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_2973, .-bmpcfg_emit_stub_2973
+
+.globl bmpcfg_emit_stub_2974
+.p2align 2
+.type bmpcfg_emit_stub_2974, @function
+bmpcfg_emit_stub_2974:
+    bmpcfg 3, 48, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_2974, .-bmpcfg_emit_stub_2974
+
+.globl bmpcfg_emit_stub_2975
+.p2align 2
+.type bmpcfg_emit_stub_2975, @function
+bmpcfg_emit_stub_2975:
+    bmpcfg 3, 48, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2975, .-bmpcfg_emit_stub_2975
+
+.globl bmpcfg_emit_stub_2976
+.p2align 2
+.type bmpcfg_emit_stub_2976, @function
+bmpcfg_emit_stub_2976:
+    bmpcfg 3, 48, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2976, .-bmpcfg_emit_stub_2976
+
+.globl bmpcfg_emit_stub_2977
+.p2align 2
+.type bmpcfg_emit_stub_2977, @function
+bmpcfg_emit_stub_2977:
+    bmpcfg 3, 48, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2977, .-bmpcfg_emit_stub_2977
+
+.globl bmpcfg_emit_stub_2978
+.p2align 2
+.type bmpcfg_emit_stub_2978, @function
+bmpcfg_emit_stub_2978:
+    bmpcfg 3, 48, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2978, .-bmpcfg_emit_stub_2978
+
+.globl bmpcfg_emit_stub_2979
+.p2align 2
+.type bmpcfg_emit_stub_2979, @function
+bmpcfg_emit_stub_2979:
+    bmpcfg 3, 48, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_2979, .-bmpcfg_emit_stub_2979
+
+.globl bmpcfg_emit_stub_2980
+.p2align 2
+.type bmpcfg_emit_stub_2980, @function
+bmpcfg_emit_stub_2980:
+    bmpcfg 3, 48, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2980, .-bmpcfg_emit_stub_2980
+
+.globl bmpcfg_emit_stub_2981
+.p2align 2
+.type bmpcfg_emit_stub_2981, @function
+bmpcfg_emit_stub_2981:
+    bmpcfg 3, 48, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2981, .-bmpcfg_emit_stub_2981
+
+.globl bmpcfg_emit_stub_2982
+.p2align 2
+.type bmpcfg_emit_stub_2982, @function
+bmpcfg_emit_stub_2982:
+    bmpcfg 3, 48, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2982, .-bmpcfg_emit_stub_2982
+
+.globl bmpcfg_emit_stub_2983
+.p2align 2
+.type bmpcfg_emit_stub_2983, @function
+bmpcfg_emit_stub_2983:
+    bmpcfg 3, 48, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2983, .-bmpcfg_emit_stub_2983
+
+.globl bmpcfg_emit_stub_2984
+.p2align 2
+.type bmpcfg_emit_stub_2984, @function
+bmpcfg_emit_stub_2984:
+    bmpcfg 3, 48, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_2984, .-bmpcfg_emit_stub_2984
+
+.globl bmpcfg_emit_stub_2985
+.p2align 2
+.type bmpcfg_emit_stub_2985, @function
+bmpcfg_emit_stub_2985:
+    bmpcfg 3, 48, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2985, .-bmpcfg_emit_stub_2985
+
+.globl bmpcfg_emit_stub_2986
+.p2align 2
+.type bmpcfg_emit_stub_2986, @function
+bmpcfg_emit_stub_2986:
+    bmpcfg 3, 48, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2986, .-bmpcfg_emit_stub_2986
+
+.globl bmpcfg_emit_stub_2987
+.p2align 2
+.type bmpcfg_emit_stub_2987, @function
+bmpcfg_emit_stub_2987:
+    bmpcfg 3, 48, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2987, .-bmpcfg_emit_stub_2987
+
+.globl bmpcfg_emit_stub_2988
+.p2align 2
+.type bmpcfg_emit_stub_2988, @function
+bmpcfg_emit_stub_2988:
+    bmpcfg 3, 48, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2988, .-bmpcfg_emit_stub_2988
+
+.globl bmpcfg_emit_stub_2989
+.p2align 2
+.type bmpcfg_emit_stub_2989, @function
+bmpcfg_emit_stub_2989:
+    bmpcfg 3, 48, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_2989, .-bmpcfg_emit_stub_2989
+
+.globl bmpcfg_emit_stub_2990
+.p2align 2
+.type bmpcfg_emit_stub_2990, @function
+bmpcfg_emit_stub_2990:
+    bmpcfg 3, 48, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_2990, .-bmpcfg_emit_stub_2990
+
+.globl bmpcfg_emit_stub_2991
+.p2align 2
+.type bmpcfg_emit_stub_2991, @function
+bmpcfg_emit_stub_2991:
+    bmpcfg 3, 48, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_2991, .-bmpcfg_emit_stub_2991
+
+.globl bmpcfg_emit_stub_2992
+.p2align 2
+.type bmpcfg_emit_stub_2992, @function
+bmpcfg_emit_stub_2992:
+    bmpcfg 3, 48, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_2992, .-bmpcfg_emit_stub_2992
+
+.globl bmpcfg_emit_stub_2993
+.p2align 2
+.type bmpcfg_emit_stub_2993, @function
+bmpcfg_emit_stub_2993:
+    bmpcfg 3, 48, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_2993, .-bmpcfg_emit_stub_2993
+
+.globl bmpcfg_emit_stub_2994
+.p2align 2
+.type bmpcfg_emit_stub_2994, @function
+bmpcfg_emit_stub_2994:
+    bmpcfg 3, 48, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_2994, .-bmpcfg_emit_stub_2994
+
+.globl bmpcfg_emit_stub_2995
+.p2align 2
+.type bmpcfg_emit_stub_2995, @function
+bmpcfg_emit_stub_2995:
+    bmpcfg 3, 48, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_2995, .-bmpcfg_emit_stub_2995
+
+.globl bmpcfg_emit_stub_2996
+.p2align 2
+.type bmpcfg_emit_stub_2996, @function
+bmpcfg_emit_stub_2996:
+    bmpcfg 3, 48, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_2996, .-bmpcfg_emit_stub_2996
+
+.globl bmpcfg_emit_stub_2997
+.p2align 2
+.type bmpcfg_emit_stub_2997, @function
+bmpcfg_emit_stub_2997:
+    bmpcfg 3, 48, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_2997, .-bmpcfg_emit_stub_2997
+
+.globl bmpcfg_emit_stub_2998
+.p2align 2
+.type bmpcfg_emit_stub_2998, @function
+bmpcfg_emit_stub_2998:
+    bmpcfg 3, 48, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_2998, .-bmpcfg_emit_stub_2998
+
+.globl bmpcfg_emit_stub_2999
+.p2align 2
+.type bmpcfg_emit_stub_2999, @function
+bmpcfg_emit_stub_2999:
+    bmpcfg 3, 48, 20, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_2999, .-bmpcfg_emit_stub_2999
+
+.globl bmpcfg_emit_stub_3000
+.p2align 2
+.type bmpcfg_emit_stub_3000, @function
+bmpcfg_emit_stub_3000:
+    bmpcfg 3, 48, 20, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3000, .-bmpcfg_emit_stub_3000
+
+.globl bmpcfg_emit_stub_3001
+.p2align 2
+.type bmpcfg_emit_stub_3001, @function
+bmpcfg_emit_stub_3001:
+    bmpcfg 3, 48, 20, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3001, .-bmpcfg_emit_stub_3001
+
+.globl bmpcfg_emit_stub_3002
+.p2align 2
+.type bmpcfg_emit_stub_3002, @function
+bmpcfg_emit_stub_3002:
+    bmpcfg 3, 48, 20, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3002, .-bmpcfg_emit_stub_3002
+
+.globl bmpcfg_emit_stub_3003
+.p2align 2
+.type bmpcfg_emit_stub_3003, @function
+bmpcfg_emit_stub_3003:
+    bmpcfg 3, 48, 20, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3003, .-bmpcfg_emit_stub_3003
+
+.globl bmpcfg_emit_stub_3004
+.p2align 2
+.type bmpcfg_emit_stub_3004, @function
+bmpcfg_emit_stub_3004:
+    bmpcfg 3, 48, 20, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_3004, .-bmpcfg_emit_stub_3004
+
+.globl bmpcfg_emit_stub_3005
+.p2align 2
+.type bmpcfg_emit_stub_3005, @function
+bmpcfg_emit_stub_3005:
+    bmpcfg 3, 56, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3005, .-bmpcfg_emit_stub_3005
+
+.globl bmpcfg_emit_stub_3006
+.p2align 2
+.type bmpcfg_emit_stub_3006, @function
+bmpcfg_emit_stub_3006:
+    bmpcfg 3, 56, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3006, .-bmpcfg_emit_stub_3006
+
+.globl bmpcfg_emit_stub_3007
+.p2align 2
+.type bmpcfg_emit_stub_3007, @function
+bmpcfg_emit_stub_3007:
+    bmpcfg 3, 56, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3007, .-bmpcfg_emit_stub_3007
+
+.globl bmpcfg_emit_stub_3008
+.p2align 2
+.type bmpcfg_emit_stub_3008, @function
+bmpcfg_emit_stub_3008:
+    bmpcfg 3, 56, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3008, .-bmpcfg_emit_stub_3008
+
+.globl bmpcfg_emit_stub_3009
+.p2align 2
+.type bmpcfg_emit_stub_3009, @function
+bmpcfg_emit_stub_3009:
+    bmpcfg 3, 56, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3009, .-bmpcfg_emit_stub_3009
+
+.globl bmpcfg_emit_stub_3010
+.p2align 2
+.type bmpcfg_emit_stub_3010, @function
+bmpcfg_emit_stub_3010:
+    bmpcfg 3, 56, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3010, .-bmpcfg_emit_stub_3010
+
+.globl bmpcfg_emit_stub_3011
+.p2align 2
+.type bmpcfg_emit_stub_3011, @function
+bmpcfg_emit_stub_3011:
+    bmpcfg 3, 56, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3011, .-bmpcfg_emit_stub_3011
+
+.globl bmpcfg_emit_stub_3012
+.p2align 2
+.type bmpcfg_emit_stub_3012, @function
+bmpcfg_emit_stub_3012:
+    bmpcfg 3, 56, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3012, .-bmpcfg_emit_stub_3012
+
+.globl bmpcfg_emit_stub_3013
+.p2align 2
+.type bmpcfg_emit_stub_3013, @function
+bmpcfg_emit_stub_3013:
+    bmpcfg 3, 56, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3013, .-bmpcfg_emit_stub_3013
+
+.globl bmpcfg_emit_stub_3014
+.p2align 2
+.type bmpcfg_emit_stub_3014, @function
+bmpcfg_emit_stub_3014:
+    bmpcfg 3, 56, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3014, .-bmpcfg_emit_stub_3014
+
+.globl bmpcfg_emit_stub_3015
+.p2align 2
+.type bmpcfg_emit_stub_3015, @function
+bmpcfg_emit_stub_3015:
+    bmpcfg 3, 56, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3015, .-bmpcfg_emit_stub_3015
+
+.globl bmpcfg_emit_stub_3016
+.p2align 2
+.type bmpcfg_emit_stub_3016, @function
+bmpcfg_emit_stub_3016:
+    bmpcfg 3, 56, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3016, .-bmpcfg_emit_stub_3016
+
+.globl bmpcfg_emit_stub_3017
+.p2align 2
+.type bmpcfg_emit_stub_3017, @function
+bmpcfg_emit_stub_3017:
+    bmpcfg 3, 56, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3017, .-bmpcfg_emit_stub_3017
+
+.globl bmpcfg_emit_stub_3018
+.p2align 2
+.type bmpcfg_emit_stub_3018, @function
+bmpcfg_emit_stub_3018:
+    bmpcfg 3, 56, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3018, .-bmpcfg_emit_stub_3018
+
+.globl bmpcfg_emit_stub_3019
+.p2align 2
+.type bmpcfg_emit_stub_3019, @function
+bmpcfg_emit_stub_3019:
+    bmpcfg 3, 56, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3019, .-bmpcfg_emit_stub_3019
+
+.globl bmpcfg_emit_stub_3020
+.p2align 2
+.type bmpcfg_emit_stub_3020, @function
+bmpcfg_emit_stub_3020:
+    bmpcfg 3, 56, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3020, .-bmpcfg_emit_stub_3020
+
+.globl bmpcfg_emit_stub_3021
+.p2align 2
+.type bmpcfg_emit_stub_3021, @function
+bmpcfg_emit_stub_3021:
+    bmpcfg 3, 56, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_3021, .-bmpcfg_emit_stub_3021
+
+.globl bmpcfg_emit_stub_3022
+.p2align 2
+.type bmpcfg_emit_stub_3022, @function
+bmpcfg_emit_stub_3022:
+    bmpcfg 3, 56, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_3022, .-bmpcfg_emit_stub_3022
+
+.globl bmpcfg_emit_stub_3023
+.p2align 2
+.type bmpcfg_emit_stub_3023, @function
+bmpcfg_emit_stub_3023:
+    bmpcfg 3, 56, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_3023, .-bmpcfg_emit_stub_3023
+
+.globl bmpcfg_emit_stub_3024
+.p2align 2
+.type bmpcfg_emit_stub_3024, @function
+bmpcfg_emit_stub_3024:
+    bmpcfg 3, 56, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_3024, .-bmpcfg_emit_stub_3024
+
+.globl bmpcfg_emit_stub_3025
+.p2align 2
+.type bmpcfg_emit_stub_3025, @function
+bmpcfg_emit_stub_3025:
+    bmpcfg 3, 56, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_3025, .-bmpcfg_emit_stub_3025
+
+.globl bmpcfg_emit_stub_3026
+.p2align 2
+.type bmpcfg_emit_stub_3026, @function
+bmpcfg_emit_stub_3026:
+    bmpcfg 3, 56, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_3026, .-bmpcfg_emit_stub_3026
+
+.globl bmpcfg_emit_stub_3027
+.p2align 2
+.type bmpcfg_emit_stub_3027, @function
+bmpcfg_emit_stub_3027:
+    bmpcfg 3, 56, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_3027, .-bmpcfg_emit_stub_3027
+
+.globl bmpcfg_emit_stub_3028
+.p2align 2
+.type bmpcfg_emit_stub_3028, @function
+bmpcfg_emit_stub_3028:
+    bmpcfg 3, 56, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_3028, .-bmpcfg_emit_stub_3028
+
+.globl bmpcfg_emit_stub_3029
+.p2align 2
+.type bmpcfg_emit_stub_3029, @function
+bmpcfg_emit_stub_3029:
+    bmpcfg 3, 56, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3029, .-bmpcfg_emit_stub_3029
+
+.globl bmpcfg_emit_stub_3030
+.p2align 2
+.type bmpcfg_emit_stub_3030, @function
+bmpcfg_emit_stub_3030:
+    bmpcfg 3, 56, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3030, .-bmpcfg_emit_stub_3030
+
+.globl bmpcfg_emit_stub_3031
+.p2align 2
+.type bmpcfg_emit_stub_3031, @function
+bmpcfg_emit_stub_3031:
+    bmpcfg 3, 56, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3031, .-bmpcfg_emit_stub_3031
+
+.globl bmpcfg_emit_stub_3032
+.p2align 2
+.type bmpcfg_emit_stub_3032, @function
+bmpcfg_emit_stub_3032:
+    bmpcfg 3, 56, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3032, .-bmpcfg_emit_stub_3032
+
+.globl bmpcfg_emit_stub_3033
+.p2align 2
+.type bmpcfg_emit_stub_3033, @function
+bmpcfg_emit_stub_3033:
+    bmpcfg 3, 56, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3033, .-bmpcfg_emit_stub_3033
+
+.globl bmpcfg_emit_stub_3034
+.p2align 2
+.type bmpcfg_emit_stub_3034, @function
+bmpcfg_emit_stub_3034:
+    bmpcfg 3, 56, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3034, .-bmpcfg_emit_stub_3034
+
+.globl bmpcfg_emit_stub_3035
+.p2align 2
+.type bmpcfg_emit_stub_3035, @function
+bmpcfg_emit_stub_3035:
+    bmpcfg 3, 56, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3035, .-bmpcfg_emit_stub_3035
+
+.globl bmpcfg_emit_stub_3036
+.p2align 2
+.type bmpcfg_emit_stub_3036, @function
+bmpcfg_emit_stub_3036:
+    bmpcfg 3, 56, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3036, .-bmpcfg_emit_stub_3036
+
+.globl bmpcfg_emit_stub_3037
+.p2align 2
+.type bmpcfg_emit_stub_3037, @function
+bmpcfg_emit_stub_3037:
+    bmpcfg 3, 56, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3037, .-bmpcfg_emit_stub_3037
+
+.globl bmpcfg_emit_stub_3038
+.p2align 2
+.type bmpcfg_emit_stub_3038, @function
+bmpcfg_emit_stub_3038:
+    bmpcfg 3, 56, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3038, .-bmpcfg_emit_stub_3038
+
+.globl bmpcfg_emit_stub_3039
+.p2align 2
+.type bmpcfg_emit_stub_3039, @function
+bmpcfg_emit_stub_3039:
+    bmpcfg 3, 56, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_3039, .-bmpcfg_emit_stub_3039
+
+.globl bmpcfg_emit_stub_3040
+.p2align 2
+.type bmpcfg_emit_stub_3040, @function
+bmpcfg_emit_stub_3040:
+    bmpcfg 3, 56, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_3040, .-bmpcfg_emit_stub_3040
+
+.globl bmpcfg_emit_stub_3041
+.p2align 2
+.type bmpcfg_emit_stub_3041, @function
+bmpcfg_emit_stub_3041:
+    bmpcfg 3, 56, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_3041, .-bmpcfg_emit_stub_3041
+
+.globl bmpcfg_emit_stub_3042
+.p2align 2
+.type bmpcfg_emit_stub_3042, @function
+bmpcfg_emit_stub_3042:
+    bmpcfg 3, 56, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3042, .-bmpcfg_emit_stub_3042
+
+.globl bmpcfg_emit_stub_3043
+.p2align 2
+.type bmpcfg_emit_stub_3043, @function
+bmpcfg_emit_stub_3043:
+    bmpcfg 3, 56, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3043, .-bmpcfg_emit_stub_3043
+
+.globl bmpcfg_emit_stub_3044
+.p2align 2
+.type bmpcfg_emit_stub_3044, @function
+bmpcfg_emit_stub_3044:
+    bmpcfg 3, 56, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3044, .-bmpcfg_emit_stub_3044
+
+.globl bmpcfg_emit_stub_3045
+.p2align 2
+.type bmpcfg_emit_stub_3045, @function
+bmpcfg_emit_stub_3045:
+    bmpcfg 3, 56, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3045, .-bmpcfg_emit_stub_3045
+
+.globl bmpcfg_emit_stub_3046
+.p2align 2
+.type bmpcfg_emit_stub_3046, @function
+bmpcfg_emit_stub_3046:
+    bmpcfg 3, 56, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3046, .-bmpcfg_emit_stub_3046
+
+.globl bmpcfg_emit_stub_3047
+.p2align 2
+.type bmpcfg_emit_stub_3047, @function
+bmpcfg_emit_stub_3047:
+    bmpcfg 3, 56, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3047, .-bmpcfg_emit_stub_3047
+
+.globl bmpcfg_emit_stub_3048
+.p2align 2
+.type bmpcfg_emit_stub_3048, @function
+bmpcfg_emit_stub_3048:
+    bmpcfg 3, 56, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3048, .-bmpcfg_emit_stub_3048
+
+.globl bmpcfg_emit_stub_3049
+.p2align 2
+.type bmpcfg_emit_stub_3049, @function
+bmpcfg_emit_stub_3049:
+    bmpcfg 3, 56, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3049, .-bmpcfg_emit_stub_3049
+
+.globl bmpcfg_emit_stub_3050
+.p2align 2
+.type bmpcfg_emit_stub_3050, @function
+bmpcfg_emit_stub_3050:
+    bmpcfg 3, 56, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_3050, .-bmpcfg_emit_stub_3050
+
+.globl bmpcfg_emit_stub_3051
+.p2align 2
+.type bmpcfg_emit_stub_3051, @function
+bmpcfg_emit_stub_3051:
+    bmpcfg 3, 56, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_3051, .-bmpcfg_emit_stub_3051
+
+.globl bmpcfg_emit_stub_3052
+.p2align 2
+.type bmpcfg_emit_stub_3052, @function
+bmpcfg_emit_stub_3052:
+    bmpcfg 3, 56, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_3052, .-bmpcfg_emit_stub_3052
+
+.globl bmpcfg_emit_stub_3053
+.p2align 2
+.type bmpcfg_emit_stub_3053, @function
+bmpcfg_emit_stub_3053:
+    bmpcfg 3, 64, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3053, .-bmpcfg_emit_stub_3053
+
+.globl bmpcfg_emit_stub_3054
+.p2align 2
+.type bmpcfg_emit_stub_3054, @function
+bmpcfg_emit_stub_3054:
+    bmpcfg 3, 64, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3054, .-bmpcfg_emit_stub_3054
+
+.globl bmpcfg_emit_stub_3055
+.p2align 2
+.type bmpcfg_emit_stub_3055, @function
+bmpcfg_emit_stub_3055:
+    bmpcfg 3, 64, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3055, .-bmpcfg_emit_stub_3055
+
+.globl bmpcfg_emit_stub_3056
+.p2align 2
+.type bmpcfg_emit_stub_3056, @function
+bmpcfg_emit_stub_3056:
+    bmpcfg 3, 64, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3056, .-bmpcfg_emit_stub_3056
+
+.globl bmpcfg_emit_stub_3057
+.p2align 2
+.type bmpcfg_emit_stub_3057, @function
+bmpcfg_emit_stub_3057:
+    bmpcfg 3, 64, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3057, .-bmpcfg_emit_stub_3057
+
+.globl bmpcfg_emit_stub_3058
+.p2align 2
+.type bmpcfg_emit_stub_3058, @function
+bmpcfg_emit_stub_3058:
+    bmpcfg 3, 64, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3058, .-bmpcfg_emit_stub_3058
+
+.globl bmpcfg_emit_stub_3059
+.p2align 2
+.type bmpcfg_emit_stub_3059, @function
+bmpcfg_emit_stub_3059:
+    bmpcfg 3, 64, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3059, .-bmpcfg_emit_stub_3059
+
+.globl bmpcfg_emit_stub_3060
+.p2align 2
+.type bmpcfg_emit_stub_3060, @function
+bmpcfg_emit_stub_3060:
+    bmpcfg 3, 64, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3060, .-bmpcfg_emit_stub_3060
+
+.globl bmpcfg_emit_stub_3061
+.p2align 2
+.type bmpcfg_emit_stub_3061, @function
+bmpcfg_emit_stub_3061:
+    bmpcfg 3, 64, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3061, .-bmpcfg_emit_stub_3061
+
+.globl bmpcfg_emit_stub_3062
+.p2align 2
+.type bmpcfg_emit_stub_3062, @function
+bmpcfg_emit_stub_3062:
+    bmpcfg 3, 64, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3062, .-bmpcfg_emit_stub_3062
+
+.globl bmpcfg_emit_stub_3063
+.p2align 2
+.type bmpcfg_emit_stub_3063, @function
+bmpcfg_emit_stub_3063:
+    bmpcfg 3, 64, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3063, .-bmpcfg_emit_stub_3063
+
+.globl bmpcfg_emit_stub_3064
+.p2align 2
+.type bmpcfg_emit_stub_3064, @function
+bmpcfg_emit_stub_3064:
+    bmpcfg 3, 64, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3064, .-bmpcfg_emit_stub_3064
+
+.globl bmpcfg_emit_stub_3065
+.p2align 2
+.type bmpcfg_emit_stub_3065, @function
+bmpcfg_emit_stub_3065:
+    bmpcfg 3, 64, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3065, .-bmpcfg_emit_stub_3065
+
+.globl bmpcfg_emit_stub_3066
+.p2align 2
+.type bmpcfg_emit_stub_3066, @function
+bmpcfg_emit_stub_3066:
+    bmpcfg 3, 64, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3066, .-bmpcfg_emit_stub_3066
+
+.globl bmpcfg_emit_stub_3067
+.p2align 2
+.type bmpcfg_emit_stub_3067, @function
+bmpcfg_emit_stub_3067:
+    bmpcfg 3, 64, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3067, .-bmpcfg_emit_stub_3067
+
+.globl bmpcfg_emit_stub_3068
+.p2align 2
+.type bmpcfg_emit_stub_3068, @function
+bmpcfg_emit_stub_3068:
+    bmpcfg 3, 64, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3068, .-bmpcfg_emit_stub_3068
+
+.globl bmpcfg_emit_stub_3069
+.p2align 2
+.type bmpcfg_emit_stub_3069, @function
+bmpcfg_emit_stub_3069:
+    bmpcfg 3, 64, 8, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_3069, .-bmpcfg_emit_stub_3069
+
+.globl bmpcfg_emit_stub_3070
+.p2align 2
+.type bmpcfg_emit_stub_3070, @function
+bmpcfg_emit_stub_3070:
+    bmpcfg 3, 64, 8, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_3070, .-bmpcfg_emit_stub_3070
+
+.globl bmpcfg_emit_stub_3071
+.p2align 2
+.type bmpcfg_emit_stub_3071, @function
+bmpcfg_emit_stub_3071:
+    bmpcfg 3, 64, 8, 32, 1, 3
+    ret
+.size bmpcfg_emit_stub_3071, .-bmpcfg_emit_stub_3071
+
+.globl bmpcfg_emit_stub_3072
+.p2align 2
+.type bmpcfg_emit_stub_3072, @function
+bmpcfg_emit_stub_3072:
+    bmpcfg 3, 64, 8, 32, 1, 4
+    ret
+.size bmpcfg_emit_stub_3072, .-bmpcfg_emit_stub_3072
+
+.globl bmpcfg_emit_stub_3073
+.p2align 2
+.type bmpcfg_emit_stub_3073, @function
+bmpcfg_emit_stub_3073:
+    bmpcfg 3, 64, 8, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_3073, .-bmpcfg_emit_stub_3073
+
+.globl bmpcfg_emit_stub_3074
+.p2align 2
+.type bmpcfg_emit_stub_3074, @function
+bmpcfg_emit_stub_3074:
+    bmpcfg 3, 64, 8, 32, 2, 2
+    ret
+.size bmpcfg_emit_stub_3074, .-bmpcfg_emit_stub_3074
+
+.globl bmpcfg_emit_stub_3075
+.p2align 2
+.type bmpcfg_emit_stub_3075, @function
+bmpcfg_emit_stub_3075:
+    bmpcfg 3, 64, 8, 32, 3, 1
+    ret
+.size bmpcfg_emit_stub_3075, .-bmpcfg_emit_stub_3075
+
+.globl bmpcfg_emit_stub_3076
+.p2align 2
+.type bmpcfg_emit_stub_3076, @function
+bmpcfg_emit_stub_3076:
+    bmpcfg 3, 64, 8, 32, 4, 1
+    ret
+.size bmpcfg_emit_stub_3076, .-bmpcfg_emit_stub_3076
+
+.globl bmpcfg_emit_stub_3077
+.p2align 2
+.type bmpcfg_emit_stub_3077, @function
+bmpcfg_emit_stub_3077:
+    bmpcfg 3, 64, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3077, .-bmpcfg_emit_stub_3077
+
+.globl bmpcfg_emit_stub_3078
+.p2align 2
+.type bmpcfg_emit_stub_3078, @function
+bmpcfg_emit_stub_3078:
+    bmpcfg 3, 64, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3078, .-bmpcfg_emit_stub_3078
+
+.globl bmpcfg_emit_stub_3079
+.p2align 2
+.type bmpcfg_emit_stub_3079, @function
+bmpcfg_emit_stub_3079:
+    bmpcfg 3, 64, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3079, .-bmpcfg_emit_stub_3079
+
+.globl bmpcfg_emit_stub_3080
+.p2align 2
+.type bmpcfg_emit_stub_3080, @function
+bmpcfg_emit_stub_3080:
+    bmpcfg 3, 64, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3080, .-bmpcfg_emit_stub_3080
+
+.globl bmpcfg_emit_stub_3081
+.p2align 2
+.type bmpcfg_emit_stub_3081, @function
+bmpcfg_emit_stub_3081:
+    bmpcfg 3, 64, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3081, .-bmpcfg_emit_stub_3081
+
+.globl bmpcfg_emit_stub_3082
+.p2align 2
+.type bmpcfg_emit_stub_3082, @function
+bmpcfg_emit_stub_3082:
+    bmpcfg 3, 64, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3082, .-bmpcfg_emit_stub_3082
+
+.globl bmpcfg_emit_stub_3083
+.p2align 2
+.type bmpcfg_emit_stub_3083, @function
+bmpcfg_emit_stub_3083:
+    bmpcfg 3, 64, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3083, .-bmpcfg_emit_stub_3083
+
+.globl bmpcfg_emit_stub_3084
+.p2align 2
+.type bmpcfg_emit_stub_3084, @function
+bmpcfg_emit_stub_3084:
+    bmpcfg 3, 64, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3084, .-bmpcfg_emit_stub_3084
+
+.globl bmpcfg_emit_stub_3085
+.p2align 2
+.type bmpcfg_emit_stub_3085, @function
+bmpcfg_emit_stub_3085:
+    bmpcfg 3, 64, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3085, .-bmpcfg_emit_stub_3085
+
+.globl bmpcfg_emit_stub_3086
+.p2align 2
+.type bmpcfg_emit_stub_3086, @function
+bmpcfg_emit_stub_3086:
+    bmpcfg 3, 64, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3086, .-bmpcfg_emit_stub_3086
+
+.globl bmpcfg_emit_stub_3087
+.p2align 2
+.type bmpcfg_emit_stub_3087, @function
+bmpcfg_emit_stub_3087:
+    bmpcfg 3, 64, 12, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_3087, .-bmpcfg_emit_stub_3087
+
+.globl bmpcfg_emit_stub_3088
+.p2align 2
+.type bmpcfg_emit_stub_3088, @function
+bmpcfg_emit_stub_3088:
+    bmpcfg 3, 64, 12, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_3088, .-bmpcfg_emit_stub_3088
+
+.globl bmpcfg_emit_stub_3089
+.p2align 2
+.type bmpcfg_emit_stub_3089, @function
+bmpcfg_emit_stub_3089:
+    bmpcfg 3, 64, 12, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_3089, .-bmpcfg_emit_stub_3089
+
+.globl bmpcfg_emit_stub_3090
+.p2align 2
+.type bmpcfg_emit_stub_3090, @function
+bmpcfg_emit_stub_3090:
+    bmpcfg 3, 64, 16, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3090, .-bmpcfg_emit_stub_3090
+
+.globl bmpcfg_emit_stub_3091
+.p2align 2
+.type bmpcfg_emit_stub_3091, @function
+bmpcfg_emit_stub_3091:
+    bmpcfg 3, 64, 16, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3091, .-bmpcfg_emit_stub_3091
+
+.globl bmpcfg_emit_stub_3092
+.p2align 2
+.type bmpcfg_emit_stub_3092, @function
+bmpcfg_emit_stub_3092:
+    bmpcfg 3, 64, 16, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3092, .-bmpcfg_emit_stub_3092
+
+.globl bmpcfg_emit_stub_3093
+.p2align 2
+.type bmpcfg_emit_stub_3093, @function
+bmpcfg_emit_stub_3093:
+    bmpcfg 3, 64, 16, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3093, .-bmpcfg_emit_stub_3093
+
+.globl bmpcfg_emit_stub_3094
+.p2align 2
+.type bmpcfg_emit_stub_3094, @function
+bmpcfg_emit_stub_3094:
+    bmpcfg 3, 64, 16, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3094, .-bmpcfg_emit_stub_3094
+
+.globl bmpcfg_emit_stub_3095
+.p2align 2
+.type bmpcfg_emit_stub_3095, @function
+bmpcfg_emit_stub_3095:
+    bmpcfg 3, 64, 16, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3095, .-bmpcfg_emit_stub_3095
+
+.globl bmpcfg_emit_stub_3096
+.p2align 2
+.type bmpcfg_emit_stub_3096, @function
+bmpcfg_emit_stub_3096:
+    bmpcfg 3, 64, 16, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3096, .-bmpcfg_emit_stub_3096
+
+.globl bmpcfg_emit_stub_3097
+.p2align 2
+.type bmpcfg_emit_stub_3097, @function
+bmpcfg_emit_stub_3097:
+    bmpcfg 3, 64, 16, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3097, .-bmpcfg_emit_stub_3097
+
+.globl bmpcfg_emit_stub_3098
+.p2align 2
+.type bmpcfg_emit_stub_3098, @function
+bmpcfg_emit_stub_3098:
+    bmpcfg 3, 64, 16, 32, 1, 1
+    ret
+.size bmpcfg_emit_stub_3098, .-bmpcfg_emit_stub_3098
+
+.globl bmpcfg_emit_stub_3099
+.p2align 2
+.type bmpcfg_emit_stub_3099, @function
+bmpcfg_emit_stub_3099:
+    bmpcfg 3, 64, 16, 32, 1, 2
+    ret
+.size bmpcfg_emit_stub_3099, .-bmpcfg_emit_stub_3099
+
+.globl bmpcfg_emit_stub_3100
+.p2align 2
+.type bmpcfg_emit_stub_3100, @function
+bmpcfg_emit_stub_3100:
+    bmpcfg 3, 64, 16, 32, 2, 1
+    ret
+.size bmpcfg_emit_stub_3100, .-bmpcfg_emit_stub_3100
+
+.globl bmpcfg_emit_stub_3101
+.p2align 2
+.type bmpcfg_emit_stub_3101, @function
+bmpcfg_emit_stub_3101:
+    bmpcfg 3, 72, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3101, .-bmpcfg_emit_stub_3101
+
+.globl bmpcfg_emit_stub_3102
+.p2align 2
+.type bmpcfg_emit_stub_3102, @function
+bmpcfg_emit_stub_3102:
+    bmpcfg 3, 72, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3102, .-bmpcfg_emit_stub_3102
+
+.globl bmpcfg_emit_stub_3103
+.p2align 2
+.type bmpcfg_emit_stub_3103, @function
+bmpcfg_emit_stub_3103:
+    bmpcfg 3, 72, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3103, .-bmpcfg_emit_stub_3103
+
+.globl bmpcfg_emit_stub_3104
+.p2align 2
+.type bmpcfg_emit_stub_3104, @function
+bmpcfg_emit_stub_3104:
+    bmpcfg 3, 72, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3104, .-bmpcfg_emit_stub_3104
+
+.globl bmpcfg_emit_stub_3105
+.p2align 2
+.type bmpcfg_emit_stub_3105, @function
+bmpcfg_emit_stub_3105:
+    bmpcfg 3, 72, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3105, .-bmpcfg_emit_stub_3105
+
+.globl bmpcfg_emit_stub_3106
+.p2align 2
+.type bmpcfg_emit_stub_3106, @function
+bmpcfg_emit_stub_3106:
+    bmpcfg 3, 72, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3106, .-bmpcfg_emit_stub_3106
+
+.globl bmpcfg_emit_stub_3107
+.p2align 2
+.type bmpcfg_emit_stub_3107, @function
+bmpcfg_emit_stub_3107:
+    bmpcfg 3, 72, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3107, .-bmpcfg_emit_stub_3107
+
+.globl bmpcfg_emit_stub_3108
+.p2align 2
+.type bmpcfg_emit_stub_3108, @function
+bmpcfg_emit_stub_3108:
+    bmpcfg 3, 72, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3108, .-bmpcfg_emit_stub_3108
+
+.globl bmpcfg_emit_stub_3109
+.p2align 2
+.type bmpcfg_emit_stub_3109, @function
+bmpcfg_emit_stub_3109:
+    bmpcfg 3, 72, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3109, .-bmpcfg_emit_stub_3109
+
+.globl bmpcfg_emit_stub_3110
+.p2align 2
+.type bmpcfg_emit_stub_3110, @function
+bmpcfg_emit_stub_3110:
+    bmpcfg 3, 72, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3110, .-bmpcfg_emit_stub_3110
+
+.globl bmpcfg_emit_stub_3111
+.p2align 2
+.type bmpcfg_emit_stub_3111, @function
+bmpcfg_emit_stub_3111:
+    bmpcfg 3, 72, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3111, .-bmpcfg_emit_stub_3111
+
+.globl bmpcfg_emit_stub_3112
+.p2align 2
+.type bmpcfg_emit_stub_3112, @function
+bmpcfg_emit_stub_3112:
+    bmpcfg 3, 72, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3112, .-bmpcfg_emit_stub_3112
+
+.globl bmpcfg_emit_stub_3113
+.p2align 2
+.type bmpcfg_emit_stub_3113, @function
+bmpcfg_emit_stub_3113:
+    bmpcfg 3, 72, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3113, .-bmpcfg_emit_stub_3113
+
+.globl bmpcfg_emit_stub_3114
+.p2align 2
+.type bmpcfg_emit_stub_3114, @function
+bmpcfg_emit_stub_3114:
+    bmpcfg 3, 72, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3114, .-bmpcfg_emit_stub_3114
+
+.globl bmpcfg_emit_stub_3115
+.p2align 2
+.type bmpcfg_emit_stub_3115, @function
+bmpcfg_emit_stub_3115:
+    bmpcfg 3, 72, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3115, .-bmpcfg_emit_stub_3115
+
+.globl bmpcfg_emit_stub_3116
+.p2align 2
+.type bmpcfg_emit_stub_3116, @function
+bmpcfg_emit_stub_3116:
+    bmpcfg 3, 72, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3116, .-bmpcfg_emit_stub_3116
+
+.globl bmpcfg_emit_stub_3117
+.p2align 2
+.type bmpcfg_emit_stub_3117, @function
+bmpcfg_emit_stub_3117:
+    bmpcfg 3, 72, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3117, .-bmpcfg_emit_stub_3117
+
+.globl bmpcfg_emit_stub_3118
+.p2align 2
+.type bmpcfg_emit_stub_3118, @function
+bmpcfg_emit_stub_3118:
+    bmpcfg 3, 72, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3118, .-bmpcfg_emit_stub_3118
+
+.globl bmpcfg_emit_stub_3119
+.p2align 2
+.type bmpcfg_emit_stub_3119, @function
+bmpcfg_emit_stub_3119:
+    bmpcfg 3, 72, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3119, .-bmpcfg_emit_stub_3119
+
+.globl bmpcfg_emit_stub_3120
+.p2align 2
+.type bmpcfg_emit_stub_3120, @function
+bmpcfg_emit_stub_3120:
+    bmpcfg 3, 72, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3120, .-bmpcfg_emit_stub_3120
+
+.globl bmpcfg_emit_stub_3121
+.p2align 2
+.type bmpcfg_emit_stub_3121, @function
+bmpcfg_emit_stub_3121:
+    bmpcfg 3, 72, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3121, .-bmpcfg_emit_stub_3121
+
+.globl bmpcfg_emit_stub_3122
+.p2align 2
+.type bmpcfg_emit_stub_3122, @function
+bmpcfg_emit_stub_3122:
+    bmpcfg 3, 72, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3122, .-bmpcfg_emit_stub_3122
+
+.globl bmpcfg_emit_stub_3123
+.p2align 2
+.type bmpcfg_emit_stub_3123, @function
+bmpcfg_emit_stub_3123:
+    bmpcfg 3, 72, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3123, .-bmpcfg_emit_stub_3123
+
+.globl bmpcfg_emit_stub_3124
+.p2align 2
+.type bmpcfg_emit_stub_3124, @function
+bmpcfg_emit_stub_3124:
+    bmpcfg 3, 72, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3124, .-bmpcfg_emit_stub_3124
+
+.globl bmpcfg_emit_stub_3125
+.p2align 2
+.type bmpcfg_emit_stub_3125, @function
+bmpcfg_emit_stub_3125:
+    bmpcfg 3, 72, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3125, .-bmpcfg_emit_stub_3125
+
+.globl bmpcfg_emit_stub_3126
+.p2align 2
+.type bmpcfg_emit_stub_3126, @function
+bmpcfg_emit_stub_3126:
+    bmpcfg 3, 72, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3126, .-bmpcfg_emit_stub_3126
+
+.globl bmpcfg_emit_stub_3127
+.p2align 2
+.type bmpcfg_emit_stub_3127, @function
+bmpcfg_emit_stub_3127:
+    bmpcfg 3, 80, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3127, .-bmpcfg_emit_stub_3127
+
+.globl bmpcfg_emit_stub_3128
+.p2align 2
+.type bmpcfg_emit_stub_3128, @function
+bmpcfg_emit_stub_3128:
+    bmpcfg 3, 80, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3128, .-bmpcfg_emit_stub_3128
+
+.globl bmpcfg_emit_stub_3129
+.p2align 2
+.type bmpcfg_emit_stub_3129, @function
+bmpcfg_emit_stub_3129:
+    bmpcfg 3, 80, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3129, .-bmpcfg_emit_stub_3129
+
+.globl bmpcfg_emit_stub_3130
+.p2align 2
+.type bmpcfg_emit_stub_3130, @function
+bmpcfg_emit_stub_3130:
+    bmpcfg 3, 80, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3130, .-bmpcfg_emit_stub_3130
+
+.globl bmpcfg_emit_stub_3131
+.p2align 2
+.type bmpcfg_emit_stub_3131, @function
+bmpcfg_emit_stub_3131:
+    bmpcfg 3, 80, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3131, .-bmpcfg_emit_stub_3131
+
+.globl bmpcfg_emit_stub_3132
+.p2align 2
+.type bmpcfg_emit_stub_3132, @function
+bmpcfg_emit_stub_3132:
+    bmpcfg 3, 80, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3132, .-bmpcfg_emit_stub_3132
+
+.globl bmpcfg_emit_stub_3133
+.p2align 2
+.type bmpcfg_emit_stub_3133, @function
+bmpcfg_emit_stub_3133:
+    bmpcfg 3, 80, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3133, .-bmpcfg_emit_stub_3133
+
+.globl bmpcfg_emit_stub_3134
+.p2align 2
+.type bmpcfg_emit_stub_3134, @function
+bmpcfg_emit_stub_3134:
+    bmpcfg 3, 80, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3134, .-bmpcfg_emit_stub_3134
+
+.globl bmpcfg_emit_stub_3135
+.p2align 2
+.type bmpcfg_emit_stub_3135, @function
+bmpcfg_emit_stub_3135:
+    bmpcfg 3, 80, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3135, .-bmpcfg_emit_stub_3135
+
+.globl bmpcfg_emit_stub_3136
+.p2align 2
+.type bmpcfg_emit_stub_3136, @function
+bmpcfg_emit_stub_3136:
+    bmpcfg 3, 80, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3136, .-bmpcfg_emit_stub_3136
+
+.globl bmpcfg_emit_stub_3137
+.p2align 2
+.type bmpcfg_emit_stub_3137, @function
+bmpcfg_emit_stub_3137:
+    bmpcfg 3, 80, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3137, .-bmpcfg_emit_stub_3137
+
+.globl bmpcfg_emit_stub_3138
+.p2align 2
+.type bmpcfg_emit_stub_3138, @function
+bmpcfg_emit_stub_3138:
+    bmpcfg 3, 80, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3138, .-bmpcfg_emit_stub_3138
+
+.globl bmpcfg_emit_stub_3139
+.p2align 2
+.type bmpcfg_emit_stub_3139, @function
+bmpcfg_emit_stub_3139:
+    bmpcfg 3, 80, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3139, .-bmpcfg_emit_stub_3139
+
+.globl bmpcfg_emit_stub_3140
+.p2align 2
+.type bmpcfg_emit_stub_3140, @function
+bmpcfg_emit_stub_3140:
+    bmpcfg 3, 80, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3140, .-bmpcfg_emit_stub_3140
+
+.globl bmpcfg_emit_stub_3141
+.p2align 2
+.type bmpcfg_emit_stub_3141, @function
+bmpcfg_emit_stub_3141:
+    bmpcfg 3, 80, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3141, .-bmpcfg_emit_stub_3141
+
+.globl bmpcfg_emit_stub_3142
+.p2align 2
+.type bmpcfg_emit_stub_3142, @function
+bmpcfg_emit_stub_3142:
+    bmpcfg 3, 80, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3142, .-bmpcfg_emit_stub_3142
+
+.globl bmpcfg_emit_stub_3143
+.p2align 2
+.type bmpcfg_emit_stub_3143, @function
+bmpcfg_emit_stub_3143:
+    bmpcfg 3, 80, 12, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3143, .-bmpcfg_emit_stub_3143
+
+.globl bmpcfg_emit_stub_3144
+.p2align 2
+.type bmpcfg_emit_stub_3144, @function
+bmpcfg_emit_stub_3144:
+    bmpcfg 3, 80, 12, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3144, .-bmpcfg_emit_stub_3144
+
+.globl bmpcfg_emit_stub_3145
+.p2align 2
+.type bmpcfg_emit_stub_3145, @function
+bmpcfg_emit_stub_3145:
+    bmpcfg 3, 80, 12, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3145, .-bmpcfg_emit_stub_3145
+
+.globl bmpcfg_emit_stub_3146
+.p2align 2
+.type bmpcfg_emit_stub_3146, @function
+bmpcfg_emit_stub_3146:
+    bmpcfg 3, 80, 12, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3146, .-bmpcfg_emit_stub_3146
+
+.globl bmpcfg_emit_stub_3147
+.p2align 2
+.type bmpcfg_emit_stub_3147, @function
+bmpcfg_emit_stub_3147:
+    bmpcfg 3, 80, 12, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3147, .-bmpcfg_emit_stub_3147
+
+.globl bmpcfg_emit_stub_3148
+.p2align 2
+.type bmpcfg_emit_stub_3148, @function
+bmpcfg_emit_stub_3148:
+    bmpcfg 3, 80, 12, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3148, .-bmpcfg_emit_stub_3148
+
+.globl bmpcfg_emit_stub_3149
+.p2align 2
+.type bmpcfg_emit_stub_3149, @function
+bmpcfg_emit_stub_3149:
+    bmpcfg 3, 80, 12, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3149, .-bmpcfg_emit_stub_3149
+
+.globl bmpcfg_emit_stub_3150
+.p2align 2
+.type bmpcfg_emit_stub_3150, @function
+bmpcfg_emit_stub_3150:
+    bmpcfg 3, 80, 12, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3150, .-bmpcfg_emit_stub_3150
+
+.globl bmpcfg_emit_stub_3151
+.p2align 2
+.type bmpcfg_emit_stub_3151, @function
+bmpcfg_emit_stub_3151:
+    bmpcfg 3, 80, 12, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3151, .-bmpcfg_emit_stub_3151
+
+.globl bmpcfg_emit_stub_3152
+.p2align 2
+.type bmpcfg_emit_stub_3152, @function
+bmpcfg_emit_stub_3152:
+    bmpcfg 3, 80, 12, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3152, .-bmpcfg_emit_stub_3152
+
+.globl bmpcfg_emit_stub_3153
+.p2align 2
+.type bmpcfg_emit_stub_3153, @function
+bmpcfg_emit_stub_3153:
+    bmpcfg 3, 88, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3153, .-bmpcfg_emit_stub_3153
+
+.globl bmpcfg_emit_stub_3154
+.p2align 2
+.type bmpcfg_emit_stub_3154, @function
+bmpcfg_emit_stub_3154:
+    bmpcfg 3, 88, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3154, .-bmpcfg_emit_stub_3154
+
+.globl bmpcfg_emit_stub_3155
+.p2align 2
+.type bmpcfg_emit_stub_3155, @function
+bmpcfg_emit_stub_3155:
+    bmpcfg 3, 88, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3155, .-bmpcfg_emit_stub_3155
+
+.globl bmpcfg_emit_stub_3156
+.p2align 2
+.type bmpcfg_emit_stub_3156, @function
+bmpcfg_emit_stub_3156:
+    bmpcfg 3, 88, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3156, .-bmpcfg_emit_stub_3156
+
+.globl bmpcfg_emit_stub_3157
+.p2align 2
+.type bmpcfg_emit_stub_3157, @function
+bmpcfg_emit_stub_3157:
+    bmpcfg 3, 88, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3157, .-bmpcfg_emit_stub_3157
+
+.globl bmpcfg_emit_stub_3158
+.p2align 2
+.type bmpcfg_emit_stub_3158, @function
+bmpcfg_emit_stub_3158:
+    bmpcfg 3, 88, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3158, .-bmpcfg_emit_stub_3158
+
+.globl bmpcfg_emit_stub_3159
+.p2align 2
+.type bmpcfg_emit_stub_3159, @function
+bmpcfg_emit_stub_3159:
+    bmpcfg 3, 88, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3159, .-bmpcfg_emit_stub_3159
+
+.globl bmpcfg_emit_stub_3160
+.p2align 2
+.type bmpcfg_emit_stub_3160, @function
+bmpcfg_emit_stub_3160:
+    bmpcfg 3, 88, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3160, .-bmpcfg_emit_stub_3160
+
+.globl bmpcfg_emit_stub_3161
+.p2align 2
+.type bmpcfg_emit_stub_3161, @function
+bmpcfg_emit_stub_3161:
+    bmpcfg 3, 88, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3161, .-bmpcfg_emit_stub_3161
+
+.globl bmpcfg_emit_stub_3162
+.p2align 2
+.type bmpcfg_emit_stub_3162, @function
+bmpcfg_emit_stub_3162:
+    bmpcfg 3, 88, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3162, .-bmpcfg_emit_stub_3162
+
+.globl bmpcfg_emit_stub_3163
+.p2align 2
+.type bmpcfg_emit_stub_3163, @function
+bmpcfg_emit_stub_3163:
+    bmpcfg 3, 88, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3163, .-bmpcfg_emit_stub_3163
+
+.globl bmpcfg_emit_stub_3164
+.p2align 2
+.type bmpcfg_emit_stub_3164, @function
+bmpcfg_emit_stub_3164:
+    bmpcfg 3, 88, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3164, .-bmpcfg_emit_stub_3164
+
+.globl bmpcfg_emit_stub_3165
+.p2align 2
+.type bmpcfg_emit_stub_3165, @function
+bmpcfg_emit_stub_3165:
+    bmpcfg 3, 88, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3165, .-bmpcfg_emit_stub_3165
+
+.globl bmpcfg_emit_stub_3166
+.p2align 2
+.type bmpcfg_emit_stub_3166, @function
+bmpcfg_emit_stub_3166:
+    bmpcfg 3, 88, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3166, .-bmpcfg_emit_stub_3166
+
+.globl bmpcfg_emit_stub_3167
+.p2align 2
+.type bmpcfg_emit_stub_3167, @function
+bmpcfg_emit_stub_3167:
+    bmpcfg 3, 88, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3167, .-bmpcfg_emit_stub_3167
+
+.globl bmpcfg_emit_stub_3168
+.p2align 2
+.type bmpcfg_emit_stub_3168, @function
+bmpcfg_emit_stub_3168:
+    bmpcfg 3, 88, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3168, .-bmpcfg_emit_stub_3168
+
+.globl bmpcfg_emit_stub_3169
+.p2align 2
+.type bmpcfg_emit_stub_3169, @function
+bmpcfg_emit_stub_3169:
+    bmpcfg 3, 96, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3169, .-bmpcfg_emit_stub_3169
+
+.globl bmpcfg_emit_stub_3170
+.p2align 2
+.type bmpcfg_emit_stub_3170, @function
+bmpcfg_emit_stub_3170:
+    bmpcfg 3, 96, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3170, .-bmpcfg_emit_stub_3170
+
+.globl bmpcfg_emit_stub_3171
+.p2align 2
+.type bmpcfg_emit_stub_3171, @function
+bmpcfg_emit_stub_3171:
+    bmpcfg 3, 96, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3171, .-bmpcfg_emit_stub_3171
+
+.globl bmpcfg_emit_stub_3172
+.p2align 2
+.type bmpcfg_emit_stub_3172, @function
+bmpcfg_emit_stub_3172:
+    bmpcfg 3, 96, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3172, .-bmpcfg_emit_stub_3172
+
+.globl bmpcfg_emit_stub_3173
+.p2align 2
+.type bmpcfg_emit_stub_3173, @function
+bmpcfg_emit_stub_3173:
+    bmpcfg 3, 96, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3173, .-bmpcfg_emit_stub_3173
+
+.globl bmpcfg_emit_stub_3174
+.p2align 2
+.type bmpcfg_emit_stub_3174, @function
+bmpcfg_emit_stub_3174:
+    bmpcfg 3, 96, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3174, .-bmpcfg_emit_stub_3174
+
+.globl bmpcfg_emit_stub_3175
+.p2align 2
+.type bmpcfg_emit_stub_3175, @function
+bmpcfg_emit_stub_3175:
+    bmpcfg 3, 96, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3175, .-bmpcfg_emit_stub_3175
+
+.globl bmpcfg_emit_stub_3176
+.p2align 2
+.type bmpcfg_emit_stub_3176, @function
+bmpcfg_emit_stub_3176:
+    bmpcfg 3, 96, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3176, .-bmpcfg_emit_stub_3176
+
+.globl bmpcfg_emit_stub_3177
+.p2align 2
+.type bmpcfg_emit_stub_3177, @function
+bmpcfg_emit_stub_3177:
+    bmpcfg 3, 96, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3177, .-bmpcfg_emit_stub_3177
+
+.globl bmpcfg_emit_stub_3178
+.p2align 2
+.type bmpcfg_emit_stub_3178, @function
+bmpcfg_emit_stub_3178:
+    bmpcfg 3, 96, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3178, .-bmpcfg_emit_stub_3178
+
+.globl bmpcfg_emit_stub_3179
+.p2align 2
+.type bmpcfg_emit_stub_3179, @function
+bmpcfg_emit_stub_3179:
+    bmpcfg 3, 96, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3179, .-bmpcfg_emit_stub_3179
+
+.globl bmpcfg_emit_stub_3180
+.p2align 2
+.type bmpcfg_emit_stub_3180, @function
+bmpcfg_emit_stub_3180:
+    bmpcfg 3, 96, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3180, .-bmpcfg_emit_stub_3180
+
+.globl bmpcfg_emit_stub_3181
+.p2align 2
+.type bmpcfg_emit_stub_3181, @function
+bmpcfg_emit_stub_3181:
+    bmpcfg 3, 96, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3181, .-bmpcfg_emit_stub_3181
+
+.globl bmpcfg_emit_stub_3182
+.p2align 2
+.type bmpcfg_emit_stub_3182, @function
+bmpcfg_emit_stub_3182:
+    bmpcfg 3, 96, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3182, .-bmpcfg_emit_stub_3182
+
+.globl bmpcfg_emit_stub_3183
+.p2align 2
+.type bmpcfg_emit_stub_3183, @function
+bmpcfg_emit_stub_3183:
+    bmpcfg 3, 96, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3183, .-bmpcfg_emit_stub_3183
+
+.globl bmpcfg_emit_stub_3184
+.p2align 2
+.type bmpcfg_emit_stub_3184, @function
+bmpcfg_emit_stub_3184:
+    bmpcfg 3, 96, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3184, .-bmpcfg_emit_stub_3184
+
+.globl bmpcfg_emit_stub_3185
+.p2align 2
+.type bmpcfg_emit_stub_3185, @function
+bmpcfg_emit_stub_3185:
+    bmpcfg 3, 104, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3185, .-bmpcfg_emit_stub_3185
+
+.globl bmpcfg_emit_stub_3186
+.p2align 2
+.type bmpcfg_emit_stub_3186, @function
+bmpcfg_emit_stub_3186:
+    bmpcfg 3, 104, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3186, .-bmpcfg_emit_stub_3186
+
+.globl bmpcfg_emit_stub_3187
+.p2align 2
+.type bmpcfg_emit_stub_3187, @function
+bmpcfg_emit_stub_3187:
+    bmpcfg 3, 104, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3187, .-bmpcfg_emit_stub_3187
+
+.globl bmpcfg_emit_stub_3188
+.p2align 2
+.type bmpcfg_emit_stub_3188, @function
+bmpcfg_emit_stub_3188:
+    bmpcfg 3, 104, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3188, .-bmpcfg_emit_stub_3188
+
+.globl bmpcfg_emit_stub_3189
+.p2align 2
+.type bmpcfg_emit_stub_3189, @function
+bmpcfg_emit_stub_3189:
+    bmpcfg 3, 104, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3189, .-bmpcfg_emit_stub_3189
+
+.globl bmpcfg_emit_stub_3190
+.p2align 2
+.type bmpcfg_emit_stub_3190, @function
+bmpcfg_emit_stub_3190:
+    bmpcfg 3, 104, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3190, .-bmpcfg_emit_stub_3190
+
+.globl bmpcfg_emit_stub_3191
+.p2align 2
+.type bmpcfg_emit_stub_3191, @function
+bmpcfg_emit_stub_3191:
+    bmpcfg 3, 104, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3191, .-bmpcfg_emit_stub_3191
+
+.globl bmpcfg_emit_stub_3192
+.p2align 2
+.type bmpcfg_emit_stub_3192, @function
+bmpcfg_emit_stub_3192:
+    bmpcfg 3, 104, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3192, .-bmpcfg_emit_stub_3192
+
+.globl bmpcfg_emit_stub_3193
+.p2align 2
+.type bmpcfg_emit_stub_3193, @function
+bmpcfg_emit_stub_3193:
+    bmpcfg 3, 104, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3193, .-bmpcfg_emit_stub_3193
+
+.globl bmpcfg_emit_stub_3194
+.p2align 2
+.type bmpcfg_emit_stub_3194, @function
+bmpcfg_emit_stub_3194:
+    bmpcfg 3, 104, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3194, .-bmpcfg_emit_stub_3194
+
+.globl bmpcfg_emit_stub_3195
+.p2align 2
+.type bmpcfg_emit_stub_3195, @function
+bmpcfg_emit_stub_3195:
+    bmpcfg 3, 104, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3195, .-bmpcfg_emit_stub_3195
+
+.globl bmpcfg_emit_stub_3196
+.p2align 2
+.type bmpcfg_emit_stub_3196, @function
+bmpcfg_emit_stub_3196:
+    bmpcfg 3, 104, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3196, .-bmpcfg_emit_stub_3196
+
+.globl bmpcfg_emit_stub_3197
+.p2align 2
+.type bmpcfg_emit_stub_3197, @function
+bmpcfg_emit_stub_3197:
+    bmpcfg 3, 104, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3197, .-bmpcfg_emit_stub_3197
+
+.globl bmpcfg_emit_stub_3198
+.p2align 2
+.type bmpcfg_emit_stub_3198, @function
+bmpcfg_emit_stub_3198:
+    bmpcfg 3, 104, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3198, .-bmpcfg_emit_stub_3198
+
+.globl bmpcfg_emit_stub_3199
+.p2align 2
+.type bmpcfg_emit_stub_3199, @function
+bmpcfg_emit_stub_3199:
+    bmpcfg 3, 104, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3199, .-bmpcfg_emit_stub_3199
+
+.globl bmpcfg_emit_stub_3200
+.p2align 2
+.type bmpcfg_emit_stub_3200, @function
+bmpcfg_emit_stub_3200:
+    bmpcfg 3, 104, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3200, .-bmpcfg_emit_stub_3200
+
+.globl bmpcfg_emit_stub_3201
+.p2align 2
+.type bmpcfg_emit_stub_3201, @function
+bmpcfg_emit_stub_3201:
+    bmpcfg 3, 112, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3201, .-bmpcfg_emit_stub_3201
+
+.globl bmpcfg_emit_stub_3202
+.p2align 2
+.type bmpcfg_emit_stub_3202, @function
+bmpcfg_emit_stub_3202:
+    bmpcfg 3, 112, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3202, .-bmpcfg_emit_stub_3202
+
+.globl bmpcfg_emit_stub_3203
+.p2align 2
+.type bmpcfg_emit_stub_3203, @function
+bmpcfg_emit_stub_3203:
+    bmpcfg 3, 112, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3203, .-bmpcfg_emit_stub_3203
+
+.globl bmpcfg_emit_stub_3204
+.p2align 2
+.type bmpcfg_emit_stub_3204, @function
+bmpcfg_emit_stub_3204:
+    bmpcfg 3, 112, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3204, .-bmpcfg_emit_stub_3204
+
+.globl bmpcfg_emit_stub_3205
+.p2align 2
+.type bmpcfg_emit_stub_3205, @function
+bmpcfg_emit_stub_3205:
+    bmpcfg 3, 112, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3205, .-bmpcfg_emit_stub_3205
+
+.globl bmpcfg_emit_stub_3206
+.p2align 2
+.type bmpcfg_emit_stub_3206, @function
+bmpcfg_emit_stub_3206:
+    bmpcfg 3, 112, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3206, .-bmpcfg_emit_stub_3206
+
+.globl bmpcfg_emit_stub_3207
+.p2align 2
+.type bmpcfg_emit_stub_3207, @function
+bmpcfg_emit_stub_3207:
+    bmpcfg 3, 112, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3207, .-bmpcfg_emit_stub_3207
+
+.globl bmpcfg_emit_stub_3208
+.p2align 2
+.type bmpcfg_emit_stub_3208, @function
+bmpcfg_emit_stub_3208:
+    bmpcfg 3, 112, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3208, .-bmpcfg_emit_stub_3208
+
+.globl bmpcfg_emit_stub_3209
+.p2align 2
+.type bmpcfg_emit_stub_3209, @function
+bmpcfg_emit_stub_3209:
+    bmpcfg 3, 112, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3209, .-bmpcfg_emit_stub_3209
+
+.globl bmpcfg_emit_stub_3210
+.p2align 2
+.type bmpcfg_emit_stub_3210, @function
+bmpcfg_emit_stub_3210:
+    bmpcfg 3, 112, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3210, .-bmpcfg_emit_stub_3210
+
+.globl bmpcfg_emit_stub_3211
+.p2align 2
+.type bmpcfg_emit_stub_3211, @function
+bmpcfg_emit_stub_3211:
+    bmpcfg 3, 112, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3211, .-bmpcfg_emit_stub_3211
+
+.globl bmpcfg_emit_stub_3212
+.p2align 2
+.type bmpcfg_emit_stub_3212, @function
+bmpcfg_emit_stub_3212:
+    bmpcfg 3, 112, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3212, .-bmpcfg_emit_stub_3212
+
+.globl bmpcfg_emit_stub_3213
+.p2align 2
+.type bmpcfg_emit_stub_3213, @function
+bmpcfg_emit_stub_3213:
+    bmpcfg 3, 112, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3213, .-bmpcfg_emit_stub_3213
+
+.globl bmpcfg_emit_stub_3214
+.p2align 2
+.type bmpcfg_emit_stub_3214, @function
+bmpcfg_emit_stub_3214:
+    bmpcfg 3, 112, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3214, .-bmpcfg_emit_stub_3214
+
+.globl bmpcfg_emit_stub_3215
+.p2align 2
+.type bmpcfg_emit_stub_3215, @function
+bmpcfg_emit_stub_3215:
+    bmpcfg 3, 112, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3215, .-bmpcfg_emit_stub_3215
+
+.globl bmpcfg_emit_stub_3216
+.p2align 2
+.type bmpcfg_emit_stub_3216, @function
+bmpcfg_emit_stub_3216:
+    bmpcfg 3, 112, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3216, .-bmpcfg_emit_stub_3216
+
+.globl bmpcfg_emit_stub_3217
+.p2align 2
+.type bmpcfg_emit_stub_3217, @function
+bmpcfg_emit_stub_3217:
+    bmpcfg 3, 120, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3217, .-bmpcfg_emit_stub_3217
+
+.globl bmpcfg_emit_stub_3218
+.p2align 2
+.type bmpcfg_emit_stub_3218, @function
+bmpcfg_emit_stub_3218:
+    bmpcfg 3, 120, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3218, .-bmpcfg_emit_stub_3218
+
+.globl bmpcfg_emit_stub_3219
+.p2align 2
+.type bmpcfg_emit_stub_3219, @function
+bmpcfg_emit_stub_3219:
+    bmpcfg 3, 120, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3219, .-bmpcfg_emit_stub_3219
+
+.globl bmpcfg_emit_stub_3220
+.p2align 2
+.type bmpcfg_emit_stub_3220, @function
+bmpcfg_emit_stub_3220:
+    bmpcfg 3, 120, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3220, .-bmpcfg_emit_stub_3220
+
+.globl bmpcfg_emit_stub_3221
+.p2align 2
+.type bmpcfg_emit_stub_3221, @function
+bmpcfg_emit_stub_3221:
+    bmpcfg 3, 120, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3221, .-bmpcfg_emit_stub_3221
+
+.globl bmpcfg_emit_stub_3222
+.p2align 2
+.type bmpcfg_emit_stub_3222, @function
+bmpcfg_emit_stub_3222:
+    bmpcfg 3, 120, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3222, .-bmpcfg_emit_stub_3222
+
+.globl bmpcfg_emit_stub_3223
+.p2align 2
+.type bmpcfg_emit_stub_3223, @function
+bmpcfg_emit_stub_3223:
+    bmpcfg 3, 120, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3223, .-bmpcfg_emit_stub_3223
+
+.globl bmpcfg_emit_stub_3224
+.p2align 2
+.type bmpcfg_emit_stub_3224, @function
+bmpcfg_emit_stub_3224:
+    bmpcfg 3, 120, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3224, .-bmpcfg_emit_stub_3224
+
+.globl bmpcfg_emit_stub_3225
+.p2align 2
+.type bmpcfg_emit_stub_3225, @function
+bmpcfg_emit_stub_3225:
+    bmpcfg 3, 120, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3225, .-bmpcfg_emit_stub_3225
+
+.globl bmpcfg_emit_stub_3226
+.p2align 2
+.type bmpcfg_emit_stub_3226, @function
+bmpcfg_emit_stub_3226:
+    bmpcfg 3, 120, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3226, .-bmpcfg_emit_stub_3226
+
+.globl bmpcfg_emit_stub_3227
+.p2align 2
+.type bmpcfg_emit_stub_3227, @function
+bmpcfg_emit_stub_3227:
+    bmpcfg 3, 120, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3227, .-bmpcfg_emit_stub_3227
+
+.globl bmpcfg_emit_stub_3228
+.p2align 2
+.type bmpcfg_emit_stub_3228, @function
+bmpcfg_emit_stub_3228:
+    bmpcfg 3, 120, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3228, .-bmpcfg_emit_stub_3228
+
+.globl bmpcfg_emit_stub_3229
+.p2align 2
+.type bmpcfg_emit_stub_3229, @function
+bmpcfg_emit_stub_3229:
+    bmpcfg 3, 120, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3229, .-bmpcfg_emit_stub_3229
+
+.globl bmpcfg_emit_stub_3230
+.p2align 2
+.type bmpcfg_emit_stub_3230, @function
+bmpcfg_emit_stub_3230:
+    bmpcfg 3, 120, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3230, .-bmpcfg_emit_stub_3230
+
+.globl bmpcfg_emit_stub_3231
+.p2align 2
+.type bmpcfg_emit_stub_3231, @function
+bmpcfg_emit_stub_3231:
+    bmpcfg 3, 120, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3231, .-bmpcfg_emit_stub_3231
+
+.globl bmpcfg_emit_stub_3232
+.p2align 2
+.type bmpcfg_emit_stub_3232, @function
+bmpcfg_emit_stub_3232:
+    bmpcfg 3, 120, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3232, .-bmpcfg_emit_stub_3232
+
+.globl bmpcfg_emit_stub_3233
+.p2align 2
+.type bmpcfg_emit_stub_3233, @function
+bmpcfg_emit_stub_3233:
+    bmpcfg 3, 128, 8, 16, 1, 1
+    ret
+.size bmpcfg_emit_stub_3233, .-bmpcfg_emit_stub_3233
+
+.globl bmpcfg_emit_stub_3234
+.p2align 2
+.type bmpcfg_emit_stub_3234, @function
+bmpcfg_emit_stub_3234:
+    bmpcfg 3, 128, 8, 16, 1, 2
+    ret
+.size bmpcfg_emit_stub_3234, .-bmpcfg_emit_stub_3234
+
+.globl bmpcfg_emit_stub_3235
+.p2align 2
+.type bmpcfg_emit_stub_3235, @function
+bmpcfg_emit_stub_3235:
+    bmpcfg 3, 128, 8, 16, 1, 3
+    ret
+.size bmpcfg_emit_stub_3235, .-bmpcfg_emit_stub_3235
+
+.globl bmpcfg_emit_stub_3236
+.p2align 2
+.type bmpcfg_emit_stub_3236, @function
+bmpcfg_emit_stub_3236:
+    bmpcfg 3, 128, 8, 16, 1, 4
+    ret
+.size bmpcfg_emit_stub_3236, .-bmpcfg_emit_stub_3236
+
+.globl bmpcfg_emit_stub_3237
+.p2align 2
+.type bmpcfg_emit_stub_3237, @function
+bmpcfg_emit_stub_3237:
+    bmpcfg 3, 128, 8, 16, 1, 5
+    ret
+.size bmpcfg_emit_stub_3237, .-bmpcfg_emit_stub_3237
+
+.globl bmpcfg_emit_stub_3238
+.p2align 2
+.type bmpcfg_emit_stub_3238, @function
+bmpcfg_emit_stub_3238:
+    bmpcfg 3, 128, 8, 16, 1, 6
+    ret
+.size bmpcfg_emit_stub_3238, .-bmpcfg_emit_stub_3238
+
+.globl bmpcfg_emit_stub_3239
+.p2align 2
+.type bmpcfg_emit_stub_3239, @function
+bmpcfg_emit_stub_3239:
+    bmpcfg 3, 128, 8, 16, 1, 7
+    ret
+.size bmpcfg_emit_stub_3239, .-bmpcfg_emit_stub_3239
+
+.globl bmpcfg_emit_stub_3240
+.p2align 2
+.type bmpcfg_emit_stub_3240, @function
+bmpcfg_emit_stub_3240:
+    bmpcfg 3, 128, 8, 16, 2, 1
+    ret
+.size bmpcfg_emit_stub_3240, .-bmpcfg_emit_stub_3240
+
+.globl bmpcfg_emit_stub_3241
+.p2align 2
+.type bmpcfg_emit_stub_3241, @function
+bmpcfg_emit_stub_3241:
+    bmpcfg 3, 128, 8, 16, 2, 2
+    ret
+.size bmpcfg_emit_stub_3241, .-bmpcfg_emit_stub_3241
+
+.globl bmpcfg_emit_stub_3242
+.p2align 2
+.type bmpcfg_emit_stub_3242, @function
+bmpcfg_emit_stub_3242:
+    bmpcfg 3, 128, 8, 16, 2, 3
+    ret
+.size bmpcfg_emit_stub_3242, .-bmpcfg_emit_stub_3242
+
+.globl bmpcfg_emit_stub_3243
+.p2align 2
+.type bmpcfg_emit_stub_3243, @function
+bmpcfg_emit_stub_3243:
+    bmpcfg 3, 128, 8, 16, 3, 1
+    ret
+.size bmpcfg_emit_stub_3243, .-bmpcfg_emit_stub_3243
+
+.globl bmpcfg_emit_stub_3244
+.p2align 2
+.type bmpcfg_emit_stub_3244, @function
+bmpcfg_emit_stub_3244:
+    bmpcfg 3, 128, 8, 16, 3, 2
+    ret
+.size bmpcfg_emit_stub_3244, .-bmpcfg_emit_stub_3244
+
+.globl bmpcfg_emit_stub_3245
+.p2align 2
+.type bmpcfg_emit_stub_3245, @function
+bmpcfg_emit_stub_3245:
+    bmpcfg 3, 128, 8, 16, 4, 1
+    ret
+.size bmpcfg_emit_stub_3245, .-bmpcfg_emit_stub_3245
+
+.globl bmpcfg_emit_stub_3246
+.p2align 2
+.type bmpcfg_emit_stub_3246, @function
+bmpcfg_emit_stub_3246:
+    bmpcfg 3, 128, 8, 16, 5, 1
+    ret
+.size bmpcfg_emit_stub_3246, .-bmpcfg_emit_stub_3246
+
+.globl bmpcfg_emit_stub_3247
+.p2align 2
+.type bmpcfg_emit_stub_3247, @function
+bmpcfg_emit_stub_3247:
+    bmpcfg 3, 128, 8, 16, 6, 1
+    ret
+.size bmpcfg_emit_stub_3247, .-bmpcfg_emit_stub_3247
+
+.globl bmpcfg_emit_stub_3248
+.p2align 2
+.type bmpcfg_emit_stub_3248, @function
+bmpcfg_emit_stub_3248:
+    bmpcfg 3, 128, 8, 16, 7, 1
+    ret
+.size bmpcfg_emit_stub_3248, .-bmpcfg_emit_stub_3248
+

@@ -47,6 +47,59 @@ typedef struct
 
 #define BMPMM_RUNTIME_CACHE_CAP 64
 
+static inline unsigned long bmpmm_exec_cfg_group_g(const bmpmm_exec_cfg_t *cfg)
+{
+    return cfg->gm * cfg->gn;
+}
+
+static inline unsigned long bmpmm_exec_cfg_weight_bits(const bmpmm_exec_cfg_t *cfg)
+{
+    switch (cfg->prec)
+    {
+    case 0:
+        return 1UL;
+    case 1:
+    case 2:
+        return 2UL;
+    case 3:
+        return 4UL;
+    default:
+        return 0UL;
+    }
+}
+
+static inline int bmpmm_exec_cfg_is_legal(const bmpmm_exec_cfg_t *cfg)
+{
+    const unsigned long vrf_bits = 2UL * 64UL * 64UL;
+    const unsigned long cbuf_bits = 16384UL;
+    const unsigned long group_g = bmpmm_exec_cfg_group_g(cfg);
+    const unsigned long weight_bits = bmpmm_exec_cfg_weight_bits(cfg);
+
+    if (!cfg)
+        return 0;
+
+    if (cfg->mtile == 0 || cfg->ntile == 0 || cfg->ktile == 0 ||
+        cfg->gm == 0 || cfg->gn == 0 || weight_bits == 0)
+        return 0;
+
+    if ((cfg->ktile & 7UL) != 0)
+        return 0;
+
+    if (group_g >= 8UL)
+        return 0;
+
+    if ((cfg->mtile * cfg->ktile * 8UL) > vrf_bits)
+        return 0;
+
+    if ((cfg->ntile * cfg->ktile * weight_bits) > vrf_bits)
+        return 0;
+
+    if ((cfg->mtile * cfg->ntile * group_g * 16UL) > cbuf_bits)
+        return 0;
+
+    return 1;
+}
+
 static inline int bmpmm_exec_cfg_equal(const bmpmm_exec_cfg_t *a, const bmpmm_exec_cfg_t *b)
 {
     return a->mtile == b->mtile && a->ntile == b->ntile && a->ktile == b->ktile &&
