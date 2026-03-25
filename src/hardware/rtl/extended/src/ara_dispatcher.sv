@@ -131,30 +131,15 @@ module ara_dispatcher
 
   ara_req_t ara_req, ara_req_d;
   logic ara_req_valid, ara_req_valid_d;
-  logic ara_token_d, ara_token_q;
-  logic last_acc_req_seen_d, last_acc_req_seen_q;
-  logic [CVA6Cfg.TRANS_ID_BITS-1:0] last_acc_trans_id_d, last_acc_trans_id_q;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
-      ara_req_o           <= '0;
-      ara_req_valid_o     <= 1'b0;
-      ara_token_q         <= 1'b0;
-      last_acc_req_seen_q <= 1'b0;
-      last_acc_trans_id_q <= '0;
+      ara_req_o       <= '0;
+      ara_req_valid_o <= 1'b0;
     end else begin
-      ara_token_q         <= ara_token_d;
-      last_acc_req_seen_q <= last_acc_req_seen_d;
-      last_acc_trans_id_q <= last_acc_trans_id_d;
       if (ara_req_ready_i) begin
         ara_req_o       <= ara_req_d;
         ara_req_valid_o <= ara_req_valid_d;
-`ifndef SYNTHESIS
-        if (ara_req_valid_d && (ara_req_d.op == BMPLE)) begin
-          $display("[%0t][DISP_LATCH_BMPLE] scalar_op=%h vd=%0d weight=%0b token=%0b ready_i=%0b",
-                   $time, ara_req_d.scalar_op, ara_req_d.vd, ara_req_d.is_weight, ara_req_d.token, ara_req_ready_i);
-        end
-`endif
       end
     end
   end
@@ -211,7 +196,7 @@ module ara_dispatcher
   logic [6:0] ntile_d, ntile_q;
   logic [2:0] gm_d, gm_q;
   logic [2:0] gn_d, gn_q;
-  logic [5:0] group_g_d, group_g_q;
+  logic [2:0] group_g_d, group_g_q;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
@@ -473,9 +458,6 @@ module ara_dispatcher
     mtile_d = mtile_q;
     ntile_d = ntile_q;
     group_g_d = group_g_q;
-    ara_token_d = ara_token_q;
-    last_acc_req_seen_d = last_acc_req_seen_q;
-    last_acc_trans_id_d = last_acc_trans_id_q;
 
     // fflags
     for (int lane = 0; lane < NrLanes; lane++) acc_resp_o.fflags |= fflags_ex_i[lane];
@@ -3813,7 +3795,7 @@ module ara_dispatcher
                 ara_req.group_g      = group_g_q;
 
 `ifndef SYNTHESIS
-                if (ara_req_valid || ara_resp_valid) begin
+                if (1'b0) begin
                   $display("[%0t][DISP] BMPLE weight=%0b prec=%0d k=%0d vl=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b resp_valid=%0b",
                            $time, ara_req.is_weight, prec_q, k_dim_q, ara_req.vl, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i, ara_resp_valid);
                 end
@@ -3877,7 +3859,7 @@ module ara_dispatcher
                 csr_vl_d = 8 * 16;
 
 `ifndef SYNTHESIS
-                if (ara_req_valid || ara_resp_valid) begin
+                if (1'b0) begin
                   $display("[%0t][DISP] BMPSE prec=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b resp_valid=%0b",
                            $time, prec_q, mtile_q, ntile_q, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i, ara_resp_valid);
                 end
@@ -3923,7 +3905,7 @@ module ara_dispatcher
                 csr_vl_d              = ara_req.vl;
 
 `ifndef SYNTHESIS
-                if (ara_req_valid || ara_req_ready_i) begin
+                if (1'b0) begin
                   $display("[%0t][DISP] BMPMM prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b",
                            $time, prec_q, k_dim_q, mtile_q, ntile_q, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i);
                 end
@@ -3948,7 +3930,6 @@ module ara_dispatcher
           riscv::OpcodeCustom1: begin
             // Decode the instruction
             automatic rvv_instruction_t insn = rvv_instruction_t'(instr.instr);
-            automatic logic [8:0] kdim_dec;
             automatic logic [5:0] mtile_dec;
             automatic logic [6:0] ntile_dec;
             automatic logic bmptile_illegal;
@@ -3962,19 +3943,15 @@ module ara_dispatcher
             acc_resp_o.resp_valid = 1'b1;
 
             bmptile_illegal = 1'b0;
-            kdim_dec = ({4'b0, insn.custom1_type.k_code} + 9'd1) << 3;
-
-            if (insn.custom1_type.reserved != 4'b0000)
-              bmptile_illegal = 1'b1;
 
             if (insn.custom1_type.mtile_code <= 4'd14) begin
-              mtile_dec = 6'd8 + ({2'b0, insn.custom1_type.mtile_code} << 2);
+              mtile_dec = 6'(6'd8 + ({2'b00, insn.custom1_type.mtile_code} << 2));
             end else begin
               mtile_dec = 6'd8;
               bmptile_illegal = 1'b1;
             end
 
-            ntile_dec = 7'd16 + ({4'b0, insn.custom1_type.ntile_code} << 4);
+            ntile_dec = 7'(7'd16 + ({4'b0000, insn.custom1_type.ntile_code} << 4));
 
             if (bmptile_illegal) begin
               illegal_insn = 1'b1;
@@ -3984,41 +3961,17 @@ module ara_dispatcher
               automatic logic [2:0] gn_dec;
               automatic logic [5:0] group_total;
 
-              automatic logic [2:0] bmp_planes_dec;
-              automatic logic [31:0] act_bits_total;
-              automatic logic [31:0] wgt_bits_total;
-              automatic logic [31:0] cbuf_bits_total;
-
               gm_dec = insn.custom1_type.gm_code + 3'd1;
               gn_dec = insn.custom1_type.gn_code + 3'd1;
               group_total = gm_dec * gn_dec;
 
-              unique case (insn.custom1_type.prec)
-                3'd0: bmp_planes_dec = 3'd1;
-                3'd1, 3'd2: bmp_planes_dec = 3'd2;
-                3'd3: bmp_planes_dec = 3'd4;
-                default: bmp_planes_dec = 3'd0;
-              endcase
-
-              act_bits_total = mtile_dec * kdim_dec * 32'd8;
-              wgt_bits_total = ntile_dec * kdim_dec * bmp_planes_dec;
-              cbuf_bits_total = mtile_dec * ntile_dec * group_total * 32'd16;
-
-              if ((group_total >= 6'd8) ||
-                  (bmp_planes_dec == 3'd0) ||
-                  (act_bits_total > 32'd8192) ||
-                  (wgt_bits_total > 32'd8192) ||
-                  (cbuf_bits_total > 32'd16384)) begin
-`ifndef SYNTHESIS
-                $display("[%0t][DISP] reject BMPCFG prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d act_bits=%0d wgt_bits=%0d cbuf_bits=%0d",
-                         $time, insn.custom1_type.prec, kdim_dec, mtile_dec, ntile_dec, gm_dec, gn_dec, group_total, act_bits_total, wgt_bits_total, cbuf_bits_total);
-`endif
+              if ((group_total * mtile_dec * ntile_dec) > 11'd1024) begin
                 illegal_insn = 1'b1;
               end else begin
                 prec_d = insn.custom1_type.prec;
                 ara_req.prec = insn.custom1_type.prec;
-                k_dim_d = kdim_dec;
-                ara_req.k_dim = kdim_dec;
+                k_dim_d = ({12'b0, insn.custom1_type.k_code} + 17'd1) << 3;
+                ara_req.k_dim = ({4'b0, insn.custom1_type.k_code} + 9'd1) << 3;
                 mtile_d = mtile_dec;
                 ntile_d = ntile_dec;
                 gm_d = gm_dec;
@@ -4027,16 +3980,16 @@ module ara_dispatcher
                 ara_req.ntile = ntile_dec;
                 ara_req.gm = gm_dec;
                 ara_req.gn = gn_dec;
-                group_g_d = group_total;
-                ara_req.group_g = group_total;
-                csr_vl_d = kdim_dec * 4 * NrLanes;
+                group_g_d = group_total[2:0];
+                ara_req.group_g = group_total[2:0];
+                csr_vl_d = (({4'b0, insn.custom1_type.k_code} + 9'd1) << 3) * 4 * NrLanes;
 
                 is_config = 1'b1;
 
-                acc_resp_o.result = kdim_dec;
+                acc_resp_o.result = ({4'b0, insn.custom1_type.k_code} + 9'd1) << 3;
 `ifndef SYNTHESIS
                 $display("[%0t][DISP] BMPCFG prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b req_ready_i=%0b resp_valid=%0b",
-                         $time, insn.custom1_type.prec, kdim_dec, mtile_dec, ntile_dec, gm_dec, gn_dec, group_total, ara_req_valid, ara_req_ready_i, acc_resp_o.resp_valid);
+                         $time, insn.custom1_type.prec, (({4'b0, insn.custom1_type.k_code} + 9'd1) << 3), mtile_dec, ntile_dec, gm_dec, gn_dec, group_total[2:0], ara_req_valid, ara_req_ready_i, acc_resp_o.resp_valid);
 `endif
               end
 
@@ -4245,15 +4198,8 @@ module ara_dispatcher
     acc_resp_o.load_complete = load_zero_vl | load_complete_q;
     acc_resp_o.store_complete = store_zero_vl | store_complete_q;
 
-    if (acc_req_i.req_valid && (!last_acc_req_seen_q || (acc_req_i.trans_id != last_acc_trans_id_q))) begin
-      ara_req.token = ~ara_token_q;
-      ara_token_d = ~ara_token_q;
-      last_acc_req_seen_d = 1'b1;
-      last_acc_trans_id_d = acc_req_i.trans_id;
-    end else begin
-      ara_req.token = ara_token_q;
-      if (!acc_req_i.req_valid) last_acc_req_seen_d = 1'b0;
-    end
+    // The token must change at every new instruction
+    ara_req.token = (ara_req_valid && ara_req_ready_i) ? ~ara_req_o.token : ara_req_o.token;
   end : p_decoder
 
 endmodule : ara_dispatcher

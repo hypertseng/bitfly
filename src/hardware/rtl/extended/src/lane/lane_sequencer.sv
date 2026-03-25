@@ -50,7 +50,6 @@ module lane_sequencer
     input  logic                                          mfpu_ready_i,
     input  logic                 [           NrVInsn-1:0] mfpu_vinsn_done_i,
     input  logic                                          bmpu_ready_i,
-    input  logic                                          bmpu_prefetch_ready_i,
     input  logic                 [           NrVInsn-1:0] bmpu_insn_done_i,
     output logic                                          is_bmpu_store_o,
     output logic                                          is_bmpu_load_o,
@@ -80,7 +79,6 @@ module lane_sequencer
   // Every time a lane handshakes the main sequencer, it also
   // saves the insn ID, not to re-sample the same instruction.
   vid_t last_id_d, last_id_q;
-  pe_req_t last_req_d, last_req_q;
   logic pe_req_valid_i_msk;
   logic en_sync_mask_d, en_sync_mask_q;
   logic [NrVInsn-1:0] bmpu_load_vinsn_d, bmpu_load_vinsn_q;
@@ -116,35 +114,19 @@ module lane_sequencer
   always_comb begin
     // Default assignment
     last_id_d         = last_id_q;
-    last_req_d        = last_req_q;
     en_sync_mask_d    = en_sync_mask_q;
     bmpu_load_vinsn_d = bmpu_load_vinsn_q & pe_vinsn_running_i;
-
-`ifndef SYNTHESIS
-    if ((lane_id_i == '0) && pe_req_valid_i && ((pe_req_i.op == BMPLE) || (pe_req_i.op == BMPMM))) begin
-      $display("[%0t][LSEQ_IN] op=%0d id=%0d en_mask=%0b last_id=%0d ready_o=%0b running=%b",
-               $time, pe_req_i.op, pe_req_i.id, en_sync_mask_q, last_id_q, pe_req_ready_o, pe_vinsn_running_i);
-    end
-`endif
 
     // If the sync mask is enabled and the ID is the same
     // as before, avoid to re-sample the same instruction
     // more than once.
-    if (en_sync_mask_q && (pe_req_i == last_req_q)) pe_req_valid_i_msk = 1'b0;
+    if (en_sync_mask_q && (pe_req_i.id == last_id_q)) pe_req_valid_i_msk = 1'b0;
     else pe_req_valid_i_msk = pe_req_valid_i;
-
-`ifndef SYNTHESIS
-    if ((lane_id_i == '0) && pe_req_valid_i && !pe_req_valid_i_msk && ((pe_req_i.op == BMPLE) || (pe_req_i.op == BMPMM))) begin
-      $display("[%0t][LSEQ_MASK] op=%0d id=%0d en_mask=%0b last_id=%0d",
-               $time, pe_req_i.op, pe_req_i.id, en_sync_mask_q, last_id_q);
-    end
-`endif
 
     // Enable the sync mask when a handshake happens,
     // and save the insn ID
     if (pe_req_valid_i_msk && pe_req_ready_o) begin
       last_id_d      = pe_req_i.id;
-      last_req_d     = pe_req_i;
       en_sync_mask_d = 1'b1;
       if (pe_req_i.op == BMPLE) bmpu_load_vinsn_d[pe_req_i.id] = 1'b1;
     end
@@ -156,12 +138,10 @@ module lane_sequencer
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       last_id_q         <= '0;
-      last_req_q        <= '0;
       en_sync_mask_q    <= 1'b0;
       bmpu_load_vinsn_q <= '0;
     end else begin
       last_id_q         <= last_id_d;
-      last_req_q        <= last_req_d;
       en_sync_mask_q    <= en_sync_mask_d;
       bmpu_load_vinsn_q <= bmpu_load_vinsn_d;
     end
@@ -377,8 +357,7 @@ module lane_sequencer
           pe_req_ready = !(operand_request_valid_o[BMPUAct0] ||
             operand_request_valid_o[BMPUAct1] ||
             operand_request_valid_o[BMPUWgt0] ||
-            operand_request_valid_o[BMPUWgt1]) && bmpu_ready_i &&
-            ((pe_req.op != BMPMM) || bmpu_prefetch_ready_i);
+            operand_request_valid_o[BMPUWgt1]);
         end
         default: ;
       endcase
@@ -1064,8 +1043,8 @@ module lane_sequencer
           logic [16:0] act_block_words;
           logic [16:0] wgt_block_words;
           bmp_planes = bmp_planes_from_prec(pe_req.prec);
-          m_block_count = (pe_req.mtile + 6'd7) >> 3;
-          n_block_count = (pe_req.ntile + 7'd15) >> 4;
+          m_block_count = pe_req.mtile >> 3;
+          n_block_count = pe_req.ntile >> 4;
           if (m_block_count == '0) m_block_count = 4'd1;
           if (n_block_count == '0) n_block_count = 4'd1;
           act_block_words = pe_req.k_dim >> 3;

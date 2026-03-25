@@ -166,7 +166,7 @@ module ara
     logic [6:0]  ntile;
     logic [2:0]  gm;
     logic [2:0]  gn;
-    logic [5:0]  group_g;
+    logic [2:0]  group_g;
     logic        bmpu_en;
     logic        is_weight;
     logic        bmpu_output_en;

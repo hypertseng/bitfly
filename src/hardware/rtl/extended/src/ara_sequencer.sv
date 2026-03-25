@@ -293,13 +293,9 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
       [VMVXS:VFMVFS]:
         for (int i = 0; i < NrVFUs; i++)
           if (i == VFU_None) target_vfus[i] = 1'b1;
-      BMPLE: begin
-        // BMPLE lifetime is tracked via the explicit WAIT/addrgen handshake and the
-        // VLSU internal queue. Do not charge it against the generic main-sequencer
-        // LoadUnit issue counter, otherwise prefetch-capable BMP loads can be blocked
-        // by a desynchronized load counter before they even reach the VLSU.
-        target_vfus = '0;
-      end
+      BMPLE:
+        for (int i = 0; i < NrVFUs; i++)
+          if (i == VFU_LoadUnit) target_vfus[i] = 1'b1;
       BMPSE:
         for (int i = 0; i < NrVFUs; i++)
           if (i == VFU_StoreUnit || i == BMPU) target_vfus[i] = 1'b1;
@@ -329,8 +325,6 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
   };
 
   logic ara_req_token_d, ara_req_token_q;
-  ara_req_t last_ara_req_d, last_ara_req_q;
-  logic last_ara_req_valid_d, last_ara_req_valid_q;
 
   // Counters keep track of how many instructions each unit is running.
   // They have the same size only to keep the code easy.
@@ -342,7 +336,6 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
   // Bit [i] is 1'b1 if the respective PE is ready for the issue of this insn
   logic [NrVFUs-1:0] vinsn_queue_issue;
   logic              accepted_insn, accepted_insn_stalled;
-  logic              same_last_ara_req;
   logic [NrVFUs-1:0] target_vfus_vec;
   // Gold tickets and passes
   // Normally, instructions can be issued to the lane sequencer only if
@@ -389,19 +382,11 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
     pe_req_valid_d = 1'b0;
 
     // No response
-    ara_resp_o            = '0;
-    ara_resp_valid_o      = 1'b0;
-    last_ara_req_d        = last_ara_req_q;
-    last_ara_req_valid_d  = last_ara_req_valid_q;
-    if (!ara_req_valid_i) last_ara_req_valid_d = 1'b0;
+    ara_resp_o       = '0;
+    ara_resp_valid_o = 1'b0;
 
     // Always ready to receive a new request
     ara_req_ready_o = 1'b1;
-
-    if (ara_req_valid_i) begin
-      last_ara_req_d       = ara_req_i;
-      last_ara_req_valid_d = 1'b1;
-    end
 
     // Not ready by default
     pe_scalar_resp_ready_o = 1'b0;
@@ -538,13 +523,6 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
               // Acknowledge instruction
               ara_req_ready_o = 1'b1;
 
-`ifndef SYNTHESIS
-              if (ara_req_i.op == BMPLE) begin
-                $display("[%0t][ASEQ_ACCEPT_BMPLE] id=%0d state=%0d pe_ready=%0b addrgen_ack=%0b req_valid=%0b",
-                         $time, vinsn_id_n, state_q, pe_req_ready_i[NrLanes+OffsetLoad], addrgen_ack_i, ara_req_valid_i);
-              end
-`endif
-
               // Remember that the vector instruction is running
               unique case (vfu(ara_req_i.op))
                 VFU_LoadUnit : pe_vinsn_running_d[NrLanes + OffsetLoad][vinsn_id_n]  = 1'b1;
@@ -578,29 +556,13 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
               if (ara_req_i.use_vs2) read_list_d[ara_req_i.vs2] = '{vid: vinsn_id_n, valid: 1'b1};
               if (!ara_req_i.vm) read_list_d[VMASK]             = '{vid: vinsn_id_n, valid: 1'b1};
             end
-          end else begin
-`ifndef SYNTHESIS
-            if (ara_req_i.op == BMPLE) begin
-              $display("[%0t][ASEQ_BLOCK_BMPLE] issue=%0b desync=%0b running_full=%0b state=%0d running=%b ld_cnt=%0d ld_ready=%0b ld_pass=%0b ld_done=%0b",
-                       $time, &vinsn_queue_issue, stall_lanes_desynch, vinsn_running_full, state_q, vinsn_running_q,
-                       insn_queue_cnt_q[VFU_LoadUnit], vinsn_queue_ready[VFU_LoadUnit], priority_pass[VFU_LoadUnit], insn_queue_done[VFU_LoadUnit]);
-            end
-`endif
-            ara_req_ready_o = 1'b0; // Wait until the PEs are ready
-          end
+          end else ara_req_ready_o = 1'b0; // Wait until the PEs are ready
         end
       end
 
       WAIT: begin
         // Wait until we got an answer from lane 0
         ara_req_ready_o = 1'b0;
-
-`ifndef SYNTHESIS
-        if ((pe_req_o.op == BMPLE) && (((($time % 128) == 0)) || addrgen_ack_i)) begin
-          $display("[%0t][ASEQ_WAIT_BMPLE] id=%0d valid=%0b ready=%0b addrgen_ack=%0b pe_valid=%0b running=%b",
-                   $time, pe_req_o.id, ara_req_valid_i, ara_req_ready_o, addrgen_ack_i, pe_req_valid_o, vinsn_running_q);
-        end
-`endif
 
         // Maintain output
         pe_req_d       = pe_req_o;
@@ -674,10 +636,8 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
       pe_req_o       <= '0;
       pe_req_valid_o <= 1'b0;
 
-      ara_req_token_q      <= 1'b1;
-      last_ara_req_q       <= '0;
-      last_ara_req_valid_q <= 1'b0;
-      gold_ticket_q        <= 1'b0;
+      ara_req_token_q <= 1'b1;
+      gold_ticket_q   <= 1'b0;
 
       global_hazard_table_o <= '0;
 
@@ -691,10 +651,8 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
       pe_req_o       <= pe_req_d;
       pe_req_valid_o <= pe_req_valid_d;
 
-      ara_req_token_q      <= ara_req_token_d;
-      last_ara_req_q       <= last_ara_req_d;
-      last_ara_req_valid_q <= last_ara_req_valid_d;
-      gold_ticket_q        <= gold_ticket_d;
+      ara_req_token_q <= ara_req_token_d;
+      gold_ticket_q   <= gold_ticket_d;
 
       global_hazard_table_o <= global_hazard_table_d;
 
@@ -747,22 +705,8 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
   // Dummy counter, just for compatibility
   assign insn_queue_done[VFU_None]      = insn_queue_cnt_up[VFU_None];
 
-  assign same_last_ara_req = last_ara_req_valid_q && (ara_req_i == last_ara_req_q);
-
-  // Register the incoming instruction if it is valid.
-  // Distinct BMP requests must not be dropped just because the 1-bit token stayed the same.
-  assign accepted_insn = ara_req_valid_i & (~last_ara_req_valid_q | (ara_req_i != last_ara_req_q));
-
-`ifndef SYNTHESIS
-  always_ff @(posedge clk_i) begin
-    if (rst_ni && ara_req_valid_i && (ara_req_i.op == BMPLE) && !accepted_insn) begin
-      $display("[%0t][ASEQ_DROP_BMPLE] token_q=%0b token_i=%0b same_req=%0b scalar=%h last_scalar=%h state=%0d ready_o=%0b running=%b ld_cnt=%0d",
-               $time, ara_req_token_q, ara_req_i.token, same_last_ara_req,
-               ara_req_i.scalar_op, last_ara_req_q.scalar_op, state_q, ara_req_ready_o, vinsn_running_q,
-               insn_queue_cnt_q[VFU_LoadUnit]);
-    end
-  end
-`endif
+  // Register the incoming instruction if it is valid
+  assign accepted_insn = ara_req_valid_i & (ara_req_token_q != ara_req_i.token);
 
   // The new accepted instruction will not be immediately issued
   assign accepted_insn_stalled = accepted_insn & ~ara_req_ready_o;

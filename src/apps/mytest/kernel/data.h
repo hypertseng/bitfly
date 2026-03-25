@@ -18,16 +18,10 @@ typedef struct
     int16_t *result_torch;
 } BenchKernelData;
 
-#define DECLARE_KERNEL_DATA(TAG)         \
-    extern int8_t activation_lp_##TAG[]; \
-    extern int8_t weight_lp_##TAG[];     \
-    extern int16_t result_lp_##TAG[];    \
-    extern int8_t activation_hp_##TAG[]; \
-    extern int8_t weight_hp_##TAG[];     \
-    extern int16_t result_hp_##TAG[];    \
-    extern int16_t result_torch_##TAG[];
+#define DECLARE_KERNEL_DATA(TAG)             extern int8_t activation_lp_##TAG[];     extern int8_t weight_lp_##TAG[];         extern int16_t result_lp_##TAG[];        extern int8_t activation_hp_##TAG[];     extern int8_t weight_hp_##TAG[];         extern int16_t result_hp_##TAG[];        extern int16_t result_torch_##TAG[];
 
 BenchKernelData get_bench_kernel_data(int index);
+BenchKernelData get_bench_kernel_data_by_layer(const char *layer);
 
 #ifdef __cplusplus
 }

@@ -15,7 +15,7 @@ BENCH_CASES = [
 ]
 
 
-def emit_quad_symbol(lines, name, words, align="32 * NR_LANES"):
+def emit_quad_symbol(lines, name, words, align="32*NR_LANES"):
     lines.append(f".global {name}")
     lines.append(f".balign {align}")
     lines.append(f"{name}:")
@@ -24,7 +24,7 @@ def emit_quad_symbol(lines, name, words, align="32 * NR_LANES"):
         lines.append("    .quad " + ", ".join(f"0x{w:016x}" for w in chunk))
 
 
-def emit_int16_col_major(lines, name, array, align="32 * NR_LANES"):
+def emit_int16_col_major(lines, name, array, align="32*NR_LANES"):
     flat = np.asarray(array, dtype=np.int16).T.flatten()
     pad = (4 - len(flat) % 4) % 4
     if pad:
@@ -37,7 +37,7 @@ def emit_int16_col_major(lines, name, array, align="32 * NR_LANES"):
         lines.append("    .word " + ", ".join(f"0x{int(v):08x}" for v in words[i:i + 8]))
 
 
-def emit_int16_row_major(lines, name, array, align="32 * NR_LANES"):
+def emit_int16_row_major(lines, name, array, align="32*NR_LANES"):
     flat = np.asarray(array, dtype=np.int16).flatten()
     pad = (4 - len(flat) % 4) % 4
     if pad:
@@ -65,7 +65,7 @@ def emit_case_aliases(lines, alias_name, target_name):
         lines.append(f".global {stem}_{alias_name}")
         lines.append(f".set {stem}_{alias_name}, {stem}_{target_name}")
 
-def emit_int8_row_major(lines, name, array, align="32 * NR_LANES"):
+def emit_int8_row_major(lines, name, array, align="32*NR_LANES"):
     flat = np.asarray(array, dtype=np.int8).flatten()
     pad = (4 - len(flat) % 4) % 4
     if pad:

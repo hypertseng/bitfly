@@ -326,8 +326,8 @@ module operand_requester
     ldu_result_bank_mapped = ldu_result_addr[idx_width(NrBanks)-1:0];
 
     if (is_bmpu_load_vinsn_i[ldu_result_id]) begin
-      ldu_result_addr_mapped = ldu_result_addr + vaddr_t'(bmpu_prefetch_base);
-      ldu_result_bank_mapped = ldu_result_addr_mapped[idx_width(NrBanks)-1:0];
+      ldu_result_bank_mapped = ldu_result_addr[idx_width(NrBanks)-1:0] + bmpu_prefetch_base;
+      ldu_result_addr_mapped[idx_width(NrBanks)-1:0] = ldu_result_bank_mapped;
     end
   end
 
@@ -569,7 +569,7 @@ module operand_requester
               end
 `endif
 `ifndef SYNTHESIS
-              if (1'b1 && (lane_id_i == '0) && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1) &&
+              if ((lane_id_i == '0) && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1) &&
                   (requester_metadata_q.len <= 96) && (requester_metadata_q.len != 0)) begin
                 $display("[%0t][OPREQ_BMPU][lane%0d] q=%0d bank=%0d row=%0d addr=%0d req_cnt=%0d len=%0d replay=%0b self=%0d repeat=%0d word=%0d",
                          $time, lane_id_i, requester_index, bank,
@@ -683,7 +683,7 @@ module operand_requester
         end
       endcase
 `ifndef SYNTHESIS
-      if (1'b0 && (lane_id_i == 0) && ((requester_index == BMPUAct0) || (requester_index == BMPUAct1) ||
+      if ((lane_id_i == 0) && ((requester_index == BMPUAct0) || (requester_index == BMPUAct1) ||
                                 (requester_index == BMPUWgt0) || (requester_index == BMPUWgt1)) &&
           (state_q == REQUESTING) && (requester_metadata_q.len <= 192) && (requester_metadata_q.len != 0)) begin
         $display("[%0t][OPREQ_TAIL][lane%0d] q=%0d addr=%0d len=%0d req_cnt=%0d self=%0d repeat=%0d word=%0d stall=%0b oq_ready=%0b issued=%0b req=%b",
@@ -830,7 +830,7 @@ module operand_requester
       end
     end
 `ifndef SYNTHESIS
-    if (1'b1 && (lane_id_i == '0) && ldu_result_req && is_bmpu_load_vinsn_i[ldu_result_id] &&
+    if (1'b0 && (lane_id_i == '0) && ldu_result_req && is_bmpu_load_vinsn_i[ldu_result_id] &&
         ((ldu_result_addr >> $clog2(NrBanks)) < 8)) begin
       $display("[%0t][LDU2BMPU][lane%0d] id=%0d raw_addr=%0d raw_bank=%0d raw_row=%0d map_bank=%0d map_row=%0d gnt=%0b be=%h data=%h",
                $time, lane_id_i, ldu_result_id,

@@ -140,7 +140,7 @@ int main()
     for (int i = 0; i < BMPMM_BENCH_CASE_COUNT; ++i)
     {
         const bmpmm_bench_case_t *sc = &kBenchCases[i];
-        BenchKernelData data = get_bench_kernel_data(i);
+        BenchKernelData data = get_bench_kernel_data_by_layer(sc->layer);
 
         printf("\n------------------------------------------------------------\n");
         printf("[mytest] case%d name=%s shape=(%lu,%lu,%lu), cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu)\n",

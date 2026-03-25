@@ -743,21 +743,8 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
     //  Accept new instruction  //
     //////////////////////////////
 
-`ifndef SYNTHESIS
-    if (pe_req_valid_i && (pe_req_i.vfu == VFU_LoadUnit) && (pe_req_i.op == BMPLE) &&
-        (vinsn_queue_full || vinsn_running_q[pe_req_i.id])) begin
-      $display("[%0t][VLDU_BMPLE_BLOCK] id=%0d queue_full=%0b id_running=%0b issue_cnt=%0d commit_cnt=%0d",
-               $time, pe_req_i.id, vinsn_queue_full, vinsn_running_q[pe_req_i.id], vinsn_queue_q.issue_cnt, vinsn_queue_q.commit_cnt);
-    end
-`endif
     if (!vinsn_queue_full && pe_req_valid_i && !vinsn_running_q[pe_req_i.id] &&
       pe_req_i.vfu == VFU_LoadUnit) begin : pe_req_valid
-`ifndef SYNTHESIS
-      if (pe_req_i.op == BMPLE) begin
-        $display("[%0t][VLDU_BMPLE_ACCEPT] id=%0d weight=%0b vl=%0d issue_cnt=%0d commit_cnt=%0d",
-                 $time, pe_req_i.id, pe_req_i.is_weight, pe_req_i.vl, vinsn_queue_q.issue_cnt, vinsn_queue_q.commit_cnt);
-      end
-`endif
       vinsn_queue_d.vinsn[vinsn_queue_q.accept_pnt] = pe_req_i;
       vinsn_running_d[pe_req_i.id]                  = 1'b1;
 
