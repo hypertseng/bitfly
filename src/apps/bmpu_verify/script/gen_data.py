@@ -190,7 +190,7 @@ def emit_case(lines, case):
     emit_int16_col_major(lines, f"result_torch_{case['tag']}", result)
 
 
-lines = [".section .l2,\"aw\",@progbits", f"/* auto-generated for mytest, seed={SEED} */"]
+lines = [".section .l2,\"aw\",@progbits", f"/* auto-generated for bmpu_verify, seed={SEED} */"]
 for case in CASES:
     emit_case(lines, case)
 print("\n".join(lines) + "\n", end="")

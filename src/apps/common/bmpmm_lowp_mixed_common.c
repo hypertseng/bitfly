@@ -40,16 +40,29 @@ typedef struct
     unsigned long store_count;
 } bmpmm_lowp_template_ctx_t;
 
-static inline int bmpmm_lowp_is_mytest(const char *app_tag)
+static inline int bmpmm_lowp_is_verify_app(const char *app_tag)
 {
-    return app_tag &&
-           app_tag[0] == 'm' &&
-           app_tag[1] == 'y' &&
-           app_tag[2] == 't' &&
-           app_tag[3] == 'e' &&
-           app_tag[4] == 's' &&
-           app_tag[5] == 't' &&
-           app_tag[6] == '\0';
+    return (app_tag &&
+            app_tag[0] == 'b' &&
+            app_tag[1] == 'm' &&
+            app_tag[2] == 'p' &&
+            app_tag[3] == 'u' &&
+            app_tag[4] == '_' &&
+            app_tag[5] == 'v' &&
+            app_tag[6] == 'e' &&
+            app_tag[7] == 'r' &&
+            app_tag[8] == 'i' &&
+            app_tag[9] == 'f' &&
+            app_tag[10] == 'y' &&
+            app_tag[11] == '\0') ||
+           (app_tag &&
+            app_tag[0] == 'm' &&
+            app_tag[1] == 'y' &&
+            app_tag[2] == 't' &&
+            app_tag[3] == 'e' &&
+            app_tag[4] == 's' &&
+            app_tag[5] == 't' &&
+            app_tag[6] == '\0');
 }
 
 static inline void bmpmm_lowp_emit_cfg(const bmpmm_template_cfg_t *cfg, unsigned long k_cfg, void *user)
@@ -95,7 +108,7 @@ static inline void *bmpmm_lowp_addr_c(void *C, const bmpmm_template_cfg_t *cfg,
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     int16_t *c = (int16_t *)C;
-    if (bmpmm_lowp_is_mytest(ctx->app_tag))
+    if (bmpmm_lowp_is_verify_app(ctx->app_tag))
     {
         const unsigned long m_tiles = bmpmm_ceil_div_ul(cfg->M, cfg->mtile);
         const unsigned long tile_elems = cfg->mtile * cfg->ntile;
@@ -155,7 +168,7 @@ static inline void bmpmm_lowp_store_c(void *ptr, unsigned long a_slot, unsigned 
         for (unsigned long n_block = 0; n_block < n_blocks; ++n_block)
         {
             int16_t *block_ptr;
-            if (bmpmm_lowp_is_mytest(ctx->app_tag))
+            if (bmpmm_lowp_is_verify_app(ctx->app_tag))
             {
                 const unsigned long block_elems = 8UL * 16UL;
                 block_ptr = base + (n_block * m_blocks + m_block) * block_elems;
@@ -180,7 +193,7 @@ int bmpmm_lowp_mixed_matmul_with_cfg(const char *app_tag,
 
     if (!bmpmm_exec_cfg_is_legal(exec_cfg))
     {
-        if (bmpmm_lowp_is_mytest(app_tag))
+        if (bmpmm_lowp_is_verify_app(app_tag))
         {
             printf("[%s] ERROR: illegal exec cfg mt=%lu nt=%lu kt=%lu gm=%lu gn=%lu g=%lu p=%lu\n",
                    app_tag, exec_cfg->mtile, exec_cfg->ntile, exec_cfg->ktile,
@@ -220,7 +233,7 @@ int bmpmm_lowp_mixed_matmul_with_cfg(const char *app_tag,
         .ntile = cfg.ntile,
         .invalid_cfg = 0,
         .compute_cycles = compute_cycles,
-        .debug_enabled = bmpmm_lowp_is_mytest(app_tag),
+        .debug_enabled = bmpmm_lowp_is_verify_app(app_tag),
         .emit_cfg_count = 0,
         .load_w_count = 0,
         .load_a_count = 0,

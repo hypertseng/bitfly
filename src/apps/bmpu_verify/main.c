@@ -86,12 +86,12 @@ static int compare_col_major(const int16_t *got, const int16_t *expect,
     for (unsigned long idx = 0; idx < total; ++idx)
         if (got[idx] != 0)
             ++nonzero;
-    printf("[mytest] raw_nonzero=%d/%d\n", nonzero, (int)total);
-    printf("[mytest] raw_head={");
+    printf("[bmpu_verify] raw_nonzero=%d/%d\n", nonzero, (int)total);
+    printf("[bmpu_verify] raw_head={");
     for (unsigned long idx = 0; idx < 16 && idx < total; ++idx)
         printf(idx == 15 || idx + 1 == total ? "%d" : "%d, ", got[idx]);
     printf("}\n");
-    printf("[mytest] col_nz={");
+    printf("[bmpu_verify] col_nz={");
     for (unsigned long n = 0; n < 8 && n < N; ++n)
     {
         int col_nz = 0;
@@ -101,7 +101,7 @@ static int compare_col_major(const int16_t *got, const int16_t *expect,
         printf(n == 7 || n + 1 == N ? "%d" : "%d, ", col_nz);
     }
     printf("}\n");
-    printf("[mytest] row_nz={");
+    printf("[bmpu_verify] row_nz={");
     for (unsigned long m = 0; m < 16 && m < M; ++m)
     {
         int row_nz = 0;
@@ -111,7 +111,7 @@ static int compare_col_major(const int16_t *got, const int16_t *expect,
         printf(m == 15 || m + 1 == M ? "%d" : "%d, ", row_nz);
     }
     printf("}\n");
-    printf("[mytest] nz_pos={");
+    printf("[bmpu_verify] nz_pos={");
     int nz_dumped = 0;
     for (unsigned long n = 0; n < N && nz_dumped < 32; ++n)
     {
@@ -127,7 +127,7 @@ static int compare_col_major(const int16_t *got, const int16_t *expect,
     printf("}\n");
     for (unsigned long dbg_n = 0; dbg_n < 4 && dbg_n < N; ++dbg_n)
     {
-        printf("[mytest] col%d_rows={", (int)dbg_n);
+        printf("[bmpu_verify] col%d_rows={", (int)dbg_n);
         int dumped = 0;
         for (unsigned long m = 0; m < M && dumped < 40; ++m)
         {
@@ -148,7 +148,7 @@ static int compare_col_major(const int16_t *got, const int16_t *expect,
             {
                 if (mismatches < 16)
                 {
-                    printf("[mytest] mismatch at (m=%d,n=%d): got %d expect %d\n",
+                    printf("[bmpu_verify] mismatch at (m=%d,n=%d): got %d expect %d\n",
                            (int)m, (int)n, got[idx], expect[idx]);
                 }
                 ++mismatches;
@@ -161,7 +161,7 @@ static int compare_col_major(const int16_t *got, const int16_t *expect,
 int main()
 {
     int failures = 0;
-    printf("[mytest] low-bit mixed-precision correctness check\n");
+    printf("[bmpu_verify] low-bit mixed-precision correctness check\n");
 
     for (int i = 0; i < BMPMM_BENCH_CASE_COUNT; ++i)
     {
@@ -169,21 +169,21 @@ int main()
         BenchKernelData data = get_bench_kernel_data_by_layer(sc->layer);
 
         printf("\n------------------------------------------------------------\n");
-        printf("[mytest] case%d name=%s shape=(%lu,%lu,%lu), cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu)\n",
+        printf("[bmpu_verify] case%d name=%s shape=(%lu,%lu,%lu), cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu)\n",
                i + 1, sc->layer, sc->M, sc->N, sc->K,
                sc->cfg.mtile, sc->cfg.ntile, sc->cfg.ktile,
                sc->cfg.gm, sc->cfg.gn, sc->cfg.prec);
 
         if (!bench_data_matches_case(sc, &data))
         {
-            printf("[mytest] ERROR: data/case mismatch for %s (case=(%lu,%lu,%lu), data=(%lu,%lu,%lu))\n",
+            printf("[bmpu_verify] ERROR: data/case mismatch for %s (case=(%lu,%lu,%lu), data=(%lu,%lu,%lu))\n",
                    sc->layer, sc->M, sc->N, sc->K, data.M, data.N, data.K);
             ++failures;
             return 11 + i;
         }
 
         start_timer();
-        int ok = bmpmm_lowp_mixed_matmul_with_cfg("mytest",
+        int ok = bmpmm_lowp_mixed_matmul_with_cfg("bmpu_verify",
                                                   data.result_hp,
                                                   data.activation_lp,
                                                   data.weight_lp,
@@ -195,14 +195,14 @@ int main()
         stop_timer();
         if (!ok)
         {
-            printf("[mytest] ERROR: execution failed for %s\n", sc->layer);
+            printf("[bmpu_verify] ERROR: execution failed for %s\n", sc->layer);
             ++failures;
             return 21 + i;
         }
 
         for (unsigned long dbg_col = 20; dbg_col < 24; ++dbg_col)
         {
-            printf("[mytest][DBG] packed col%lu={", dbg_col);
+            printf("[bmpu_verify][DBG] packed col%lu={", dbg_col);
             for (unsigned long dbg_row = 0; dbg_row < sc->cfg.mtile; ++dbg_row)
             {
                 unsigned long packed_idx = dbg_col * sc->cfg.mtile + dbg_row;
@@ -217,30 +217,30 @@ int main()
             printf("}\n");
         }
 
-        printf("[mytest][DBG] unpack_begin %s\n", sc->layer);
+        printf("[bmpu_verify][DBG] unpack_begin %s\n", sc->layer);
         unpack_packed_tiles_to_col_major(data.result_lp,
                                          data.result_hp,
                                          sc->M,
                                          sc->N,
                                          sc->cfg.mtile,
                                          sc->cfg.ntile);
-        printf("[mytest][DBG] unpack_done %s\n", sc->layer);
+        printf("[bmpu_verify][DBG] unpack_done %s\n", sc->layer);
 
-        printf("[mytest][DBG] compare_begin %s\n", sc->layer);
+        printf("[bmpu_verify][DBG] compare_begin %s\n", sc->layer);
         int mismatches = compare_col_major(data.result_lp, data.result_torch, sc->M, sc->N);
-        printf("[mytest][DBG] compare_done %s mismatches=%d\n", sc->layer, mismatches);
+        printf("[bmpu_verify][DBG] compare_done %s mismatches=%d\n", sc->layer, mismatches);
         int64_t runtime = get_timer();
-        printf("[mytest] runtime=%ld cycles\n", (long)runtime);
-        printf("[mytest] sample={{%d, %d, %d, %d}}\n",
+        printf("[bmpu_verify] runtime=%ld cycles\n", (long)runtime);
+        printf("[bmpu_verify] sample={{%d, %d, %d, %d}}\n",
                data.result_lp[0], data.result_lp[1], data.result_lp[2], data.result_lp[3]);
 
         if (mismatches == 0)
         {
-            printf("[mytest] PASS %s\n", sc->layer);
+            printf("[bmpu_verify] PASS %s\n", sc->layer);
         }
         else
         {
-            printf("[mytest] FAIL %s mismatches=%d\n", sc->layer, mismatches);
+            printf("[bmpu_verify] FAIL %s mismatches=%d\n", sc->layer, mismatches);
             ++failures;
             return 31 + i;
         }
@@ -248,10 +248,10 @@ int main()
 
     if (failures == 0)
     {
-        printf("\n[mytest] ALL CASES PASSED\n");
+        printf("\n[bmpu_verify] ALL CASES PASSED\n");
         return 0;
     }
 
-    printf("\n[mytest] TOTAL FAILURES=%d\n", failures);
+    printf("\n[bmpu_verify] TOTAL FAILURES=%d\n", failures);
     return 1;
 }
