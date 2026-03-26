@@ -4,6 +4,9 @@ import numpy as np
 from bmpmm_case_selection import MODEL_LAYER_CASES
 
 SEED = 42
+NR_LANES = 4
+DEFAULT_MTILE = 8
+DEFAULT_NTILE = 64
 np.random.seed(SEED)
 
 BENCH_CASES = [
@@ -78,22 +81,32 @@ def emit_int8_row_major(lines, name, array, align="32*NR_LANES"):
         lines.append("    .word " + ", ".join(f"0x{int(v):08x}" for v in words[i:i + 8]))
 
 
-def _pack_activation_row_to_words(row_int8):
-    k_dim = row_int8.shape[0]
+def _pack_row_chunk(row_int8, k_chunk):
+    chunk = np.asarray(row_int8[k_chunk * 8:(k_chunk + 1) * 8], dtype=np.int8)
+    if chunk.shape[0] < 8:
+        chunk = np.pad(chunk, (0, 8 - chunk.shape[0]), constant_values=0)
+    return int(np.frombuffer(chunk.tobytes(), dtype=np.uint64)[0])
+
+
+def pack_activations_lp(array, mtile=DEFAULT_MTILE):
+    m_dim, k_dim = array.shape
     d = math.ceil(k_dim / 8)
-    padded = np.pad(row_int8.astype(np.int8), (0, d * 8 - k_dim), constant_values=0)
     words = []
-    for i in range(d):
-        chunk = padded[i * 8:(i + 1) * 8]
-        words.append(int(np.frombuffer(chunk.tobytes(), dtype=np.uint64)[0]))
-    return words
-
-
-def pack_activations_lp(array):
-    m_dim, _ = array.shape
-    words = []
-    for m in range(m_dim):
-        words.extend(_pack_activation_row_to_words(array[m]))
+    for tile_m in range(0, m_dim, mtile):
+        tile_rows = min(mtile, m_dim - tile_m)
+        m_blocks = max(1, (tile_rows + 7) // 8)
+        for m_block in range(m_blocks):
+            base = tile_m + m_block * 8
+            for k_chunk in range(d):
+                even_lane_words = []
+                odd_lane_words = []
+                for lane in range(NR_LANES):
+                    row0 = base + 2 * lane
+                    row1 = row0 + 1
+                    even_lane_words.append(_pack_row_chunk(array[row0], k_chunk) if row0 < m_dim else 0)
+                    odd_lane_words.append(_pack_row_chunk(array[row1], k_chunk) if row1 < m_dim else 0)
+                words.extend(even_lane_words)
+                words.extend(odd_lane_words)
     return words
 
 
@@ -108,27 +121,34 @@ def _pack_8x8_bit_block(block_bits):
     return word
 
 
-def pack_weights_bitplanes(weight_mat, bits):
+def _pack_weight_word(weight_mat, bits, plane, k_blk, n0):
+    k_dim, n_dim = weight_mat.shape
+    mask = (1 << bits) - 1
+    block = np.zeros((8, 8), dtype=np.uint8)
+    k_base = k_blk * 8
+    for kr in range(8):
+        for nc in range(8):
+            kg = k_base + kr
+            ng = n0 + nc
+            if kg < k_dim and ng < n_dim:
+                raw = int(weight_mat[kg, ng]) & mask
+                block[kr, nc] = (raw >> plane) & 0x1
+    return _pack_8x8_bit_block(block)
+
+
+def pack_weights_bitplanes(weight_mat, bits, ntile=DEFAULT_NTILE):
     k_dim, n_dim = weight_mat.shape
     d = math.ceil(k_dim / 8)
-    n_groups = math.ceil(n_dim / 8)
-    mask = (1 << bits) - 1
     packed = []
-    for kd_ext in range(d * bits):
-        k_blk = kd_ext // bits
-        plane = kd_ext % bits
-        k0 = k_blk * 8
-        for n_grp in range(n_groups):
-            n0 = n_grp * 8
-            block = np.zeros((8, 8), dtype=np.uint8)
-            for kr in range(8):
-                for nc in range(8):
-                    kg = k0 + kr
-                    ng = n0 + nc
-                    if kg < k_dim and ng < n_dim:
-                        raw = int(weight_mat[kg, ng]) & mask
-                        block[kr, nc] = (raw >> plane) & 0x1
-            packed.append(_pack_8x8_bit_block(block))
+    for tile_n in range(0, n_dim, ntile):
+        tile_cols = min(ntile, n_dim - tile_n)
+        n_blocks = max(1, (tile_cols + 15) // 16)
+        for k_blk in range(d):
+            for plane in range(bits):
+                for n_block in range(n_blocks):
+                    n_base = tile_n + n_block * 16
+                    packed.append(_pack_weight_word(weight_mat, bits, plane, k_blk, n_base))
+                    packed.append(_pack_weight_word(weight_mat, bits, plane, k_blk, n_base + 8))
     return packed
 
 

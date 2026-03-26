@@ -14,39 +14,49 @@ from bmpmm_case_selection import MODEL_LAYER_CASES
 
 
 SEED = 42
+NR_LANES = 4
+DEFAULT_MTILE = 8
 np.random.seed(SEED)
 
 MODEL_FILTER = os.environ.get("BMPMM_MODEL_FILTER")
 
-def _pack_activation_row_to_words(row_int8: np.ndarray):
-    k_dim = row_int8.shape[0]
-    d = math.ceil(k_dim / 8)
-    padded = np.pad(row_int8.astype(np.int8), (0, d * 8 - k_dim), constant_values=0)
-    words = []
-    for i in range(d):
-        chunk = padded[i * 8 : (i + 1) * 8]
-        word = int(np.frombuffer(chunk.tobytes(), dtype=np.uint64)[0])
-        words.append(word)
-    return words
+def _pack_row_chunk(row_int8: np.ndarray, k_chunk: int):
+    chunk = np.asarray(row_int8[k_chunk * 8 : (k_chunk + 1) * 8], dtype=np.int8)
+    if chunk.shape[0] < 8:
+        chunk = np.pad(chunk, (0, 8 - chunk.shape[0]), constant_values=0)
+    return int(np.frombuffer(chunk.tobytes(), dtype=np.uint64)[0])
 
 
-def pack_activations_lp(array: np.ndarray):
+def pack_activations_lp(array: np.ndarray, mtile: int = DEFAULT_MTILE):
     m_dim, k_dim = array.shape
     d = math.ceil(k_dim / 8)
     words = []
-    for m in range(m_dim):
-        words.extend(_pack_activation_row_to_words(array[m]))
+    for tile_m in range(0, m_dim, mtile):
+        tile_rows = min(mtile, m_dim - tile_m)
+        m_blocks = max(1, (tile_rows + 7) // 8)
+        for m_block in range(m_blocks):
+            base = tile_m + m_block * 8
+            for k_chunk in range(d):
+                even_lane_words = []
+                odd_lane_words = []
+                for lane in range(NR_LANES):
+                    row0 = base + 2 * lane
+                    row1 = row0 + 1
+                    even_lane_words.append(_pack_row_chunk(array[row0], k_chunk) if row0 < m_dim else 0)
+                    odd_lane_words.append(_pack_row_chunk(array[row1], k_chunk) if row1 < m_dim else 0)
+                words.extend(even_lane_words)
+                words.extend(odd_lane_words)
     return words, d
 
 
 def _pack_8x8_bit_block(block_bits: np.ndarray):
     word = 0
-    for k_row in range(8):
+    for n_col in range(8):
         byte_val = 0
-        for n_col in range(8):
+        for k_row in range(8):
             bit = int(block_bits[k_row, n_col]) & 0x1
-            byte_val |= bit << n_col
-        word |= (byte_val & 0xFF) << (k_row * 8)
+            byte_val |= bit << (7 - k_row)
+        word |= (byte_val & 0xFF) << (n_col * 8)
     return word
 
 
