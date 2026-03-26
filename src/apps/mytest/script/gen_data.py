@@ -47,8 +47,8 @@ def validate_case(case):
     p_weight = weight_bits_from_prec(case["prec"])
     if case["ktile"] % 8 != 0:
         raise ValueError(f"{case['name']}: ktile must be multiple of 8")
-    if g >= 8:
-        raise ValueError(f"{case['name']}: g must be < 8, got {g}")
+    if g > 8:
+        raise ValueError(f"{case['name']}: g must be <= 8, got {g}")
     if case["mtile"] * case["ktile"] * 8 > VRF_BITS:
         raise ValueError(f"{case['name']}: activation tile exceeds VRF capacity")
     if case["ntile"] * case["ktile"] * p_weight > VRF_BITS:
@@ -121,12 +121,11 @@ def pack_weights_bmpu(weight_mat, bits, ntile):
         n_blocks = max(1, (tile_cols + 15) // 16)
         for n_block in range(n_blocks):
             n_base = tile_n + n_block * 16
-            for plane in range(bits):
-                for k_blk in range(d):
+            for k_blk in range(d):
+                for plane in range(bits):
                     bank2_word = _pack_weight_word(weight_mat, bits, plane, k_blk, n_base)
                     bank3_word = _pack_weight_word(weight_mat, bits, plane, k_blk, n_base + 8)
-                    words.extend([bank2_word] * NR_LANES)
-                    words.extend([bank3_word] * NR_LANES)
+                    words.extend([bank2_word, bank3_word])
     return words
 
 

@@ -563,12 +563,6 @@ module bmpu
                          vinsn_commit_valid && (vinsn_commit.op == BMPSE);
     bmpu_store_data_o  = result_queue_q[result_queue_read_pnt_q][store_word_pnt_q].wdata;
 
-    if ((lane_id_i == 0) && bmpu_store_valid_o && (bmpu_store_ready_i || (($time & 16'h3f) == 0))) begin
-      $display("[%0t][BMPU_STO] valid=1 ready=%0b qrd=%0d word=%0d rq_valid=%0b commit_id=%0d commit_cnt=%0d data=%h",
-               $time, bmpu_store_ready_i, result_queue_read_pnt_q, store_word_pnt_q,
-               result_queue_valid_q[result_queue_read_pnt_q], vinsn_commit.id, commit_cnt_q, bmpu_store_data_o);
-    end
-
     if (bmpu_store_valid_o && bmpu_store_ready_i) begin
       automatic logic [8:0] element_cnt = element_cnt_commit;
       if (store_word_pnt_q == NrResultQueues - 1) begin
@@ -620,28 +614,9 @@ module bmpu
     //  Accept new instruction  //
     //////////////////////////////
 
-    if (vfu_operation_valid_i && ((lane_id_i == 0)) &&
-        (vfu_operation_i.bmpu_en || vfu_operation_i.op == BMPSE)) begin
-      $display("[%0t][BMPU] in_valid op=%0d vfu=%0d bmpu_en=%0b out_en=%0b vl=%0d id=%0d queue_full=%0b",
-               $time, vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.bmpu_en,
-               vfu_operation_i.bmpu_output_en, vfu_operation_i.vl, vfu_operation_i.id, vinsn_queue_full);
-    end
-    if (lane_id_i == 0 && ((vinsn_issue_valid && (vinsn_issue_q.op == BMPSE || vinsn_issue_q.bmpu_en)) ||
-                            (vinsn_commit_valid && (vinsn_commit.op == BMPSE || vinsn_commit.bmpu_en)) ||
-                            (vfu_operation_valid_i && (vfu_operation_i.op == BMPSE || vfu_operation_i.bmpu_en)))) begin
-      $display("[%0t][BMPU_Q] acc_p=%0d iss_p=%0d com_p=%0d q_issue=%0d q_commit=%0d issue_cnt=%0d commit_cnt=%0d rq_cnt=%0d rq_r=%0d rq_w=%0d issue_op=%0d commit_op=%0d",
-               $time, vinsn_queue_q.accept_pnt, vinsn_queue_q.issue_pnt, vinsn_queue_q.commit_pnt,
-               vinsn_queue_q.issue_cnt, vinsn_queue_q.commit_cnt, issue_cnt_q, commit_cnt_q, result_queue_cnt_q,
-               result_queue_read_pnt_q, result_queue_write_pnt_q, vinsn_issue_q.op, vinsn_commit.op);
-    end
     if (!vinsn_queue_full && vfu_operation_valid_i &&
-        (vfu_operation_i.bmpu_en || vfu_operation_i.op == BMPSE) &&
-        (!vfu_operation_i.bmpu_en || bmpu_prefetch_ready_i)) begin
-      if (lane_id_i == 0) begin
-        $display("[%0t][BMPU] accept op=%0d vfu=%0d id=%0d vl=%0d out_en_in=%0b", $time,
-                 vfu_operation_i.op, vfu_operation_i.vfu, vfu_operation_i.id, vfu_operation_i.vl,
-                 vfu_operation_i.bmpu_output_en);
-      end
+        ((vfu_operation_i.vfu == BMPU) || vfu_operation_i.op == BMPSE) &&
+        ((vfu_operation_i.vfu != BMPU) || bmpu_prefetch_ready_i)) begin
       vinsn_queue_d.vinsn[vinsn_queue_q.accept_pnt] = vfu_operation_i;
 
       // Initialize counters and alu state if the instruction queue was empty
@@ -663,7 +638,7 @@ module bmpu
       vinsn_queue_d.issue_cnt += 1;
       vinsn_queue_d.commit_cnt += 1;
 
-      if (vfu_operation_i.vfu == BMPU) begin
+      if ((vfu_operation_i.vfu == BMPU) && (vfu_operation_i.op != BMPSE)) begin
         bmpu_output_en_o = 1'b0;
         bmpu_valid = 1'b0;
       end

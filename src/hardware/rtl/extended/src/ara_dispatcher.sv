@@ -3981,7 +3981,7 @@ module ara_dispatcher
               gn_dec = insn.custom1_type.gn_code + 3'd1;
               group_total = gm_dec * gn_dec;
 
-              if (group_total >= 6'd8) begin
+              if (group_total > 6'd8) begin
                 bmpcfg_illegal = 1'b1;
               end
               if ((group_total * mtile_dec * ntile_dec) > 11'd1024) begin

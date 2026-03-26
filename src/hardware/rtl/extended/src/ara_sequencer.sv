@@ -610,6 +610,13 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
           end
         end
 
+        // BMPU compute instructions retire once BMPU reports completion.
+        if ((pe_req_d.vfu == BMPU) && bmpu_insn_done_i) begin
+          state_d          = IDLE;
+          ara_req_ready_o  = 1'b1;
+          ara_resp_valid_o = 1'b1;
+        end
+
         // Wait for the scalar result
         if (!ara_req_i.use_vd && pe_scalar_resp_valid_i) begin
           // Acknowledge the request
@@ -694,14 +701,6 @@ module ara_sequencer import ara_pkg::*; import rvv_pkg::*; import cf_math_pkg::i
   assign insn_queue_done[VFU_SlideUnit] = |pe_resp_i[NrLanes+OffsetSlide].vinsn_done;
   assign insn_queue_done[BMPU]           = bmpu_insn_done_i;
 
-`ifndef SYNTHESIS
-  always_ff @(posedge clk_i) begin
-    if (rst_ni && (bmpu_insn_done_i || ara_resp_valid_o)) begin
-      $display("[%0t][ASEQ_BMPU_DONE] bmpu_done=%0b ara_resp_valid=%0b ara_req_valid=%0b ara_req_ready=%0b pe_req_valid=%0b pe_req_vfu=%0d pe_req_id=%0d",
-               $time, bmpu_insn_done_i, ara_resp_valid_o, ara_req_valid_i, ara_req_ready_o, pe_req_valid_o, pe_req_o.vfu, pe_req_o.id);
-    end
-  end
-`endif
   // Dummy counter, just for compatibility
   assign insn_queue_done[VFU_None]      = insn_queue_cnt_up[VFU_None];
 

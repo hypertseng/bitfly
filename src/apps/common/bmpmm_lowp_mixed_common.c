@@ -84,10 +84,10 @@ static inline const void *bmpmm_lowp_addr_b(const void *B, const bmpmm_template_
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     const int8_t *b = (const int8_t *)B;
-    const unsigned long n_groups_total = (cfg->N + 7UL) / 8UL;
-    const unsigned long n_group0 = (n_tile_idx * cfg->ntile) / 8UL;
+    const unsigned long n_groups_per_tile = bmpmm_ceil_div_ul(cfg->ntile, 8UL);
+    const unsigned long tile_words = bmpmm_ceil_div_ul(cfg->K, 8UL) * ctx->planes * n_groups_per_tile;
     const unsigned long k_blk0 = k0 / 8UL;
-    return b + (k_blk0 * ctx->planes * n_groups_total + n_group0) * 8UL;
+    return b + (n_tile_idx * tile_words + k_blk0 * ctx->planes * n_groups_per_tile) * 8UL;
 }
 
 static inline void *bmpmm_lowp_addr_c(void *C, const bmpmm_template_cfg_t *cfg,

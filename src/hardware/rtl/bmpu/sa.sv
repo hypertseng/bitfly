@@ -58,6 +58,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   logic             sa_stage_ready;
   logic             sa_step;
   logic             act_consume_step;
+  logic             store_mode;
 `ifndef SYNTHESIS
   logic             dbg_valid_q;
   logic             dbg_step_q;
@@ -106,20 +107,21 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   end
 
   always_comb begin
+    store_mode = valid_i && output_en_i;
     act_in = '0;
     wgt_in = '0;
     act_window = '0;
     wgt_window = '0;
 
     for (int i = 0; i < ROWS; i++) begin
-      if ((i <= cycle_eff) && (i + k_iters) > cycle_eff) begin
+      if ((cycle_cnt >= i) && (cycle_cnt < (i + k_iters * planes))) begin
         act_window[i] = 1'b1;
         act_in[i] = bmpu_act_operand_i[i];
       end
     end
 
     for (int j = 0; j < COLS; j++) begin
-      if ((j <= cycle_eff) && (j + k_iters) > cycle_eff) begin
+      if ((cycle_cnt >= j) && (cycle_cnt < (j + k_iters * planes))) begin
         wgt_window[j] = 1'b1;
         wgt_in[j] = bmpu_wgt_operand_i[j];
       end
@@ -170,39 +172,41 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     automatic logic [ROWS-1:0] act_prefix_mask;
     automatic logic [COLS-1:0] wgt_prefix_mask;
 
-    act_suffix_ok   = 1'b0;
-    wgt_suffix_ok   = 1'b0;
+    act_suffix_ok   = store_mode;
+    wgt_suffix_ok   = store_mode;
     act_window_eff  = '0;
     wgt_window_eff  = '0;
 
-    for (int cut = 0; cut <= ROWS; cut++) begin
-      act_prefix_mask = '0;
-      for (int i = 0; i < cut; i++) begin
-        act_prefix_mask[i] = 1'b1;
+    if (!store_mode) begin
+      for (int cut = 0; cut <= ROWS; cut++) begin
+        act_prefix_mask = '0;
+        for (int i = 0; i < cut; i++) begin
+          act_prefix_mask[i] = 1'b1;
+        end
+        act_suffix_mask = act_window & ~act_prefix_mask;
+        if ((bmpu_act_operand_valid_i & act_window) == act_suffix_mask) begin
+          act_suffix_ok  = 1'b1;
+          act_window_eff = act_suffix_mask;
+        end
       end
-      act_suffix_mask = act_window & ~act_prefix_mask;
-      if ((bmpu_act_operand_valid_i & act_window) == act_suffix_mask) begin
-        act_suffix_ok  = 1'b1;
-        act_window_eff = act_suffix_mask;
-      end
-    end
 
-    for (int cut = 0; cut <= COLS; cut++) begin
-      wgt_prefix_mask = '0;
-      for (int j = 0; j < cut; j++) begin
-        wgt_prefix_mask[j] = 1'b1;
-      end
-      wgt_suffix_mask = wgt_window & ~wgt_prefix_mask;
-      if ((bmpu_wgt_operand_valid_i & wgt_window) == wgt_suffix_mask) begin
-        wgt_suffix_ok  = 1'b1;
-        wgt_window_eff = wgt_suffix_mask;
+      for (int cut = 0; cut <= COLS; cut++) begin
+        wgt_prefix_mask = '0;
+        for (int j = 0; j < cut; j++) begin
+          wgt_prefix_mask[j] = 1'b1;
+        end
+        wgt_suffix_mask = wgt_window & ~wgt_prefix_mask;
+        if ((bmpu_wgt_operand_valid_i & wgt_window) == wgt_suffix_mask) begin
+          wgt_suffix_ok  = 1'b1;
+          wgt_window_eff = wgt_suffix_mask;
+        end
       end
     end
 
     sa_stage_ready = act_suffix_ok && wgt_suffix_ok;
-    sa_step = valid_i && sa_stage_ready;
+    sa_step = store_mode ? 1'b0 : (valid_i && sa_stage_ready);
 `ifndef SYNTHESIS
-    if (valid_i && !sa_step) begin
+    if (valid_i && !store_mode && !sa_step) begin
       $display("[%0t][SA_STALL] cycle=%0d eff=%0d act_win=%b act_eff=%b wgt_win=%b wgt_eff=%b act_v=%b wgt_v=%b ctx=%0d out_ctx=%0d out_col=%0d",
                $time, cycle_cnt, cycle_eff, act_window, act_window_eff, wgt_window, wgt_window_eff, bmpu_act_operand_valid_i, bmpu_wgt_operand_valid_i,
                ctx_id_i, output_ctx_id_i, output_col_id_i);
@@ -212,8 +216,12 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     if (in_k_stage && (planes > 3'd1)) begin
       act_consume_step = sa_step && (plane_idx == (planes - 3'd1));
     end
-    bmpu_act_operand_ready_o = act_window_eff & {ROWS{act_consume_step}};
-    bmpu_wgt_operand_ready_o = wgt_window_eff & {COLS{sa_step}};
+    bmpu_act_operand_ready_o = '0;
+    bmpu_wgt_operand_ready_o = '0;
+    if (!store_mode) begin
+      bmpu_act_operand_ready_o = act_window_eff & {ROWS{act_consume_step}};
+      bmpu_wgt_operand_ready_o = wgt_window_eff & {COLS{sa_step}};
+    end
   end
 
   generate

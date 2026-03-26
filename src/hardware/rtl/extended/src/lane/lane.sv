@@ -649,15 +649,6 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   assign bmpu_store_ready = bmpu_store_valid && stu_operand_ready_i;
   assign stu_operand_ready_from_queue = !bmpu_store_valid && stu_operand_ready_i;
 
-`ifndef SYNTHESIS
-  always_ff @(posedge clk_i) begin
-    if (rst_ni && (lane_id_i == 0) && bmpu_store_valid && (bmpu_store_ready || (($time & 16'h3f) == 0))) begin
-      $display("[%0t][LANE_BMPU_STO] valid=1 ready=%0b stu_rdy=%0b data=%h",
-               $time, bmpu_store_ready, stu_operand_ready_i, bmpu_store_data);
-    end
-  end
-`endif
-
   ///////////////////////////////
   //  Vector Functional Units  //
   ///////////////////////////////

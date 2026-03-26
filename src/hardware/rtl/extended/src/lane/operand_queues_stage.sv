@@ -354,7 +354,7 @@ module operand_queues_stage
       // 共享队列实例
       operand_queue #(
           .CmdBufDepth        (BmpuInsnQueueDepth),
-          .DataBufDepth       (4),
+          .DataBufDepth       (16),
           .AccessCmdPop        (1'b1),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),
@@ -388,7 +388,7 @@ module operand_queues_stage
     for (genvar i = 0; i < 2; i++) begin : gen_bmpu_wgt_queues
       operand_queue #(
           .CmdBufDepth        (BmpuInsnQueueDepth),
-          .DataBufDepth       (4),
+          .DataBufDepth       (32),
           .AccessCmdPop        (1'b1),
           .FPUSupport         (FPUSupportNone),
           .NrLanes            (NrLanes),

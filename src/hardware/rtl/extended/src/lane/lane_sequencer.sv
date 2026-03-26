@@ -1154,13 +1154,6 @@ module lane_sequencer
       alu_vinsn_done_o      <= alu_vinsn_done_d;
       mfpu_vinsn_done_o     <= mfpu_vinsn_done_d;
       bmpu_insn_done_o      <= bmpu_insn_done_d;
-`ifndef SYNTHESIS
-      if (lane_id_i == '0 && (|bmpu_insn_done_i || bmpu_insn_done_d || bmpu_insn_done_o)) begin
-        $display("[%0t][LSEQ_BMPU_DONE] in=%b d=%0b q=%0b pe_req_valid=%0b pe_req_vfu=%0d pe_req_id=%0d",
-                 $time, bmpu_insn_done_i, bmpu_insn_done_d, bmpu_insn_done_o, pe_req_valid_i, pe_req_i.vfu, pe_req_i.id);
-      end
-`endif
-
       vrgat_state_q         <= vrgat_state_d;
       vrgat_cmd_req_cnt_q   <= vrgat_cmd_req_cnt_d;
     end

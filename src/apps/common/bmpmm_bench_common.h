@@ -85,7 +85,7 @@ static inline int bmpmm_exec_cfg_is_legal(const bmpmm_exec_cfg_t *cfg)
     if ((cfg->ktile & 7UL) != 0)
         return 0;
 
-    if (group_g >= 8UL)
+    if (group_g > 8UL)
         return 0;
 
     if ((cfg->mtile * cfg->ktile * 8UL) > vrf_bits)

@@ -179,7 +179,7 @@ int main()
             printf("[mytest] ERROR: data/case mismatch for %s (case=(%lu,%lu,%lu), data=(%lu,%lu,%lu))\n",
                    sc->layer, sc->M, sc->N, sc->K, data.M, data.N, data.K);
             ++failures;
-            continue;
+            return 11 + i;
         }
 
         start_timer();
@@ -197,7 +197,7 @@ int main()
         {
             printf("[mytest] ERROR: execution failed for %s\n", sc->layer);
             ++failures;
-            continue;
+            return 21 + i;
         }
 
         for (unsigned long dbg_col = 20; dbg_col < 24; ++dbg_col)
@@ -242,6 +242,7 @@ int main()
         {
             printf("[mytest] FAIL %s mismatches=%d\n", sc->layer, mismatches);
             ++failures;
+            return 31 + i;
         }
     }
 
