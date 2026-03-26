@@ -331,27 +331,6 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
                                  (vfu_operation_valid && vfu_operation.bmpu_en);
   end
 
-`ifndef SYNTHESIS
-  always_ff @(posedge clk_i) begin
-    if (rst_ni && lane_id_i == '0) begin
-      if (vfu_operation_valid && (vfu_operation.op == BMPSE)) begin
-        $display("[%0t][LANE_BMPSE_VFU] pend_q=%0b pend_d=%0b bmpu_ready=%0b vl=%0d id=%0d",
-                 $time, bmpu_store_pending_q, bmpu_store_pending_d, bmpu_ready,
-                 vfu_operation.vl, vfu_operation.id);
-      end
-      if (bmpu_store_pending_q || bmpu_store_pending_d) begin
-        $display("[%0t][LANE_BMPSE_PEND] pend_q=%0b pend_d=%0b send_valid=%0b send_op=%0d send_id=%0d ready=%0b",
-                 $time, bmpu_store_pending_q, bmpu_store_pending_d, bmpu_vfu_operation_valid_d,
-                 bmpu_vfu_operation_d.op, bmpu_vfu_operation_d.id, bmpu_ready);
-      end
-      if (bmpu_vfu_operation_valid_q && (bmpu_vfu_operation_q.op == BMPSE)) begin
-        $display("[%0t][LANE_BMPSE_2BMPU] valid=%0b id=%0d ready=%0b pend_q=%0b",
-                 $time, bmpu_vfu_operation_valid_q, bmpu_vfu_operation_q.id, bmpu_ready, bmpu_store_pending_q);
-      end
-    end
-  end
-`endif
-
   /////////////////////////
   //  Operand Requester  //
   /////////////////////////
@@ -547,45 +526,6 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
       bmpu_wgt_operand_masked[i] = bmpu_wgt_operand_valid[i] ? bmpu_wgt_operand[i] : '0;
     end
   end
-
-`ifndef SYNTHESIS
-  always_ff @(posedge clk_i) begin
-    if (lane_id_i < 2) begin
-      if (vrf_req[4] || vrf_req[5]) begin
-        $display("[%0t][LANE_VRF][lane%0d] b4 req=%0b wen=%0b addr=%0d tgt=%0d wdata=%h be=%h | b5 req=%0b wen=%0b addr=%0d tgt=%0d wdata=%h be=%h",
-                 $time,
-                 lane_id_i,
-                 vrf_req[4], vrf_wen[4], vrf_addr[4], vrf_tgt_opqueue[4], vrf_wdata[4], vrf_be[4],
-                 vrf_req[5], vrf_wen[5], vrf_addr[5], vrf_tgt_opqueue[5], vrf_wdata[5], vrf_be[5]);
-      end
-      if (vrf_operand_valid[BMPUAct0] || vrf_operand_valid[BMPUAct1]
-          || vrf_operand_valid[BMPUWgt0] || vrf_operand_valid[BMPUWgt1]) begin
-        $display("[%0t][LANE][lane%0d] vrf_valid act=%b%b wgt=%b%b act_d=%h/%h wgt_d=%h/%h",
-                 $time,
-                 lane_id_i,
-                 vrf_operand_valid[BMPUAct1],
-                 vrf_operand_valid[BMPUAct0],
-                 vrf_operand_valid[BMPUWgt1],
-                 vrf_operand_valid[BMPUWgt0],
-                 vrf_operand[BMPUAct0],
-                 vrf_operand[BMPUAct1],
-                 vrf_operand[BMPUWgt0],
-                 vrf_operand[BMPUWgt1]);
-      end
-      if (1'b0 && ((|bmpu_act_operand_valid[1:0]) || (|bmpu_wgt_operand_valid[1:0]))) begin
-        $display("[%0t][LANE_BMPU][lane%0d] opq_valid act=%b wgt=%b act0=%h act1=%h wgt0=%h wgt1=%h",
-                 $time,
-                 lane_id_i,
-                 bmpu_act_operand_valid[1:0],
-                 bmpu_wgt_operand_valid[1:0],
-                 bmpu_act_operand[0],
-                 bmpu_act_operand[1],
-                 bmpu_wgt_operand[0],
-                 bmpu_wgt_operand[1]);
-      end
-    end
-  end
-`endif
 
   operand_queues_stage #(
     .NrLanes            (NrLanes            ),

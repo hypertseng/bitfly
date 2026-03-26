@@ -1,12 +1,10 @@
 import math
 import numpy as np
 
-from bmpmm_case_selection import MODEL_LAYER_CASES
+from bmpmm_case_selection import selected_cases
 
 SEED = 42
 NR_LANES = 4
-DEFAULT_MTILE = 8
-DEFAULT_NTILE = 64
 np.random.seed(SEED)
 
 BENCH_CASES = [
@@ -88,7 +86,7 @@ def _pack_row_chunk(row_int8, k_chunk):
     return int(np.frombuffer(chunk.tobytes(), dtype=np.uint64)[0])
 
 
-def pack_activations_lp(array, mtile=DEFAULT_MTILE):
+def pack_activations_lp(array, mtile):
     m_dim, k_dim = array.shape
     d = math.ceil(k_dim / 8)
     words = []
@@ -136,7 +134,7 @@ def _pack_weight_word(weight_mat, bits, plane, k_blk, n0):
     return _pack_8x8_bit_block(block)
 
 
-def pack_weights_bitplanes(weight_mat, bits, ntile=DEFAULT_NTILE):
+def pack_weights_bitplanes(weight_mat, bits, ntile):
     k_dim, n_dim = weight_mat.shape
     d = math.ceil(k_dim / 8)
     packed = []
@@ -192,8 +190,8 @@ def build_square_dataset(lines, s, prec):
     W = make_square_weight(s, prec)
     weight_bits = 2 if prec == 2 else 4
 
-    emit_quad_symbol(lines, f"activation_lp_square_{s}", pack_activations_lp(A))
-    emit_quad_symbol(lines, f"weight_lp_square_{s}", pack_weights_bitplanes(W, weight_bits))
+    emit_quad_symbol(lines, f"activation_lp_square_{s}", pack_activations_lp(A, 8))
+    emit_quad_symbol(lines, f"weight_lp_square_{s}", pack_weights_bitplanes(W, weight_bits, 64))
     emit_int16_col_major(lines, f"result_lp_square_{s}", np.zeros((s, s), dtype=np.int16))
 
     emit_int8_row_major(lines, f"activation_hp_square_{s}", A)
@@ -202,13 +200,19 @@ def build_square_dataset(lines, s, prec):
     emit_int16_row_major(lines, f"result_torch_square_{s}", (A.astype(np.int32) @ W.astype(np.int32)).astype(np.int16))
 
 
-def build_bench_case_dataset(lines, name, m_dim, n_dim, k_dim, prec):
+def build_bench_case_dataset(lines, case, prec):
+    name = case["name"]
+    m_dim, n_dim, k_dim = case["M"], case["N"], case["K"]
+    cfg = case["cfg"]
     A = make_bench_case_activation(m_dim, k_dim)
     W = make_bench_case_weight(k_dim, n_dim, prec)
     weight_bits = 2 if prec == 2 else 4
-    lines.append(f"/* {name}: shape=({m_dim},{n_dim},{k_dim}), prec={prec} */")
-    emit_quad_symbol(lines, f"activation_lp_{name}", pack_activations_lp(A))
-    emit_quad_symbol(lines, f"weight_lp_{name}", pack_weights_bitplanes(W, weight_bits))
+    lines.append(
+        f"/* {name}: shape=({m_dim},{n_dim},{k_dim}), "
+        f"cfg=(mt={cfg['mtile']},nt={cfg['ntile']},kt={cfg['ktile']},gm={cfg['gm']},gn={cfg['gn']}), prec={prec} */"
+    )
+    emit_quad_symbol(lines, f"activation_lp_{name}", pack_activations_lp(A, cfg["mtile"]))
+    emit_quad_symbol(lines, f"weight_lp_{name}", pack_weights_bitplanes(W, weight_bits, cfg["ntile"]))
     emit_int16_col_major(lines, f"result_lp_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
     emit_int8_row_major(lines, f"activation_hp_{name}", A)
     emit_int8_row_major(lines, f"weight_hp_{name}", W)
@@ -221,21 +225,15 @@ def generate_lowp_dataset(prec, square_sizes=(32,), model_filter=None):
     for s in square_sizes:
         build_square_dataset(lines, s, prec)
 
-    if model_filter is not None:
-        cases = [case for case in MODEL_LAYER_CASES if case["model"] == model_filter]
-        unique_case_by_shape = {}
-        for index, case in enumerate(cases, start=1):
-            name = f"case{index}"
-            m_dim, n_dim, k_dim = case["M"], case["N"], case["K"]
-            shape_key = (m_dim, n_dim, k_dim)
-            lines.append(f"/* model={case['model']}, scale={case['scale']}, layer={case['layer']} */")
-            if shape_key in unique_case_by_shape:
-                emit_case_aliases(lines, name, unique_case_by_shape[shape_key])
-                continue
-            unique_case_by_shape[shape_key] = name
-            build_bench_case_dataset(lines, name, m_dim, n_dim, k_dim, prec)
-        return "\n".join(lines) + "\n"
-
-    for name, m_dim, n_dim, k_dim in BENCH_CASES:
-        build_bench_case_dataset(lines, name, m_dim, n_dim, k_dim, prec)
+    cases = selected_cases(prec, model_filter=model_filter)
+    unique_case_by_key = {}
+    for case in cases:
+        cfg = case["cfg"]
+        case_key = (case["M"], case["N"], case["K"], cfg["mtile"], cfg["ntile"], cfg["ktile"], cfg["gm"], cfg["gn"])
+        lines.append(f"/* model={case['model']}, scale={case['scale']}, layer={case['layer']} */")
+        if case_key in unique_case_by_key:
+            emit_case_aliases(lines, case["name"], unique_case_by_key[case_key])
+            continue
+        unique_case_by_key[case_key] = case["name"]
+        build_bench_case_dataset(lines, case, prec)
     return "\n".join(lines) + "\n"

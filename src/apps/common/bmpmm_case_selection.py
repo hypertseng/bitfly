@@ -1,10 +1,27 @@
 from __future__ import annotations
 
 import os
+import csv
 from pathlib import Path
 from typing import Dict, List
 
 ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[3]
+
+PREC_TO_WEIGHT_BITS = {
+    0: 1,
+    1: 2,
+    2: 2,
+    3: 4,
+}
+
+APP_MODEL_FILTERS = {
+    "gemma3_270m": "google/gemma-3-270m",
+    "qwen25_05b": "Qwen/Qwen2.5-0.5B",
+    "opt_13b": "facebook/opt-1.3b",
+    "qwen25_15b": "Qwen/Qwen2.5-1.5B",
+    "gemma2_2b": "google/gemma-2-2b",
+}
 
 MODEL_LAYER_CASES = [
     {"name": "case1", "scale": "tiny", "model": "google/gemma-3-270m", "layer": "model.layers.0.self_attn.q_proj", "M": 128, "N": 1024, "K": 640},
@@ -44,24 +61,71 @@ MODEL_LAYER_CASES = [
 ]
 
 
-def _config_for_prec(prec: int, shape: Dict[str, int]) -> Dict[str, int]:
-    if prec == 2:
-        return {"mtile": 8, "ntile": 64, "ktile": 64, "gm": 2, "gn": 1, "prec": prec}
-    if prec == 3:
-        return {"mtile": 8, "ntile": 64, "ktile": 32, "gm": 1, "gn": 1, "prec": prec}
-    if prec == 0:
-        return {"mtile": 8, "ntile": 64, "ktile": 128, "gm": 1, "gn": 2, "prec": prec}
-    raise ValueError(f"unsupported prec {prec}")
+def _weight_bits_from_prec(prec: int) -> int:
+    bits = PREC_TO_WEIGHT_BITS.get(prec)
+    if bits is None:
+        raise ValueError(f"unsupported prec {prec}")
+    return bits
+
+
+def _default_csv_path_for_prec(prec: int) -> Path:
+    bits = _weight_bits_from_prec(prec)
+    return REPO_ROOT / "tmp" / f"llm_shape_best_b{bits}.csv"
+
+
+def _load_shape_cfgs(csv_path: Path, prec: int) -> Dict[tuple[int, int, int], Dict[str, int]]:
+    if not csv_path.exists():
+        raise FileNotFoundError(f"missing shape config csv: {csv_path}")
+
+    configs: Dict[tuple[int, int, int], Dict[str, int]] = {}
+    with csv_path.open("r", encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            key = (int(row["M"]), int(row["N"]), int(row["K"]))
+            cfg = {
+                "mtile": int(row["mtile"]),
+                "ntile": int(row["ntile"]),
+                "ktile": int(row["ktile"]),
+                "gm": int(row["gm"]),
+                "gn": int(row["gn"]),
+                "prec": prec,
+            }
+            if key in configs and configs[key] != cfg:
+                raise ValueError(f"conflicting configs for shape {key} in {csv_path}")
+            configs[key] = cfg
+    return configs
+
+
+def infer_prec_from_app_name(app_name: str) -> int:
+    if "_INT2" in app_name:
+        return 2
+    if "_INT4" in app_name:
+        return 3
+    if "_binary" in app_name:
+        return 0
+    raise ValueError(f"cannot infer precision from app name: {app_name}")
+
+
+def infer_model_filter_from_app_name(app_name: str) -> str | None:
+    for suffix, model_name in APP_MODEL_FILTERS.items():
+        if app_name.endswith(f"_{suffix}"):
+            return model_name
+    return None
 
 
 def selected_cases(prec: int, csv_path: Path | None = None, count: int | None = None, max_ops: int | None = None, model_filter: str | None = None) -> List[Dict[str, int]]:
     model_filter = model_filter or os.environ.get("BMPMM_MODEL_FILTER")
+    csv_path = csv_path or _default_csv_path_for_prec(prec)
+    cfg_by_shape = _load_shape_cfgs(csv_path, prec)
     shapes = [shape for shape in MODEL_LAYER_CASES if model_filter is None or shape["model"] == model_filter]
     cases: List[Dict[str, int]] = []
     for index, shape in enumerate(shapes, start=1):
         case = dict(shape)
         case["name"] = f"case{index}"
-        case["cfg"] = _config_for_prec(prec, shape)
+        shape_key = (shape["M"], shape["N"], shape["K"])
+        if shape_key not in cfg_by_shape:
+            raise KeyError(f"missing searched config for shape {shape_key} in {csv_path}")
+        case["cfg"] = dict(cfg_by_shape[shape_key])
         cases.append(case)
     return cases
 
@@ -96,6 +160,8 @@ def write_bench_header(app_dir: Path, prec: int, csv_path: Path | None = None, m
 if __name__ == "__main__":
     import sys
     app_dir = Path(sys.argv[1]).resolve()
-    prec = int(sys.argv[2])
-    model_filter = sys.argv[3] if len(sys.argv) > 3 else None
-    write_bench_header(app_dir, prec, model_filter=model_filter)
+    app_name = app_dir.name
+    prec = int(sys.argv[2]) if len(sys.argv) > 2 else infer_prec_from_app_name(app_name)
+    model_filter = sys.argv[3] if len(sys.argv) > 3 else infer_model_filter_from_app_name(app_name)
+    csv_path = Path(sys.argv[4]).resolve() if len(sys.argv) > 4 else None
+    write_bench_header(app_dir, prec, csv_path=csv_path, model_filter=model_filter)

@@ -205,13 +205,6 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
 
     sa_stage_ready = act_suffix_ok && wgt_suffix_ok;
     sa_step = store_mode ? 1'b0 : (valid_i && sa_stage_ready);
-`ifndef SYNTHESIS
-    if (valid_i && !store_mode && !sa_step) begin
-      $display("[%0t][SA_STALL] cycle=%0d eff=%0d act_win=%b act_eff=%b wgt_win=%b wgt_eff=%b act_v=%b wgt_v=%b ctx=%0d out_ctx=%0d out_col=%0d",
-               $time, cycle_cnt, cycle_eff, act_window, act_window_eff, wgt_window, wgt_window_eff, bmpu_act_operand_valid_i, bmpu_wgt_operand_valid_i,
-               ctx_id_i, output_ctx_id_i, output_col_id_i);
-    end
-`endif
     act_consume_step = sa_step;
     if (in_k_stage && (planes > 3'd1)) begin
       act_consume_step = sa_step && (plane_idx == (planes - 3'd1));
@@ -306,25 +299,5 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
       output_data_o[i] = output_reg_selected[i][output_col_id_i];
     end
   end
-
-`ifndef SYNTHESIS
-  always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      dbg_valid_q <= 1'b0;
-      dbg_step_q  <= 1'b0;
-    end else begin
-      if ((valid_i != dbg_valid_q) || (sa_step != dbg_step_q) || sa_done_o) begin
-        $display("[%0t][SA_DBG] valid=%0b step=%0b done=%0b cyc=%0d/%0d ctx=%0d out_ctx=%0d out_col=%0d act_v=%b act_r=%b wgt_v=%b wgt_r=%b act_win=%b wgt_win=%b",
-                 $time, valid_i, sa_step, sa_done_o, cycle_cnt, compute_last,
-                 ctx_id_i, output_ctx_id_i, output_col_id_i,
-                 bmpu_act_operand_valid_i, bmpu_act_operand_ready_o,
-                 bmpu_wgt_operand_valid_i, bmpu_wgt_operand_ready_o,
-                 act_window_eff, wgt_window_eff);
-      end
-      dbg_valid_q <= valid_i;
-      dbg_step_q  <= sa_step;
-    end
-  end
-`endif
 
 endmodule

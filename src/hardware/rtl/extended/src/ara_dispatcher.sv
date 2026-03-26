@@ -3999,10 +3999,6 @@ module ara_dispatcher
 
               if (bmpcfg_illegal) begin
                 illegal_insn = 1'b1;
-`ifndef SYNTHESIS
-                $display("[%0t][DISP_ERR] illegal BMPCFG prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d wbits=%0d",
-                         $time, insn.custom1_type.prec, k_dim_dec, mtile_dec, ntile_dec, gm_dec, gn_dec, group_total[2:0], weight_bits_dec);
-`endif
               end else begin
                 prec_d = insn.custom1_type.prec;
                 ara_req.prec = insn.custom1_type.prec;
@@ -4023,10 +4019,6 @@ module ara_dispatcher
                 is_config = 1'b1;
 
                 acc_resp_o.result = ({4'b0, insn.custom1_type.k_code} + 9'd1) << 3;
-`ifndef SYNTHESIS
-                $display("[%0t][DISP] BMPCFG prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b req_ready_i=%0b resp_valid=%0b",
-                         $time, insn.custom1_type.prec, (({4'b0, insn.custom1_type.k_code} + 9'd1) << 3), mtile_dec, ntile_dec, gm_dec, gn_dec, group_total[2:0], ara_req_valid, ara_req_ready_i, acc_resp_o.resp_valid);
-`endif
               end
 
             end
@@ -4208,10 +4200,6 @@ module ara_dispatcher
         acc_resp_o.req_ready  = 1'b1;
         acc_resp_o.resp_valid = 1'b1;
         bmp_issue_pending_d   = 1'b0;
-`ifndef SYNTHESIS
-        $display("[%0t][DISP_BMPMM_ACK] trans_id=%0d req_ready=1 resp_valid=1",
-                 $time, bmp_issue_trans_id_q);
-`endif
       end else if ((bmp_issue_func3_q inside {3'b010, 3'b100}) && ara_resp_valid) begin
         acc_resp_o.req_ready  = 1'b1;
         acc_resp_o.resp_valid = 1'b1;
