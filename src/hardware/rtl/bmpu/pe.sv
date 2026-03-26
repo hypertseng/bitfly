@@ -67,7 +67,9 @@ module pe #(
       foreach (partial_sum_reg[c, i]) partial_sum_reg[c][i] <= '0;
     end else begin
       if (ctx_clear_i) begin
-        foreach (partial_sum_reg[ctx_id_i, i]) partial_sum_reg[ctx_id_i][i] <= '0;
+        for (int i = 0; i < 8; i++) begin
+          partial_sum_reg[ctx_id_i][i] <= '0;
+        end
       end
 
       if (en) begin
@@ -75,7 +77,7 @@ module pe #(
         if (!wgt_hold_i) weight_reg     <= weights;
 
         if (mac_en_i) begin
-          foreach (partial_sum_reg[ctx_id_i, i]) begin
+          for (int i = 0; i < 8; i++) begin
             automatic logic signed [20:0] accum_base;
             automatic logic signed [20:0] next_sum;
             automatic logic signed [15:0] local_sat;
@@ -94,7 +96,7 @@ module pe #(
 
   always_comb begin
     output_selected_o = '0;
-    foreach (partial_sum_reg[output_ctx_id_i, i]) begin
+    for (int i = 0; i < 8; i++) begin
       output_selected_o[i*16+:16] = sat21_to_s16(partial_sum_reg[output_ctx_id_i][i]);
     end
   end

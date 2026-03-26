@@ -830,8 +830,8 @@ module operand_requester
       end
     end
 `ifndef SYNTHESIS
-    if (1'b0 && (lane_id_i == '0) && ldu_result_req && is_bmpu_load_vinsn_i[ldu_result_id] &&
-        ((ldu_result_addr >> $clog2(NrBanks)) < 8)) begin
+    if (1'b1 && (lane_id_i == '0) && ldu_result_req && is_bmpu_load_vinsn_i[ldu_result_id] &&
+        ((ldu_result_addr >> $clog2(NrBanks)) < 16)) begin
       $display("[%0t][LDU2BMPU][lane%0d] id=%0d raw_addr=%0d raw_bank=%0d raw_row=%0d map_bank=%0d map_row=%0d gnt=%0b be=%h data=%h",
                $time, lane_id_i, ldu_result_id,
                ldu_result_addr,

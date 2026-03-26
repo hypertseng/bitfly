@@ -21,13 +21,28 @@ static unsigned long min_ul(unsigned long a, unsigned long b)
     return (a < b) ? a : b;
 }
 
+static int bench_data_matches_case(const bmpmm_bench_case_t *sc, const BenchKernelData *data)
+{
+    if (!sc || !data)
+        return 0;
+
+    if (!data->activation_lp || !data->weight_lp || !data->result_lp ||
+        !data->activation_hp || !data->weight_hp || !data->result_hp || !data->result_torch)
+        return 0;
+
+    return data->M == sc->M && data->N == sc->N && data->K == sc->K;
+}
+
 static void unpack_packed_tiles_to_col_major(int16_t *dst, const int16_t *src,
                                              unsigned long M, unsigned long N,
                                              unsigned long mtile, unsigned long ntile)
 {
     const unsigned long m_tiles = (M + mtile - 1) / mtile;
     const unsigned long n_tiles = (N + ntile - 1) / ntile;
-    const unsigned long tile_elems = mtile * ntile;
+    const unsigned long m_blocks = (mtile + 7UL) / 8UL;
+    const unsigned long n_blocks = (ntile + 15UL) / 16UL;
+    const unsigned long block_elems = 8UL * 16UL;
+    const unsigned long tile_elems = m_blocks * n_blocks * block_elems;
 
     for (unsigned long n_tile = 0; n_tile < n_tiles; ++n_tile)
     {
@@ -39,12 +54,23 @@ static void unpack_packed_tiles_to_col_major(int16_t *dst, const int16_t *src,
             const unsigned long m_valid = min_ul(mtile, M - m0);
             const unsigned long tile_idx = n_tile * m_tiles + m_tile;
             const int16_t *tile = src + tile_idx * tile_elems;
-            for (unsigned long n_local = 0; n_local < n_valid; ++n_local)
+            for (unsigned long n_block = 0; n_block < n_blocks; ++n_block)
             {
-                for (unsigned long m_local = 0; m_local < m_valid; ++m_local)
+                const unsigned long n_base = n_block * 16UL;
+                const unsigned long n_block_valid = (n_base < n_valid) ? min_ul(16UL, n_valid - n_base) : 0UL;
+                for (unsigned long m_block = 0; m_block < m_blocks; ++m_block)
                 {
-                    dst[(n0 + n_local) * M + (m0 + m_local)] =
-                        tile[n_local * mtile + m_local];
+                    const unsigned long m_base = m_block * 8UL;
+                    const unsigned long m_block_valid = (m_base < m_valid) ? min_ul(8UL, m_valid - m_base) : 0UL;
+                    const int16_t *block = tile + (n_block * m_blocks + m_block) * block_elems;
+                    for (unsigned long n_local = 0; n_local < n_block_valid; ++n_local)
+                    {
+                        for (unsigned long m_local = 0; m_local < m_block_valid; ++m_local)
+                        {
+                            dst[(n0 + n_base + n_local) * M + (m0 + m_base + m_local)] =
+                                block[n_local * 8UL + m_local];
+                        }
+                    }
                 }
             }
         }
@@ -147,6 +173,14 @@ int main()
                i + 1, sc->layer, sc->M, sc->N, sc->K,
                sc->cfg.mtile, sc->cfg.ntile, sc->cfg.ktile,
                sc->cfg.gm, sc->cfg.gn, sc->cfg.prec);
+
+        if (!bench_data_matches_case(sc, &data))
+        {
+            printf("[mytest] ERROR: data/case mismatch for %s (case=(%lu,%lu,%lu), data=(%lu,%lu,%lu))\n",
+                   sc->layer, sc->M, sc->N, sc->K, data.M, data.N, data.K);
+            ++failures;
+            continue;
+        }
 
         start_timer();
         int ok = bmpmm_lowp_mixed_matmul_with_cfg("mytest",

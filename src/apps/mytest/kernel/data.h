@@ -16,6 +16,9 @@ typedef struct
     int8_t *weight_hp;
     int16_t *result_hp;
     int16_t *result_torch;
+    unsigned long M;
+    unsigned long N;
+    unsigned long K;
 } BenchKernelData;
 
 #define DECLARE_KERNEL_DATA(TAG)             extern int8_t activation_lp_##TAG[];     extern int8_t weight_lp_##TAG[];         extern int16_t result_lp_##TAG[];        extern int8_t activation_hp_##TAG[];     extern int8_t weight_hp_##TAG[];         extern int16_t result_hp_##TAG[];        extern int16_t result_torch_##TAG[];

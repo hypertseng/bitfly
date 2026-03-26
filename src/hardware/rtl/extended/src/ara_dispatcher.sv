@@ -3933,6 +3933,9 @@ module ara_dispatcher
             automatic logic [5:0] mtile_dec;
             automatic logic [6:0] ntile_dec;
             automatic logic bmptile_illegal;
+            automatic logic bmpcfg_illegal;
+            automatic logic [16:0] k_dim_dec;
+            automatic logic [2:0] weight_bits_dec;
 
             // ara_req.vm = 1'b1;
 
@@ -3943,6 +3946,19 @@ module ara_dispatcher
             acc_resp_o.resp_valid = 1'b1;
 
             bmptile_illegal = 1'b0;
+            bmpcfg_illegal = 1'b0;
+            k_dim_dec = ({12'b0, insn.custom1_type.k_code} + 17'd1) << 3;
+
+            unique case (insn.custom1_type.prec)
+              3'd0: weight_bits_dec = 3'd1;
+              3'd1,
+              3'd2: weight_bits_dec = 3'd2;
+              3'd3: weight_bits_dec = 3'd4;
+              default: begin
+                weight_bits_dec = '0;
+                bmpcfg_illegal = 1'b1;
+              end
+            endcase
 
             if (insn.custom1_type.mtile_code <= 4'd14) begin
               mtile_dec = 6'(6'd8 + ({2'b00, insn.custom1_type.mtile_code} << 2));
@@ -3965,12 +3981,32 @@ module ara_dispatcher
               gn_dec = insn.custom1_type.gn_code + 3'd1;
               group_total = gm_dec * gn_dec;
 
+              if (group_total >= 6'd8) begin
+                bmpcfg_illegal = 1'b1;
+              end
               if ((group_total * mtile_dec * ntile_dec) > 11'd1024) begin
+                bmpcfg_illegal = 1'b1;
+              end
+              if ((mtile_dec * k_dim_dec * 8) > 17'd8192) begin
+                bmpcfg_illegal = 1'b1;
+              end
+              if ((ntile_dec * k_dim_dec * weight_bits_dec) > 17'd8192) begin
+                bmpcfg_illegal = 1'b1;
+              end
+              if ((group_total * mtile_dec * ntile_dec * 16) > 18'd16384) begin
+                bmpcfg_illegal = 1'b1;
+              end
+
+              if (bmpcfg_illegal) begin
                 illegal_insn = 1'b1;
+`ifndef SYNTHESIS
+                $display("[%0t][DISP_ERR] illegal BMPCFG prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d wbits=%0d",
+                         $time, insn.custom1_type.prec, k_dim_dec, mtile_dec, ntile_dec, gm_dec, gn_dec, group_total[2:0], weight_bits_dec);
+`endif
               end else begin
                 prec_d = insn.custom1_type.prec;
                 ara_req.prec = insn.custom1_type.prec;
-                k_dim_d = ({12'b0, insn.custom1_type.k_code} + 17'd1) << 3;
+                k_dim_d = k_dim_dec;
                 ara_req.k_dim = ({4'b0, insn.custom1_type.k_code} + 9'd1) << 3;
                 mtile_d = mtile_dec;
                 ntile_d = ntile_dec;

@@ -437,11 +437,13 @@ module bmpu
                        vinsn_issue_q.op, vinsn_issue_q.id, issue_cnt_q, k_dim_q, prec_q, bmpu_output_en_o);
             end
 `endif
+            if (!compute_active_q && lane_id_i == 0) begin
+              $display("[%0t][BMPU_IN] mb=%0d nb=%0d ctx=%0d actv=%b wgtv=%b act0=%h act1=%h wgt0=%h wgt1=%h", $time,
+                       compute_mblock_q, compute_nblock_q, sa_compute_ctx_id,
+                       bmpu_act_operand_valid_i, bmpu_wgt_operand_valid_i,
+                       bmpu_act_operand_i[0], bmpu_act_operand_i[1], bmpu_wgt_operand_i[0], bmpu_wgt_operand_i[1]);
+            end
             if (!epoch_active_q) begin
-              if (1'b0 && lane_id_i == 0) begin
-                if (1'b0) $display("[%0t][BMPU_IN] act0=%h act1=%h wgt0=%h wgt1=%h", $time,
-                         bmpu_act_operand_i[0], bmpu_act_operand_i[1], bmpu_wgt_operand_i[0], bmpu_wgt_operand_i[1]);
-              end
               epoch_active_d  = 1'b1;
               first_k_round_d = 1'b1;
               compute_ai_d     = '0;

@@ -20,6 +20,9 @@ static const BenchKernelDataMap kBenchKernelDataMap[] = {
             .weight_hp = weight_hp_case1,
             .result_hp = result_hp_case1,
             .result_torch = result_torch_case1,
+            .M = 64UL,
+            .N = 64UL,
+            .K = 64UL,
         },
     },
     {
@@ -32,6 +35,9 @@ static const BenchKernelDataMap kBenchKernelDataMap[] = {
             .weight_hp = weight_hp_case2,
             .result_hp = result_hp_case2,
             .result_torch = result_torch_case2,
+            .M = 128UL,
+            .N = 64UL,
+            .K = 64UL,
         },
     },
     {
@@ -44,6 +50,9 @@ static const BenchKernelDataMap kBenchKernelDataMap[] = {
             .weight_hp = weight_hp_case3,
             .result_hp = result_hp_case3,
             .result_torch = result_torch_case3,
+            .M = 64UL,
+            .N = 128UL,
+            .K = 64UL,
         },
     },
     {
@@ -56,6 +65,9 @@ static const BenchKernelDataMap kBenchKernelDataMap[] = {
             .weight_hp = weight_hp_case4,
             .result_hp = result_hp_case4,
             .result_torch = result_torch_case4,
+            .M = 64UL,
+            .N = 64UL,
+            .K = 32UL,
         },
     },
     {
@@ -68,6 +80,9 @@ static const BenchKernelDataMap kBenchKernelDataMap[] = {
             .weight_hp = weight_hp_case5,
             .result_hp = result_hp_case5,
             .result_torch = result_torch_case5,
+            .M = 48UL,
+            .N = 64UL,
+            .K = 32UL,
         },
     },
     {
@@ -80,6 +95,9 @@ static const BenchKernelDataMap kBenchKernelDataMap[] = {
             .weight_hp = weight_hp_case6,
             .result_hp = result_hp_case6,
             .result_torch = result_torch_case6,
+            .M = 64UL,
+            .N = 128UL,
+            .K = 64UL,
         },
     },
     {
@@ -92,6 +110,9 @@ static const BenchKernelDataMap kBenchKernelDataMap[] = {
             .weight_hp = weight_hp_case7,
             .result_hp = result_hp_case7,
             .result_torch = result_torch_case7,
+            .M = 64UL,
+            .N = 64UL,
+            .K = 64UL,
         },
     },
     {
@@ -104,6 +125,9 @@ static const BenchKernelDataMap kBenchKernelDataMap[] = {
             .weight_hp = weight_hp_case8,
             .result_hp = result_hp_case8,
             .result_torch = result_torch_case8,
+            .M = 64UL,
+            .N = 64UL,
+            .K = 32UL,
         },
     },
 };

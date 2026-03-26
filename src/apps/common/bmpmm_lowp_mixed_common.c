@@ -156,7 +156,10 @@ static inline void bmpmm_lowp_store_c(void *ptr, unsigned long a_slot, unsigned 
         {
             int16_t *block_ptr;
             if (bmpmm_lowp_is_mytest(ctx->app_tag))
-                block_ptr = base + n_block * 16UL * ctx->mtile + m_block * 8UL;
+            {
+                const unsigned long block_elems = 8UL * 16UL;
+                block_ptr = base + (n_block * m_blocks + m_block) * block_elems;
+            }
             else
                 block_ptr = base + m_block * 8UL + (n_block * 16UL) * ctx->M;
             asm volatile("bmpse 0(%0)\n\t" : : "r"(block_ptr) : "memory");
