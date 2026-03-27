@@ -34,7 +34,7 @@ Options:
   --build-jobs <N>             make -j for app/hardware build, default: 16
   --parallel <N>               concurrent simv jobs, default: 6
   --batch-size <N>             apps per batch, default: 6
-  --models <csv>               default: gemma3_270m,qwen25_05b,opt_13b,qwen25_15b,gemma2_2b
+  --models <csv>               default: gemma3_270m,smollm2_360m,qwen25_05b,replit_code_v1_3b,tinyllama_11b,opt_13b,qwen25_15b,stablelm2_16b,smollm2_17b,gemma2_2b
   --precisions <csv>           default: binary,INT2,INT4
   --impls <csv>                default: bmpmm,rvv
   --apps <csv>                 explicit app list, overrides model/precision/impl filters
@@ -82,7 +82,7 @@ fi
 
 mkdir -p "$TMP_DIR"
 if [[ -z "$LOG_ROOT" ]]; then
-  LOG_ROOT="$TMP_DIR/model_app_runs/$(date +%Y%m%d_%H%M%S)_30apps"
+  LOG_ROOT="$TMP_DIR/model_app_runs/$(date +%Y%m%d_%H%M%S)_60apps"
 fi
 mkdir -p "$LOG_ROOT"
 RUNNER_LOG="$LOG_ROOT/runner.log"
@@ -136,7 +136,7 @@ list_target_apps() {
   split_csv "$IMPLS_CSV" impls
 
   if [[ ${#models[@]} -eq 0 ]]; then
-    models=(gemma3_270m qwen25_05b opt_13b qwen25_15b gemma2_2b)
+    models=(gemma3_270m smollm2_360m qwen25_05b replit_code_v1_3b tinyllama_11b opt_13b qwen25_15b stablelm2_16b smollm2_17b gemma2_2b)
   fi
   if [[ ${#precs[@]} -eq 0 ]]; then
     precs=(binary INT2 INT4)

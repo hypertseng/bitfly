@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import csv
 import os
+from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 import torch
@@ -45,6 +46,31 @@ def parse_str_list(expr: str | None) -> List[str]:
     return out
 
 
+def read_models_file(path: str) -> List[str]:
+    models: List[str] = []
+    with open(path, "r", encoding="utf-8") as f:
+        for raw_line in f:
+            line = raw_line.split("#", 1)[0].strip()
+            if line:
+                models.append(line)
+    return models
+
+
+def discover_local_hf_models(root: str) -> List[str]:
+    root_path = Path(root).expanduser()
+    if not root_path.is_dir():
+        return []
+
+    models: List[str] = []
+    for child in sorted(root_path.iterdir()):
+        name = child.name
+        if not child.is_dir() or not name.startswith("models--"):
+            continue
+        repo_id = name[len("models--"):].replace("--", "/", 1)
+        models.append(repo_id)
+    return models
+
+
 def count_params(model: torch.nn.Module) -> int:
     return sum(p.numel() for p in model.parameters())
 
@@ -68,6 +94,7 @@ def infer_mnk_from_linear(x: torch.Tensor, weight: torch.Tensor) -> Optional[Tup
 
 
 def main() -> None:
+    default_models_file = Path(__file__).with_name("models.txt")
     ap = argparse.ArgumentParser(
         description=(
             "Extract unique GEMM shapes (M,N,K) from Linear layers of LLMs at runtime. "
@@ -83,8 +110,19 @@ def main() -> None:
     ap.add_argument(
         "--models-file",
         type=str,
-        default="",
+        default=str(default_models_file) if default_models_file.is_file() else "",
         help="text file with one model name/path per line",
+    )
+    ap.add_argument(
+        "--all-local-models",
+        action="store_true",
+        help="append all locally cached HF models under --local-model-root",
+    )
+    ap.add_argument(
+        "--local-model-root",
+        type=str,
+        default=os.environ.get("HF_HUB_CACHE", "/data2/zzx/data/model/huggingface/hub"),
+        help="root directory containing local HF cache entries such as models--org--name",
     )
     ap.add_argument(
         "--batch-sizes",
@@ -152,12 +190,11 @@ def main() -> None:
     model_list: List[str] = []
     model_list.extend(parse_str_list(args.models))
     if args.models_file:
-        with open(args.models_file, "r", encoding="utf-8") as f:
-            for line in f:
-                name = line.strip()
-                if name:
-                    model_list.append(name)
+        model_list.extend(read_models_file(args.models_file))
+    if args.all_local_models:
+        model_list.extend(discover_local_hf_models(args.local_model_root))
     model_list = [m for m in model_list if m]
+    model_list = list(dict.fromkeys(model_list))
     if not model_list:
         raise SystemExit("No models provided. Use --models or --models-file.")
 
