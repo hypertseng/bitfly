@@ -13,6 +13,10 @@
 
 #include "bmpcfg_dispatch.h"
 
+#ifndef BMPMM_LOWP_DEBUG
+#define BMPMM_LOWP_DEBUG 0
+#endif
+
 static inline unsigned long bmpmm_lowp_align_up_ul(unsigned long x, unsigned long a)
 {
     return ((x + a - 1) / a) * a;
@@ -157,27 +161,10 @@ static inline void bmpmm_lowp_compute(void *user)
 static inline void bmpmm_lowp_store_c(void *ptr, unsigned long a_slot, unsigned long w_slot, void *user)
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
-    int16_t *base = (int16_t *)ptr;
-    const unsigned long m_blocks = bmpmm_lowp_align_up_ul(ctx->mtile, 8UL) / 8UL;
-    const unsigned long n_blocks = bmpmm_lowp_align_up_ul(ctx->ntile, 16UL) / 16UL;
     unsigned long dbg_idx = ctx->store_count++;
     if (ctx->debug_enabled && dbg_idx < 8)
         printf("[%s][DBG] store_begin a=%lu w=%lu ptr=0x%lx\n", ctx->app_tag, a_slot, w_slot, (unsigned long)ptr);
-    for (unsigned long m_block = 0; m_block < m_blocks; ++m_block)
-    {
-        for (unsigned long n_block = 0; n_block < n_blocks; ++n_block)
-        {
-            int16_t *block_ptr;
-            if (bmpmm_lowp_is_verify_app(ctx->app_tag))
-            {
-                const unsigned long block_elems = 8UL * 16UL;
-                block_ptr = base + (n_block * m_blocks + m_block) * block_elems;
-            }
-            else
-                block_ptr = base + m_block * 8UL + (n_block * 16UL) * ctx->M;
-            asm volatile("bmpse 0(%0)\n\t" : : "r"(block_ptr) : "memory");
-        }
-    }
+    asm volatile("bmpse 0(%0)\n\t" : : "r"(ptr) : "memory");
     if (ctx->debug_enabled && dbg_idx < 8)
         printf("[%s][DBG] store_done a=%lu w=%lu\n", ctx->app_tag, a_slot, w_slot);
 }
@@ -233,7 +220,7 @@ int bmpmm_lowp_mixed_matmul_with_cfg(const char *app_tag,
         .ntile = cfg.ntile,
         .invalid_cfg = 0,
         .compute_cycles = compute_cycles,
-        .debug_enabled = bmpmm_lowp_is_verify_app(app_tag),
+        .debug_enabled = BMPMM_LOWP_DEBUG && bmpmm_lowp_is_verify_app(app_tag),
         .emit_cfg_count = 0,
         .load_w_count = 0,
         .load_a_count = 0,

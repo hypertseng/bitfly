@@ -57,12 +57,8 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   elen_t [COLS-1:0] wgt_in;
   logic             sa_stage_ready;
   logic             sa_step;
-  logic             act_consume_step;
+  logic [ROWS-1:0]  act_consume_mask;
   logic             store_mode;
-`ifndef SYNTHESIS
-  logic             dbg_valid_q;
-  logic             dbg_step_q;
-`endif
 
   always_comb begin
     unique case (prec_i)
@@ -205,14 +201,26 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
 
     sa_stage_ready = act_suffix_ok && wgt_suffix_ok;
     sa_step = store_mode ? 1'b0 : (valid_i && sa_stage_ready);
-    act_consume_step = sa_step;
-    if (in_k_stage && (planes > 3'd1)) begin
-      act_consume_step = sa_step && (plane_idx == (planes - 3'd1));
+    act_consume_mask = '0;
+    for (int i = 0; i < ROWS; i++) begin
+      automatic logic row_in_window;
+      automatic logic [2:0] row_plane_idx;
+      row_in_window = (cycle_cnt >= i) && (cycle_cnt < (i + k_iters * planes));
+      row_plane_idx = '0;
+      if (row_in_window) begin
+        row_plane_idx = (cycle_cnt - i) % planes;
+      end
+
+      if (!row_in_window || (planes <= 3'd1)) begin
+        act_consume_mask[i] = sa_step;
+      end else begin
+        act_consume_mask[i] = sa_step && (row_plane_idx == (planes - 3'd1));
+      end
     end
     bmpu_act_operand_ready_o = '0;
     bmpu_wgt_operand_ready_o = '0;
     if (!store_mode) begin
-      bmpu_act_operand_ready_o = act_window_eff & {ROWS{act_consume_step}};
+      bmpu_act_operand_ready_o = act_window_eff & act_consume_mask;
       bmpu_wgt_operand_ready_o = wgt_window_eff & {COLS{sa_step}};
     end
   end

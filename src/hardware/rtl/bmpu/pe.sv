@@ -73,8 +73,10 @@ module pe #(
       end
 
       if (en) begin
-        if (!act_hold_i) activation_reg <= activations;
-        if (!wgt_hold_i) weight_reg     <= weights;
+        // Keep the last propagated operand once this PE has finished its local
+        // MACs; downstream neighbors may still need that value for one more hop.
+        if (mac_en_i && !act_hold_i) activation_reg <= activations;
+        if (mac_en_i && !wgt_hold_i) weight_reg     <= weights;
 
         if (mac_en_i) begin
           for (int i = 0; i < 8; i++) begin

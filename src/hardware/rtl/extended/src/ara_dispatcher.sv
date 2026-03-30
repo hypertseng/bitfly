@@ -8,6 +8,8 @@
 // It also acknowledges instructions back to Ariane, perhaps with a
 // response or an error message.
 
+`include "bitfly_debug.svh"
+
 module ara_dispatcher
   import ara_pkg::*;
   import rvv_pkg::*;
@@ -194,9 +196,9 @@ module ara_dispatcher
   logic [2:0] prec_d, prec_q;
   logic [5:0] mtile_d, mtile_q;
   logic [6:0] ntile_d, ntile_q;
-  logic [2:0] gm_d, gm_q;
-  logic [2:0] gn_d, gn_q;
-  logic [2:0] group_g_d, group_g_q;
+  logic [3:0] gm_d, gm_q;
+  logic [3:0] gn_d, gn_q;
+  logic [3:0] group_g_d, group_g_q;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
@@ -222,9 +224,9 @@ module ara_dispatcher
       prec_q               <= '0;
       mtile_q              <= 6'd8;
       ntile_q              <= 7'd16;
-      gm_q                 <= 3'd1;
-      gn_q                 <= 3'd1;
-      group_g_q            <= 3'd1;
+      gm_q                 <= 4'd1;
+      gn_q                 <= 4'd1;
+      group_g_q            <= 4'd1;
     end else begin
       state_q              <= state_d;
       state_qq             <= state_q;
@@ -3768,9 +3770,16 @@ module ara_dispatcher
 
                 ara_req.vstart      = '0;
                 ara_req.vtype.vsew  = EW8;
+                // BMP packed activations/weights are stored as raw byte streams in VRF slots.
+                // Keep operand EEW aligned with the packed stream width so the lane requester
+                // accounts one 64b resident word as eight bytes, not as wider elements.
+                ara_req.eew_vs1     = EW8;
+                ara_req.eew_vs2     = EW8;
                 if (insn.instr[31] == 1'b1) begin
                   ara_req.is_weight = 1'b1;
-                  ara_req.vl        = k_dim_q * bmp_planes * (ntile_q >> 1);
+                  // Packed weights: total bytes = k_dim * planes * (ntile / 8).
+                  // Set vl to total bytes; per-lane splitting is handled in the lane sequencer.
+                  ara_req.vl        = k_dim_q * bmp_planes * (ntile_q >> 3);
                 end else begin
                   ara_req.is_weight = 1'b0;
                   ara_req.vl        = k_dim_q * mtile_q;
@@ -3795,7 +3804,7 @@ module ara_dispatcher
                 ara_req.group_g      = group_g_q;
 
 `ifndef SYNTHESIS
-                if (1'b0) begin
+                if (`BITFLY_DISPATCH_DEBUG) begin
                   $display("[%0t][DISP] BMPLE weight=%0b prec=%0d k=%0d vl=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b resp_valid=%0b",
                            $time, ara_req.is_weight, prec_q, k_dim_q, ara_req.vl, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i, ara_resp_valid);
                 end
@@ -3846,7 +3855,8 @@ module ara_dispatcher
                 ara_req_valid = 1'b1;
 
                 ara_req.vtype.vsew = EW16;
-                ara_req.vl = 8 * 16;
+                ara_req.eew_vs1 = EW16;
+                ara_req.vl = mtile_q * ntile_q;
                 ara_req.vstart = '0;
 
                 ara_req.k_dim = k_dim_q;
@@ -3856,10 +3866,10 @@ module ara_dispatcher
                 ara_req.gm = gm_q;
                 ara_req.gn = gn_q;
                 ara_req.group_g = group_g_q;
-                csr_vl_d = 8 * 16;
+                csr_vl_d = ara_req.vl;
 
 `ifndef SYNTHESIS
-                if (1'b0) begin
+                if (`BITFLY_DISPATCH_DEBUG) begin
                   $display("[%0t][DISP] BMPSE prec=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b resp_valid=%0b",
                            $time, prec_q, mtile_q, ntile_q, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i, ara_resp_valid);
                 end
@@ -3889,6 +3899,10 @@ module ara_dispatcher
                 ara_req.use_vd        = 1'b1;
                 ara_req.vstart        = '0;
                 ara_req.vtype.vsew    = EW16;
+                // BMPMM reads packed byte-stream operands from resident BMPU slots even though
+                // the architectural result is int16.
+                ara_req.eew_vs1       = EW8;
+                ara_req.eew_vs2       = EW8;
                 ara_req.vl            = mtile_q * ntile_q;
                 acc_resp_o.req_ready  = 1'b0;
                 acc_resp_o.resp_valid = 1'b0;
@@ -3905,7 +3919,7 @@ module ara_dispatcher
                 csr_vl_d              = ara_req.vl;
 
 `ifndef SYNTHESIS
-                if (1'b0) begin
+                if (`BITFLY_DISPATCH_DEBUG) begin
                   $display("[%0t][DISP] BMPMM prec=%0d k=%0d mt=%0d nt=%0d gm=%0d gn=%0d group=%0d req_valid=%0b ready_i=%0b",
                            $time, prec_q, k_dim_q, mtile_q, ntile_q, gm_q, gn_q, group_g_q, ara_req_valid, ara_req_ready_i);
                 end
@@ -3978,12 +3992,12 @@ module ara_dispatcher
               illegal_insn = 1'b1;
             end else begin
               // csr_vtype_d.vsew = EW8;
-              automatic logic [2:0] gm_dec;
-              automatic logic [2:0] gn_dec;
+              automatic logic [3:0] gm_dec;
+              automatic logic [3:0] gn_dec;
               automatic logic [5:0] group_total;
 
-              gm_dec = insn.custom1_type.gm_code + 3'd1;
-              gn_dec = insn.custom1_type.gn_code + 3'd1;
+              gm_dec = {1'b0, insn.custom1_type.gm_code} + 4'd1;
+              gn_dec = {1'b0, insn.custom1_type.gn_code} + 4'd1;
               group_total = gm_dec * gn_dec;
 
               if (group_total > 6'd8) begin
@@ -4017,8 +4031,8 @@ module ara_dispatcher
                 ara_req.ntile = ntile_dec;
                 ara_req.gm = gm_dec;
                 ara_req.gn = gn_dec;
-                group_g_d = group_total[2:0];
-                ara_req.group_g = group_total[2:0];
+                group_g_d = group_total[3:0];
+                ara_req.group_g = group_total[3:0];
                 csr_vl_d = (({4'b0, insn.custom1_type.k_code} + 9'd1) << 3) * 4 * NrLanes;
 
                 is_config = 1'b1;

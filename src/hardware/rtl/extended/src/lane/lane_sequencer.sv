@@ -8,6 +8,8 @@
 // instruction within one lane, interfacing with the internal functional units
 // and with the main sequencer.
 
+`include "bitfly_debug.svh"
+
 module lane_sequencer
   import ara_pkg::*;
   import rvv_pkg::*;
@@ -50,10 +52,15 @@ module lane_sequencer
     input  logic                                          mfpu_ready_i,
     input  logic                 [           NrVInsn-1:0] mfpu_vinsn_done_i,
     input  logic                                          bmpu_ready_i,
+    input  logic                                          bmpu_compute_busy_i,
+    input  logic                                          bmpu_prefetch_ready_i,
     input  logic                 [           NrVInsn-1:0] bmpu_insn_done_i,
     output logic                                          is_bmpu_store_o,
     output logic                                          is_bmpu_load_o,
     output logic                 [           NrVInsn-1:0] is_bmpu_load_vinsn_o,
+    output logic                 [           NrVInsn-1:0] bmpu_load_slot_valid_o,
+    output logic                 [           NrVInsn-1:0][1:0] bmpu_load_slot_o,
+    output logic                 [           NrVInsn-1:0] bmpu_load_is_weight_o,
     output logic                                          bmpu_weight_load_pulse_o,
 
     // Masku interface for vrgather/vcompress
@@ -79,9 +86,43 @@ module lane_sequencer
   // Every time a lane handshakes the main sequencer, it also
   // saves the insn ID, not to re-sample the same instruction.
   vid_t last_id_d, last_id_q;
+  pe_req_t last_req_d, last_req_q;
   logic pe_req_valid_i_msk;
   logic en_sync_mask_d, en_sync_mask_q;
   logic [NrVInsn-1:0] bmpu_load_vinsn_d, bmpu_load_vinsn_q;
+  logic [NrVInsn-1:0] bmpu_load_slot_valid_d, bmpu_load_slot_valid_q;
+  logic [NrVInsn-1:0][1:0] bmpu_load_slot_d, bmpu_load_slot_q;
+  logic [NrVInsn-1:0] bmpu_load_is_weight_d, bmpu_load_is_weight_q;
+
+  typedef struct packed {
+    logic [1:0] a_slots;
+    logic [1:0] w_slots;
+    logic [3:0] a_windows;
+    logic [3:0] w_windows;
+    logic       row_snake;
+    logic       reuse_a;
+  } bmpu_plan_t;
+
+  logic       bmpu_group_active_d, bmpu_group_active_q;
+  logic       bmpu_store_phase_d, bmpu_store_phase_q;
+  logic       bmpu_first_k_round_d, bmpu_first_k_round_q;
+  logic       bmpu_compute_prev_valid_d, bmpu_compute_prev_valid_q;
+  logic [3:0] bmpu_group_gm_d, bmpu_group_gm_q;
+  logic [3:0] bmpu_group_gn_d, bmpu_group_gn_q;
+  logic [5:0] bmpu_group_mtile_d, bmpu_group_mtile_q;
+  logic [6:0] bmpu_group_ntile_d, bmpu_group_ntile_q;
+  logic [2:0] bmpu_group_prec_d, bmpu_group_prec_q;
+  logic [2:0] bmpu_compute_a_win_d, bmpu_compute_a_win_q;
+  logic [2:0] bmpu_compute_w_win_d, bmpu_compute_w_win_q;
+  logic [2:0] bmpu_compute_prev_a_win_d, bmpu_compute_prev_a_win_q;
+  logic [2:0] bmpu_compute_prev_w_win_d, bmpu_compute_prev_w_win_q;
+  logic [3:0] bmpu_compute_pair_ord_d, bmpu_compute_pair_ord_q;
+  logic [2:0] bmpu_compute_load_a_d, bmpu_compute_load_a_q;
+  logic [2:0] bmpu_compute_load_w_d, bmpu_compute_load_w_q;
+  logic [2:0] bmpu_store_a_win_d, bmpu_store_a_win_q;
+  logic [2:0] bmpu_store_w_win_d, bmpu_store_w_win_q;
+  logic [3:0] bmpu_store_pair_ord_d, bmpu_store_pair_ord_q;
+  logic [3:0] bmpu_store_block_ord_d, bmpu_store_block_ord_q;
 
   pe_req_t pe_req;
   logic    pe_req_valid;
@@ -107,6 +148,9 @@ module lane_sequencer
     is_bmpu_store_o = pe_req.op == BMPSE;
     is_bmpu_load_o = pe_req.op == BMPLE;
     is_bmpu_load_vinsn_o = bmpu_load_vinsn_q;
+    bmpu_load_slot_valid_o = bmpu_load_slot_valid_q;
+    bmpu_load_slot_o = bmpu_load_slot_q;
+    bmpu_load_is_weight_o = bmpu_load_is_weight_q;
     bmpu_weight_load_pulse_o = pe_req_valid && pe_req_ready &&
                                (pe_req.op == BMPLE) && pe_req.is_weight;
   end
@@ -114,36 +158,94 @@ module lane_sequencer
   always_comb begin
     // Default assignment
     last_id_d         = last_id_q;
+    last_req_d        = last_req_q;
     en_sync_mask_d    = en_sync_mask_q;
     bmpu_load_vinsn_d = bmpu_load_vinsn_q & pe_vinsn_running_i;
 
     // If the sync mask is enabled and the ID is the same
     // as before, avoid to re-sample the same instruction
     // more than once.
-    if (en_sync_mask_q && (pe_req_i.id == last_id_q)) pe_req_valid_i_msk = 1'b0;
+    if (en_sync_mask_q && (pe_req_i == last_req_q)) pe_req_valid_i_msk = 1'b0;
     else pe_req_valid_i_msk = pe_req_valid_i;
 
     // Enable the sync mask when a handshake happens,
     // and save the insn ID
     if (pe_req_valid_i_msk && pe_req_ready_o) begin
       last_id_d      = pe_req_i.id;
+      last_req_d     = pe_req_i;
       en_sync_mask_d = 1'b1;
       if (pe_req_i.op == BMPLE) bmpu_load_vinsn_d[pe_req_i.id] = 1'b1;
     end
 
-    // Disable the block if the sequencer valid goes down
+    // Only suppress a request while the main sequencer keeps presenting the
+    // same valid transfer. Once valid drops, allow the next identical
+    // instruction instance to be sampled again.
     if (!pe_req_valid_i && en_sync_mask_q) en_sync_mask_d = 1'b0;
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       last_id_q         <= '0;
+      last_req_q        <= '0;
       en_sync_mask_q    <= 1'b0;
       bmpu_load_vinsn_q <= '0;
+      bmpu_load_slot_valid_q <= '0;
+      bmpu_load_slot_q <= '0;
+      bmpu_load_is_weight_q <= '0;
     end else begin
       last_id_q         <= last_id_d;
+      last_req_q        <= last_req_d;
       en_sync_mask_q    <= en_sync_mask_d;
       bmpu_load_vinsn_q <= bmpu_load_vinsn_d;
+      bmpu_load_slot_valid_q <= bmpu_load_slot_valid_d;
+      bmpu_load_slot_q <= bmpu_load_slot_d;
+      bmpu_load_is_weight_q <= bmpu_load_is_weight_d;
+    end
+  end
+
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+      bmpu_group_active_q <= 1'b0;
+      bmpu_store_phase_q <= 1'b0;
+      bmpu_first_k_round_q <= 1'b1;
+      bmpu_compute_prev_valid_q <= 1'b0;
+      bmpu_group_gm_q <= '0;
+      bmpu_group_gn_q <= '0;
+      bmpu_group_mtile_q <= '0;
+      bmpu_group_ntile_q <= '0;
+      bmpu_group_prec_q <= '0;
+      bmpu_compute_a_win_q <= '0;
+      bmpu_compute_w_win_q <= '0;
+      bmpu_compute_prev_a_win_q <= '0;
+      bmpu_compute_prev_w_win_q <= '0;
+      bmpu_compute_pair_ord_q <= '0;
+      bmpu_compute_load_a_q <= '0;
+      bmpu_compute_load_w_q <= '0;
+      bmpu_store_a_win_q <= '0;
+      bmpu_store_w_win_q <= '0;
+      bmpu_store_pair_ord_q <= '0;
+      bmpu_store_block_ord_q <= '0;
+    end else begin
+      bmpu_group_active_q <= bmpu_group_active_d;
+      bmpu_store_phase_q <= bmpu_store_phase_d;
+      bmpu_first_k_round_q <= bmpu_first_k_round_d;
+      bmpu_compute_prev_valid_q <= bmpu_compute_prev_valid_d;
+      bmpu_group_gm_q <= bmpu_group_gm_d;
+      bmpu_group_gn_q <= bmpu_group_gn_d;
+      bmpu_group_mtile_q <= bmpu_group_mtile_d;
+      bmpu_group_ntile_q <= bmpu_group_ntile_d;
+      bmpu_group_prec_q <= bmpu_group_prec_d;
+      bmpu_compute_a_win_q <= bmpu_compute_a_win_d;
+      bmpu_compute_w_win_q <= bmpu_compute_w_win_d;
+      bmpu_compute_prev_a_win_q <= bmpu_compute_prev_a_win_d;
+      bmpu_compute_prev_w_win_q <= bmpu_compute_prev_w_win_d;
+      bmpu_compute_pair_ord_q <= bmpu_compute_pair_ord_d;
+      bmpu_compute_load_a_q <= bmpu_compute_load_a_d;
+      bmpu_compute_load_w_q <= bmpu_compute_load_w_d;
+      bmpu_store_a_win_q <= bmpu_store_a_win_d;
+      bmpu_store_w_win_q <= bmpu_store_w_win_d;
+      bmpu_store_pair_ord_q <= bmpu_store_pair_ord_d;
+      bmpu_store_block_ord_q <= bmpu_store_block_ord_d;
     end
   end
 
@@ -296,6 +398,313 @@ module lane_sequencer
     endcase
   endfunction : bmp_planes_from_prec
 
+  function automatic int unsigned bmpu_weight_bits(input logic [2:0] prec);
+    unique case (prec)
+      3'd0: bmpu_weight_bits = 1;
+      3'd1, 3'd2: bmpu_weight_bits = 2;
+      3'd3: bmpu_weight_bits = 4;
+      default: bmpu_weight_bits = 1;
+    endcase
+  endfunction : bmpu_weight_bits
+
+  function automatic int unsigned bmpu_min(input int unsigned a, input int unsigned b);
+    bmpu_min = (a < b) ? a : b;
+  endfunction : bmpu_min
+
+  function automatic int unsigned bmpu_ceil_div(input int unsigned a, input int unsigned b);
+    bmpu_ceil_div = (a + b - 1) / b;
+  endfunction : bmpu_ceil_div
+
+  function automatic void bmpu_window_shape(
+      input int unsigned total_len,
+      input int unsigned block_len,
+      input int unsigned win_idx,
+      output int unsigned start,
+      output int unsigned len
+  );
+    start = win_idx * block_len;
+    len = 0;
+    if (start < total_len)
+      len = bmpu_min(block_len, total_len - start);
+  endfunction : bmpu_window_shape
+
+  function automatic void bmpu_next_window(
+      input int unsigned a_windows,
+      input int unsigned w_windows,
+      input logic row_snake,
+      input int unsigned cur_a,
+      input int unsigned cur_w,
+      output int unsigned next_a,
+      output int unsigned next_w,
+      output logic valid
+  );
+    next_a = cur_a;
+    next_w = cur_w;
+    valid = 1'b0;
+
+    if (row_snake) begin
+      if ((cur_a & 1) == 0) begin
+        if ((cur_w + 1) < w_windows) begin
+          next_w = cur_w + 1;
+          valid = 1'b1;
+        end else if ((cur_a + 1) < a_windows) begin
+          next_a = cur_a + 1;
+          next_w = (w_windows == 0) ? 0 : (w_windows - 1);
+          valid = 1'b1;
+        end
+      end else begin
+        if (cur_w > 0) begin
+          next_w = cur_w - 1;
+          valid = 1'b1;
+        end else if ((cur_a + 1) < a_windows) begin
+          next_a = cur_a + 1;
+          next_w = 0;
+          valid = 1'b1;
+        end
+      end
+    end else begin
+      if ((cur_w & 1) == 0) begin
+        if ((cur_a + 1) < a_windows) begin
+          next_a = cur_a + 1;
+          valid = 1'b1;
+        end else if ((cur_w + 1) < w_windows) begin
+          next_a = (a_windows == 0) ? 0 : (a_windows - 1);
+          next_w = cur_w + 1;
+          valid = 1'b1;
+        end
+      end else begin
+        if (cur_a > 0) begin
+          next_a = cur_a - 1;
+          valid = 1'b1;
+        end else if ((cur_w + 1) < w_windows) begin
+          next_a = 0;
+          next_w = cur_w + 1;
+          valid = 1'b1;
+        end
+      end
+    end
+  endfunction : bmpu_next_window
+
+  function automatic void bmpu_pair_from_ord(
+      input int unsigned a_len,
+      input int unsigned w_len,
+      input logic reuse_a,
+      input int unsigned pair_ord,
+      output int unsigned a_pos,
+      output int unsigned w_pos
+  );
+    int unsigned ord;
+    ord = 0;
+    a_pos = 0;
+    w_pos = 0;
+    if (reuse_a) begin
+      for (int unsigned ap = 0; ap < a_len; ++ap) begin
+        if ((ap & 1) == 0) begin
+          for (int unsigned wp = 0; wp < w_len; ++wp) begin
+            if (ord == pair_ord) begin
+              a_pos = ap;
+              w_pos = wp;
+              return;
+            end
+            ord++;
+          end
+        end else begin
+          for (int unsigned wrev = 0; wrev < w_len; ++wrev) begin
+            if (ord == pair_ord) begin
+              a_pos = ap;
+              w_pos = w_len - 1 - wrev;
+              return;
+            end
+            ord++;
+          end
+        end
+      end
+    end else begin
+      for (int unsigned wp = 0; wp < w_len; ++wp) begin
+        if ((wp & 1) == 0) begin
+          for (int unsigned ap = 0; ap < a_len; ++ap) begin
+            if (ord == pair_ord) begin
+              a_pos = ap;
+              w_pos = wp;
+              return;
+            end
+            ord++;
+          end
+        end else begin
+          for (int unsigned arev = 0; arev < a_len; ++arev) begin
+            if (ord == pair_ord) begin
+              a_pos = a_len - 1 - arev;
+              w_pos = wp;
+              return;
+            end
+            ord++;
+          end
+        end
+      end
+    end
+  endfunction : bmpu_pair_from_ord
+
+  function automatic bmpu_plan_t bmpu_select_plan(
+      input logic [3:0] gm,
+      input logic [3:0] gn,
+      input logic [5:0] mtile,
+      input logic [6:0] ntile,
+      input logic [2:0] prec
+  );
+    bmpu_plan_t plan;
+    int unsigned best_load_bytes;
+    int best_pref;
+    int best_same_a;
+    int best_same_w;
+    int unsigned best_a_slots;
+    int unsigned best_w_slots;
+    int unsigned best_row_snake;
+    int unsigned total_slots;
+    int unsigned weight_bits;
+    logic reuse_a;
+
+    best_load_bytes = '1;
+    best_pref = -1;
+    best_same_a = -1;
+    best_same_w = -1;
+    best_a_slots = 1;
+    best_w_slots = 1;
+    best_row_snake = 0;
+
+    weight_bits = bmpu_weight_bits(prec);
+    reuse_a = ((int'(mtile) * 8) >= (int'(ntile) * int'(weight_bits)));
+    total_slots = bmpu_min(4, int'(gm) + int'(gn));
+
+    for (int unsigned a_slots = 1; a_slots <= bmpu_min(int'(gm), total_slots - 1); ++a_slots) begin
+      int unsigned w_slots;
+      int unsigned a_windows;
+      int unsigned w_windows;
+      w_slots = total_slots - a_slots;
+      if ((w_slots == 0) || (w_slots > int'(gn)))
+        continue;
+
+      a_windows = bmpu_ceil_div(int'(gm), a_slots);
+      w_windows = bmpu_ceil_div(int'(gn), w_slots);
+
+      for (int unsigned row_snake = 0; row_snake <= 1; ++row_snake) begin
+        int unsigned cur_a;
+        int unsigned cur_w;
+        int unsigned prev_a;
+        int unsigned prev_w;
+        int unsigned load_a;
+        int unsigned load_w;
+        int same_a;
+        int same_w;
+        int unsigned prev_pair_a;
+        int unsigned prev_pair_w;
+        logic have_prev_pair;
+
+        cur_a = 0;
+        cur_w = 0;
+        prev_a = '1;
+        prev_w = '1;
+        load_a = 0;
+        load_w = 0;
+        same_a = 0;
+        same_w = 0;
+        prev_pair_a = '1;
+        prev_pair_w = '1;
+        have_prev_pair = 1'b0;
+
+        while (1) begin
+          int unsigned a_start;
+          int unsigned a_len;
+          int unsigned w_start;
+          int unsigned w_len;
+          int unsigned pair_count;
+          int unsigned next_a;
+          int unsigned next_w;
+          logic has_next;
+
+          bmpu_window_shape(int'(gm), a_slots, cur_a, a_start, a_len);
+          bmpu_window_shape(int'(gn), w_slots, cur_w, w_start, w_len);
+
+          if (cur_a != prev_a)
+            load_a += a_len;
+          if (cur_w != prev_w)
+            load_w += w_len;
+
+          pair_count = a_len * w_len;
+          for (int unsigned pair_ord = 0; pair_ord < pair_count; ++pair_ord) begin
+            int unsigned a_pos;
+            int unsigned w_pos;
+            int unsigned abs_a;
+            int unsigned abs_w;
+            bmpu_pair_from_ord(a_len, w_len, reuse_a, pair_ord, a_pos, w_pos);
+            abs_a = a_start + a_pos;
+            abs_w = w_start + w_pos;
+            if (have_prev_pair) begin
+              if (abs_a == prev_pair_a)
+                same_a++;
+              if (abs_w == prev_pair_w)
+                same_w++;
+            end
+            prev_pair_a = abs_a;
+            prev_pair_w = abs_w;
+            have_prev_pair = 1'b1;
+          end
+
+          prev_a = cur_a;
+          prev_w = cur_w;
+          bmpu_next_window(a_windows, w_windows, row_snake[0], cur_a, cur_w, next_a, next_w, has_next);
+          if (!has_next)
+            break;
+          cur_a = next_a;
+          cur_w = next_w;
+        end
+
+        begin
+          int unsigned load_bytes;
+          int preferred;
+          logic better;
+          load_bytes = load_a * int'(mtile) + ((load_w * int'(ntile) * int'(weight_bits)) >> 3);
+          preferred = reuse_a ? same_a : same_w;
+          better = 1'b0;
+          if (load_bytes < best_load_bytes)
+            better = 1'b1;
+          else if ((load_bytes == best_load_bytes) && (preferred > best_pref))
+            better = 1'b1;
+          else if ((load_bytes == best_load_bytes) && (preferred == best_pref) && (same_a > best_same_a))
+            better = 1'b1;
+          else if ((load_bytes == best_load_bytes) && (preferred == best_pref) &&
+                   (same_a == best_same_a) && (same_w > best_same_w))
+            better = 1'b1;
+          else if ((load_bytes == best_load_bytes) && (preferred == best_pref) &&
+                   (same_a == best_same_a) && (same_w == best_same_w) &&
+                   (a_slots > best_a_slots))
+            better = 1'b1;
+          else if ((load_bytes == best_load_bytes) && (preferred == best_pref) &&
+                   (same_a == best_same_a) && (same_w == best_same_w) &&
+                   (a_slots == best_a_slots) && (row_snake < best_row_snake))
+            better = 1'b1;
+
+          if (better) begin
+            best_load_bytes = load_bytes;
+            best_pref = preferred;
+            best_same_a = same_a;
+            best_same_w = same_w;
+            best_a_slots = a_slots;
+            best_w_slots = w_slots;
+            best_row_snake = row_snake;
+          end
+        end
+      end
+    end
+
+    plan.a_slots = best_a_slots[1:0];
+    plan.w_slots = best_w_slots[1:0];
+    plan.a_windows = bmpu_ceil_div(int'(gm), best_a_slots);
+    plan.w_windows = bmpu_ceil_div(int'(gn), best_w_slots);
+    plan.row_snake = best_row_snake[0];
+    plan.reuse_a = reuse_a;
+    return plan;
+  endfunction : bmpu_select_plan
+
   always_comb begin : sequencer
     // Running loops
     vinsn_running_d       = vinsn_running_q & pe_vinsn_running_i;
@@ -317,6 +726,29 @@ module lane_sequencer
     // Make no requests to the lane's VFUs
     vfu_operation_d       = '0;
     vfu_operation_valid_d = 1'b0;
+    bmpu_group_active_d = bmpu_group_active_q;
+    bmpu_store_phase_d = bmpu_store_phase_q;
+    bmpu_first_k_round_d = bmpu_first_k_round_q;
+    bmpu_compute_prev_valid_d = bmpu_compute_prev_valid_q;
+    bmpu_group_gm_d = bmpu_group_gm_q;
+    bmpu_group_gn_d = bmpu_group_gn_q;
+    bmpu_group_mtile_d = bmpu_group_mtile_q;
+    bmpu_group_ntile_d = bmpu_group_ntile_q;
+    bmpu_group_prec_d = bmpu_group_prec_q;
+    bmpu_compute_a_win_d = bmpu_compute_a_win_q;
+    bmpu_compute_w_win_d = bmpu_compute_w_win_q;
+    bmpu_compute_prev_a_win_d = bmpu_compute_prev_a_win_q;
+    bmpu_compute_prev_w_win_d = bmpu_compute_prev_w_win_q;
+    bmpu_compute_pair_ord_d = bmpu_compute_pair_ord_q;
+    bmpu_compute_load_a_d = bmpu_compute_load_a_q;
+    bmpu_compute_load_w_d = bmpu_compute_load_w_q;
+    bmpu_store_a_win_d = bmpu_store_a_win_q;
+    bmpu_store_w_win_d = bmpu_store_w_win_q;
+    bmpu_store_pair_ord_d = bmpu_store_pair_ord_q;
+    bmpu_store_block_ord_d = bmpu_store_block_ord_q;
+    bmpu_load_slot_valid_d = bmpu_load_slot_valid_q & pe_vinsn_running_i;
+    bmpu_load_slot_d = bmpu_load_slot_q;
+    bmpu_load_is_weight_d = bmpu_load_is_weight_q & pe_vinsn_running_i;
 
     // If the operand requesters are busy, abort the request and wait for another cycle.
     if (pe_req_valid) begin
@@ -357,14 +789,87 @@ module lane_sequencer
           pe_req_ready = !(operand_request_valid_o[BMPUAct0] ||
             operand_request_valid_o[BMPUAct1] ||
             operand_request_valid_o[BMPUWgt0] ||
-            operand_request_valid_o[BMPUWgt1]);
+            operand_request_valid_o[BMPUWgt1]) && bmpu_ready_i &&
+            ((pe_req.op != BMPMM) || (!bmpu_compute_busy_i && bmpu_prefetch_ready_i));
         end
         default: ;
       endcase
+
+      // Never advertise ready for an instruction ID that is still marked
+      // in-flight in this lane. Otherwise the main sequencer can advance
+      // while this lane silently drops the request in the acceptance block.
+      if (vinsn_running_d[pe_req.id]) begin
+        pe_req_ready = 1'b0;
+      end
     end
 
     // We received a new vector instruction
     if (pe_req_valid && pe_req_ready && !vinsn_running_d[pe_req.id]) begin
+      automatic bmpu_plan_t bmpu_plan;
+      automatic logic bmpu_new_group;
+      automatic logic bmpu_first_store_insn;
+      automatic int unsigned bmpu_cur_a_win;
+      automatic int unsigned bmpu_cur_w_win;
+      automatic int unsigned bmpu_prev_a_win;
+      automatic int unsigned bmpu_prev_w_win;
+      automatic int unsigned bmpu_a_start;
+      automatic int unsigned bmpu_a_len;
+      automatic int unsigned bmpu_w_start;
+      automatic int unsigned bmpu_w_len;
+      automatic int unsigned bmpu_pair_count;
+      automatic int unsigned bmpu_pair_a_pos;
+      automatic int unsigned bmpu_pair_w_pos;
+      automatic int unsigned bmpu_pair_ai;
+      automatic int unsigned bmpu_pair_wi;
+      automatic int unsigned bmpu_act_slot;
+      automatic int unsigned bmpu_wgt_slot;
+
+      bmpu_new_group = !bmpu_group_active_q &&
+                       (pe_req.op inside {BMPLE, BMPMM, BMPSE});
+      bmpu_first_store_insn = !bmpu_store_phase_q && (pe_req.op == BMPSE);
+      bmpu_plan = bmpu_select_plan(
+          bmpu_new_group ? pe_req.gm : bmpu_group_gm_q,
+          bmpu_new_group ? pe_req.gn : bmpu_group_gn_q,
+          bmpu_new_group ? pe_req.mtile : bmpu_group_mtile_q,
+          bmpu_new_group ? pe_req.ntile : bmpu_group_ntile_q,
+          bmpu_new_group ? pe_req.prec : bmpu_group_prec_q);
+      bmpu_cur_a_win = bmpu_new_group ? 0 : bmpu_compute_a_win_q;
+      bmpu_cur_w_win = bmpu_new_group ? 0 : bmpu_compute_w_win_q;
+      bmpu_prev_a_win = bmpu_new_group ? 0 : bmpu_compute_prev_a_win_q;
+      bmpu_prev_w_win = bmpu_new_group ? 0 : bmpu_compute_prev_w_win_q;
+      bmpu_window_shape(
+          bmpu_new_group ? pe_req.gm : bmpu_group_gm_q,
+          bmpu_plan.a_slots,
+          (pe_req.op == BMPSE) ? (bmpu_first_store_insn ? 0 : bmpu_store_a_win_q) : bmpu_cur_a_win,
+          bmpu_a_start,
+          bmpu_a_len);
+      bmpu_window_shape(
+          bmpu_new_group ? pe_req.gn : bmpu_group_gn_q,
+          bmpu_plan.w_slots,
+          (pe_req.op == BMPSE) ? (bmpu_first_store_insn ? 0 : bmpu_store_w_win_q) : bmpu_cur_w_win,
+          bmpu_w_start,
+          bmpu_w_len);
+      bmpu_pair_count = bmpu_a_len * bmpu_w_len;
+      bmpu_pair_a_pos = 0;
+      bmpu_pair_w_pos = 0;
+      bmpu_pair_ai = 0;
+      bmpu_pair_wi = 0;
+      bmpu_act_slot = 0;
+      bmpu_wgt_slot = 0;
+`ifndef SYNTHESIS
+      if (`BITFLY_OPREQ_DEBUG && (lane_id_i == '0) && (pe_req.op inside {BMPLE, BMPMM, BMPSE})) begin
+        $display("[%0t][LSEQ_PLAN][lane%0d] op=%0d id=%0d gm=%0d gn=%0d mt=%0d nt=%0d a_slots=%0d w_slots=%0d a_win=%0d w_win=%0d a_len=%0d w_len=%0d new_group=%0b store_phase=%0b",
+                 $time, lane_id_i, pe_req.op, pe_req.id,
+                 bmpu_new_group ? pe_req.gm : bmpu_group_gm_q,
+                 bmpu_new_group ? pe_req.gn : bmpu_group_gn_q,
+                 bmpu_new_group ? pe_req.mtile : bmpu_group_mtile_q,
+                 bmpu_new_group ? pe_req.ntile : bmpu_group_ntile_q,
+                 bmpu_plan.a_slots, bmpu_plan.w_slots,
+                 (pe_req.op == BMPSE) ? (bmpu_first_store_insn ? 0 : bmpu_store_a_win_q) : bmpu_cur_a_win,
+                 (pe_req.op == BMPSE) ? (bmpu_first_store_insn ? 0 : bmpu_store_w_win_q) : bmpu_cur_w_win,
+                 bmpu_a_len, bmpu_w_len, bmpu_new_group, bmpu_store_phase_q);
+      end
+`endif
       // Populate the VFU request
       vfu_operation_d = '{
           id             : pe_req.id,
@@ -420,6 +925,53 @@ module lane_sequencer
       // If vstart deos not divide NrLanes perfectly, some low-index lanes will send
       // mock data to balance the payload.
       vfu_operation_d.vstart = pe_req.vstart / NrLanes;
+
+      if (pe_req.op == BMPMM) begin
+        bmpu_pair_from_ord(
+            bmpu_a_len,
+            bmpu_w_len,
+            bmpu_plan.reuse_a,
+            bmpu_new_group ? 0 : bmpu_compute_pair_ord_q,
+            bmpu_pair_a_pos,
+            bmpu_pair_w_pos);
+        bmpu_pair_ai = bmpu_a_start + bmpu_pair_a_pos;
+        bmpu_pair_wi = bmpu_w_start + bmpu_pair_w_pos;
+        bmpu_act_slot = bmpu_pair_a_pos;
+        bmpu_wgt_slot = int'(bmpu_plan.a_slots) + bmpu_pair_w_pos;
+        vfu_operation_d.bmpu_pair_ai = bmpu_pair_ai[2:0];
+        vfu_operation_d.bmpu_pair_wi = bmpu_pair_wi[2:0];
+        vfu_operation_d.bmpu_first_k_round = bmpu_new_group ? 1'b1 : bmpu_first_k_round_q;
+`ifndef SYNTHESIS
+        if (`BITFLY_OPREQ_DEBUG && (lane_id_i == '0)) begin
+          $display("[%0t][LSEQ_PAIR][lane%0d] op=BMPMM ord=%0d a_pos=%0d w_pos=%0d ai=%0d wi=%0d a_slot=%0d w_slot=%0d",
+                   $time, lane_id_i,
+                   bmpu_new_group ? 0 : bmpu_compute_pair_ord_q,
+                   bmpu_pair_a_pos, bmpu_pair_w_pos, bmpu_pair_ai, bmpu_pair_wi,
+                   bmpu_act_slot, bmpu_wgt_slot);
+        end
+`endif
+      end else if (pe_req.op == BMPSE) begin
+        bmpu_pair_from_ord(
+            bmpu_a_len,
+            bmpu_w_len,
+            bmpu_plan.reuse_a,
+            bmpu_first_store_insn ? 0 : bmpu_store_pair_ord_q,
+            bmpu_pair_a_pos,
+            bmpu_pair_w_pos);
+        bmpu_pair_ai = bmpu_a_start + bmpu_pair_a_pos;
+        bmpu_pair_wi = bmpu_w_start + bmpu_pair_w_pos;
+        vfu_operation_d.bmpu_pair_ai = bmpu_pair_ai[2:0];
+        vfu_operation_d.bmpu_pair_wi = bmpu_pair_wi[2:0];
+        vfu_operation_d.bmpu_first_k_round = 1'b0;
+`ifndef SYNTHESIS
+        if (`BITFLY_OPREQ_DEBUG && (lane_id_i == '0)) begin
+          $display("[%0t][LSEQ_PAIR][lane%0d] op=BMPSE ord=%0d a_pos=%0d w_pos=%0d ai=%0d wi=%0d",
+                   $time, lane_id_i,
+                   bmpu_first_store_insn ? 0 : bmpu_store_pair_ord_q,
+                   bmpu_pair_a_pos, bmpu_pair_w_pos, bmpu_pair_ai, bmpu_pair_wi);
+        end
+`endif
+      end
 
       // Mark the vector instruction as running
       vinsn_running_d[pe_req.id] = (vfu_operation_d.vfu != VFU_None) ? 1'b1 : 1'b0;
@@ -1038,17 +1590,26 @@ module lane_sequencer
         end
         BMPU: begin
           logic [2:0] bmp_planes;
+          logic [3:0] weight_bits;
           logic [3:0] m_block_count;
           logic [3:0] n_block_count;
           logic [16:0] act_block_words;
           logic [16:0] wgt_block_words;
+          logic [16:0] k_chunks;
           bmp_planes = bmp_planes_from_prec(pe_req.prec);
-          m_block_count = pe_req.mtile >> 3;
-          n_block_count = pe_req.ntile >> 4;
+          weight_bits = bmpu_weight_bits(pe_req.prec);
+          m_block_count = (pe_req.mtile + 6'd7) >> 3;
+          n_block_count = (pe_req.ntile + 7'd15) >> 4;
           if (m_block_count == '0) m_block_count = 4'd1;
           if (n_block_count == '0) n_block_count = 4'd1;
           act_block_words = pe_req.k_dim >> 3;
-          wgt_block_words = (pe_req.k_dim * bmp_planes) >> 3;
+          // Weight tiles are packed in 8x16 blocks:
+          // per bank (bank2/bank3), for each k_chunk (8 rows) and each bit-plane,
+          // there is exactly one 64b word. Each BMPU weight queue covers one bank,
+          // so bmpu_block_words counts words per bank, not across both banks.
+          // See pack_weights_bmpu in bmpu_verify.
+          k_chunks = (pe_req.k_dim + 7) >> 3;
+          wgt_block_words = k_chunks * weight_bits;
           if (act_block_words == '0) act_block_words = 1;
           if (wgt_block_words == '0) wgt_block_words = 1;
 
@@ -1068,7 +1629,13 @@ module lane_sequencer
                 bmpu_self_blocks  : m_block_count[2:0],
                 bmpu_repeat_blocks: n_block_count[2:0],
                 bmpu_block_words  : act_block_words,
-                hazard            : pe_req.hazard_vs1 | pe_req.hazard_vd,
+                bmpu_slot         : bmpu_act_slot[1:0],
+                // BMPMM operand queues read resident scratch slots, not architectural
+                // vs/vd registers. Their true producer ordering is enforced by the
+                // explicit BMPLE/BMPMM program order and bmpu_prefetch_ready, not by
+                // the architectural hazard bitmap. Reusing hazard_vs1 here can stall
+                // later group pairs forever on unrelated in-flight BMP instructions.
+                hazard            : '0,
                 is_reduct         : 0,
                 target_fu         : ALU_SLDU,
                 default: '0
@@ -1092,7 +1659,8 @@ module lane_sequencer
                 bmpu_self_blocks  : n_block_count[2:0],
                 bmpu_repeat_blocks: m_block_count[2:0],
                 bmpu_block_words  : wgt_block_words,
-                hazard            : pe_req.hazard_vs2 | pe_req.hazard_vd,
+                bmpu_slot         : bmpu_wgt_slot[1:0],
+                hazard            : '0,
                 is_reduct         : 0,
                 target_fu         : ALU_SLDU,
                 default: '0
@@ -1102,6 +1670,131 @@ module lane_sequencer
         end
         default: ;
       endcase
+
+      if (pe_req.op inside {BMPLE, BMPMM, BMPSE}) begin
+        automatic int unsigned next_a_win;
+        automatic int unsigned next_w_win;
+        automatic logic has_next_window;
+
+        if (bmpu_new_group) begin
+          bmpu_group_active_d = 1'b1;
+          bmpu_store_phase_d = 1'b0;
+          bmpu_first_k_round_d = 1'b1;
+          bmpu_compute_prev_valid_d = 1'b0;
+          bmpu_group_gm_d = pe_req.gm;
+          bmpu_group_gn_d = pe_req.gn;
+          bmpu_group_mtile_d = pe_req.mtile;
+          bmpu_group_ntile_d = pe_req.ntile;
+          bmpu_group_prec_d = pe_req.prec;
+          bmpu_compute_a_win_d = '0;
+          bmpu_compute_w_win_d = '0;
+          bmpu_compute_prev_a_win_d = '0;
+          bmpu_compute_prev_w_win_d = '0;
+          bmpu_compute_pair_ord_d = '0;
+          bmpu_compute_load_a_d = '0;
+          bmpu_compute_load_w_d = '0;
+          bmpu_store_a_win_d = '0;
+          bmpu_store_w_win_d = '0;
+          bmpu_store_pair_ord_d = '0;
+          bmpu_store_block_ord_d = '0;
+        end
+
+        if (pe_req.op == BMPLE) begin
+          automatic int unsigned load_slot;
+          load_slot = pe_req.is_weight ?
+              (int'(bmpu_plan.a_slots) + (bmpu_new_group ? 0 : bmpu_compute_load_w_q)) :
+              (bmpu_new_group ? 0 : bmpu_compute_load_a_q);
+          bmpu_load_slot_valid_d[pe_req.id] = 1'b1;
+          bmpu_load_slot_d[pe_req.id] = load_slot[1:0];
+          bmpu_load_is_weight_d[pe_req.id] = pe_req.is_weight;
+`ifndef SYNTHESIS
+          if (`BITFLY_OPREQ_DEBUG && (lane_id_i == '0)) begin
+            $display("[%0t][LSEQ_SLOT][lane%0d] id=%0d is_w=%0b load_slot=%0d slot=%0d a_slots=%0d w_slots=%0d a_win=%0d w_win=%0d a_len=%0d w_len=%0d",
+                     $time, lane_id_i, pe_req.id, pe_req.is_weight, load_slot,
+                     bmpu_load_slot_d[pe_req.id], bmpu_plan.a_slots, bmpu_plan.w_slots,
+                     bmpu_cur_a_win, bmpu_cur_w_win, bmpu_a_len, bmpu_w_len);
+          end
+`endif
+          if (pe_req.is_weight)
+            bmpu_compute_load_w_d = (bmpu_new_group ? 1 : (bmpu_compute_load_w_q + 1'b1));
+          else
+            bmpu_compute_load_a_d = (bmpu_new_group ? 1 : (bmpu_compute_load_a_q + 1'b1));
+        end else if (pe_req.op == BMPMM) begin
+          bmpu_group_active_d = 1'b1;
+          bmpu_store_phase_d = 1'b0;
+          if ((bmpu_new_group ? 1 : (bmpu_compute_pair_ord_q + 1'b1)) >= bmpu_pair_count) begin
+            bmpu_next_window(
+                bmpu_plan.a_windows,
+                bmpu_plan.w_windows,
+                bmpu_plan.row_snake,
+                bmpu_cur_a_win,
+                bmpu_cur_w_win,
+                next_a_win,
+                next_w_win,
+                has_next_window);
+            bmpu_compute_pair_ord_d = '0;
+            bmpu_compute_load_a_d = '0;
+            bmpu_compute_load_w_d = '0;
+            if (has_next_window) begin
+              bmpu_compute_prev_valid_d = 1'b1;
+              bmpu_compute_prev_a_win_d = bmpu_cur_a_win[2:0];
+              bmpu_compute_prev_w_win_d = bmpu_cur_w_win[2:0];
+              bmpu_compute_a_win_d = next_a_win[2:0];
+              bmpu_compute_w_win_d = next_w_win[2:0];
+            end else begin
+              bmpu_compute_prev_valid_d = 1'b0;
+              bmpu_compute_a_win_d = '0;
+              bmpu_compute_w_win_d = '0;
+              bmpu_compute_prev_a_win_d = '0;
+              bmpu_compute_prev_w_win_d = '0;
+              bmpu_first_k_round_d = 1'b0;
+            end
+          end else begin
+            bmpu_compute_pair_ord_d = bmpu_new_group ? 1 : (bmpu_compute_pair_ord_q + 1'b1);
+          end
+        end else begin
+          bmpu_group_active_d = 1'b1;
+          bmpu_store_phase_d = 1'b1;
+          bmpu_store_block_ord_d = '0;
+          if ((bmpu_first_store_insn ? 1 : (bmpu_store_pair_ord_q + 1'b1)) >= bmpu_pair_count) begin
+            bmpu_next_window(
+                bmpu_plan.a_windows,
+                bmpu_plan.w_windows,
+                bmpu_plan.row_snake,
+                bmpu_first_store_insn ? 0 : bmpu_store_a_win_q,
+                bmpu_first_store_insn ? 0 : bmpu_store_w_win_q,
+                next_a_win,
+                next_w_win,
+                has_next_window);
+            bmpu_store_pair_ord_d = '0;
+            if (has_next_window) begin
+              bmpu_store_a_win_d = next_a_win[2:0];
+              bmpu_store_w_win_d = next_w_win[2:0];
+            end else begin
+              bmpu_group_active_d = 1'b0;
+              bmpu_store_phase_d = 1'b0;
+              bmpu_first_k_round_d = 1'b1;
+              bmpu_compute_prev_valid_d = 1'b0;
+              bmpu_compute_a_win_d = '0;
+              bmpu_compute_w_win_d = '0;
+              bmpu_compute_prev_a_win_d = '0;
+              bmpu_compute_prev_w_win_d = '0;
+              bmpu_compute_pair_ord_d = '0;
+              bmpu_compute_load_a_d = '0;
+              bmpu_compute_load_w_d = '0;
+              bmpu_store_a_win_d = '0;
+              bmpu_store_w_win_d = '0;
+              bmpu_store_block_ord_d = '0;
+            end
+          end else begin
+            bmpu_store_pair_ord_d = bmpu_first_store_insn ? 1 : (bmpu_store_pair_ord_q + 1'b1);
+            if (bmpu_first_store_insn) begin
+              bmpu_store_a_win_d = '0;
+              bmpu_store_w_win_d = '0;
+            end
+          end
+        end
+      end
     end
 
     // VRGATHER and VCOMPRESS access the opreq with ad-hoc requests
@@ -1123,7 +1816,8 @@ module lane_sequencer
 
 `ifndef SYNTHESIS
   always_ff @(posedge clk_i) begin
-    if (rst_ni && pe_req_valid && (pe_req.op == BMPSE)) begin
+    if (`BITFLY_LSEQ_DEBUG && rst_ni && pe_req_valid && (pe_req.op == BMPSE) &&
+        (pe_req_ready || vfu_operation_valid_d)) begin
       $display("[%0t][LSEQ_BMPSE][lane%0d] ready=%0b running=%0b vfu_valid=%0b vl=%0d vfu=%0d bmpu_ready=%0b st_busy=%0b m_busy=%0b",
                $time, lane_id_i, pe_req_ready, vinsn_running_d[pe_req.id], vfu_operation_valid_d, vfu_operation_d.vl, vfu_operation_d.vfu, bmpu_ready_i, operand_request_valid_o[StA], operand_request_valid_o[MaskM]);
     end

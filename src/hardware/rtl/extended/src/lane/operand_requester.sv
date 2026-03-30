@@ -8,6 +8,8 @@
 // register file, in order, and sending them to the corresponding operand
 // queues. This stage also includes the VRF arbiter.
 
+`include "bitfly_debug.svh"
+
 module operand_requester
   import ara_pkg::*;
   import rvv_pkg::*;
@@ -98,7 +100,10 @@ module operand_requester
     input logic               bmpu_output_en_i,
     input logic               is_bmpu_store_i,
     input logic               is_bmpu_load_i,
-    input logic [NrVInsn-1:0] is_bmpu_load_vinsn_i
+    input logic [NrVInsn-1:0] is_bmpu_load_vinsn_i,
+    input logic [NrVInsn-1:0] bmpu_load_slot_valid_i,
+    input logic [NrVInsn-1:0][1:0] bmpu_load_slot_i,
+    input logic [NrVInsn-1:0] bmpu_load_is_weight_i
 );
 
   import cf_math_pkg::idx_width;
@@ -251,7 +256,6 @@ module operand_requester
   localparam NrGlobalMasters = 5;
   localparam NrBmpuOutQueues = NrBmpuResultQueues;
   localparam NrMasters = NrOperandQueues + NrGlobalMasters + NrBmpuOutQueues;
-  localparam logic [idx_width(NrBanks)-1:0] BmpuBankHalf = NrBanks / 2;
 
   typedef struct packed {
     vaddr_t addr;
@@ -308,43 +312,40 @@ module operand_requester
   end
 
   logic bmpu_output_en_d, bmpu_output_en_q;
-  logic                            bmpu_en_prev_q;
-  logic                            bmpu_compute_req;
-  logic   [idx_width(NrBanks)-1:0] bmpu_bank_base_q;
-  logic   [idx_width(NrBanks)-1:0] bmpu_bank_base_eff;
-  logic   [idx_width(NrBanks)-1:0] bmpu_prefetch_base;
   logic   [idx_width(NrBanks)-1:0] ldu_result_bank_mapped;
   vaddr_t                          ldu_result_addr_mapped;
 
   assign bmpu_output_en_d   = bmpu_output_en_i;
-  assign bmpu_compute_req   = operand_request_valid_i[BMPUAct0] || operand_request_valid_i[BMPUWgt0];
-  assign bmpu_bank_base_eff = (bmpu_compute_req && !bmpu_en_prev_q) ? (bmpu_bank_base_q ^ BmpuBankHalf) : bmpu_bank_base_q;
-  assign bmpu_prefetch_base = bmpu_bank_base_q ^ BmpuBankHalf;
 
   always_comb begin : p_ldu_bmpu_bank_map
     ldu_result_addr_mapped = ldu_result_addr;
     ldu_result_bank_mapped = ldu_result_addr[idx_width(NrBanks)-1:0];
 
-    if (is_bmpu_load_vinsn_i[ldu_result_id]) begin
-      ldu_result_bank_mapped = ldu_result_addr[idx_width(NrBanks)-1:0] + bmpu_prefetch_base;
+    if (is_bmpu_load_vinsn_i[ldu_result_id] && bmpu_load_slot_valid_i[ldu_result_id]) begin
+      automatic logic [idx_width(NrBanks)-1:0] slot_base;
+      automatic logic [idx_width(NrBanks)-1:0] raw_bank;
+      automatic logic [idx_width(NrBanks)-1:0] bank_in_slot;
+      slot_base = {bmpu_load_slot_i[ldu_result_id], 1'b0};
+      raw_bank = ldu_result_addr[idx_width(NrBanks)-1:0];
+      bank_in_slot = raw_bank[0];
+      ldu_result_bank_mapped = slot_base + bank_in_slot;
       ldu_result_addr_mapped[idx_width(NrBanks)-1:0] = ldu_result_bank_mapped;
+`ifndef SYNTHESIS
+      if (`BITFLY_OPREQ_DEBUG && (lane_id_i == '0)) begin
+        $display("[%0t][OPREQ_MAP][lane%0d] id=%0d is_w=%0b slotv=%0b slot=%0d raw_bank=%0d bank_in_slot=%0d mapped_bank=%0d addr=%0d",
+                 $time, lane_id_i, ldu_result_id, bmpu_load_is_weight_i[ldu_result_id],
+                 bmpu_load_slot_valid_i[ldu_result_id], bmpu_load_slot_i[ldu_result_id],
+                 raw_bank, bank_in_slot, ldu_result_bank_mapped, ldu_result_addr_mapped);
+      end
+`endif
     end
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin : p_bmpu_output_en_ff
     if (!rst_ni) begin
       bmpu_output_en_q <= 1'b0;
-      bmpu_en_prev_q   <= 1'b0;
-      bmpu_bank_base_q <= '0;
     end else begin
       bmpu_output_en_q <= bmpu_output_en_d;
-      bmpu_en_prev_q   <= bmpu_compute_req;
-
-      // Toggle compute bank-set on each new BMPMM operand-request pulse (ping-pong 0..3 / 4..7)
-      if (bmpu_compute_req && !bmpu_en_prev_q) begin
-        if (bmpu_bank_base_q == '0) bmpu_bank_base_q <= BmpuBankHalf;
-        else bmpu_bank_base_q <= '0;
-      end
     end
   end
 
@@ -355,6 +356,7 @@ module operand_requester
     state_t state_d, state_q;
 
     requester_metadata_t requester_metadata_d, requester_metadata_q;
+    logic [7:0] dbg_wgt_blk_cnt;
 
     // Is there a hazard during this cycle?
     logic stall;
@@ -441,23 +443,21 @@ module operand_requester
       // Address of the vstart element of the vector in the VRF
       // This vstart is NOT the architectural one and was modified in the lane
       // sequencer to provide the correct start address
-      vrf_addr = is_bmpu_store_i ? (operand_request_i[requester_index].vstart + bmpu_bank_base_eff) : vaddr(
+      vrf_addr = vaddr(
           operand_request_i[requester_index].vs, NrLanes, VLEN) +
           (operand_request_i[requester_index].vstart >>
            (unsigned'(EW64) - unsigned'(operand_request_i[requester_index].eew)));
 
       unique case (requester_index)
-        BMPUAct0: bmpu_bank_addr_init = bmpu_bank_base_eff;
-        BMPUAct1: bmpu_bank_addr_init = bmpu_bank_base_eff + 1;
-        BMPUWgt0: bmpu_bank_addr_init = bmpu_bank_base_eff + 2;
-        BMPUWgt1: bmpu_bank_addr_init = bmpu_bank_base_eff + 3;
+        BMPUAct0, BMPUWgt0: bmpu_bank_addr_init = {operand_request_i[requester_index].bmpu_slot, 1'b0};
+        BMPUAct1, BMPUWgt1: bmpu_bank_addr_init = {operand_request_i[requester_index].bmpu_slot, 1'b0} + 1'b1;
         default:  bmpu_bank_addr_init = requester_index - 5;
       endcase
 
       // Init helper variables
       requester_metadata_tmp = '{
           id                : operand_request_i[requester_index].id,
-          addr              : (requester_index > 4 && requester_index < 13) ? bmpu_bank_addr_init :
+          addr              : ((requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1)) ? bmpu_bank_addr_init :
               vrf_addr,
           len               : effective_vector_body_length,
           vew               : operand_request_i[requester_index].eew,
@@ -468,7 +468,7 @@ module operand_requester
           bmpu_self_idx     : '0,
           bmpu_repeat_idx   : '0,
           bmpu_word_idx     : '0,
-          bmpu_base_addr    : (requester_index > 4 && requester_index < 13) ? bmpu_bank_addr_init : vrf_addr,
+          bmpu_base_addr    : ((requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1)) ? bmpu_bank_addr_init : vrf_addr,
           hazard            : operand_request_i[requester_index].hazard,
           is_widening       : operand_request_i[requester_index].cvt_resize == CVT_WIDE,
           default: '0
@@ -517,7 +517,7 @@ module operand_requester
             request_cnt_d = '0;
 
 `ifndef SYNTHESIS
-            if (1'b0 && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt3)) begin
+            if (`BITFLY_OPREQ_DEBUG && (lane_id_i == '0) && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1)) begin
               $display("[%0t][OPREQ][lane%0d] accept q=%0d id=%0d len=%0d addr=%0d vew=%0d", $time,
                        lane_id_i, requester_index, operand_request_i[requester_index].id,
                        requester_metadata_tmp.len, requester_metadata_tmp.addr,
@@ -562,24 +562,36 @@ module operand_requester
             // Received a grant.
             if (|operand_requester_gnt) begin : op_req_grant
 `ifndef SYNTHESIS
-              if (1'b0 && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt3)) begin
+              if (`BITFLY_OPREQ_DEBUG && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1)) begin
                 $display("[%0t][OPREQ][lane%0d] grant q=%0d bank=%0d addr=%0d len_before=%0d",
                          $time, lane_id_i, requester_index, bank, requester_metadata_q.addr,
                          requester_metadata_q.len);
               end
 `endif
 `ifndef SYNTHESIS
-              if ((lane_id_i == '0) && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1) &&
-                  (requester_metadata_q.len <= 96) && (requester_metadata_q.len != 0)) begin
-                $display("[%0t][OPREQ_BMPU][lane%0d] q=%0d bank=%0d row=%0d addr=%0d req_cnt=%0d len=%0d replay=%0b self=%0d repeat=%0d word=%0d",
+              if (`BITFLY_OPREQ_DEBUG && (lane_id_i == '0) && (requester_index >= BMPUAct0) && (requester_index <= BMPUWgt1) &&
+                  requester_metadata_q.bmpu_replay_en &&
+                  (requester_metadata_q.bmpu_word_idx == '0)) begin
+                $display("[%0t][OPREQ_BMPU_BLK][lane%0d] q=%0d bank=%0d row=%0d addr=%0d req_cnt=%0d len=%0d self=%0d repeat=%0d word=%0d base=%0d",
                          $time, lane_id_i, requester_index, bank,
                          requester_metadata_q.addr >> $clog2(NrBanks), requester_metadata_q.addr,
-                         request_cnt_q, requester_metadata_q.len, requester_metadata_q.bmpu_replay_en,
-                         requester_metadata_q.bmpu_self_idx, requester_metadata_q.bmpu_repeat_idx, requester_metadata_q.bmpu_word_idx);
+                         request_cnt_q, requester_metadata_q.len,
+                         requester_metadata_q.bmpu_self_idx, requester_metadata_q.bmpu_repeat_idx,
+                         requester_metadata_q.bmpu_word_idx, requester_metadata_q.bmpu_base_addr);
+              end
+              if (`BITFLY_OPREQ_DEBUG && `BITFLY_OPREQ_WGT_DEBUG && (lane_id_i == '0) &&
+                  ((requester_index == BMPUWgt0) || (requester_index == BMPUWgt1)) &&
+                  requester_metadata_q.bmpu_replay_en &&
+                  (requester_metadata_q.bmpu_word_idx == '0)) begin
+                $display("[%0t][OPREQ_WGT_BLK][lane%0d] q=%0d bank=%0d addr=%0d self=%0d repeat=%0d word=%0d block_words=%0d self_blocks=%0d repeat_blocks=%0d",
+                         $time, lane_id_i, requester_index, bank, requester_metadata_q.addr,
+                         requester_metadata_q.bmpu_self_idx, requester_metadata_q.bmpu_repeat_idx,
+                         requester_metadata_q.bmpu_word_idx, requester_metadata_q.bmpu_block_words,
+                         requester_metadata_q.bmpu_self_blocks, requester_metadata_q.bmpu_repeat_blocks);
               end
 `endif
               // Bump the address pointer
-              if (requester_index > 4 && requester_index < 13) begin
+              if (requester_index >= BMPUAct0 && requester_index <= BMPUWgt1) begin
                 if (requester_metadata_q.bmpu_replay_en) begin
                   automatic int unsigned next_self_idx;
                   automatic int unsigned next_repeat_idx;
@@ -593,7 +605,7 @@ module operand_requester
                     next_word_idx = requester_metadata_q.bmpu_word_idx + 1;
                   end else begin
                     next_word_idx = 0;
-                    if (requester_index < 9) begin
+                    if ((requester_index == BMPUAct0) || (requester_index == BMPUAct1)) begin
                       if ((requester_metadata_q.bmpu_repeat_idx + 1) < requester_metadata_q.bmpu_repeat_blocks) begin
                         next_repeat_idx = requester_metadata_q.bmpu_repeat_idx + 1;
                       end else begin
@@ -683,7 +695,7 @@ module operand_requester
         end
       endcase
 `ifndef SYNTHESIS
-      if ((lane_id_i == 0) && ((requester_index == BMPUAct0) || (requester_index == BMPUAct1) ||
+      if (`BITFLY_OPREQ_DEBUG && (lane_id_i == 0) && ((requester_index == BMPUAct0) || (requester_index == BMPUAct1) ||
                                 (requester_index == BMPUWgt0) || (requester_index == BMPUWgt1)) &&
           (state_q == REQUESTING) && (requester_metadata_q.len <= 192) && (requester_metadata_q.len != 0)) begin
         $display("[%0t][OPREQ_TAIL][lane%0d] q=%0d addr=%0d len=%0d req_cnt=%0d self=%0d repeat=%0d word=%0d stall=%0b oq_ready=%0b issued=%0b req=%b",
@@ -716,10 +728,25 @@ module operand_requester
         state_q              <= IDLE;
         requester_metadata_q <= '0;
         request_cnt_q        <= '0;
+        dbg_wgt_blk_cnt      <= '0;
       end else begin
         state_q              <= state_d;
         requester_metadata_q <= requester_metadata_d;
         request_cnt_q        <= request_cnt_d;
+        if (`BITFLY_OPREQ_WGT_DEBUG && (lane_id_i == '0) && (requester_index == BMPUWgt0 || requester_index == BMPUWgt1) &&
+            operand_queue_ready_i[requester_index] && (|operand_requester_gnt) &&
+            requester_metadata_q.bmpu_replay_en && (requester_metadata_q.bmpu_word_idx == '0)) begin
+          automatic int unsigned bank_dbg;
+          bank_dbg = requester_metadata_q.addr[idx_width(NrBanks)-1:0];
+          if (dbg_wgt_blk_cnt < 8'd16) begin
+            $display("[%0t][OPREQ_WGT_BLK_DBG][lane%0d] q=%0d bank=%0d addr=%0d self=%0d repeat=%0d word=%0d block_words=%0d self_blocks=%0d repeat_blocks=%0d",
+                     $time, lane_id_i, requester_index, bank_dbg, requester_metadata_q.addr,
+                     requester_metadata_q.bmpu_self_idx, requester_metadata_q.bmpu_repeat_idx,
+                     requester_metadata_q.bmpu_word_idx, requester_metadata_q.bmpu_block_words,
+                     requester_metadata_q.bmpu_self_blocks, requester_metadata_q.bmpu_repeat_blocks);
+          end
+          dbg_wgt_blk_cnt <= dbg_wgt_blk_cnt + 1'b1;
+        end
       end
     end
   end : gen_operand_requester
@@ -830,15 +857,18 @@ module operand_requester
       end
     end
 `ifndef SYNTHESIS
-    if (1'b1 && (lane_id_i == '0) && ldu_result_req && is_bmpu_load_vinsn_i[ldu_result_id] &&
+    if (`BITFLY_OPREQ_DEBUG && (lane_id_i == '0) && ldu_result_req && is_bmpu_load_vinsn_i[ldu_result_id] &&
         ((ldu_result_addr >> $clog2(NrBanks)) < 16)) begin
-      $display("[%0t][LDU2BMPU][lane%0d] id=%0d raw_addr=%0d raw_bank=%0d raw_row=%0d map_bank=%0d map_row=%0d gnt=%0b be=%h data=%h",
+      $display("[%0t][LDU2BMPU][lane%0d] id=%0d raw_addr=%0d raw_bank=%0d raw_row=%0d map_bank=%0d map_row=%0d slotv=%0b slot=%0d is_w=%0b gnt=%0b be=%h data=%h",
                $time, lane_id_i, ldu_result_id,
                ldu_result_addr,
                ldu_result_addr[idx_width(NrBanks)-1:0],
                ldu_result_addr >> $clog2(NrBanks),
                ldu_result_bank_mapped,
                ldu_result_addr_mapped >> $clog2(NrBanks),
+               bmpu_load_slot_valid_i[ldu_result_id],
+               bmpu_load_slot_i[ldu_result_id],
+               bmpu_load_is_weight_i[ldu_result_id],
                ldu_result_gnt,
                ldu_result_be,
                ldu_result_wdata);
@@ -863,7 +893,7 @@ module operand_requester
     logic payload_hp_req;
     logic payload_hp_gnt;
     rr_arb_tree #(
-        .NumIn    (unsigned'(BMPUWgt3) - unsigned'(AluA) + 1 + unsigned'(VFU_MFpu) - unsigned'(VFU_Alu) + 1),
+        .NumIn    (unsigned'(BMPUWgt1) - unsigned'(AluA) + 1 + unsigned'(VFU_MFpu) - unsigned'(VFU_Alu) + 1),
         .DataWidth($bits(payload_t)),
         .AxiVldRdy(1'b0)
     ) i_hp_vrf_arbiter (
@@ -872,12 +902,12 @@ module operand_requester
         .flush_i(1'b0),
         .rr_i('0),
         .data_i({
-          operand_payload[BMPUWgt3:AluA],
+          operand_payload[BMPUWgt1:AluA],
           operand_payload[NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu]
         }),
-        .req_i({lane_operand_req[bank][BMPUWgt3:AluA], ext_operand_req[bank][VFU_MFpu:VFU_Alu]}),
+        .req_i({lane_operand_req[bank][BMPUWgt1:AluA], ext_operand_req[bank][VFU_MFpu:VFU_Alu]}),
         .gnt_o({
-          operand_gnt[bank][BMPUWgt3:AluA],
+          operand_gnt[bank][BMPUWgt1:AluA],
           operand_gnt[bank][NrOperandQueues+VFU_MFpu:NrOperandQueues+VFU_Alu]
         }),
         .data_o(payload_hp),
@@ -949,7 +979,7 @@ module operand_requester
 `ifndef SYNTHESIS
     if ((bank == 4) || (bank == 5)) begin : gen_bmpu_bank_dbg
       always_ff @(posedge clk_i) begin
-        if (rst_ni && (lane_id_i == '0) && vrf_req_o[bank] && vrf_wen_o[bank]) begin
+        if (`BITFLY_OPREQ_DEBUG && rst_ni && (lane_id_i == '0) && vrf_req_o[bank] && vrf_wen_o[bank]) begin
           $display("[%0t][OPREQ_VRF_WR][lane%0d] bank=%0d addr=%0d data=%h be=%h hp_req=%0b lp_req=%0b alu=%0b mfpu=%0b load=%0b slide=%0b mask=%0b bmpu_out=%b%b%b%b",
                    $time, lane_id_i, bank, vrf_addr_o[bank], vrf_wdata_o[bank], vrf_be_o[bank],
                    payload_hp_req, payload_lp_req,

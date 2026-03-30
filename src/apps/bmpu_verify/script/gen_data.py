@@ -29,6 +29,12 @@ CASES = [
     {"tag": "case6", "name": "int2_mt8_nt32_kt64_g2x2",    "M": 64,  "K": 64, "N": 128, "mtile": 8,  "ntile": 32, "ktile": 64, "gm": 2, "gn": 2, "prec": 2},
     {"tag": "case7", "name": "int2_mt16_nt16_kt64_g1x4",   "M": 64,  "K": 64, "N": 64,  "mtile": 16, "ntile": 16, "ktile": 64, "gm": 1, "gn": 4, "prec": 2},
     {"tag": "case8", "name": "int4_mt8_nt16_kt32_g2x2",    "M": 64,  "K": 32, "N": 64,  "mtile": 8,  "ntile": 16, "ktile": 32, "gm": 2, "gn": 2, "prec": 3},
+    {"tag": "case9",  "name": "binary_mt8_nt16_kt64_g8x1",  "M": 64, "K": 64, "N": 64, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 8, "gn": 1, "prec": 0},
+    {"tag": "case10", "name": "binary_mt8_nt16_kt64_g1x8",  "M": 68, "K": 64, "N": 72, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 1, "gn": 8, "prec": 0},
+    {"tag": "case11", "name": "int2_mt8_nt16_kt64_g1x8",    "M": 68, "K": 64, "N": 72, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 1, "gn": 8, "prec": 2},
+    {"tag": "case12", "name": "int2_mt8_nt16_kt64_g8x1",    "M": 64, "K": 64, "N": 64, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 8, "gn": 1, "prec": 2},
+    {"tag": "case13", "name": "int4_mt8_nt16_kt64_g8x1",    "M": 64, "K": 64, "N": 64, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 8, "gn": 1, "prec": 3},
+    {"tag": "case14", "name": "int4_mt8_nt16_kt64_g1x8",    "M": 68, "K": 64, "N": 72, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 1, "gn": 8, "prec": 3},
 ]
 
 
@@ -171,6 +177,15 @@ def make_weight(case):
     return make_int4_weight(case["K"], case["N"]), bits
 
 
+def packed_result_buffer_elems(case):
+    m_tiles = math.ceil(case["M"] / case["mtile"])
+    n_tiles = math.ceil(case["N"] / case["ntile"])
+    m_blocks = (case["mtile"] + 7) // 8
+    n_blocks = (case["ntile"] + 15) // 16
+    tile_elems = m_blocks * n_blocks * 8 * 16
+    return m_tiles * n_tiles * tile_elems
+
+
 def emit_case(lines, case):
     validate_case(case)
     activation = make_activation(case["M"], case["K"])
@@ -181,12 +196,13 @@ def emit_case(lines, case):
         weight_ref = weight.astype(np.int32)
     result = (activation.astype(np.int32) @ weight_ref).astype(np.int16)
     zeros = np.zeros((case["M"], case["N"]), dtype=np.int16)
+    packed_result_zeros = np.zeros((packed_result_buffer_elems(case),), dtype=np.int16)
     emit_quad_symbol(lines, f"activation_lp_{case['tag']}", pack_activations_bmpu(activation, case["mtile"]))
     emit_quad_symbol(lines, f"weight_lp_{case['tag']}", pack_weights_bmpu(weight, bits, case["ntile"]))
     emit_int16_col_major(lines, f"result_lp_{case['tag']}", zeros)
     emit_int8_row_major(lines, f"activation_hp_{case['tag']}", activation)
     emit_int8_row_major(lines, f"weight_hp_{case['tag']}", weight)
-    emit_int16_row_major(lines, f"result_hp_{case['tag']}", zeros)
+    emit_int16_row_major(lines, f"result_hp_{case['tag']}", packed_result_zeros)
     emit_int16_col_major(lines, f"result_torch_{case['tag']}", result)
 
 

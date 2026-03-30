@@ -931,12 +931,12 @@ typedef struct packed {
   //  Lane definitions  //
   ////////////////////////
 
-  // There are seven operand queues, serving operands to the different functional units of each lane
-  localparam int unsigned NrOperandQueues = 17;
+  // There are thirteen operand queues, serving operands to the different functional units of each lane
+  localparam int unsigned NrOperandQueues = 13;
   typedef enum logic [$clog2(NrOperandQueues)-1:0] {
     AluA, AluB, MulFPUA, MulFPUB, MulFPUC,
-    BMPUAct0, BMPUAct1, BMPUAct2, BMPUAct3,    // 4 个激活值操作数队列
-    BMPUWgt0, BMPUWgt1, BMPUWgt2, BMPUWgt3,        // 4 个激活值操作队列
+    BMPUAct0, BMPUAct1,    // 2 个 BMPU 激活值输入队列
+    BMPUWgt0, BMPUWgt1,    // 2 个 BMPU 权重输入队列
     MaskB, MaskM, StA, SlideAddrGenA
   } opqueue_e;
 

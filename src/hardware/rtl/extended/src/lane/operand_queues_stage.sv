@@ -6,6 +6,8 @@
 // Description:
 // This stage holds the operand queues, holding elements for the VRFs.
 
+`include "bitfly_debug.svh"
+
 module operand_queues_stage
   import ara_pkg::*;
   import rvv_pkg::*;
@@ -416,11 +418,10 @@ module operand_queues_stage
 
 `ifndef SYNTHESIS
   always_ff @(posedge clk_i) begin
-    if (rst_ni && (lane_id_i == '0) &&
-        (bmpu_act_operand_valid_o != '0 || bmpu_wgt_operand_valid_o != '0 ||
-         operand_issued_i[BMPUAct0] || operand_issued_i[BMPUAct1] ||
-         operand_issued_i[BMPUWgt0] || operand_issued_i[BMPUWgt1])) begin
-      $display("[%0t][OPQ_BMPU][lane%0d] in_v=%b%b%b%b in_d=%h/%h/%h/%h issued=%b%b%b%b cmd_pop=%b%b%b%b out_v=%b%b%b%b out_d=%h/%h/%h/%h out_r=%b%b%b%b qready=%b%b%b%b",
+    if (`BITFLY_OPQ_DEBUG && rst_ni && (lane_id_i == '0) &&
+        ((bmpu_act_operand_valid_o != '0) || (bmpu_wgt_operand_valid_o != '0)) &&
+        ((bmpu_act_operand_valid_o != 2'b11) || (bmpu_wgt_operand_valid_o != 2'b11))) begin
+      $display("[%0t][OPQ_BMPU_PARTIAL][lane%0d] in_v=%b%b%b%b in_d=%h/%h/%h/%h issued=%b%b%b%b cmd_pop=%b%b%b%b out_v=%b%b%b%b out_d=%h/%h/%h/%h out_r=%b%b%b%b qready=%b%b%b%b",
                $time, lane_id_i,
                operand_valid_i[BMPUAct0], operand_valid_i[BMPUAct1],
                operand_valid_i[BMPUWgt0], operand_valid_i[BMPUWgt1],

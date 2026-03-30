@@ -16,6 +16,22 @@
 #include "kernel/data.h"
 #include "kernel/bench_cases.h"
 
+#ifndef BMPU_VERIFY_DEBUG
+#define BMPU_VERIFY_DEBUG 0
+#endif
+
+#ifndef BMPU_VERIFY_CASE6_VERBOSE
+#define BMPU_VERIFY_CASE6_VERBOSE 0
+#endif
+
+#ifndef BMPU_VERIFY_CASE_BEGIN
+#define BMPU_VERIFY_CASE_BEGIN 0
+#endif
+
+#ifndef BMPU_VERIFY_CASE_END
+#define BMPU_VERIFY_CASE_END BMPMM_BENCH_CASE_COUNT
+#endif
+
 static unsigned long min_ul(unsigned long a, unsigned long b)
 {
     return (a < b) ? a : b;
@@ -62,7 +78,7 @@ static void unpack_packed_tiles_to_col_major(int16_t *dst, const int16_t *src,
                 {
                     const unsigned long m_base = m_block * 8UL;
                     const unsigned long m_block_valid = (m_base < m_valid) ? min_ul(8UL, m_valid - m_base) : 0UL;
-                    const int16_t *block = tile + (n_block * m_blocks + m_block) * block_elems;
+                    const int16_t *block = tile + (m_block * n_blocks + n_block) * block_elems;
                     for (unsigned long n_local = 0; n_local < n_block_valid; ++n_local)
                     {
                         for (unsigned long m_local = 0; m_local < m_block_valid; ++m_local)
@@ -81,63 +97,66 @@ static int compare_col_major(const int16_t *got, const int16_t *expect,
                              unsigned long M, unsigned long N)
 {
     int mismatches = 0;
-    int nonzero = 0;
-    const unsigned long total = M * N;
-    for (unsigned long idx = 0; idx < total; ++idx)
-        if (got[idx] != 0)
-            ++nonzero;
-    printf("[bmpu_verify] raw_nonzero=%d/%d\n", nonzero, (int)total);
-    printf("[bmpu_verify] raw_head={");
-    for (unsigned long idx = 0; idx < 16 && idx < total; ++idx)
-        printf(idx == 15 || idx + 1 == total ? "%d" : "%d, ", got[idx]);
-    printf("}\n");
-    printf("[bmpu_verify] col_nz={");
-    for (unsigned long n = 0; n < 8 && n < N; ++n)
+    if (BMPU_VERIFY_DEBUG)
     {
-        int col_nz = 0;
-        for (unsigned long m = 0; m < M; ++m)
-            if (got[n * M + m] != 0)
-                ++col_nz;
-        printf(n == 7 || n + 1 == N ? "%d" : "%d, ", col_nz);
-    }
-    printf("}\n");
-    printf("[bmpu_verify] row_nz={");
-    for (unsigned long m = 0; m < 16 && m < M; ++m)
-    {
-        int row_nz = 0;
-        for (unsigned long n = 0; n < N; ++n)
-            if (got[n * M + m] != 0)
-                ++row_nz;
-        printf(m == 15 || m + 1 == M ? "%d" : "%d, ", row_nz);
-    }
-    printf("}\n");
-    printf("[bmpu_verify] nz_pos={");
-    int nz_dumped = 0;
-    for (unsigned long n = 0; n < N && nz_dumped < 32; ++n)
-    {
-        for (unsigned long m = 0; m < M && nz_dumped < 32; ++m)
+        int nonzero = 0;
+        int nz_dumped = 0;
+        const unsigned long total = M * N;
+        for (unsigned long idx = 0; idx < total; ++idx)
+            if (got[idx] != 0)
+                ++nonzero;
+        printf("[bmpu_verify] raw_nonzero=%d/%d\n", nonzero, (int)total);
+        printf("[bmpu_verify] raw_head={");
+        for (unsigned long idx = 0; idx < 16 && idx < total; ++idx)
+            printf(idx == 15 || idx + 1 == total ? "%d" : "%d, ", got[idx]);
+        printf("}\n");
+        printf("[bmpu_verify] col_nz={");
+        for (unsigned long n = 0; n < 8 && n < N; ++n)
         {
-            if (got[n * M + m] != 0)
-            {
-                printf(nz_dumped == 31 ? "(%d,%d)" : "(%d,%d), ", (int)m, (int)n);
-                ++nz_dumped;
-            }
+            int col_nz = 0;
+            for (unsigned long m = 0; m < M; ++m)
+                if (got[n * M + m] != 0)
+                    ++col_nz;
+            printf(n == 7 || n + 1 == N ? "%d" : "%d, ", col_nz);
         }
-    }
-    printf("}\n");
-    for (unsigned long dbg_n = 0; dbg_n < 4 && dbg_n < N; ++dbg_n)
-    {
-        printf("[bmpu_verify] col%d_rows={", (int)dbg_n);
-        int dumped = 0;
-        for (unsigned long m = 0; m < M && dumped < 40; ++m)
+        printf("}\n");
+        printf("[bmpu_verify] row_nz={");
+        for (unsigned long m = 0; m < 16 && m < M; ++m)
         {
-            if (got[dbg_n * M + m] != 0)
+            int row_nz = 0;
+            for (unsigned long n = 0; n < N; ++n)
+                if (got[n * M + m] != 0)
+                    ++row_nz;
+            printf(m == 15 || m + 1 == M ? "%d" : "%d, ", row_nz);
+        }
+        printf("}\n");
+        printf("[bmpu_verify] nz_pos={");
+        for (unsigned long n = 0; n < N && nz_dumped < 32; ++n)
+        {
+            for (unsigned long m = 0; m < M && nz_dumped < 32; ++m)
             {
-                printf(dumped == 39 ? "%d" : "%d, ", (int)m);
-                ++dumped;
+                if (got[n * M + m] != 0)
+                {
+                    printf(nz_dumped == 31 ? "(%d,%d)" : "(%d,%d), ", (int)m, (int)n);
+                    ++nz_dumped;
+                }
             }
         }
         printf("}\n");
+        for (unsigned long dbg_n = 0; dbg_n < 4 && dbg_n < N; ++dbg_n)
+        {
+            printf("[bmpu_verify] col%lu_rows={", dbg_n);
+            int dumped = 0;
+            for (unsigned long m = 0; m < M && dumped < 40; ++m)
+            {
+                if (got[dbg_n * M + m] != 0)
+                {
+                    printf(dumped == 39 ? "%d" : "%d, ", (int)m);
+                    ++dumped;
+                }
+            }
+            printf("}\n");
+        }
     }
     for (unsigned long n = 0; n < N; ++n)
     {
@@ -161,9 +180,17 @@ static int compare_col_major(const int16_t *got, const int16_t *expect,
 int main()
 {
     int failures = 0;
+    const int case_begin = (BMPU_VERIFY_CASE_BEGIN < 0) ? 0 : BMPU_VERIFY_CASE_BEGIN;
+    const int case_end = (BMPU_VERIFY_CASE_END > BMPMM_BENCH_CASE_COUNT) ? BMPMM_BENCH_CASE_COUNT : BMPU_VERIFY_CASE_END;
     printf("[bmpu_verify] low-bit mixed-precision correctness check\n");
 
-    for (int i = 0; i < BMPMM_BENCH_CASE_COUNT; ++i)
+    if (case_begin >= case_end)
+    {
+        printf("[bmpu_verify] ERROR: empty case range [%d, %d)\n", case_begin, case_end);
+        return 2;
+    }
+
+    for (int i = case_begin; i < case_end; ++i)
     {
         const bmpmm_bench_case_t *sc = &kBenchCases[i];
         BenchKernelData data = get_bench_kernel_data_by_layer(sc->layer);
@@ -200,35 +227,65 @@ int main()
             return 21 + i;
         }
 
-        for (unsigned long dbg_col = 20; dbg_col < 24; ++dbg_col)
+        if (BMPU_VERIFY_DEBUG)
         {
-            printf("[bmpu_verify][DBG] packed col%lu={", dbg_col);
-            for (unsigned long dbg_row = 0; dbg_row < sc->cfg.mtile; ++dbg_row)
+            for (unsigned long dbg_col = 20; dbg_col < 24; ++dbg_col)
             {
-                unsigned long packed_idx = dbg_col * sc->cfg.mtile + dbg_row;
-                printf(dbg_row + 1 == sc->cfg.mtile ? "%d" : "%d, ", data.result_hp[packed_idx]);
+                printf("[bmpu_verify][DBG] packed col%lu={", dbg_col);
+                for (unsigned long dbg_row = 0; dbg_row < sc->cfg.mtile; ++dbg_row)
+                {
+                    unsigned long packed_idx = dbg_col * sc->cfg.mtile + dbg_row;
+                    printf(dbg_row + 1 == sc->cfg.mtile ? "%d" : "%d, ", data.result_hp[packed_idx]);
+                }
+                printf("} gold={");
+                for (unsigned long dbg_row = 0; dbg_row < sc->cfg.mtile; ++dbg_row)
+                {
+                    unsigned long gold_idx = dbg_col * sc->M + dbg_row;
+                    printf(dbg_row + 1 == sc->cfg.mtile ? "%d" : "%d, ", data.result_torch[gold_idx]);
+                }
+                printf("}\n");
             }
-            printf("} gold={");
-            for (unsigned long dbg_row = 0; dbg_row < sc->cfg.mtile; ++dbg_row)
-            {
-                unsigned long gold_idx = dbg_col * sc->M + dbg_row;
-                printf(dbg_row + 1 == sc->cfg.mtile ? "%d" : "%d, ", data.result_torch[gold_idx]);
-            }
-            printf("}\n");
         }
 
-        printf("[bmpu_verify][DBG] unpack_begin %s\n", sc->layer);
+        if (BMPU_VERIFY_DEBUG)
+            printf("[bmpu_verify][DBG] unpack_begin %s\n", sc->layer);
         unpack_packed_tiles_to_col_major(data.result_lp,
                                          data.result_hp,
                                          sc->M,
                                          sc->N,
                                          sc->cfg.mtile,
                                          sc->cfg.ntile);
-        printf("[bmpu_verify][DBG] unpack_done %s\n", sc->layer);
+        if (BMPU_VERIFY_DEBUG)
+            printf("[bmpu_verify][DBG] unpack_done %s\n", sc->layer);
 
-        printf("[bmpu_verify][DBG] compare_begin %s\n", sc->layer);
+        if (BMPU_VERIFY_DEBUG)
+            printf("[bmpu_verify][DBG] compare_begin %s\n", sc->layer);
         int mismatches = compare_col_major(data.result_lp, data.result_torch, sc->M, sc->N);
-        printf("[bmpu_verify][DBG] compare_done %s mismatches=%d\n", sc->layer, mismatches);
+        if (BMPU_VERIFY_DEBUG)
+            printf("[bmpu_verify][DBG] compare_done %s mismatches=%d\n", sc->layer, mismatches);
+        if (BMPU_VERIFY_CASE6_VERBOSE && mismatches != 0 && sc->layer &&
+            strcmp(sc->layer, "int2_mt8_nt32_kt64_g2x2") == 0) {
+            printf("[bmpu_verify][DBG] case6 mismatch histogram (per column)\n");
+            for (unsigned long n = 0; n < sc->N; ++n) {
+                int col_miss = 0;
+                for (unsigned long m = 0; m < sc->M; ++m) {
+                    if (data.result_lp[n * sc->M + m] != data.result_torch[n * sc->M + m])
+                        ++col_miss;
+                }
+                if (col_miss != 0)
+                    printf("[bmpu_verify][DBG] col%lu mismatches=%d\n", n, col_miss);
+            }
+            printf("[bmpu_verify][DBG] case6 column-shift probe\n");
+            for (unsigned long n = 16; n < sc->N; n += 32) {
+                unsigned long ref = n - 16;
+                int match = 0;
+                for (unsigned long m = 0; m < sc->M; ++m) {
+                    if (data.result_lp[n * sc->M + m] == data.result_torch[ref * sc->M + m])
+                        ++match;
+                }
+                printf("[bmpu_verify][DBG] col%lu vs expect col%lu matches=%d\n", n, ref, match);
+            }
+        }
         int64_t runtime = get_timer();
         printf("[bmpu_verify] runtime=%ld cycles\n", (long)runtime);
         printf("[bmpu_verify] sample={{%d, %d, %d, %d}}\n",

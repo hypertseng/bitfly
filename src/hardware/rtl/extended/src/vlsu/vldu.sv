@@ -487,20 +487,6 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         // Trigger the request signal
         result_queue_valid_d[result_queue_write_pnt_q] = {NrLanes{1'b1}};
 
-`ifndef SYNTHESIS
-        if (issue_is_bmpu_load && (seq_word_wr_offset_q >= 48)) begin
-          if (1'b0) $display("[%0t][VLDU_BMPLE] weight=%0b seq_off=%0d addr0=%0d addr1=%0d addr2=%0d addr3=%0d data0=%h data1=%h data2=%h data3=%h",
-                   $time, issue_is_weight, seq_word_wr_offset_q,
-                   result_queue_d[result_queue_write_pnt_q][0].addr,
-                   result_queue_d[result_queue_write_pnt_q][1].addr,
-                   result_queue_d[result_queue_write_pnt_q][2].addr,
-                   result_queue_d[result_queue_write_pnt_q][3].addr,
-                   result_queue_d[result_queue_write_pnt_q][0].wdata,
-                   result_queue_d[result_queue_write_pnt_q][1].wdata,
-                   result_queue_d[result_queue_write_pnt_q][2].wdata,
-                   result_queue_d[result_queue_write_pnt_q][3].wdata);
-        end
-`endif
         // Increase the VRF-write sequential counter
         if (issue_is_bmpu_load) begin
           automatic vlen_t bmpu_slot_base;
@@ -572,6 +558,10 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
                                 vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].vl
                                 - vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].vstart
                               ) << unsigned'(vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].vtype.vsew);
+          if ((vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].op == BMPLE) &&
+              vinsn_queue_q.vinsn[vinsn_queue_d.issue_pnt].is_weight) begin
+            issue_cnt_bytes_d = issue_cnt_bytes_d * NrLanes;
+          end
           // Prepare the VRF start pointer
           vrf_word_start_byte  = vinsn_issue_d.vstart[$clog2(8*NrLanes)-1:0] << vinsn_issue_d.vtype.vsew;
           vrf_word_byte_pnt_d  = {1'b0, vrf_word_start_byte[$clog2(8*NrLanes)-1:0]};
@@ -670,6 +660,10 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
                                vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].vl
                                 - vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].vstart
                               ) << unsigned'(vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].vtype.vsew);
+        if ((vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].op == BMPLE) &&
+            vinsn_queue_q.vinsn[vinsn_queue_d.commit_pnt].is_weight) begin
+          commit_cnt_bytes_d = commit_cnt_bytes_d * NrLanes;
+        end
       end
     end : vinsn_done
 
@@ -751,10 +745,16 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
       // Initialize counters
       if (vinsn_queue_d.issue_cnt == '0) begin : issue_cnt_bytes_init
         issue_cnt_bytes_d = (pe_req_i.vl - pe_req_i.vstart) << unsigned'(pe_req_i.vtype.vsew);
+        if ((pe_req_i.op == BMPLE) && pe_req_i.is_weight) begin
+          issue_cnt_bytes_d = issue_cnt_bytes_d * NrLanes;
+        end
       end : issue_cnt_bytes_init
       if (vinsn_queue_d.commit_cnt == '0) begin : commit_cnt_bytes_init
         first_result_queue_read_d = 1'b1;
         commit_cnt_bytes_d = (pe_req_i.vl - pe_req_i.vstart) << unsigned'(pe_req_i.vtype.vsew);
+        if ((pe_req_i.op == BMPLE) && pe_req_i.is_weight) begin
+          commit_cnt_bytes_d = commit_cnt_bytes_d * NrLanes;
+        end
       end : commit_cnt_bytes_init
 
       // New instruction with new vstart. Initialize the vrf byte ptr

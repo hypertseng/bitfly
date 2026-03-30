@@ -13,6 +13,8 @@
 // This is Ara's vector store unit. It sends transactions on the W bus,
 // upon receiving vector memory operations.
 
+`include "bitfly_debug.svh"
+
 module vstu import ara_pkg::*; import rvv_pkg::*; #(
     parameter  int  unsigned NrLanes   = 0,
     parameter  int  unsigned VLEN      = 0,
@@ -243,6 +245,20 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
   logic stu_current_burst_exception_d;
 
   logic is_bmpu_store_d, is_bmpu_store_q;
+  typedef struct packed {
+    vid_t id;
+    ara_op_e op;
+    vfu_e vfu;
+    logic vm;
+    logic use_scalar_op;
+    elen_t scalar_op;
+    vlen_t vl;
+    vlen_t vstart;
+    rvv_pkg::vtype_t vtype;
+  } vstu_req_sig_t;
+  vstu_req_sig_t last_req_sig_d, last_req_sig_q, pe_req_sig;
+  logic pe_req_valid_i_msk;
+  logic en_sync_mask_d, en_sync_mask_q;
 
 `ifndef SYNTHESIS
   logic [15:0] dbg_b_wait_cycles_q;
@@ -266,6 +282,22 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
     vrf_pnt_d = vrf_pnt_q;
 
     is_bmpu_store_d = is_bmpu_store_q;
+    pe_req_sig = '{
+      id           : pe_req_i.id,
+      op           : pe_req_i.op,
+      vfu          : pe_req_i.vfu,
+      vm           : pe_req_i.vm,
+      use_scalar_op: pe_req_i.use_scalar_op,
+      scalar_op    : pe_req_i.scalar_op,
+      vl           : pe_req_i.vl,
+      vstart       : pe_req_i.vstart,
+      vtype        : pe_req_i.vtype
+    };
+    last_req_sig_d = last_req_sig_q;
+    en_sync_mask_d = en_sync_mask_q;
+
+    if (en_sync_mask_q && (pe_req_sig == last_req_sig_q)) pe_req_valid_i_msk = 1'b0;
+    else pe_req_valid_i_msk = pe_req_valid_i;
 
     // Vector instructions currently running
     vinsn_running_d = vinsn_running_q & pe_vinsn_running_i;
@@ -297,6 +329,11 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       if (pe_req_ready_o) begin
         is_bmpu_store_d = 1'b1;
       end
+    end
+
+    if (pe_req_valid_i_msk && pe_req_ready_o) begin
+      last_req_sig_d = pe_req_sig;
+      en_sync_mask_d = 1'b1;
     end
 
     /////////////////////////////////////
@@ -340,6 +377,13 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       mask_valid = mask_valid_q;
 
       // Wait for all expected operands from the lanes
+`ifndef SYNTHESIS
+      if (`BITFLY_BMPU_DEBUG && is_bmpu_store_q && ((vrf_pnt_q != '0) || (vrf_cnt_q != '0)) &&
+          (&stu_operand_valid == 1'b0)) begin
+        $display("[%0t][BMPU_STORE_WAIT] issue_cnt_bytes=%0d vrf_pnt=%0d vrf_cnt=%0d op_valid=%b",
+                 $time, issue_cnt_bytes_q, vrf_pnt_q, vrf_cnt_q, stu_operand_valid);
+      end
+`endif
       if (&stu_operand_valid && (vinsn_issue_q.vm || (|mask_valid_q))) begin : operands_ready
         vrf_pnt_d = vrf_pnt_q + valid_bytes;
         vrf_cnt_d = vrf_cnt_q + valid_bytes;
@@ -378,6 +422,17 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
 
         // Send the W beat
         axi_w_valid_o = 1'b1;
+`ifndef SYNTHESIS
+        if (`BITFLY_BMPU_DEBUG && is_bmpu_store_q) begin
+          $display("[%0t][BMPU_STORE_BEAT] lower=%0d upper=%0d valid_bytes=%0d vrf_pnt=%0d vrf_cnt=%0d data_lo=%h",
+                   $time, lower_byte, upper_byte, valid_bytes, vrf_pnt_q, vrf_cnt_q,
+                   axi_w_o.data[63:0]);
+        end
+        if (`BITFLY_BMPU_DEBUG && is_bmpu_store_q && (issue_cnt_bytes_q <= (NrLanes * 8))) begin
+          $display("[%0t][BMPU_STORE_TAIL] issue_cnt_bytes=%0d vrf_pnt=%0d vrf_cnt=%0d op_valid=%b",
+                   $time, issue_cnt_bytes_q, vrf_pnt_q, vrf_cnt_q, stu_operand_valid);
+        end
+`endif
         // Account for the beat we sent
         axi_len_d     = axi_len_q + 1;
         // We wrote all the beats for this AW burst
@@ -517,8 +572,14 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
     //  Accept new instruction  //
     //////////////////////////////
 
-    if (!vinsn_queue_full && pe_req_valid_i && !vinsn_running_q[pe_req_i.id] &&
+    if (!vinsn_queue_full && pe_req_valid_i_msk && !vinsn_running_q[pe_req_i.id] &&
       pe_req_i.vfu == VFU_StoreUnit) begin : pe_req_valid
+`ifndef SYNTHESIS
+      if (`BITFLY_VSTU_DEBUG && (pe_req_i.op == BMPSE)) begin
+        $display("[%0t][VSTU_BMPSE_ACCEPT] base=%h vl=%0d vstart=%0d id=%0d",
+                 $time, pe_req_i.scalar_op, pe_req_i.vl, pe_req_i.vstart, pe_req_i.id);
+      end
+`endif
       vinsn_queue_d.vinsn[vinsn_queue_q.accept_pnt] = pe_req_i;
       vinsn_running_d[pe_req_i.id]                  = 1'b1;
 
@@ -565,6 +626,8 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       stu_current_burst_exception_o <= 1'b0;
 
       is_bmpu_store_q <= 1'b0;
+      last_req_sig_q <= '0;
+      en_sync_mask_q <= 1'b0;
     `ifndef SYNTHESIS
       dbg_b_wait_cycles_q <= '0;
     `endif
@@ -587,13 +650,15 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       stu_current_burst_exception_o <= stu_current_burst_exception_d;
 
       is_bmpu_store_q <= is_bmpu_store_d;
+      last_req_sig_q <= last_req_sig_d;
+      en_sync_mask_q <= en_sync_mask_d;
 `ifndef SYNTHESIS
-      if (!is_bmpu_store_q && is_bmpu_store_d) begin
+      if (`BITFLY_VSTU_DEBUG && !is_bmpu_store_q && is_bmpu_store_d) begin
         $display("[%0t][VSTU] bmpu store armed: commit_cnt=%0d issue_cnt=%0d",
                  $time, vinsn_queue_d.commit_cnt, vinsn_queue_d.issue_cnt);
       end
 
-      if (is_bmpu_store_q && (vinsn_queue_q.commit_cnt != '0) && !axi_b_valid_i) begin
+      if (`BITFLY_VSTU_DEBUG && is_bmpu_store_q && (vinsn_queue_q.commit_cnt != '0) && !axi_b_valid_i) begin
         dbg_b_wait_cycles_q <= dbg_b_wait_cycles_q + 16'd1;
         if (dbg_b_wait_cycles_q == 16'd63 || dbg_b_wait_cycles_q == 16'd255) begin
           $display("[%0t][VSTU] waiting B: issue_cnt=%0d commit_cnt=%0d issue_pnt=%0d commit_pnt=%0d issue_valid=%0b stu_valid=%b axi_w_valid=%0b axi_w_ready=%0b addrgen_valid=%0b addrgen_is_load=%0b addrgen_ex=%0b len=%0d",
@@ -615,7 +680,7 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
         dbg_b_wait_cycles_q <= '0;
       end
 
-      if (1'b0 && is_bmpu_store_q && (issue_cnt_bytes_q == 160)) begin
+      if (`BITFLY_VSTU_DEBUG && is_bmpu_store_q && (issue_cnt_bytes_q == 160)) begin
         $display("[%0t][VSTU_STALL160] id=%0d issue_v=%0b addrgen_v=%0b is_load=%0b ex=%0b wready=%0b axlen=%0d req_len=%0d rem=%0d vrf_pnt=%0d stu_v=%b mask_v=%b vm=%0b",
                  $time, vinsn_issue_q.id, vinsn_issue_valid, axi_addrgen_req_valid_i,
                  axi_addrgen_req_i.is_load, axi_addrgen_req_i.is_exception, axi_w_ready_i,
