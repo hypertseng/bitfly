@@ -32,7 +32,7 @@ static int bmpcfg_try_pack(unsigned long prec, unsigned long K,
     if (gn < 1UL || gn > 8UL)
         return 0;
 
-    if (mtile < 8UL || mtile > 64UL || ((mtile - 8UL) & 3UL) != 0)
+    if (mtile < 8UL || mtile > 64UL || ((mtile - 8UL) & 7UL) != 0)
         return 0;
 
     if (ntile < 16UL || ntile > 128UL || ((ntile - 16UL) & 15UL) != 0)

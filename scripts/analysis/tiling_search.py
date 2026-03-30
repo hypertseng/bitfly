@@ -18,8 +18,8 @@ This version follows the latest constraints:
 - K-tile is capped by the currently generated software path limit.
 - Store overlap is evaluated as background drain during memory-free
   compute/control time, with only the remaining tail exposed.
-- Search granularity follows the executable backend path: mtile is modeled at
-  8-row granularity and ntile at 16-column granularity.
+- Search granularity follows the conservative executable backend path: mtile is
+  modeled at 8-row granularity and ntile at 16-column granularity.
 
 Notation:
 - Shape: (M, N, K)
@@ -56,7 +56,8 @@ ARRAY_M = 8
 ARRAY_N = 16
 K_STEP = 8
 BANK_CAP_BITS = 8192
-# Software-generated path currently materializes ktile stubs up to 256.
+# Software-search cap for ktile. With dispatch-table enforcement enabled, the
+# checked-in bmpcfg table may further reduce the executable k values.
 K_TILE_MAX_SW = 256
 STORE_QUEUE_DRAIN_BYTES_PER_CYCLE = 16.0
 BMPCFG_DISPATCH_TABLE = os.path.join(
@@ -69,6 +70,8 @@ BMPCFG_DISPATCH_TABLE = os.path.join(
 
 # Software-template control costs.
 EMIT_CFG_CYCLES = 1.0
+# One BMPSE issue on the software side. Internal 8x16 block traversal happens in
+# the BMPU/VSTU path, not in software.
 STORE_BLOCK_CTRL_CYCLES = 1.0
 
 
@@ -126,6 +129,7 @@ class GroupExecutionPlan:
     load_bytes: float
     control_cycles: float
     hidden_load_cycles: float
+    window_count: int
     emit_cfg_count: int
     load_a_count: int
     load_w_count: int
@@ -553,9 +557,7 @@ def build_slot_cache_group_plan(
                 prev_w_window: frozenset[int] | None = None
                 prev_pair: Tuple[int, int] | None = None
 
-                for window_ord, (a_win_idx, w_win_idx) in enumerate(
-                    iter_window_order(len(a_windows), len(w_windows), row_snake=row_snake)
-                ):
+                for a_win_idx, w_win_idx in iter_window_order(len(a_windows), len(w_windows), row_snake=row_snake):
                     a_block = a_windows[a_win_idx]
                     w_block = w_windows[w_win_idx]
                     a_window = frozenset(a_block)
@@ -564,11 +566,10 @@ def build_slot_cache_group_plan(
                     new_a_count = len(a_window if prev_a_window is None else (a_window - prev_a_window))
                     new_w_count = len(w_window if prev_w_window is None else (w_window - prev_w_window))
                     load_cycle = (new_a_count * a_tile_bytes + new_w_count * w_tile_bytes) / bw_bytes_per_cycle
-                    ctrl_cycle = EMIT_CFG_CYCLES if window_ord == 0 else 0.0
+                    ctrl_cycle = EMIT_CFG_CYCLES
 
-                    if ctrl_cycle:
-                        emit_cfg_count += 1
-                        total_control_cycles += ctrl_cycle
+                    emit_cfg_count += 1
+                    total_control_cycles += ctrl_cycle
                     load_a_count += new_a_count
                     load_w_count += new_w_count
                     total_load_cycles += load_cycle
@@ -597,6 +598,7 @@ def build_slot_cache_group_plan(
                 load_bytes=total_load_bytes,
                 control_cycles=total_control_cycles,
                 hidden_load_cycles=hidden_load_cycles,
+                window_count=len(a_windows) * len(w_windows),
                 emit_cfg_count=emit_cfg_count,
                 load_a_count=load_a_count,
                 load_w_count=load_w_count,
@@ -765,9 +767,7 @@ def score_config(
     util = (shape.m * shape.n) / float(padded_m * padded_n)
 
     reuse_a = template_reuse_a(cfg.mtile, cfg.ntile, prec_bits)
-    m_blocks = ceil_div(cfg.mtile, ARRAY_M)
-    n_blocks = ceil_div(cfg.ntile, ARRAY_N)
-    store_instrs_per_pair = m_blocks * n_blocks
+    store_instrs_per_pair = 1
     store_bytes_per_pair = cfg.mtile * cfg.ntile * out_bits / 8.0
 
     total_mem_bytes = 0.0
@@ -803,7 +803,11 @@ def score_config(
                 reuse_a=reuse_a,
             )
             group_store_bytes = group_pairs * store_bytes_per_pair
-            group_store_ctrl_cycles = group_pairs * store_instrs_per_pair * STORE_BLOCK_CTRL_CYCLES
+            group_store_emit_cfg_count = group_plan.window_count
+            group_store_ctrl_cycles = (
+                group_store_emit_cfg_count * EMIT_CFG_CYCLES
+                + group_pairs * store_instrs_per_pair * STORE_BLOCK_CTRL_CYCLES
+            )
             for _ in range(group_occ):
                 store_overlap_stages.append(
                     (group_plan.pipeline_cycles, group_plan.load_cycles, group_store_bytes, group_store_ctrl_cycles)
@@ -814,7 +818,7 @@ def score_config(
             total_load_cycles += group_occ * group_plan.load_cycles
             total_hidden_load_cycles += group_occ * group_plan.hidden_load_cycles
             total_store_cycles += group_occ * (group_store_bytes / STORE_QUEUE_DRAIN_BYTES_PER_CYCLE)
-            emit_cfg_count += group_occ * group_plan.emit_cfg_count
+            emit_cfg_count += group_occ * (group_plan.emit_cfg_count + group_store_emit_cfg_count)
             load_a_count += group_occ * group_plan.load_a_count
             load_w_count += group_occ * group_plan.load_w_count
             preferred_transitions_total += group_occ * group_plan.preferred_reuse_transitions

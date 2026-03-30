@@ -3962,6 +3962,11 @@ module ara_dispatcher
 
             if (insn.custom1_type.mtile_code <= 4'd14) begin
               mtile_dec = 6'(6'd8 + ({2'b00, insn.custom1_type.mtile_code} << 2));
+              // Reserve odd 4-row encodings: the executable BMPU path only
+              // supports 8-row mtile granularity.
+              if (insn.custom1_type.mtile_code[0]) begin
+                bmptile_illegal = 1'b1;
+              end
             end else begin
               mtile_dec = 6'd8;
               bmptile_illegal = 1'b1;
