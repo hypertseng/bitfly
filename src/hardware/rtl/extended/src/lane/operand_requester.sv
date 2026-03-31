@@ -311,11 +311,9 @@ module operand_requester
     end
   end
 
-  logic bmpu_output_en_d, bmpu_output_en_q;
+  logic bmpu_output_en_q;
   logic   [idx_width(NrBanks)-1:0] ldu_result_bank_mapped;
   vaddr_t                          ldu_result_addr_mapped;
-
-  assign bmpu_output_en_d   = bmpu_output_en_i;
 
   always_comb begin : p_ldu_bmpu_bank_map
     ldu_result_addr_mapped = ldu_result_addr;
@@ -345,7 +343,7 @@ module operand_requester
     if (!rst_ni) begin
       bmpu_output_en_q <= 1'b0;
     end else begin
-      bmpu_output_en_q <= bmpu_output_en_d;
+      bmpu_output_en_q <= bmpu_output_en_i;
     end
   end
 
@@ -356,8 +354,6 @@ module operand_requester
     state_t state_d, state_q;
 
     requester_metadata_t requester_metadata_d, requester_metadata_q;
-    logic [7:0] dbg_wgt_blk_cnt;
-
     // Is there a hazard during this cycle?
     logic stall;
     assign stall = (
@@ -366,7 +362,7 @@ module operand_requester
         (~{NrVInsn{requester_metadata_q.is_widening}} | requester_metadata_q.waw_hazard_counter)
       ))
       ) || (
-        (requester_index == 15) && ((bmpu_output_en_q === 1'b1)||(bmpu_output_en_d === 1'b1))
+        (requester_index == 15) && ((bmpu_output_en_q === 1'b1)||(bmpu_output_en_i === 1'b1))
       );
 
     // Did we get a grant?
@@ -728,25 +724,10 @@ module operand_requester
         state_q              <= IDLE;
         requester_metadata_q <= '0;
         request_cnt_q        <= '0;
-        dbg_wgt_blk_cnt      <= '0;
       end else begin
         state_q              <= state_d;
         requester_metadata_q <= requester_metadata_d;
         request_cnt_q        <= request_cnt_d;
-        if (`BITFLY_OPREQ_WGT_DEBUG && (lane_id_i == '0) && (requester_index == BMPUWgt0 || requester_index == BMPUWgt1) &&
-            operand_queue_ready_i[requester_index] && (|operand_requester_gnt) &&
-            requester_metadata_q.bmpu_replay_en && (requester_metadata_q.bmpu_word_idx == '0)) begin
-          automatic int unsigned bank_dbg;
-          bank_dbg = requester_metadata_q.addr[idx_width(NrBanks)-1:0];
-          if (dbg_wgt_blk_cnt < 8'd16) begin
-            $display("[%0t][OPREQ_WGT_BLK_DBG][lane%0d] q=%0d bank=%0d addr=%0d self=%0d repeat=%0d word=%0d block_words=%0d self_blocks=%0d repeat_blocks=%0d",
-                     $time, lane_id_i, requester_index, bank_dbg, requester_metadata_q.addr,
-                     requester_metadata_q.bmpu_self_idx, requester_metadata_q.bmpu_repeat_idx,
-                     requester_metadata_q.bmpu_word_idx, requester_metadata_q.bmpu_block_words,
-                     requester_metadata_q.bmpu_self_blocks, requester_metadata_q.bmpu_repeat_blocks);
-          end
-          dbg_wgt_blk_cnt <= dbg_wgt_blk_cnt + 1'b1;
-        end
       end
     end
   end : gen_operand_requester

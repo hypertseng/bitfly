@@ -209,9 +209,6 @@ module addrgen import ara_pkg::*; import rvv_pkg::*; #(
   logic last_translation_completed;
   logic addrgen_fof_exception_d, addrgen_fof_exception_q;
 
-  vlen_t len_temp;
-  axi_addr_t next_addr_strided_temp;
-
   // Running vector instructions
   logic [NrVInsn-1:0] vinsn_running_d, vinsn_running_q;
 
@@ -637,8 +634,8 @@ module addrgen import ara_pkg::*; import rvv_pkg::*; #(
   } axi_addrgen_state_d, axi_addrgen_state_q;
 
   axi_addr_t aligned_start_addr_d, aligned_start_addr_q;
-  axi_addr_t aligned_next_start_addr_d, aligned_next_start_addr_q, aligned_next_start_addr_temp;
-  axi_addr_t aligned_end_addr_d, aligned_end_addr_q, aligned_end_addr_temp;
+  axi_addr_t aligned_next_start_addr_d, aligned_next_start_addr_q;
+  axi_addr_t aligned_end_addr_d, aligned_end_addr_q;
 
   // MSb of the next-next page (page selector for page 2 positions after the current one)
   logic [($bits(aligned_start_addr_d) - 12)-1:0] next_2page_msb_d, next_2page_msb_q;
@@ -679,6 +676,11 @@ module addrgen import ara_pkg::*; import rvv_pkg::*; #(
   assign mmu_req_o = mmu_req_d & ~mmu_valid_i;
 
   always_comb begin: axi_addrgen
+    automatic axi_addr_t aligned_next_start_addr_temp;
+    automatic axi_addr_t aligned_end_addr_temp;
+    automatic vlen_t len_temp;
+    automatic axi_addr_t next_addr_strided_temp;
+
     // Maintain state
     axi_addrgen_state_d = axi_addrgen_state_q;
     axi_addrgen_d       = axi_addrgen_q;

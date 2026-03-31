@@ -234,9 +234,6 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
   logic [idx_width(AxiDataWidth/8):0]      axi_r_byte_pnt_d, axi_r_byte_pnt_q;
   // - A pointer to which byte in the full VRF word we are writing data into.
   logic [idx_width(DataWidth*NrLanes/8):0] vrf_word_byte_pnt_d, vrf_word_byte_pnt_q;
-  // - A pointer that indicates the start byte in the vrf word.
-  logic [$clog2(8*NrLanes)-1:0] vrf_word_start_byte;
-
   // A counter that follows the vrf_word_byte_pnt pointer, but without the vstart information
   // We can compare this counter witht the issue_cnt_bytes counter to find the last byte in
   // our transaction
@@ -245,20 +242,15 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
   // When vstart > 0, the very first payload written to the VRF contains less than
   // (8 * NrLanes) bytes.
   logic [$clog2(8*NrLanes):0] first_payload_byte_d, first_payload_byte_q;
-  logic [$clog2(8*NrLanes):0] vrf_eff_write_bytes;
   // Same thing, but for the commit (resqueue -> VRF)
   // Track if this VRF write is the first one for this instruction
   logic first_result_queue_read_d, first_result_queue_read_q;
-  logic [$clog2(8*NrLanes):0] res_queue_eff_write_bytes;
 
   // Signal that the current burst is having an exception
   logic ldu_current_burst_exception_d;
 
   // Counter to increase the VRF write address.
   vlen_t seq_word_wr_offset_d, seq_word_wr_offset_q;
-
-  logic issue_is_bmpu_load;
-  logic issue_is_weight;
 
   // Exception handling FSM
   // Needed because of the result queue buffer, which can contain partial
@@ -277,6 +269,12 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
   logic [$clog2(splits_per_beat)-1:0] split_d, split_q;
 
   always_comb begin: p_vldu
+    automatic logic [$clog2(8*NrLanes)-1:0] vrf_word_start_byte;
+    automatic logic [$clog2(8*NrLanes):0] vrf_eff_write_bytes;
+    automatic logic [$clog2(8*NrLanes):0] res_queue_eff_write_bytes;
+    automatic logic issue_is_bmpu_load;
+    automatic logic issue_is_weight;
+
     // Maintain state
     vinsn_queue_d = vinsn_queue_q;
     issue_cnt_bytes_d   = issue_cnt_bytes_q;
@@ -311,6 +309,7 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
     axi_r_ready_o           = 1'b0;
     mask_ready_d            = 1'b0;
     load_complete_o         = 1'b0;
+    vrf_word_start_byte     = '0;
 
     first_result_queue_read_d = first_result_queue_read_q;
 

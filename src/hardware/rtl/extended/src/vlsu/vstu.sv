@@ -199,16 +199,6 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
   //  Store Unit  //
   //////////////////
 
-  // NOTE: these are out here only for debug visibility, they could go in p_vldu as automatic variables
-  int unsigned vrf_seq_byte;
-  int unsigned vrf_seq_byte_cnt;
-  int unsigned vrf_byte ;
-  vlen_t vrf_valid_bytes ;
-  vlen_t vinsn_valid_bytes;
-  vlen_t axi_valid_bytes   ;
-  logic [idx_width(DataWidth*NrLanes/8):0] valid_bytes;
-
-
   // Vector instructions currently running
   logic [NrVInsn-1:0] vinsn_running_d, vinsn_running_q;
 
@@ -230,14 +220,11 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
   // When vstart > 0, the very first payload written to the VRF contains less than
   // (8 * NrLanes) bytes.
   logic [$clog2(8*NrLanes):0] first_payload_byte_d, first_payload_byte_q;
-  logic [$clog2(8*NrLanes):0] vrf_eff_write_bytes;
 
   // A counter that follows the vrf_word_byte_pnt pointer, but without the vstart information
   // We can compare this counter witht the issue_cnt_bytes counter to find the last byte in
   // our transaction
   logic [idx_width(DataWidth*NrLanes/8):0] vrf_cnt_d, vrf_cnt_q;
-  // - A pointer that indicates the start byte in the vrf word.
-  logic [$clog2(8*NrLanes)-1:0] vrf_word_start_byte;
   // First payload from the lanes? If yes, it can be offset by vstart.
   logic first_lane_payload_d, first_lane_payload_q;
 
@@ -260,19 +247,9 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
   logic pe_req_valid_i_msk;
   logic en_sync_mask_d, en_sync_mask_q;
 
-`ifndef SYNTHESIS
-  logic [15:0] dbg_b_wait_cycles_q;
-`endif
-
   always_comb begin: p_vstu
-    // NOTE: these are out here only for debug visibility, they could go in p_vldu as automatic variables
-    vrf_seq_byte = '0;
-    vrf_seq_byte_cnt = '0;
-    vrf_byte  = '0;
-    vrf_valid_bytes  = '0;
-    vinsn_valid_bytes = '0;
-    axi_valid_bytes    = '0;
-    valid_bytes = '0;
+    automatic logic [$clog2(8*NrLanes):0] vrf_eff_write_bytes;
+    automatic logic [$clog2(8*NrLanes)-1:0] vrf_word_start_byte;
 
     // Maintain state
     vinsn_queue_d = vinsn_queue_q;
@@ -311,6 +288,7 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
     stu_operand_ready       = 1'b0;
     mask_ready_d            = 1'b0;
     store_complete_o        = 1'b0;
+    vrf_eff_write_bytes     = (NrLanes * DataWidthB);
     vrf_word_start_byte     = '0;
 
     first_payload_byte_d = first_payload_byte_q;
@@ -357,9 +335,13 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
 
       // For non-zero vstart values, the last operand read is not going to involve all the lanes
       automatic logic [NrLanes-1:0] mask_valid;
-
-      // How many bytes are we committing?
-      // automatic logic [idx_width(DataWidth*NrLanes/8):0] valid_bytes;
+      automatic int unsigned vrf_seq_byte;
+      automatic int unsigned vrf_seq_byte_cnt;
+      automatic int unsigned vrf_byte;
+      automatic vlen_t vrf_valid_bytes;
+      automatic vlen_t vinsn_valid_bytes;
+      automatic vlen_t axi_valid_bytes;
+      automatic logic [idx_width(DataWidth*NrLanes/8):0] valid_bytes;
 
       // Account for the issued bytes
       // How many bytes are valid in this VRF word
@@ -628,9 +610,6 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       is_bmpu_store_q <= 1'b0;
       last_req_sig_q <= '0;
       en_sync_mask_q <= 1'b0;
-    `ifndef SYNTHESIS
-      dbg_b_wait_cycles_q <= '0;
-    `endif
     end else begin
       vinsn_running_q   <= vinsn_running_d;
       issue_cnt_bytes_q <= issue_cnt_bytes_d;
@@ -656,28 +635,6 @@ module vstu import ara_pkg::*; import rvv_pkg::*; #(
       if (`BITFLY_VSTU_DEBUG && !is_bmpu_store_q && is_bmpu_store_d) begin
         $display("[%0t][VSTU] bmpu store armed: commit_cnt=%0d issue_cnt=%0d",
                  $time, vinsn_queue_d.commit_cnt, vinsn_queue_d.issue_cnt);
-      end
-
-      if (`BITFLY_VSTU_DEBUG && is_bmpu_store_q && (vinsn_queue_q.commit_cnt != '0) && !axi_b_valid_i) begin
-        dbg_b_wait_cycles_q <= dbg_b_wait_cycles_q + 16'd1;
-        if (dbg_b_wait_cycles_q == 16'd63 || dbg_b_wait_cycles_q == 16'd255) begin
-          $display("[%0t][VSTU] waiting B: issue_cnt=%0d commit_cnt=%0d issue_pnt=%0d commit_pnt=%0d issue_valid=%0b stu_valid=%b axi_w_valid=%0b axi_w_ready=%0b addrgen_valid=%0b addrgen_is_load=%0b addrgen_ex=%0b len=%0d",
-                   $time,
-                   vinsn_queue_q.issue_cnt,
-                   vinsn_queue_q.commit_cnt,
-                   vinsn_queue_q.issue_pnt,
-                   vinsn_queue_q.commit_pnt,
-                   vinsn_issue_valid,
-                   stu_operand_valid,
-                   axi_w_valid_o,
-                   axi_w_ready_i,
-                   axi_addrgen_req_valid_i,
-                   axi_addrgen_req_i.is_load,
-                   axi_addrgen_req_i.is_exception,
-                   axi_addrgen_req_i.len);
-        end
-      end else begin
-        dbg_b_wait_cycles_q <= '0;
       end
 
       if (`BITFLY_VSTU_DEBUG && is_bmpu_store_q && (issue_cnt_bytes_q == 160)) begin
