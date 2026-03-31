@@ -36,18 +36,12 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
 
   elen_t act_reg [ROWS-1:0][COLS-1:0];
   elen_t weight_reg [ROWS-1:0][COLS-1:0];
-  logic [127:0] output_reg_compute [ROWS-1:0][COLS-1:0];
   logic [127:0] output_reg_selected [ROWS-1:0][COLS-1:0];
 
   logic [15:0] cycle_cnt;
   logic [15:0] compute_cycles;
   logic [15:0] compute_last;
   logic [2:0]  planes;
-  logic [15:0] cycle_eff;
-  logic [2:0]  plane_idx;
-  logic        in_k_stage;
-  logic [2:0]  shift_amt_sa;
-  logic [1:0]  lbmac_mode_sa;
   logic [15:0] k_iters;
   logic [ROWS-1:0] act_window;
   logic [COLS-1:0] wgt_window;
@@ -92,17 +86,6 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   assign sa_done_o = sa_step && (cycle_cnt == compute_last);
 
   always_comb begin
-    if (cycle_cnt < ROWS - 1) begin
-      cycle_eff = cycle_cnt;
-    end else if (cycle_cnt < ROWS - 1 + (k_dim_i / BIT_ACT) * planes) begin
-      cycle_eff = (cycle_cnt - (ROWS - 1)) / planes + (ROWS - 1);
-    end else begin
-      cycle_eff = (k_dim_i / BIT_ACT) + (ROWS - 1)
-                + (cycle_cnt - (ROWS - 1 + (k_dim_i / BIT_ACT) * planes));
-    end
-  end
-
-  always_comb begin
     store_mode = valid_i && output_en_i;
     act_in = '0;
     wgt_in = '0;
@@ -121,42 +104,6 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
         wgt_window[j] = 1'b1;
         wgt_in[j] = bmpu_wgt_operand_i[j];
       end
-    end
-  end
-
-  always_comb begin
-    in_k_stage = (cycle_cnt >= (ROWS - 1))
-              && (cycle_cnt < (ROWS - 1 + (k_dim_i / BIT_ACT) * planes));
-
-    if (in_k_stage) plane_idx = (cycle_cnt - (ROWS - 1)) % planes;
-    else plane_idx = '0;
-
-    if (!in_k_stage) begin
-      shift_amt_sa  = '0;
-      lbmac_mode_sa = 2'b00;
-    end else begin
-      unique case (prec_i)
-        3'd0: begin
-          shift_amt_sa  = '0;
-          lbmac_mode_sa = 2'b00;
-        end
-        3'd1: begin
-          shift_amt_sa  = '0;
-          lbmac_mode_sa = (plane_idx == 3'd0) ? 2'b01 : 2'b10;
-        end
-        3'd2: begin
-          shift_amt_sa  = plane_idx;
-          lbmac_mode_sa = (plane_idx == 3'd1) ? 2'b10 : 2'b01;
-        end
-        3'd3: begin
-          shift_amt_sa  = plane_idx;
-          lbmac_mode_sa = (plane_idx == 3'd3) ? 2'b10 : 2'b01;
-        end
-        default: begin
-          shift_amt_sa  = '0;
-          lbmac_mode_sa = 2'b00;
-        end
-      endcase
     end
   end
 
@@ -284,17 +231,14 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
             .ctx_clear_i              (ctx_clear_i),
             .ctx_id_i                 (ctx_id_i),
             .output_ctx_id_i          (output_ctx_id_i),
-            .output_en                (output_en_i),
             .activations              ((j == 0) ? act_in[i] : act_reg[i][j-1]),
             .weights                  ((i == 0) ? wgt_in[j] : weight_reg[i-1][j]),
             .shift_amt_i              (pe_shift_amt),
             .lbmac_mode_i             (pe_lbmac_mode),
-            .input_output_compute_reg ((j == COLS-1) ? '0 : output_reg_compute[i][j+1]),
             .act_hold_i               ((j == 0) ? (act_window[i] && !bmpu_act_operand_valid_i[i]) : 1'b0),
             .wgt_hold_i               ((i == 0) ? (wgt_window[j] && !bmpu_wgt_operand_valid_i[j]) : 1'b0),
             .activation_out           (act_reg[i][j]),
             .weight_out               (weight_reg[i][j]),
-            .output_out               (output_reg_compute[i][j]),
             .output_selected_o        (output_reg_selected[i][j])
         );
       end

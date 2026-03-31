@@ -52,9 +52,6 @@ module bmpu
   import cf_math_pkg::idx_width;
   `include "common_cells/registers.svh"
 
-  logic unused_bmpu_side_inputs;
-  assign unused_bmpu_side_inputs = bmpu_prefetch_ready_i ^ bmpu_weight_load_i;
-
   /////////////
   // Lane ID //
   /////////////
@@ -196,11 +193,6 @@ module bmpu
   logic [0:0] store_col_d, store_col_q;
   logic [CtxIdxWidth-1:0] sa_compute_ctx_id, sa_output_ctx_id;
   logic sa_done_d, sa_done_q;
-`ifndef SYNTHESIS
-  logic dbg_compute_active_q;
-  logic dbg_epoch_active_q;
-  logic dbg_bmpu_valid_q;
-`endif
 
   assign sa_compute_ctx_id = ((((vinsn_issue_q.bmpu_pair_ai * gn_q) + vinsn_issue_q.bmpu_pair_wi) * m_block_count_q)
                               + compute_mblock_q) * n_block_count_q + compute_nblock_q;

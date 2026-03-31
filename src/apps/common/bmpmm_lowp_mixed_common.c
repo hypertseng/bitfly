@@ -17,6 +17,26 @@
 #define BMPMM_LOWP_DEBUG 0
 #endif
 
+#ifndef BMPMM_LOWP_FAST_CALL_OVERHEAD_CYCLES
+#define BMPMM_LOWP_FAST_CALL_OVERHEAD_CYCLES 320
+#endif
+
+#ifndef BMPMM_LOWP_FAST_REPEAT_PHASE_PCT
+#define BMPMM_LOWP_FAST_REPEAT_PHASE_PCT 94
+#endif
+
+#ifndef BMPMM_LOWP_FAST_CALIB_MAX_M_TILES
+#define BMPMM_LOWP_FAST_CALIB_MAX_M_TILES 3UL
+#endif
+
+#ifndef BMPMM_LOWP_FAST_CALIB_MAX_N_TILES
+#define BMPMM_LOWP_FAST_CALIB_MAX_N_TILES 3UL
+#endif
+
+#ifndef BMPMM_LOWP_FAST_CALIB_MAX_K_TILES
+#define BMPMM_LOWP_FAST_CALIB_MAX_K_TILES 2UL
+#endif
+
 static unsigned long g_bmpmm_lowp_default_mode = BMPMM_LOWP_DEFAULT_MODE;
 static int64_t g_bmpmm_lowp_last_estimated_total_cycles = 0;
 static int64_t g_bmpmm_lowp_last_estimated_compute_cycles = 0;
@@ -24,6 +44,11 @@ static int64_t g_bmpmm_lowp_last_estimated_compute_cycles = 0;
 static inline unsigned long bmpmm_lowp_align_up_ul(unsigned long x, unsigned long a)
 {
     return ((x + a - 1) / a) * a;
+}
+
+static __attribute__((unused)) inline int64_t bmpmm_lowp_scale_pct(int64_t value, unsigned long pct)
+{
+    return (value * (int64_t)pct + 50LL) / 100LL;
 }
 
 static inline unsigned long bmpmm_planes_from_prec(unsigned long prec)
@@ -57,24 +82,17 @@ typedef struct
     int valid;
     int64_t total_cycles;
     int64_t compute_cycles;
+    int64_t warm_total_cycles;
+    int64_t warm_compute_cycles;
+    unsigned long use_count;
 } bmpmm_lowp_phase_cache_entry_t;
-
-typedef struct
-{
-    unsigned long mg_len;
-    unsigned long ng_len;
-    int valid;
-    int64_t total_cycles;
-    int64_t compute_cycles;
-} bmpmm_lowp_group_cache_entry_t;
 
 enum
 {
-    BMPMM_LOWP_FAST_PHASE_CACHE_CAP = 8,
+    BMPMM_LOWP_FAST_PHASE_CACHE_CAP = 16,
     BMPMM_LOWP_FAST_PHASE_COMPUTE = 0,
     BMPMM_LOWP_FAST_PHASE_STORE = 1,
     BMPMM_LOWP_FAST_PHASE_SETUP = 2,
-    BMPMM_LOWP_FAST_GROUP_CACHE_CAP = 4,
 };
 
 static inline unsigned long bmpmm_lowp_sanitize_mode(unsigned long mode)
@@ -202,6 +220,11 @@ static inline void bmpmm_lowp_compute(void *user)
         *ctx->compute_cycles += get_cycle_count() - start;
 }
 
+static __attribute__((unused)) inline void bmpmm_lowp_compute_nop(void *user)
+{
+    (void)user;
+}
+
 static inline void bmpmm_lowp_store_c(void *ptr, unsigned long a_slot, unsigned long w_slot, void *user)
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
@@ -226,23 +249,6 @@ static __attribute__((unused)) bmpmm_lowp_phase_cache_entry_t *bmpmm_lowp_find_p
             entry->ng_len == ng_len &&
             entry->k_cfg == k_cfg &&
             entry->is_store_phase == is_store_phase)
-        {
-            return entry;
-        }
-    }
-    return 0;
-}
-
-static bmpmm_lowp_group_cache_entry_t *bmpmm_lowp_find_group_cache(
-    bmpmm_lowp_group_cache_entry_t *entries, unsigned long count,
-    unsigned long mg_len, unsigned long ng_len)
-{
-    for (unsigned long i = 0UL; i < count; ++i)
-    {
-        bmpmm_lowp_group_cache_entry_t *entry = &entries[i];
-        if (entry->valid &&
-            entry->mg_len == mg_len &&
-            entry->ng_len == ng_len)
         {
             return entry;
         }
@@ -418,42 +424,276 @@ static __attribute__((unused)) int bmpmm_lowp_measure_group_setup(const bmpmm_te
     return 1;
 }
 
-static int bmpmm_lowp_measure_sample_group(const bmpmm_template_cfg_t *cfg,
-                                           const bmpmm_template_ops_t *ops,
-                                           const int8_t *a, const int8_t *b, int16_t *c,
-                                           const bmpmm_lowp_template_ctx_t *base_ctx,
-                                           unsigned long mg_len, unsigned long ng_len,
-                                           int64_t *total_cycles, int64_t *compute_cycles)
+typedef struct
 {
-    const bmpmm_exec_cfg_t sample_exec_cfg = {
-        .mtile = cfg->mtile,
-        .ntile = cfg->ntile,
-        .ktile = cfg->ktile,
-        .gm = mg_len,
-        .gn = ng_len,
-        .prec = cfg->prec,
-    };
-    const bmpmm_lowp_exec_opts_t strict_opts = {
-        .mode = BMPMM_LOWP_EXEC_STRICT,
-        .estimated_total_cycles = 0,
-    };
+    bmpmm_template_cfg_t cfg;
+    unsigned long load_a_count;
+    unsigned long load_w_count;
+    unsigned long compute_count;
+    unsigned long store_count;
+    unsigned long window_count;
+    int64_t total_cycles;
+    int64_t compute_cycles;
+} bmpmm_lowp_calib_case_t;
+
+static int bmpmm_lowp_measure_template_inner(const bmpmm_template_cfg_t *cfg,
+                                             const bmpmm_template_ops_t *ops,
+                                             const int8_t *a, const int8_t *b, int16_t *c,
+                                             const bmpmm_lowp_template_ctx_t *base_ctx,
+                                             int64_t *total_cycles, int64_t *compute_cycles)
+{
+    bmpmm_lowp_template_ctx_t local_ctx = *base_ctx;
     int64_t local_compute_cycles = 0;
     const int64_t start = get_cycle_count();
-    (void)ops;
-    if (!bmpmm_lowp_mixed_matmul_with_cfg_opts(base_ctx->app_tag,
-                                               c, a, b,
-                                               mg_len * cfg->mtile,
-                                               cfg->K,
-                                               ng_len * cfg->ntile,
-                                               &sample_exec_cfg,
-                                               &local_compute_cycles,
-                                               &strict_opts))
+
+    local_ctx.M = cfg->M;
+    local_ctx.invalid_cfg = 0;
+    local_ctx.compute_cycles = &local_compute_cycles;
+    local_ctx.emit_cfg_count = 0;
+    local_ctx.load_w_count = 0;
+    local_ctx.load_a_count = 0;
+    local_ctx.compute_count = 0;
+    local_ctx.store_count = 0;
+
+    if (!bmpmm_template_execute(cfg, ops, a, b, c, &local_ctx) || local_ctx.invalid_cfg)
         return 0;
 
     if (total_cycles)
         *total_cycles = get_cycle_count() - start;
     if (compute_cycles)
         *compute_cycles = local_compute_cycles;
+    return 1;
+}
+
+static int bmpmm_lowp_try_add_calib_case(bmpmm_lowp_calib_case_t *cases,
+                                         unsigned long *case_count,
+                                         const bmpmm_template_cfg_t *cfg,
+                                         const bmpmm_template_ops_t *ops,
+                                         const int8_t *a, const int8_t *b, int16_t *c,
+                                         const bmpmm_lowp_template_ctx_t *ctx,
+                                         unsigned long m_tiles,
+                                         unsigned long n_tiles,
+                                         unsigned long k_tiles)
+{
+    bmpmm_template_stats_t stats;
+    bmpmm_lowp_calib_case_t *entry;
+    bmpmm_template_cfg_t calib_cfg = *cfg;
+
+    if (*case_count >= 24UL || m_tiles == 0UL || n_tiles == 0UL || k_tiles == 0UL)
+        return 0;
+
+    calib_cfg.M = m_tiles * cfg->mtile;
+    calib_cfg.N = n_tiles * cfg->ntile;
+    calib_cfg.K = k_tiles * cfg->ktile;
+
+    if (!bmpmm_template_collect_stats(&calib_cfg, &stats))
+        return 0;
+
+    entry = &cases[*case_count];
+    entry->cfg = calib_cfg;
+    entry->load_a_count = stats.full_load_a + stats.tail_load_a;
+    entry->load_w_count = stats.full_load_w + stats.tail_load_w;
+    entry->compute_count = stats.full_compute + stats.tail_compute;
+    entry->store_count = stats.store_count;
+    entry->window_count = stats.full_windows + stats.tail_windows + stats.store_windows;
+    if (!bmpmm_lowp_measure_template_inner(&calib_cfg, ops, a, b, c, ctx,
+                                           &entry->total_cycles, &entry->compute_cycles))
+    {
+        return 0;
+    }
+
+    ++(*case_count);
+    return 1;
+}
+
+static unsigned long bmpmm_lowp_rank4(const double *vecs, unsigned long rows)
+{
+    double mat[4][4] = {{0}};
+    unsigned long rank = 0UL;
+    unsigned long r = 0UL;
+
+    if (rows == 0UL)
+        return 0UL;
+    if (rows > 4UL)
+        rows = 4UL;
+
+    for (unsigned long i = 0UL; i < rows; ++i)
+        for (unsigned long j = 0UL; j < 4UL; ++j)
+            mat[i][j] = vecs[i * 4UL + j];
+
+    for (unsigned long col = 0UL; col < 4UL && r < rows; ++col)
+    {
+        unsigned long pivot = r;
+        double pivot_abs = mat[pivot][col];
+        if (pivot_abs < 0.0)
+            pivot_abs = -pivot_abs;
+
+        for (unsigned long i = r + 1UL; i < rows; ++i)
+        {
+            double cur_abs = mat[i][col];
+            if (cur_abs < 0.0)
+                cur_abs = -cur_abs;
+            if (cur_abs > pivot_abs)
+            {
+                pivot = i;
+                pivot_abs = cur_abs;
+            }
+        }
+
+        if (pivot_abs < 1e-9)
+            continue;
+
+        if (pivot != r)
+        {
+            for (unsigned long k = col; k < 4UL; ++k)
+            {
+                const double tmp = mat[r][k];
+                mat[r][k] = mat[pivot][k];
+                mat[pivot][k] = tmp;
+            }
+        }
+
+        {
+            const double div = mat[r][col];
+            for (unsigned long k = col; k < 4UL; ++k)
+                mat[r][k] /= div;
+        }
+
+        for (unsigned long i = 0UL; i < rows; ++i)
+        {
+            if (i == r)
+                continue;
+            {
+                const double factor = mat[i][col];
+                if (factor > -1e-12 && factor < 1e-12)
+                    continue;
+                for (unsigned long k = col; k < 4UL; ++k)
+                    mat[i][k] -= factor * mat[r][k];
+            }
+        }
+
+        ++rank;
+        ++r;
+    }
+
+    return rank;
+}
+
+static __attribute__((unused)) int bmpmm_lowp_select_calib_cases(bmpmm_lowp_calib_case_t *selected,
+                                         const bmpmm_template_cfg_t *cfg,
+                                         const bmpmm_template_ops_t *ops,
+                                         const int8_t *a, const int8_t *b, int16_t *c,
+                                         const bmpmm_lowp_template_ctx_t *ctx)
+{
+    bmpmm_lowp_calib_case_t candidates[24];
+    unsigned long candidate_count = 0UL;
+    const unsigned long max_m_tiles = bmpmm_min_ul(BMPMM_LOWP_FAST_CALIB_MAX_M_TILES,
+                                                   ((cfg->gm + 1UL) > 2UL) ? (cfg->gm + 1UL) : 2UL);
+    const unsigned long max_n_tiles = bmpmm_min_ul(BMPMM_LOWP_FAST_CALIB_MAX_N_TILES,
+                                                   ((cfg->gn + 1UL) > 2UL) ? (cfg->gn + 1UL) : 2UL);
+    const unsigned long max_k_tiles = BMPMM_LOWP_FAST_CALIB_MAX_K_TILES;
+    unsigned long chosen = 0UL;
+    double basis[16] = {0.0};
+
+    for (unsigned long m_tiles = 1UL; m_tiles <= max_m_tiles; ++m_tiles)
+    {
+        for (unsigned long n_tiles = 1UL; n_tiles <= max_n_tiles; ++n_tiles)
+        {
+            for (unsigned long k_tiles = 1UL; k_tiles <= max_k_tiles; ++k_tiles)
+            {
+                if (!bmpmm_lowp_try_add_calib_case(candidates, &candidate_count, cfg, ops, a, b, c, ctx,
+                                                   m_tiles, n_tiles, k_tiles))
+                    return 0;
+                if (candidate_count >= 24UL)
+                    goto done_build_candidates;
+            }
+        }
+    }
+
+done_build_candidates:
+    for (unsigned long i = 0UL; i < candidate_count && chosen < 4UL; ++i)
+    {
+        const double vec[4] = {
+            (double)candidates[i].load_a_count,
+            (double)candidates[i].load_w_count,
+            (double)candidates[i].store_count,
+            (double)candidates[i].window_count,
+        };
+        double trial[16];
+        for (unsigned long j = 0UL; j < chosen * 4UL; ++j)
+            trial[j] = basis[j];
+        for (unsigned long j = 0UL; j < 4UL; ++j)
+            trial[chosen * 4UL + j] = vec[j];
+        if (bmpmm_lowp_rank4(trial, chosen + 1UL) > chosen)
+        {
+            selected[chosen] = candidates[i];
+            for (unsigned long j = 0UL; j < 4UL; ++j)
+                basis[chosen * 4UL + j] = vec[j];
+            ++chosen;
+        }
+    }
+
+    return (chosen == 4UL);
+}
+
+static __attribute__((unused)) int bmpmm_lowp_solve_4x4(double m[4][5], double out[4])
+{
+    for (unsigned long col = 0UL; col < 4UL; ++col)
+    {
+        unsigned long pivot = col;
+        double pivot_abs = m[pivot][col];
+        if (pivot_abs < 0.0)
+            pivot_abs = -pivot_abs;
+
+        for (unsigned long row = col + 1UL; row < 4UL; ++row)
+        {
+            double cur_abs = m[row][col];
+            if (cur_abs < 0.0)
+                cur_abs = -cur_abs;
+            if (cur_abs > pivot_abs)
+            {
+                pivot = row;
+                pivot_abs = cur_abs;
+            }
+        }
+
+        if (pivot_abs < 1e-9)
+            return 0;
+
+        if (pivot != col)
+        {
+            for (unsigned long k = col; k < 5UL; ++k)
+            {
+                const double tmp = m[col][k];
+                m[col][k] = m[pivot][k];
+                m[pivot][k] = tmp;
+            }
+        }
+
+        {
+            const double div = m[col][col];
+            for (unsigned long k = col; k < 5UL; ++k)
+                m[col][k] /= div;
+        }
+
+        for (unsigned long row = 0UL; row < 4UL; ++row)
+        {
+            if (row == col)
+                continue;
+            {
+                const double factor = m[row][col];
+                if (factor > -1e-12 && factor < 1e-12)
+                    continue;
+                for (unsigned long k = col; k < 5UL; ++k)
+                    m[row][k] -= factor * m[col][k];
+            }
+        }
+    }
+
+    out[0] = m[0][4];
+    out[1] = m[1][4];
+    out[2] = m[2][4];
+    out[3] = m[3][4];
     return 1;
 }
 
@@ -476,9 +716,10 @@ static __attribute__((unused)) int bmpmm_lowp_get_phase_cost(
     if (cached)
     {
         if (total_cycles)
-            *total_cycles = cached->total_cycles;
+            *total_cycles = bmpmm_lowp_scale_pct(cached->total_cycles, BMPMM_LOWP_FAST_REPEAT_PHASE_PCT);
         if (compute_cycles)
-            *compute_cycles = cached->compute_cycles;
+            *compute_cycles = bmpmm_lowp_scale_pct(cached->compute_cycles, BMPMM_LOWP_FAST_REPEAT_PHASE_PCT);
+        ++cached->use_count;
         return 1;
     }
 
@@ -497,6 +738,9 @@ static __attribute__((unused)) int bmpmm_lowp_get_phase_cost(
     cached->valid = 0;
     cached->total_cycles = 0;
     cached->compute_cycles = 0;
+    cached->warm_total_cycles = 0;
+    cached->warm_compute_cycles = 0;
+    cached->use_count = 0;
 
     if (phase_kind == BMPMM_LOWP_FAST_PHASE_SETUP)
     {
@@ -524,12 +768,80 @@ static __attribute__((unused)) int bmpmm_lowp_get_phase_cost(
     }
 
     cached->valid = 1;
+    cached->use_count = 1UL;
     ++(*cache_count);
 
     if (total_cycles)
         *total_cycles = cached->total_cycles;
     if (compute_cycles)
         *compute_cycles = cached->compute_cycles;
+    return 1;
+}
+
+static int bmpmm_lowp_measure_group_exact(const bmpmm_template_cfg_t *cfg,
+                                          const bmpmm_template_ops_t *ops,
+                                          const int8_t *a, const int8_t *b, int16_t *c,
+                                          bmpmm_lowp_template_ctx_t *ctx,
+                                          unsigned long mg_base, unsigned long ng_base,
+                                          unsigned long mg_len, unsigned long ng_len,
+                                          int64_t *total_cycles,
+                                          int64_t *compute_cycles)
+{
+    const unsigned long k_tiles = bmpmm_ceil_div_ul(cfg->K, cfg->ktile);
+    bmpmm_template_cfg_t group_cfg = *cfg;
+    bmpmm_group_plan_t plan;
+    int64_t local_total = 0;
+    int64_t local_compute = 0;
+    int64_t phase_total = 0;
+    int64_t phase_compute = 0;
+
+    if (k_tiles == 0UL || mg_len == 0UL || ng_len == 0UL)
+        return 0;
+
+    group_cfg.gm = mg_len;
+    group_cfg.gn = ng_len;
+    bmpmm_select_group_plan(&group_cfg, mg_len, ng_len, cfg->ktile, &plan);
+
+    if (!bmpmm_lowp_measure_group_setup(cfg, mg_len, ng_len, &phase_total))
+        return 0;
+    local_total += phase_total;
+
+    for (unsigned long kt = 0UL; kt < k_tiles; ++kt)
+    {
+        const unsigned long k0 = kt * cfg->ktile;
+        const unsigned long k_rem = (cfg->K > k0) ? (cfg->K - k0) : 0UL;
+        const unsigned long k_cfg =
+            (k_rem >= cfg->ktile) ? cfg->ktile : bmpmm_align_up_ul(k_rem, 8UL);
+
+        if (!bmpmm_lowp_measure_compute_phase(&group_cfg, &plan, ops, a, b, ctx,
+                                              mg_base, ng_base, k0, k_cfg,
+                                              &phase_total, &phase_compute))
+        {
+            return 0;
+        }
+        local_total += phase_total;
+        local_compute += phase_compute;
+    }
+
+    {
+        const unsigned long last_k0 = (k_tiles - 1UL) * cfg->ktile;
+        const unsigned long last_k_rem = (cfg->K > last_k0) ? (cfg->K - last_k0) : 0UL;
+        const unsigned long last_k_cfg =
+            (last_k_rem >= cfg->ktile) ? cfg->ktile : bmpmm_align_up_ul(last_k_rem, 8UL);
+
+        if (!bmpmm_lowp_measure_store_phase(&group_cfg, &plan, ops, c, ctx,
+                                            mg_base, ng_base, last_k_cfg,
+                                            &phase_total))
+        {
+            return 0;
+        }
+        local_total += phase_total;
+    }
+
+    if (total_cycles)
+        *total_cycles = local_total;
+    if (compute_cycles)
+        *compute_cycles = local_compute;
     return 1;
 }
 
@@ -541,12 +853,26 @@ static int bmpmm_lowp_execute_fast(const char *app_tag,
                                    bmpmm_lowp_template_ctx_t *ctx,
                                    int64_t *estimated_total_cycles)
 {
-    bmpmm_lowp_group_cache_entry_t group_cache[BMPMM_LOWP_FAST_GROUP_CACHE_CAP] = {0};
-    unsigned long group_cache_count = 0UL;
     const unsigned long m_tiles = bmpmm_ceil_div_ul(cfg->M, cfg->mtile);
     const unsigned long n_tiles = bmpmm_ceil_div_ul(cfg->N, cfg->ntile);
+    const unsigned long k_tiles = bmpmm_ceil_div_ul(cfg->K, cfg->ktile);
+    const unsigned long full_k_tiles = cfg->K / cfg->ktile;
+    const unsigned long has_k_tail = ((cfg->K % cfg->ktile) != 0UL);
+    const unsigned long full_group_count = has_k_tail ? 0UL
+                                                      : (m_tiles / cfg->gm) * (n_tiles / cfg->gn);
     int64_t total_cycles = 0;
     int64_t total_compute_cycles = 0;
+    int64_t full_group_total = 0;
+    int64_t full_group_compute = 0;
+    int full_group_valid = 0;
+    int64_t full_setup_total = 0;
+    int64_t full_compute_total = 0;
+    int64_t full_compute_only = 0;
+    int64_t full_store_total = 0;
+    int full_component_valid = 0;
+
+    if (m_tiles == 0UL || n_tiles == 0UL || k_tiles == 0UL)
+        return 0;
 
     for (unsigned long mg = 0UL; mg < m_tiles; mg += cfg->gm)
     {
@@ -555,45 +881,100 @@ static int bmpmm_lowp_execute_fast(const char *app_tag,
         for (unsigned long ng = 0UL; ng < n_tiles; ng += cfg->gn)
         {
             const unsigned long ng_len = bmpmm_min_ul(cfg->gn, n_tiles - ng);
-            bmpmm_lowp_group_cache_entry_t *cached;
+            int64_t group_total = 0;
+            int64_t group_compute = 0;
 
             if (mg_len == 0UL || ng_len == 0UL)
                 continue;
 
-            cached = bmpmm_lowp_find_group_cache(group_cache, group_cache_count, mg_len, ng_len);
-            if (!cached)
+            if (!has_k_tail && mg_len == cfg->gm && ng_len == cfg->gn)
             {
-                if (group_cache_count >= BMPMM_LOWP_FAST_GROUP_CACHE_CAP)
+                if (full_group_count >= 4UL)
                 {
-                    return 0;
+                    if (!full_group_valid)
+                    {
+                        int64_t warmup_total = 0;
+                        int64_t warmup_compute = 0;
+
+                        if (full_group_count > 1UL &&
+                            !bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, ctx,
+                                                            mg, ng, cfg->gm, cfg->gn,
+                                                            &warmup_total, &warmup_compute))
+                        {
+                            return 0;
+                        }
+
+                        if (!bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, ctx,
+                                                            mg, ng, cfg->gm, cfg->gn,
+                                                            &full_group_total,
+                                                            &full_group_compute))
+                        {
+                            return 0;
+                        }
+                        full_group_valid = 1;
+                    }
+
+                    total_cycles += full_group_total;
+                    total_compute_cycles += full_group_compute;
+                    continue;
                 }
 
-                cached = &group_cache[group_cache_count++];
-                cached->mg_len = mg_len;
-                cached->ng_len = ng_len;
-                cached->valid = 0;
-                cached->total_cycles = 0;
-                cached->compute_cycles = 0;
-
-                if (!bmpmm_lowp_measure_sample_group(cfg, ops, a, b, c, ctx,
-                                                     mg_len, ng_len,
-                                                     &cached->total_cycles,
-                                                     &cached->compute_cycles))
+                if (!full_component_valid)
                 {
-                    return 0;
+                    bmpmm_template_cfg_t full_group_cfg = *cfg;
+                    bmpmm_group_plan_t full_plan;
+
+                    full_group_cfg.gm = cfg->gm;
+                    full_group_cfg.gn = cfg->gn;
+                    bmpmm_select_group_plan(&full_group_cfg, cfg->gm, cfg->gn, cfg->ktile, &full_plan);
+
+                    if (!bmpmm_lowp_measure_group_setup(cfg, cfg->gm, cfg->gn, &full_setup_total))
+                    {
+                        return 0;
+                    }
+                    if (!bmpmm_lowp_measure_compute_phase(&full_group_cfg, &full_plan, ops, a, b, ctx,
+                                                          mg, ng, 0UL, cfg->ktile,
+                                                          &full_compute_total,
+                                                          &full_compute_only))
+                    {
+                        return 0;
+                    }
+                    if (!bmpmm_lowp_measure_store_phase(&full_group_cfg, &full_plan, ops, c, ctx,
+                                                        mg, ng, cfg->ktile,
+                                                        &full_store_total))
+                    {
+                        return 0;
+                    }
+                    full_component_valid = 1;
                 }
-                cached->valid = 1;
+
+                total_cycles += full_setup_total;
+                total_cycles += (int64_t)full_k_tiles * full_compute_total;
+                total_cycles += full_store_total;
+                total_compute_cycles += (int64_t)full_k_tiles * full_compute_only;
+                continue;
             }
 
-            total_cycles += cached->total_cycles;
-            total_compute_cycles += cached->compute_cycles;
+            if (!bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, ctx,
+                                                mg, ng, mg_len, ng_len,
+                                                &group_total,
+                                                &group_compute))
+            {
+                return 0;
+            }
+            total_cycles += group_total;
+            total_compute_cycles += group_compute;
         }
     }
 
     if (compute_cycles)
         *compute_cycles += total_compute_cycles;
     if (estimated_total_cycles)
+    {
+        if (total_cycles > 0)
+            total_cycles += BMPMM_LOWP_FAST_CALL_OVERHEAD_CYCLES;
         *estimated_total_cycles = total_cycles;
+    }
 
     g_bmpmm_lowp_last_estimated_total_cycles = total_cycles;
     g_bmpmm_lowp_last_estimated_compute_cycles = total_compute_cycles;

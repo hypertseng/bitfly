@@ -30,6 +30,5 @@
  */
 #include "data.h"
 #include "mixed.h"
-#include "vector.h"
 
 #endif // BMPMM_H

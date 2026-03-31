@@ -12,16 +12,17 @@
 #endif
 
 #include "../common/bmpmm_bench_common.h"
+#include "../common/bmpmm_lowp_mixed_common.h"
 #include "kernel/data.h"
 #include "kernel/mixed.h"
 #include "kernel/bench_cases.h"
-#include "kernel/vector.h"
 
 int main()
 {
     printf("[bmpmm_INT2] precision=int2\n");
     const char *current_model = 0;
     int64_t bmpmm_model_cycles = 0;
+    const int fast_mode = (bmpmm_lowp_get_default_mode() == BMPMM_LOWP_EXEC_FAST);
     bmpmm_runtime_cache_entry_t runtime_cache[BMPMM_RUNTIME_CACHE_CAP] = {0};
     int runtime_cache_count = 0;
     for (int i = 0; i < BMPMM_BENCH_CASE_COUNT; ++i)
@@ -59,10 +60,11 @@ int main()
             printf("[bmpmm_INT2] ERROR: bmpmm failed for case%d (%s)\n", i + 1, sc->layer);
             continue;
         }
-        int64_t bmpmm_runtime = get_timer();
+        int64_t bmpmm_runtime = fast_mode ? bmpmm_lowp_get_last_estimated_total_cycles() : get_timer();
+        int64_t bmpmm_compute = fast_mode ? bmpmm_lowp_get_last_estimated_compute_cycles() : 0;
         bmpmm_model_cycles += bmpmm_runtime;
         bmpmm_runtime_cache_store(runtime_cache, &runtime_cache_count, BMPMM_RUNTIME_CACHE_CAP,
-                                  sc, i, bmpmm_runtime, 0, data.result_lp);
+                                  sc, i, bmpmm_runtime, bmpmm_compute, data.result_lp);
         printf("[bmpmm_INT2] bmpmm_runtime=%ld\n", (long)bmpmm_runtime);
     }
     if (current_model)

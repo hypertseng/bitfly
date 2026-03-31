@@ -528,10 +528,10 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
   logic sldu_addrgen_operand_opqueues_valid;
 
   // SA 输入输出信号
-  elen_t [1:0] bmpu_act_operand, bmpu_wgt_operand, bmpu_output_data;
+  elen_t [1:0] bmpu_act_operand, bmpu_wgt_operand;
   elen_t [1:0] bmpu_act_operand_masked, bmpu_wgt_operand_masked;
-  logic  [1:0] bmpu_act_operand_valid, bmpu_wgt_operand_valid, bmpu_output_valid;
-  logic  [1:0] bmpu_act_operand_ready, bmpu_wgt_operand_ready, bmpu_output_ready;
+  logic  [1:0] bmpu_act_operand_valid, bmpu_wgt_operand_valid;
+  logic  [1:0] bmpu_act_operand_ready, bmpu_wgt_operand_ready;
   elen_t stu_operand_from_queue;
   logic  stu_operand_valid_from_queue;
   logic  stu_operand_ready_from_queue;
