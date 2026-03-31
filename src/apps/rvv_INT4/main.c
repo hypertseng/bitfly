@@ -47,7 +47,6 @@ int main()
         int64_t rvv_runtime = get_timer();
         rvv_model_cycles += rvv_runtime;
         printf("[rvv_INT4] rvv_runtime=%ld rvv_compute=%ld\n", (long)rvv_runtime, (long)vector_compute_time);
-        printf("[rvv_INT4] sample rvv={{%d, %d, %d, %d}}\n", data.result_hp[0], data.result_hp[1], data.result_hp[2], data.result_hp[3]);
     }
     if (current_model)
     {

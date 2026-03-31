@@ -48,8 +48,6 @@ int main()
             rvv_model_cycles += cached->runtime;
             printf("[rvv_INT4] duplicate_shape_skip case%d reuse_case%d\n", i + 1, cached->first_case_index + 1);
             printf("[rvv_INT4] rvv_runtime=%ld rvv_compute=%ld\n", (long)cached->runtime, (long)cached->aux_cycles);
-            printf("[rvv_INT4] sample rvv={{%d, %d, %d, %d}}\n",
-                   cached->sample[0], cached->sample[1], cached->sample[2], cached->sample[3]);
             continue;
         }
 
@@ -62,7 +60,6 @@ int main()
         bmpmm_runtime_cache_store(runtime_cache, &runtime_cache_count, BMPMM_RUNTIME_CACHE_CAP,
                                   sc, i, rvv_runtime, vector_compute_time, data.result_hp);
         printf("[rvv_INT4] rvv_runtime=%ld rvv_compute=%ld\n", (long)rvv_runtime, (long)vector_compute_time);
-        printf("[rvv_INT4] sample rvv={{%d, %d, %d, %d}}\n", data.result_hp[0], data.result_hp[1], data.result_hp[2], data.result_hp[3]);
     }
     if (current_model)
     {

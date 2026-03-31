@@ -49,8 +49,6 @@ int main()
             bmpmm_model_cycles += cached->runtime;
             printf("[bmpmm_INT4] duplicate_shape_skip case%d reuse_case%d\n", i + 1, cached->first_case_index + 1);
             printf("[bmpmm_INT4] bmpmm_runtime=%ld\n", (long)cached->runtime);
-            printf("[bmpmm_INT4] sample bmpmm={{%d, %d, %d, %d}}\n",
-                   cached->sample[0], cached->sample[1], cached->sample[2], cached->sample[3]);
             continue;
         }
 
@@ -66,7 +64,6 @@ int main()
         bmpmm_runtime_cache_store(runtime_cache, &runtime_cache_count, BMPMM_RUNTIME_CACHE_CAP,
                                   sc, i, bmpmm_runtime, 0, data.result_lp);
         printf("[bmpmm_INT4] bmpmm_runtime=%ld\n", (long)bmpmm_runtime);
-        printf("[bmpmm_INT4] sample bmpmm={{%d, %d, %d, %d}}\n", data.result_lp[0], data.result_lp[1], data.result_lp[2], data.result_lp[3]);
     }
     if (current_model)
     {

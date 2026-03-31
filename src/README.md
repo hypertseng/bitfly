@@ -1,52 +1,56 @@
 # Source Overlays
 
-`src/` is the persistent bitfly-owned overlay tree. In normal development, edit here first and treat `ara/` as the build target.
+`src/` is the maintained BitFly source-of-truth tree. If a change should survive across local Ara worktrees and remain part of the project, it belongs here first.
 
-## Why This Directory Exists
+## Why `src/` Exists
 
-The repository separates:
+BitFly separates:
 
-- stable project logic that should survive across worktrees
-- transient Ara-side build state used to compile and simulate
+- maintained project logic under `src/`
+- the synced, buildable Ara workspace under `ara/`
 
-`src/` holds the first category. `ara/` holds the second.
+The distinction is intentional:
+
+```text
+src/  = what BitFly means
+ara/  = where BitFly is built and simulated
+tmp/  = what BitFly produced
+```
 
 ## Overlay Map
 
 | Path | Scope | Sync Target |
 | --- | --- | --- |
-| `src/apps/` | benchmark apps, verification apps, shared app code | `ara/apps/` |
+| `src/apps/` | benchmark apps, verification apps, shared software infrastructure | `ara/apps/` |
 | `src/hardware/rtl/bmpu/` | BMPU-local RTL and focused testbenches | `ara/hardware/src/bmpu/` |
-| `src/hardware/rtl/extended/src/` | Ara-side integration RTL | `ara/hardware/src/` |
-| `src/hardware/rtl/extended/include/` | package / typedef overlays | `ara/hardware/include/` |
-| `src/llvm_instr/` | LLVM assembler / disassembler / encoding changes | external LLVM checkout via `--llvm-dst` |
+| `src/hardware/rtl/extended/src/` | Ara integration RTL overlays | `ara/hardware/src/` |
+| `src/hardware/rtl/extended/include/` | package and typedef overlays | `ara/hardware/include/` |
+| `src/llvm_instr/` | LLVM-side custom instruction support | external LLVM checkout via sync tooling |
 | `src/Bender.yml` | top-level Bender overlay | `ara/Bender.yml` |
 
 ## Edit Decision Table
 
-Use this rule table before making changes:
-
-| If you want to change... | Edit here | Then do... |
+| If you need to change... | Edit here | Then do... |
 | --- | --- | --- |
-| benchmark case generation or app logic | `src/apps/` | sync to `ara/apps/`, rebuild app |
-| BMPU-local datapath or unit-testbench logic | `src/hardware/rtl/bmpu/` | sync to `ara/hardware/src/bmpu/`, rebuild hardware |
-| Ara integration, sequencer, lane, or VLSU logic | `src/hardware/rtl/extended/` | sync to `ara/hardware/`, rebuild hardware |
-| custom instruction parsing / printing / encoding | `src/llvm_instr/` | sync to LLVM checkout, rebuild toolchain |
-| a one-off local experiment in the current Ara tree | `ara/` directly | decide later whether to promote back into `src/` |
+| benchmark case generation or app logic | `src/apps/` | sync to `ara/apps/`, rebuild apps |
+| BMPU-local datapath or local testbench logic | `src/hardware/rtl/bmpu/` | sync to `ara/hardware/src/bmpu/`, rebuild hardware |
+| Ara integration logic such as sequencer, lane, or VLSU overlays | `src/hardware/rtl/extended/` | sync to `ara/hardware/`, rebuild hardware |
+| custom instruction parsing, printing, or encoding | `src/llvm_instr/` | sync to the LLVM checkout, rebuild the toolchain |
+| a temporary one-off local experiment | `ara/` directly | promote back into `src/` only if it should be preserved |
 
 ## Promotion Rule
 
-If you started from a quick edit inside `ara/` and later decide the change should become part of bitfly:
+If a useful change started inside `ara/`, promote it back before treating it as a maintained project change:
 
-1. move the logic back into the matching location under `src/`
+1. move the logic into the matching location under `src/`
 2. run `scripts/dev/sync_src_to_ara.sh`
-3. review the generated patch under `patches/local/`
+3. review the synced result and any generated patch artifact
 
-This keeps the source-of-truth policy intact.
+This keeps the repository reviewable and avoids making the Ara working tree the accidental source of truth.
 
 ## Sync Workflow
 
-The maintained sync command is:
+Maintained sync entry point:
 
 ```bash
 scripts/dev/sync_src_to_ara.sh
@@ -55,16 +59,13 @@ scripts/dev/sync_src_to_ara.sh
 Conceptually:
 
 ```text
-src/ -> sync script -> ara/ -> build/simulate -> tmp/ outputs
+src/ -> sync into ara/ -> build and simulate -> tmp/ outputs
 ```
 
-The script can also export an Ara-side patch so the synced delta remains reviewable.
+## Local Navigation
 
-## Local Files
-
-- [`apps/README.md`](apps/README.md): app taxonomy and benchmark contract
+- [`apps/README.md`](apps/README.md): benchmark app taxonomy and workload contract
 - [`hardware/README.md`](hardware/README.md): RTL overlay organization
-- [`llvm_instr/README.md`](llvm_instr/README.md): custom instruction support
-- `compile.sh`: legacy helper that syncs and rebuilds Ara quickly
+- [`llvm_instr/README.md`](llvm_instr/README.md): LLVM custom instruction support
 
-`compile.sh` is useful for short local bring-up loops, but the `scripts/dev/` path is the maintained workflow.
+There may be shorter local bring-up helpers in the tree, but `scripts/dev/` is the maintained synchronization path and the one the documentation assumes.

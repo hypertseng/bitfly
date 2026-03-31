@@ -48,7 +48,6 @@ int main()
         int64_t bmpmm_runtime = get_timer();
         bmpmm_model_cycles += bmpmm_runtime;
         printf("[bmpmm_INT4] bmpmm_runtime=%ld\n", (long)bmpmm_runtime);
-        printf("[bmpmm_INT4] sample bmpmm={{%d, %d, %d, %d}}\n", data.result_lp[0], data.result_lp[1], data.result_lp[2], data.result_lp[3]);
     }
     if (current_model)
     {

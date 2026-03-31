@@ -1,12 +1,8 @@
-# Dev Scripts
+# Development Scripts
 
-`scripts/dev/` contains maintenance helpers that keep the bitfly overlay tree and the Ara working tree in sync.
+`scripts/dev/` contains maintenance helpers that keep the BitFly overlay tree and the Ara working tree aligned.
 
-## Files
-
-- `sync_src_to_ara.sh`: sync managed overlays from `src/` into `ara/` and optionally emit a patch
-
-## Recommended Command
+## Primary Entry Point
 
 ```bash
 scripts/dev/sync_src_to_ara.sh
@@ -23,6 +19,6 @@ With `--llvm-dst`, it can also sync:
 
 - `src/llvm_instr/` -> custom LLVM destination
 
-## Why This Directory Matters
+## Why It Matters
 
-The repository uses `src/` as the bitfly source of truth. This script makes that policy practical and keeps Ara diffs reviewable.
+BitFly uses `src/` as the maintained source of truth. This script makes that policy operational and keeps the synced Ara delta inspectable and reviewable.

@@ -97,6 +97,7 @@ activate_env() {
   source "$CONDA_SH"
   export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-}"
   conda activate "$CONDA_ENV_NAME"
+  export VERILATOR_ROOT="${VERILATOR_ROOT:-$ROOT_DIR/ara/install/verilator/share/verilator}"
 }
 
 split_csv() {

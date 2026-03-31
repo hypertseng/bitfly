@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use BitFly in academic work, please cite the repository and the associated paper when available."
+title: "BitFly"
+type: software
+authors:
+  - family-names: "BitFly"
+    given-names: "Contributors"
+repository-code: "https://github.com/hypertseng/bitfly"
+license: "MIT"
+abstract: "BitFly is a research codebase for studying low-bit GEMM execution on top of Ara, including a BMPU/BMPMM path, an RVV baseline, benchmark overlays, and analysis tooling."
+keywords:
+  - RISC-V
+  - vector architecture
+  - GEMM
+  - low-bit inference
+  - mixed precision
+  - accelerator research

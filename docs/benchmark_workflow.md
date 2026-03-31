@@ -194,3 +194,5 @@ For final artifact-quality reporting, keep:
 - the run directory timestamp or unique name
 
 This makes the experiment auditable and rerunnable, which is the standard expected for architecture artifacts.
+
+For a final pre-submission sanity pass, use [`artifact_checklist.md`](artifact_checklist.md).

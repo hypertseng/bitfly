@@ -1,112 +1,64 @@
-# bitfly
+# BitFly
 
-`bitfly` is a research workspace built on top of Ara for studying low-bit GEMM execution. It combines:
+BitFly is a research codebase for studying low-bit LLM GEMM execution on top of the Ara RISC-V vector architecture. The repository contains:
 
-- a proposed BMPU / BMPMM-oriented hardware and software path
-- an RVV baseline path for comparison
-- custom LLVM instruction support
-- app overlays, generators, and batch scripts for reproducible evaluation
+- a proposed BMPU/BMPMM execution path for low-bit mixed-precision GEMM
+- an RVV baseline path under the same Ara-based software and simulation stack
+- application overlays derived from model-layer GEMM workloads
+- analysis and automation scripts for correctness, benchmarking, tiling search, and roofline-style post-processing
 
-At a high level, the repository answers one architecture question:
+The central evaluation question is:
 
-> For the same model-derived GEMM workload, how does the proposed BMPMM path compare with the RVV baseline under a shared Ara-based execution stack?
+> Under the same model-derived workload slices and the same Ara-based execution stack, how does the proposed BMPMM path compare against an RVV baseline?
 
-## System View
+## Highlights
 
-The repository is intentionally split into a persistent overlay tree and a working build tree:
+- Persistent project-owned sources live under `src/`; the synced Ara working tree lives under `ara/`.
+- Benchmark apps are organized as a model-split matrix: `bmpmm_*` versus `rvv_*`, across `binary`, `INT2`, and `INT4`.
+- The repository includes both fast correctness checks such as `bmpu_verify` and paper-oriented benchmark runners.
+- Tiling search and roofline analysis are implemented in `scripts/analysis/` and operate on the same execution assumptions used by the software template and RTL.
+
+## Repository Status
+
+This repository is best understood as a research artifact workspace rather than a polished end-user package manager distribution. The maintained workflow is:
 
 ```text
-src/                    bitfly source of truth
-  -> scripts/dev/sync_src_to_ara.sh
-ara/                    working Ara tree used for build and simulation
-  -> ara/apps + ara/hardware
-tmp/model_app_runs/     generated experiment logs and summaries
+src/  ->  sync into ara/  ->  build and simulate  ->  logs and plots under tmp/ or repository outputs
 ```
 
-Interpret the main directories as follows:
+If you want to preserve a change as part of BitFly, edit `src/` first and treat `ara/` as the working build tree.
 
-| Path | Type | Purpose |
-| --- | --- | --- |
-| `src/` | source of truth | Project-owned overlays for apps, RTL, and LLVM changes |
-| `ara/` | working tree | Primary build and simulation workspace |
-| `scripts/` | tooling | Benchmark, analysis, debug, and sync automation |
-| `docs/` | methodology | Workflow notes and experiment interpretation |
-| `patches/` | review artifact | Exported diffs for synced Ara-side changes |
-| `tmp/` | generated output | Run logs, summaries, and temporary experiment artifacts |
-| `build/` | generated output | Local temporary testbench or compile products |
+## Quick Start
 
-If you are new to the repository, read in this order:
-
-1. [`src/README.md`](src/README.md)
-2. [`src/apps/README.md`](src/apps/README.md)
-3. [`scripts/README.md`](scripts/README.md)
-4. [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md)
-
-## Task-Oriented Entry Points
-
-Use the repository by task, not by directory guessing:
-
-| Task | Start Here | Why |
-| --- | --- | --- |
-| Run the fastest correctness check | `make -C ara/hardware simv app=bmpu_verify` | Validates BMPU packing and mixed-precision correctness quickly |
-| Run the paper-style benchmark matrix | `scripts/benchmarks/run_model_split_apps.sh` | Builds and runs one app per model / precision / implementation |
-| Change persistent benchmark logic | [`src/apps/README.md`](src/apps/README.md) | App overlays live under `src/apps/` |
-| Change persistent RTL | [`src/hardware/README.md`](src/hardware/README.md) | RTL overlays live under `src/hardware/` |
-| Change custom instruction support | [`src/llvm_instr/README.md`](src/llvm_instr/README.md) | LLVM-side custom instruction support is isolated there |
-| Sync overlays into the build tree | `scripts/dev/sync_src_to_ara.sh` | Keeps `src/` and `ara/` roles clean |
-| Interpret run outputs | [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md) | Defines output files and log-reading rules |
-
-## Research Artifact Contract
-
-For architecture-style evaluation, the repository treats the following as the core experimental unit:
-
-- one app
-- one implementation: `bmpmm` or `rvv`
-- one precision: `binary`, `INT2`, or `INT4`
-- one model-derived workload slice
-
-This contract is implemented as the model-split app matrix under `src/apps/` and executed by `scripts/benchmarks/run_model_split_apps.sh`.
-
-The intended comparison is:
-
-- proposed path: `bmpmm_*`
-- baseline path: `rvv_*`
-
-under:
-
-- the same model-derived shape set
-- the same Ara-based simulator flow
-- the same hardware build configuration unless intentionally changed
-
-## Reproducibility Quick Start
-
-Clone with submodules:
+### 1. Clone the repository
 
 ```bash
-git clone --recursive <repo-url> bitfly
+git clone --recursive git@github.com:hypertseng/bitfly.git
 cd bitfly
 git submodule update --init --recursive
 ```
+
+### 2. Check host dependencies
 
 Recommended host tools:
 
 - `git`
 - `make`
-- `gcc` / `g++`
 - `python3`
+- `gcc` / `g++`
 - `rsync`
 - `Verilator`
 - optional: `QuestaSim`, `gtkwave`
 
 Ara-specific prerequisites are documented in [`ara/DEPENDENCIES.md`](ara/DEPENDENCIES.md).
 
-Sync the bitfly overlays into Ara:
+### 3. Sync BitFly overlays into Ara
 
 ```bash
 scripts/dev/sync_src_to_ara.sh
 ```
 
-Build hardware and one correctness app:
+### 4. Run the fastest correctness check
 
 ```bash
 make -C ara/hardware verilate -j8
@@ -114,73 +66,147 @@ make -C ara/apps bin/bmpu_verify -j8
 make -C ara/hardware simv app=bmpu_verify
 ```
 
-A healthy correctness run ends with `ALL CASES PASSED`.
+A healthy run ends with `ALL CASES PASSED`.
 
-## Benchmark Workflow Summary
+### 5. Run a benchmark app or campaign
 
-The main batch runner is:
-
-```bash
-scripts/benchmarks/run_model_split_apps.sh --help
-```
-
-Typical commands:
+One smoke-check benchmark app:
 
 ```bash
-scripts/benchmarks/run_model_split_apps.sh --mode all --build-jobs 16 --parallel 5 --batch-size 5
-scripts/benchmarks/run_model_split_apps.sh --mode run --no-rebuild-apps --no-verilate --parallel 5 --batch-size 5
-scripts/benchmarks/run_model_split_apps.sh --mode run --apps bmpmm_INT2_gemma3_270m --parallel 1 --batch-size 1
+scripts/benchmarks/run_model_split_apps.sh \
+  --mode run \
+  --apps bmpmm_INT2_gemma3_270m \
+  --parallel 1 \
+  --batch-size 1
 ```
 
-Each run writes:
-
-- `apps.txt`: selected app list
-- `runner.log`: batch-level progress log
-- `summary.csv`: app-level pass/fail and runtime summary
-- `batch_XX/<app>.log`: per-app simulator log
-
-For the full methodology and log interpretation rules, see [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md).
-
-## Directory Semantics
-
-Use these rules consistently:
-
-- edit `src/` when the change should be preserved as bitfly-owned logic
-- edit `ara/` when the change is a local working-tree experiment or an upstream Ara concern
-- treat `tmp/` and `build/` as disposable outputs
-- treat large local model binaries as runtime assets, not source files
-
-The maintained sync path is:
+Paper-style benchmark matrix:
 
 ```bash
-scripts/dev/sync_src_to_ara.sh
+scripts/benchmarks/run_model_split_apps.sh \
+  --mode all \
+  --build-jobs 16 \
+  --parallel 5 \
+  --batch-size 5
 ```
 
-That script:
+### 6. Regenerate roofline analysis
 
-- syncs app overlays from `src/apps/` into `ara/apps/`
-- syncs RTL overlays from `src/hardware/` into `ara/hardware/`
-- optionally syncs `src/llvm_instr/` into an LLVM checkout
-- emits a patch under `patches/local/` when patch generation is enabled
+```bash
+python3 scripts/analysis/roofline.py
+```
 
-## Documentation Index
+This produces:
 
-- [`src/README.md`](src/README.md): source-of-truth policy and edit boundaries
-- [`src/apps/README.md`](src/apps/README.md): app taxonomy and experiment units
+- `roofline_search_results.png`
+- `roofline_search_results.pdf`
+
+## How To Read The Repository
+
+### Top-level layout
+
+| Path | Role | Notes |
+| --- | --- | --- |
+| `src/` | BitFly source of truth | Project-owned overlays for apps, RTL, and LLVM-side instruction support |
+| `ara/` | Working Ara tree | Main build and simulation workspace |
+| `scripts/` | Automation entry points | Benchmark runners, sync scripts, analysis, and debug helpers |
+| `docs/` | Reproducibility and workflow notes | Start here for artifact-style documentation |
+| `tmp/` | Generated outputs | Logs, CSV summaries, and intermediate artifacts |
+| `build/` | Local build outputs | Disposable products |
+| `patches/` | Sync-side review artifacts | Optional exported diffs from sync workflows |
+
+### Recommended reading order
+
+1. [`docs/artifact_quickstart.md`](docs/artifact_quickstart.md)
+2. [`docs/artifact_checklist.md`](docs/artifact_checklist.md)
+3. [`src/README.md`](src/README.md)
+4. [`src/apps/README.md`](src/apps/README.md)
+5. [`scripts/README.md`](scripts/README.md)
+6. [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md)
+
+## Experimental Contract
+
+The main benchmark matrix treats each app as one workload slice:
+
+```text
+<implementation>_<precision>_<model>
+```
+
+Examples:
+
+- `bmpmm_binary_gemma3_270m`
+- `bmpmm_INT2_qwen25_15b`
+- `rvv_INT4_opt_13b`
+
+The intended comparison is always:
+
+- proposed path: `bmpmm_*`
+- baseline path: `rvv_*`
+
+under:
+
+- the same model-derived GEMM shape set
+- the same precision
+- the same Ara-based build and simulation stack unless intentionally changed
+
+`bmpu_verify` is a correctness regression app, not a paper-performance data point.
+
+## Reproducing Main Results
+
+For artifact-quality runs, keep the following together:
+
+- the exact launcher command
+- the run directory under `tmp/model_app_runs/<run>/`
+- `apps.txt`
+- `runner.log`
+- `summary.csv`
+- per-app logs under `batch_XX/`
+
+For a complete workflow, including runner options and log interpretation, see [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md).
+
+## Development Conventions
+
+### `src/` versus `ara/`
+
+- Edit `src/` when the change should be maintained by BitFly.
+- Edit `ara/` only for local working-tree experiments or upstream Ara concerns.
+- Use `scripts/dev/sync_src_to_ara.sh` to propagate maintained overlays into `ara/`.
+
+### Generated files
+
+Treat these as generated or runtime artifacts, not primary source:
+
+- `tmp/`
+- `build/`
+- simulator logs
+- large local model binaries
+- generated figures and CSV summaries unless explicitly versioned for a reason
+
+### Bench and analysis outputs
+
+The repository intentionally separates source from outputs. Measurements should live in dedicated run directories rather than being mixed with maintained source overlays.
+
+## Documentation Map
+
+- [`docs/README.md`](docs/README.md): documentation index
+- [`docs/artifact_quickstart.md`](docs/artifact_quickstart.md): fastest path from clone to benchmark and plot
+- [`docs/artifact_checklist.md`](docs/artifact_checklist.md): artifact and repository release checklist
+- [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md): benchmark methodology and output contract
+- [`docs/repo_guide.md`](docs/repo_guide.md): ownership boundaries and repository mental model
+- [`src/README.md`](src/README.md): source-of-truth policy and overlay map
+- [`src/apps/README.md`](src/apps/README.md): benchmark app taxonomy
 - [`src/hardware/README.md`](src/hardware/README.md): RTL overlay organization
-- [`src/llvm_instr/README.md`](src/llvm_instr/README.md): LLVM custom instruction support
-- [`scripts/README.md`](scripts/README.md): command index and tool entry points
-- [`docs/README.md`](docs/README.md): higher-level workflow notes
-- [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md): benchmark methodology and result interpretation
-- [`tcl/README.md`](tcl/README.md): synthesis collateral
+- [`src/llvm_instr/README.md`](src/llvm_instr/README.md): custom instruction support
+- [`scripts/README.md`](scripts/README.md): command-oriented entry points
 
-## Hygiene
+## Contributing
 
-The repository intentionally excludes or de-emphasizes:
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for repository conventions, patch boundaries, and pre-PR checks.
 
-- generated logs under `tmp/`
-- temporary local builds under `build/`
-- transient Ara-side build products
-- editor caches and Python cache directories
+## Citation
 
-That separation is deliberate: the tracked repository should describe the system and the workflow, while measurements and generated outputs live in dedicated run directories.
+If BitFly is used in academic work, cite the repository and the associated paper when available. Citation metadata is provided in [`CITATION.cff`](CITATION.cff).
+
+## License
+
+This repository is released under the [`MIT License`](LICENSE). The `ara/` submodule and other vendored dependencies keep their own upstream licenses.

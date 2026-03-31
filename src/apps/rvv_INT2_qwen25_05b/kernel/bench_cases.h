@@ -6,13 +6,13 @@
 #define BMPMM_BENCH_CASE_COUNT 7
 
 static const bmpmm_bench_case_t kBenchCases[BMPMM_BENCH_CASE_COUNT] = {
-    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.q_proj", 128UL, 896UL, 896UL, {16UL, 64UL, 64UL, 1UL, 1UL, 2UL}},
-    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.k_proj", 128UL, 128UL, 896UL, {16UL, 64UL, 64UL, 1UL, 1UL, 2UL}},
-    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.v_proj", 128UL, 128UL, 896UL, {16UL, 64UL, 64UL, 1UL, 1UL, 2UL}},
-    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.o_proj", 128UL, 896UL, 896UL, {16UL, 64UL, 64UL, 1UL, 1UL, 2UL}},
-    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.gate_proj", 128UL, 4864UL, 896UL, {16UL, 64UL, 64UL, 1UL, 1UL, 2UL}},
-    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.up_proj", 128UL, 4864UL, 896UL, {16UL, 64UL, 64UL, 1UL, 1UL, 2UL}},
-    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.down_proj", 128UL, 896UL, 4864UL, {16UL, 64UL, 64UL, 1UL, 1UL, 2UL}},
+    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.q_proj", 128UL, 896UL, 896UL, {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.k_proj", 128UL, 128UL, 896UL, {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.v_proj", 128UL, 128UL, 896UL, {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.o_proj", 128UL, 896UL, 896UL, {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.gate_proj", 128UL, 4864UL, 896UL, {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.up_proj", 128UL, 4864UL, 896UL, {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {"small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.down_proj", 128UL, 896UL, 4864UL, {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
 };
 
 #endif

@@ -1,0 +1,9 @@
+#define vector_compute_time rvv_int2_vector_compute_time
+#define vector_int2_matmul rvv_int2_vector_int2_matmul
+#define vector_int2_matmul_with_opts rvv_int2_vector_int2_matmul_with_opts
+#define vector_int2_set_default_mode rvv_int2_vector_set_default_mode
+#define vector_int2_get_default_mode rvv_int2_vector_get_default_mode
+#define vector_int2_get_last_estimated_total_cycles rvv_int2_vector_get_last_estimated_total_cycles
+#define vector_int2_get_last_estimated_compute_cycles rvv_int2_vector_get_last_estimated_compute_cycles
+
+#include "../rvv_INT2/kernel/vector.c"

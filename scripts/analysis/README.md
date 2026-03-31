@@ -1,20 +1,29 @@
 # Analysis Scripts
 
-`scripts/analysis/` contains post-processing helpers for understanding benchmark behavior rather than launching simulations.
+`scripts/analysis/` contains post-processing and design-space exploration helpers. These scripts help interpret benchmark behavior after runs have completed; they are not the primary launch point for simulation campaigns.
 
-## Files
+## Start Here
 
-- `roofline.py`: roofline-style performance plotting
-- `search.py`: parameter or design-space search helper
-- `tiling_search.py`: tiling exploration helper
-- `kernel_profiling.py`: kernel-level profiling support
-- `inference_time.py`: inference-time analysis helper
-- `latency_breakdown.pdf` / `latency_breakdown.png`: generated figures checked into the workspace
+Most commonly used entry points:
+
+- `python3 scripts/analysis/roofline.py`
+- `python3 scripts/analysis/tiling_search.py --help`
+
+## Main Files
+
+| File | Purpose |
+| --- | --- |
+| `roofline.py` | roofline-style plotting for searched configurations |
+| `tiling_search.py` | tiling and grouping search under current software-template and RTL assumptions |
+| `search.py` | additional design-space search helper |
+| `kernel_profiling.py` | kernel-level profiling support |
+| `inference_time.py` | inference-time analysis helper |
 
 ## Use This Directory For
 
-- converting raw benchmark outputs into plots
+- converting benchmark outputs into plots or summaries
 - exploring tiling or scheduling choices
 - preparing figures for reports or papers
+- checking whether search assumptions match the current software template and RTL
 
-Raw execution should still start from [`../benchmarks/README.md`](../benchmarks/README.md).
+Simulation and benchmark launch still start from [`../benchmarks/README.md`](../benchmarks/README.md).

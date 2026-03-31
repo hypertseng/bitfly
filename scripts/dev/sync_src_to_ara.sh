@@ -79,21 +79,26 @@ if [[ "$DO_SYNC" -eq 1 ]]; then
 fi
 
 if [[ "$DO_PATCH" -eq 1 ]]; then
+  ARA_GIT_DIR="$(git -C "$ARA_DIR" rev-parse --git-path .git)"
+  ARA_OBJ_DIR="$(git -C "$ARA_DIR" rev-parse --git-path objects)"
+  if [[ ! -w "$ARA_OBJ_DIR" ]]; then
+    echo "[WARN] ara git objects are read-only ($ARA_OBJ_DIR); skip patch generation."
+    DO_PATCH=0
+  fi
+fi
+
+if [[ "$DO_PATCH" -eq 1 ]]; then
   mkdir -p "$(dirname "$PATCH_FILE")"
   : > "$PATCH_FILE"
+  TMP_INDEX="$(mktemp)"
+  ARA_INDEX="$(git -C "$ARA_DIR" rev-parse --git-path index)"
+  cp "$ARA_INDEX" "$TMP_INDEX"
 
-  git -C "$ARA_DIR" --no-pager diff --binary -- \
-    hardware/src/bmpu \
-    hardware/src \
-    hardware/include \
-    apps \
-    >> "$PATCH_FILE"
-
+  # Stage untracked files into a temp index (intent-to-add) so diff can include them.
   while IFS= read -r rel; do
-    (
-      cd "$ARA_DIR"
-      git --no-pager diff --binary --no-index /dev/null "$rel"
-    ) >> "$PATCH_FILE" || true
+    if [[ -f "$ARA_DIR/$rel" || -L "$ARA_DIR/$rel" ]]; then
+      GIT_INDEX_FILE="$TMP_INDEX" git -C "$ARA_DIR" add -N -- "$rel" || true
+    fi
   done < <(
     git -C "$ARA_DIR" ls-files --others --exclude-standard -- \
       hardware/src/bmpu \
@@ -102,6 +107,14 @@ if [[ "$DO_PATCH" -eq 1 ]]; then
       apps
   )
 
+  GIT_INDEX_FILE="$TMP_INDEX" git -C "$ARA_DIR" --no-pager diff --binary -- \
+    hardware/src/bmpu \
+    hardware/src \
+    hardware/include \
+    apps \
+    >> "$PATCH_FILE" || true
+
+  rm -f "$TMP_INDEX"
   echo "[PATCH] Generated: $PATCH_FILE"
   echo "[PATCH] Size: $(wc -c < "$PATCH_FILE") bytes"
 fi

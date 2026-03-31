@@ -1,3 +1,0 @@
-rank,g,gm,gn,act_reuse_groups,wgt_reuse_groups,mtile,ntile,ktile,area_x_g,picked_shapes,avg_total_cycles
-1,2,2,1,2,1,8,64,64,1024,205,55983945.249
-2,2,1,2,1,2,16,32,64,1024,5,124750853.6

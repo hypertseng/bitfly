@@ -2,14 +2,16 @@
 
 `scripts/debug/` contains focused launchers for module-level RTL debug, separate from full benchmark campaigns.
 
-## Files
+## Main Files
 
-- `run_sa_tb.sh`: launch or rebuild the systolic-array testbench flow
-- `run_lbmac_tb.sh`: launch or rebuild the LBMAC testbench flow
+| File | Purpose |
+| --- | --- |
+| `run_sa_tb.sh` | launch or rebuild the systolic-array testbench flow |
+| `run_lbmac_tb.sh` | launch or rebuild the LBMAC testbench flow |
 
-## When To Use
+## When To Use These Scripts
 
-Use these scripts when:
+Use this directory when:
 
 - a full `ara/hardware simv` run is too large for the bug you are chasing
 - the issue is isolated to `bmpu`, `sa`, or `lbmac`

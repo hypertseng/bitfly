@@ -1,19 +1,30 @@
-# Docs
+# Documentation
 
-The `docs/` directory contains longer workflow notes that complement the short per-directory README files.
+The `docs/` directory contains the workflow and reproducibility notes that sit above the short per-directory README files.
 
-## Files
+## Recommended Reading Order
 
-- [`repo_guide.md`](repo_guide.md): repository ownership and `src/` vs `ara/` working model
-- [`benchmark_workflow.md`](benchmark_workflow.md): recommended benchmark execution and log-reading flow
+1. [`artifact_quickstart.md`](artifact_quickstart.md): fastest path from clone to correctness, benchmark, and roofline outputs
+2. [`artifact_checklist.md`](artifact_checklist.md): pre-release and pre-submission checklist
+3. [`repo_guide.md`](repo_guide.md): repository ownership and the `src/` versus `ara/` model
+4. [`benchmark_workflow.md`](benchmark_workflow.md): benchmark methodology, output contract, and log interpretation
 
-## When To Read This Directory
+## Document Map
 
-Open `docs/` when you need:
+| File | Purpose |
+| --- | --- |
+| [`artifact_quickstart.md`](artifact_quickstart.md) | reader-facing quick start for artifact reproduction |
+| [`artifact_checklist.md`](artifact_checklist.md) | release and submission checklist for artifact hygiene |
+| [`repo_guide.md`](repo_guide.md) | repository mental model and ownership boundaries |
+| [`benchmark_workflow.md`](benchmark_workflow.md) | benchmark campaign workflow and reporting contract |
 
-- a narrative workflow instead of a directory summary
-- experiment-facing guidance for batch benchmark runs
-- a quick explanation of where persistent source should live
+## When To Read `docs/`
+
+Use this directory when you need:
+
+- a reproduction-oriented workflow rather than a directory summary
+- guidance on how to launch and interpret benchmark campaigns
+- a clear explanation of which tree is the BitFly source of truth
 
 For directory-level navigation, return to:
 

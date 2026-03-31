@@ -46,6 +46,32 @@ extern "C"
         unsigned long reuse_a;
     } bmpmm_group_plan_t;
 
+    typedef struct
+    {
+        unsigned long window_count;
+        unsigned long load_a_count;
+        unsigned long load_w_count;
+        unsigned long pair_count;
+    } bmpmm_window_visit_stats_t;
+
+    typedef struct
+    {
+        unsigned long full_k_cfg;
+        unsigned long full_windows;
+        unsigned long full_load_a;
+        unsigned long full_load_w;
+        unsigned long full_compute;
+        unsigned long tail_present;
+        unsigned long tail_k_cfg;
+        unsigned long tail_windows;
+        unsigned long tail_load_a;
+        unsigned long tail_load_w;
+        unsigned long tail_compute;
+        unsigned long store_k_cfg;
+        unsigned long store_windows;
+        unsigned long store_count;
+    } bmpmm_template_stats_t;
+
     static inline unsigned long bmpmm_ceil_div_ul(unsigned long a, unsigned long b)
     {
         return (a + b - 1) / b;
@@ -400,6 +426,147 @@ extern "C"
             *wi = pair_idx / mg_len;
             *ai = pair_idx % mg_len;
         }
+    }
+
+    static inline void bmpmm_collect_window_visit_stats(unsigned long mg_len,
+                                                        unsigned long ng_len,
+                                                        const bmpmm_group_plan_t *plan,
+                                                        bmpmm_window_visit_stats_t *stats)
+    {
+        unsigned long cur_a_win = 0UL;
+        unsigned long cur_w_win = 0UL;
+        unsigned long prev_a_win = ~0UL;
+        unsigned long prev_w_win = ~0UL;
+
+        if (!stats || !plan)
+            return;
+
+        stats->window_count = 0UL;
+        stats->load_a_count = 0UL;
+        stats->load_w_count = 0UL;
+        stats->pair_count = 0UL;
+
+        while (1)
+        {
+            unsigned long a_start = 0UL, a_len = 0UL;
+            unsigned long w_start = 0UL, w_len = 0UL;
+            unsigned long next_a_win = 0UL, next_w_win = 0UL;
+            int has_next_window = 0;
+
+            bmpmm_window_shape(mg_len, plan->a_slots, cur_a_win, &a_start, &a_len);
+            bmpmm_window_shape(ng_len, plan->w_slots, cur_w_win, &w_start, &w_len);
+            ++stats->window_count;
+            stats->pair_count += a_len * w_len;
+
+            if (cur_a_win != prev_a_win)
+                stats->load_a_count += a_len;
+            if (cur_w_win != prev_w_win)
+                stats->load_w_count += w_len;
+
+            prev_a_win = cur_a_win;
+            prev_w_win = cur_w_win;
+            bmpmm_next_window(plan->a_windows, plan->w_windows, plan->row_snake,
+                              cur_a_win, cur_w_win,
+                              &next_a_win, &next_w_win, &has_next_window);
+            if (!has_next_window)
+                break;
+            cur_a_win = next_a_win;
+            cur_w_win = next_w_win;
+        }
+    }
+
+    static inline int bmpmm_template_collect_stats(const bmpmm_template_cfg_t *cfg,
+                                                   bmpmm_template_stats_t *stats)
+    {
+        unsigned long m_tiles;
+        unsigned long n_tiles;
+        unsigned long k_tiles;
+        unsigned long weight_bits;
+        unsigned long full_tiles;
+        unsigned long tail_len;
+
+        if (!cfg || !stats)
+            return 0;
+
+        if (cfg->mtile == 0UL || cfg->ntile == 0UL || cfg->ktile == 0UL || cfg->gm == 0UL || cfg->gn == 0UL)
+            return 0;
+
+        m_tiles = bmpmm_ceil_div_ul(cfg->M, cfg->mtile);
+        n_tiles = bmpmm_ceil_div_ul(cfg->N, cfg->ntile);
+        k_tiles = bmpmm_ceil_div_ul(cfg->K, cfg->ktile);
+        weight_bits = bmpmm_weight_bits_from_prec(cfg->prec);
+        if (k_tiles == 0UL || weight_bits == 0UL)
+            return 0;
+
+        stats->full_k_cfg = cfg->ktile;
+        stats->full_windows = 0UL;
+        stats->full_load_a = 0UL;
+        stats->full_load_w = 0UL;
+        stats->full_compute = 0UL;
+        stats->tail_present = 0UL;
+        stats->tail_k_cfg = 0UL;
+        stats->tail_windows = 0UL;
+        stats->tail_load_a = 0UL;
+        stats->tail_load_w = 0UL;
+        stats->tail_compute = 0UL;
+        stats->store_k_cfg = 0UL;
+        stats->store_windows = 0UL;
+        stats->store_count = 0UL;
+
+        full_tiles = cfg->K / cfg->ktile;
+        tail_len = cfg->K % cfg->ktile;
+        if (tail_len != 0UL)
+        {
+            stats->tail_present = 1UL;
+            stats->tail_k_cfg = bmpmm_align_up_ul(tail_len, 8UL);
+            stats->store_k_cfg = stats->tail_k_cfg;
+        }
+        else
+        {
+            stats->store_k_cfg = stats->full_k_cfg;
+        }
+
+        for (unsigned long mg = 0; mg < m_tiles; mg += cfg->gm)
+        {
+            unsigned long mg_len = bmpmm_min_ul(cfg->gm, m_tiles - mg);
+
+            for (unsigned long ng = 0; ng < n_tiles; ng += cfg->gn)
+            {
+                unsigned long ng_len = bmpmm_min_ul(cfg->gn, n_tiles - ng);
+                bmpmm_template_cfg_t group_cfg;
+                bmpmm_group_plan_t plan;
+                bmpmm_window_visit_stats_t visit_stats;
+
+                if (mg_len == 0UL || ng_len == 0UL)
+                    continue;
+
+                group_cfg = *cfg;
+                group_cfg.gm = mg_len;
+                group_cfg.gn = ng_len;
+                bmpmm_select_group_plan(&group_cfg, mg_len, ng_len, cfg->ktile, &plan);
+                bmpmm_collect_window_visit_stats(mg_len, ng_len, &plan, &visit_stats);
+
+                if (full_tiles != 0UL)
+                {
+                    stats->full_windows += visit_stats.window_count * full_tiles;
+                    stats->full_load_a += visit_stats.load_a_count * full_tiles;
+                    stats->full_load_w += visit_stats.load_w_count * full_tiles;
+                    stats->full_compute += visit_stats.pair_count * full_tiles;
+                }
+                if (stats->tail_present)
+                {
+                    stats->tail_windows += visit_stats.window_count;
+                    stats->tail_load_a += visit_stats.load_a_count;
+                    stats->tail_load_w += visit_stats.load_w_count;
+                    stats->tail_compute += visit_stats.pair_count;
+                }
+
+                stats->store_windows += visit_stats.window_count;
+                stats->store_count += visit_stats.pair_count;
+            }
+        }
+
+        return 1;
     }
 
     static inline int bmpmm_template_execute(
