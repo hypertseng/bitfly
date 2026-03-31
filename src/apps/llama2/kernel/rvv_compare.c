@@ -1,0 +1,12 @@
+#define LLAMA2_RVV_EXEC_STRICT 0UL
+#define LLAMA2_RVV_EXEC_FAST 1UL
+
+#define binary_exec_cfg_t llama_rvv_exec_cfg_t
+#define binary_exec_opts_t llama_rvv_exec_opts_t
+#define RVV_BINARY_EXEC_STRICT LLAMA2_RVV_EXEC_STRICT
+#define RVV_BINARY_EXEC_FAST LLAMA2_RVV_EXEC_FAST
+#define binary_mixed_matmul_with_cfg_opts llama_rvv_binary_with_cfg_opts
+#define binary_get_last_estimated_total_cycles llama_rvv_get_last_estimated_total_cycles
+#define binary_get_last_estimated_compute_cycles llama_rvv_get_last_estimated_compute_cycles
+
+#include "../../rvv_binary/kernel/mixed.c"

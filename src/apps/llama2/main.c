@@ -1,4 +1,9 @@
 /* Inference for Llama-2 Transformer model in pure C, int8 quantized forward pass. */
+#ifndef LLAMA2_QUICK_COMPARE
+#define LLAMA2_QUICK_COMPARE 1
+#endif
+
+#if !LLAMA2_QUICK_COMPARE
 #include "runtime.h"
 #include "util.h"
 #include "model.h"
@@ -2417,4 +2422,303 @@ int main()
     printf("time_matmul = %ld\n", time_matmul);
     return 0;
 }
+#endif
+#else
+
+#include "runtime.h"
+#include "util.h"
+#include "kernel/bmpmm_compare.h"
+#include "kernel/rvv_compare.h"
+#include <stdint.h>
+#include <string.h>
+
+#ifdef SPIKE
+#include <stdio.h>
+#elif defined ARA_LINUX
+#include <stdio.h>
+#else
+#include "printf.h"
+#endif
+
+#define LLAMA2_COMPARE_M 128UL
+#define LLAMA2_MAX_DIM 3072UL
+#define LLAMA2_MAX_HIDDEN 8192UL
+#define LLAMA2_MAX_N 8192UL
+#define LLAMA2_MAX_K 8192UL
+#define LLAMA2_MAX_ACT_BYTES (LLAMA2_COMPARE_M * LLAMA2_MAX_K)
+#define LLAMA2_MAX_WEIGHT_BYTES (((LLAMA2_MAX_K + 7UL) / 8UL) * (((LLAMA2_MAX_N + 7UL) / 8UL) * 8UL))
+#define LLAMA2_MAX_OUTPUT_ELEMS (LLAMA2_COMPARE_M * (((LLAMA2_MAX_N + 127UL) / 128UL) * 128UL))
+
+static int8_t g_activation_buf[LLAMA2_MAX_ACT_BYTES] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static int8_t g_weight_buf[LLAMA2_MAX_WEIGHT_BYTES] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+static int16_t g_output_buf[LLAMA2_MAX_OUTPUT_ELEMS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+
+typedef struct
+{
+    const char *name;
+    const char *asset_path;
+    unsigned long dim;
+    unsigned long hidden_dim;
+    unsigned long n_layers;
+    unsigned long n_heads;
+    unsigned long n_kv_heads;
+} LlamaQuickProfile;
+
+typedef struct
+{
+    unsigned long M;
+    unsigned long N;
+    unsigned long K;
+    llama_bmpmm_exec_cfg_t cfg;
+} ShapeCfgEntry;
+
+typedef struct
+{
+    const char *name;
+    unsigned long M;
+    unsigned long N;
+    unsigned long K;
+    llama_bmpmm_exec_cfg_t bmpmm_cfg;
+    llama_rvv_exec_cfg_t rvv_cfg;
+} BenchOp;
+
+static const LlamaQuickProfile kProfiles[] = {
+    {
+        .name = "15M",
+        .asset_path = "src/apps/llama2/15mmodel.bin",
+        .dim = 288UL,
+        .hidden_dim = 768UL,
+        .n_layers = 6UL,
+        .n_heads = 6UL,
+        .n_kv_heads = 6UL,
+    },
+    {
+        .name = "42M",
+        .asset_path = "src/apps/llama2/stories42M.bin",
+        .dim = 512UL,
+        .hidden_dim = 1376UL,
+        .n_layers = 8UL,
+        .n_heads = 8UL,
+        .n_kv_heads = 8UL,
+    },
+    {
+        .name = "110M",
+        .asset_path = "src/apps/llama2/stories110M.bin",
+        .dim = 768UL,
+        .hidden_dim = 2048UL,
+        .n_layers = 12UL,
+        .n_heads = 12UL,
+        .n_kv_heads = 12UL,
+    },
+    {
+        .name = "Llama-3.2-1B-q8_0",
+        .asset_path = "src/apps/llama2/llama3.2.c/Llama-3.2-1B-q8_0.bin",
+        .dim = 2048UL,
+        .hidden_dim = 8192UL,
+        .n_layers = 16UL,
+        .n_heads = 32UL,
+        .n_kv_heads = 8UL,
+    },
+    {
+        .name = "Llama-3.2-3B-q8_0",
+        .asset_path = "src/apps/llama2/llama3.2.c/Llama-3.2-3B-q8_0.bin",
+        .dim = 3072UL,
+        .hidden_dim = 8192UL,
+        .n_layers = 28UL,
+        .n_heads = 24UL,
+        .n_kv_heads = 8UL,
+    },
+};
+
+static const ShapeCfgEntry kShapeCfgs[] = {
+    {.M = 128UL, .N = 288UL, .K = 288UL, .cfg = {16UL, 16UL, 64UL, 1UL, 4UL, 0UL}},
+    {.M = 128UL, .N = 768UL, .K = 288UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 128UL, .N = 288UL, .K = 768UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 128UL, .N = 512UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 128UL, .N = 1376UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 128UL, .N = 512UL, .K = 1376UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 128UL, .N = 768UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 128UL, .N = 2048UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 128UL, .N = 768UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 128UL, .N = 2048UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 128UL, .N = 512UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 128UL, .N = 8192UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 128UL, .N = 2048UL, .K = 8192UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 128UL, .N = 3072UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 128UL, .N = 1024UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 128UL, .N = 8192UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 128UL, .N = 3072UL, .K = 8192UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+};
+
+static void init_buffers(void)
+{
+    static int initialized = 0;
+    if (initialized)
+        return;
+    for (unsigned long i = 0; i < LLAMA2_MAX_ACT_BYTES; ++i)
+        g_activation_buf[i] = (int8_t)((i & 0x7UL) - 3);
+    for (unsigned long i = 0; i < LLAMA2_MAX_WEIGHT_BYTES; ++i)
+        g_weight_buf[i] = (int8_t)(0x5a ^ (int)(i & 0x3fUL));
+    for (unsigned long i = 0; i < LLAMA2_MAX_OUTPUT_ELEMS; ++i)
+        g_output_buf[i] = 0;
+    initialized = 1;
+}
+
+static const ShapeCfgEntry *find_shape_cfg(unsigned long M, unsigned long N, unsigned long K)
+{
+    for (unsigned long i = 0; i < (sizeof(kShapeCfgs) / sizeof(kShapeCfgs[0])); ++i)
+    {
+        const ShapeCfgEntry *entry = &kShapeCfgs[i];
+        if (entry->M == M && entry->N == N && entry->K == K)
+            return entry;
+    }
+    return 0;
+}
+
+static llama_rvv_exec_cfg_t default_rvv_cfg(void)
+{
+    llama_rvv_exec_cfg_t cfg = {
+        .mtile = 8UL,
+        .ntile = 64UL,
+        .ktile = 128UL,
+        .gm = 1UL,
+        .gn = 2UL,
+        .prec = 0UL,
+    };
+    return cfg;
+}
+
+static int build_profile_ops(const LlamaQuickProfile *profile, BenchOp *ops, int cap)
+{
+    const unsigned long kv_dim = (profile->dim * profile->n_kv_heads) / profile->n_heads;
+    const struct
+    {
+        const char *name;
+        unsigned long N;
+        unsigned long K;
+    } templates[] = {
+        {"q_proj", profile->dim, profile->dim},
+        {"k_proj", kv_dim, profile->dim},
+        {"v_proj", kv_dim, profile->dim},
+        {"o_proj", profile->dim, profile->dim},
+        {"gate_proj", profile->hidden_dim, profile->dim},
+        {"up_proj", profile->hidden_dim, profile->dim},
+        {"down_proj", profile->dim, profile->hidden_dim},
+    };
+
+    if (cap < (int)(sizeof(templates) / sizeof(templates[0])))
+        return 0;
+
+    for (unsigned long i = 0; i < (sizeof(templates) / sizeof(templates[0])); ++i)
+    {
+        const ShapeCfgEntry *shape_cfg = find_shape_cfg(LLAMA2_COMPARE_M, templates[i].N, templates[i].K);
+        if (!shape_cfg)
+            return 0;
+        ops[i].name = templates[i].name;
+        ops[i].M = LLAMA2_COMPARE_M;
+        ops[i].N = templates[i].N;
+        ops[i].K = templates[i].K;
+        ops[i].bmpmm_cfg = shape_cfg->cfg;
+        ops[i].rvv_cfg = default_rvv_cfg();
+    }
+    return (int)(sizeof(templates) / sizeof(templates[0]));
+}
+
+static int64_t run_bmpmm_fast(const BenchOp *op)
+{
+    int64_t estimated_total = 0;
+    llama_bmpmm_exec_opts_t opts = {
+        .mode = BMPMM_LOWP_EXEC_FAST,
+        .estimated_total_cycles = &estimated_total,
+    };
+    if (!llama_bmpmm_binary_with_cfg_opts(g_output_buf, g_activation_buf, g_weight_buf, op->M, op->K, op->N, &op->bmpmm_cfg, &opts))
+        return -1;
+    return estimated_total;
+}
+
+static int64_t run_rvv_fast(const BenchOp *op)
+{
+    int64_t estimated_total = 0;
+    llama_rvv_exec_opts_t opts = {
+        .mode = LLAMA2_RVV_EXEC_FAST,
+        .estimated_total_cycles = &estimated_total,
+    };
+    if (!llama_rvv_binary_with_cfg_opts(g_output_buf, g_activation_buf, g_weight_buf, op->M, op->K, op->N, &op->rvv_cfg, &opts))
+        return -1;
+    return estimated_total;
+}
+
+int main(void)
+{
+    BenchOp ops[7];
+    init_buffers();
+
+    printf("[llama2] quick compare mode\n");
+    printf("[llama2] offline BMPMM tiling search source: tmp/llama_quickcompare_best_binary.csv\n");
+    printf("[llama2] proxy workload: first-layer GEMMs only, M=%lu tokens, excludes rope/softmax/norm/lm_head\n", LLAMA2_COMPARE_M);
+    printf("[llama2] RVV baseline: current generic rvv_binary fast path (mtile=8, ntile=64, ktile=128, gm=1, gn=2)\n");
+
+    for (unsigned long p = 0; p < (sizeof(kProfiles) / sizeof(kProfiles[0])); ++p)
+    {
+        const LlamaQuickProfile *profile = &kProfiles[p];
+        const int op_count = build_profile_ops(profile, ops, 7);
+        int64_t bmpmm_layer_cycles = 0;
+        int64_t rvv_layer_cycles = 0;
+
+        if (op_count <= 0)
+        {
+            printf("[llama2] ERROR: missing shape config for profile %s\n", profile->name);
+            return 1;
+        }
+
+        printf("\n============================================================\n");
+        printf("[llama2] model=%s\n", profile->name);
+        printf("[llama2] source=%s\n", profile->asset_path);
+        printf("[llama2] dim=%lu hidden=%lu layers=%lu heads=%lu kv_heads=%lu\n",
+               profile->dim, profile->hidden_dim, profile->n_layers, profile->n_heads, profile->n_kv_heads);
+        printf("============================================================\n");
+
+        for (int i = 0; i < op_count; ++i)
+        {
+            const BenchOp *op = &ops[i];
+            const int64_t bmpmm_cycles = run_bmpmm_fast(op);
+            const int64_t rvv_cycles = run_rvv_fast(op);
+            const double speedup = (bmpmm_cycles > 0 && rvv_cycles > 0) ? ((double)rvv_cycles / (double)bmpmm_cycles) : 0.0;
+
+            if (bmpmm_cycles < 0 || rvv_cycles < 0)
+            {
+                printf("[llama2] ERROR: fast compare failed for %s shape=(%lu,%lu,%lu)\n",
+                       op->name, op->M, op->N, op->K);
+                return 1;
+            }
+
+            bmpmm_layer_cycles += bmpmm_cycles;
+            rvv_layer_cycles += rvv_cycles;
+
+            printf("[llama2] op=%-10s shape=(%lu,%lu,%lu) "
+                   "bmpmm_cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu) "
+                   "bmpmm_cycles=%ld rvv_cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu) "
+                   "rvv_cycles=%ld speedup=%.3fx\n",
+                   op->name,
+                   op->M, op->N, op->K,
+                   op->bmpmm_cfg.mtile, op->bmpmm_cfg.ntile, op->bmpmm_cfg.ktile, op->bmpmm_cfg.gm, op->bmpmm_cfg.gn,
+                   (long)bmpmm_cycles,
+                   op->rvv_cfg.mtile, op->rvv_cfg.ntile, op->rvv_cfg.ktile, op->rvv_cfg.gm, op->rvv_cfg.gn,
+                   (long)rvv_cycles,
+                   speedup);
+        }
+
+        printf("[llama2] layer_proxy bmpmm_cycles=%ld rvv_cycles=%ld speedup=%.3fx\n",
+               (long)bmpmm_layer_cycles,
+               (long)rvv_layer_cycles,
+               rvv_layer_cycles > 0 ? (double)rvv_layer_cycles / (double)bmpmm_layer_cycles : 0.0);
+        printf("[llama2] model_proxy bmpmm_cycles=%ld rvv_cycles=%ld speedup=%.3fx\n",
+               (long)(bmpmm_layer_cycles * (int64_t)profile->n_layers),
+               (long)(rvv_layer_cycles * (int64_t)profile->n_layers),
+               rvv_layer_cycles > 0 ? (double)rvv_layer_cycles / (double)bmpmm_layer_cycles : 0.0);
+    }
+
+    return 0;
+}
+
 #endif
