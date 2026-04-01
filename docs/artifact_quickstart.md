@@ -2,6 +2,15 @@
 
 This document is the shortest path from cloning BitFly to running a correctness check, launching a benchmark app, and regenerating the roofline figure.
 
+## What You Should Learn From This Guide
+
+After following this page once, you should know:
+
+- where maintained BitFly source lives
+- how to sync that source into the buildable Ara tree
+- how to run one correctness regression and one benchmark flow
+- where generated outputs are supposed to land
+
 ## 1. Clone the repository
 
 ```bash
@@ -31,6 +40,8 @@ scripts/dev/sync_src_to_ara.sh
 
 This copies maintained overlays from `src/` into the buildable Ara working tree under `ara/`.
 
+If you plan to preserve a change in the repository, treat this sync step as mandatory rather than optional.
+
 ## 4. Run the fastest correctness regression
 
 ```bash
@@ -44,6 +55,8 @@ Expected success signature:
 ```text
 ALL CASES PASSED
 ```
+
+Use this regression before long benchmark campaigns and after any maintained BMPU-related software or RTL change.
 
 ## 5. Run one benchmark app
 
@@ -61,6 +74,8 @@ Typical outputs appear under `tmp/model_app_runs/<run>/`:
 - `runner.log`
 - `summary.csv`
 - `batch_XX/<app>.log`
+
+Treat that run directory as the minimal reproducibility unit for a benchmark result.
 
 ## 6. Run a full benchmark campaign
 
@@ -95,4 +110,14 @@ ara/  = synced build and simulation tree
 tmp/  = generated outputs
 ```
 
-If you need a more detailed repository explanation, continue with [`repo_guide.md`](repo_guide.md), [`../src/README.md`](../src/README.md), and [`../scripts/README.md`](../scripts/README.md).
+## What Not To Commit As Maintained Source
+
+These are typically local or generated artifacts rather than maintained project logic:
+
+- simulator logs
+- large model binaries
+- traces and debug dumps
+- temporary patch exports
+- benchmark run directories under `tmp/`
+
+If you need a more detailed repository explanation, continue with [`repo_structure.md`](repo_structure.md), [`repo_guide.md`](repo_guide.md), [`../src/README.md`](../src/README.md), and [`../scripts/README.md`](../scripts/README.md).

@@ -16,6 +16,8 @@ This is the command surface used for most paper-style benchmark runs.
 | --- | --- |
 | `run_model_split_apps.sh` | batch build-and-run launcher for the benchmark app matrix |
 | `extract_gemm_shapes.py` | helper to derive GEMM shapes from model descriptions or traces |
+| `run_llama2_verilator_prefill_sweep.sh` | focused prefill benchmark sweep for the `llama2/` flow |
+| `plot_llama2_verilator_prefill_summary.py` | compact plotting helper for prefill sweep summaries |
 | `models.txt` | default model list used by the workflow |
 
 ## Common Examples
@@ -38,6 +40,12 @@ Run one app as a smoke test:
 scripts/benchmarks/run_model_split_apps.sh --mode run --apps bmpmm_INT2_gemma3_270m --parallel 1 --batch-size 1
 ```
 
+Run the dedicated llama2 prefill sweep:
+
+```bash
+scripts/benchmarks/run_llama2_verilator_prefill_sweep.sh
+```
+
 ## Output Contract
 
 Each run writes into `tmp/model_app_runs/<run_name>/`:
@@ -46,6 +54,8 @@ Each run writes into `tmp/model_app_runs/<run_name>/`:
 - `runner.log`
 - `summary.csv`
 - `batch_XX/<app>.log`
+
+The llama2 prefill sweep produces its own summary-oriented outputs and is best treated as a separate experiment flow from the main model-split benchmark matrix.
 
 For the benchmark contract and output interpretation, see:
 

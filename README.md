@@ -119,10 +119,11 @@ This produces:
 
 1. [`docs/artifact_quickstart.md`](docs/artifact_quickstart.md)
 2. [`docs/artifact_checklist.md`](docs/artifact_checklist.md)
-3. [`src/README.md`](src/README.md)
-4. [`src/apps/README.md`](src/apps/README.md)
-5. [`scripts/README.md`](scripts/README.md)
-6. [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md)
+3. [`docs/repo_structure.md`](docs/repo_structure.md)
+4. [`src/README.md`](src/README.md)
+5. [`src/apps/README.md`](src/apps/README.md)
+6. [`scripts/README.md`](scripts/README.md)
+7. [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md)
 
 ## Experimental Contract
 
@@ -192,6 +193,7 @@ The repository intentionally separates source from outputs. Measurements should 
 - [`docs/artifact_quickstart.md`](docs/artifact_quickstart.md): fastest path from clone to benchmark and plot
 - [`docs/artifact_checklist.md`](docs/artifact_checklist.md): artifact and repository release checklist
 - [`docs/benchmark_workflow.md`](docs/benchmark_workflow.md): benchmark methodology and output contract
+- [`docs/repo_structure.md`](docs/repo_structure.md): directory map and file placement guide
 - [`docs/repo_guide.md`](docs/repo_guide.md): ownership boundaries and repository mental model
 - [`src/README.md`](src/README.md): source-of-truth policy and overlay map
 - [`src/apps/README.md`](src/apps/README.md): benchmark app taxonomy

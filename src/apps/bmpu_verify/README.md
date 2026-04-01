@@ -11,14 +11,19 @@
 
 ## Current Coverage
 
-- 14 directed cases
+- 18 directed cases
 - precisions: binary, INT2, INT4
 - group shapes: `gm x gn = 2x2`, `4x1`, `1x2`, `1x4`, `8x1`, `1x8`
-- tail coverage for non-full tiles via `M=68`, `N=72`, `mtile=8`, `ntile=16`
+- tail coverage for non-full tiles and larger `ntile` edge cases
 
 The `gm=8` / `gn=8` cases are legal even when the last tile group is smaller than 8.
 Execution clips the tail group to the remaining tile count, so these cases explicitly
 exercise the clipped-group path.
+
+Additional current coverage includes small and tail-oriented binary cases such as:
+
+- `mtile=8, ntile=128` minimal and tail cases
+- `mtile=16, ntile=64` minimal and tail cases
 
 ## Data Layout Notes
 
@@ -39,6 +44,8 @@ Use this app before large benchmark campaigns when you changed:
 - low-precision packing logic
 - benchmark data generation
 - shared mixed-matmul helpers
+
+This app should remain the quickest full-flow signal that a maintained BMPU-related change is still functionally safe.
 
 ## Local Structure
 

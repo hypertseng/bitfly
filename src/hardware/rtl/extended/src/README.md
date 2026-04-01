@@ -9,6 +9,20 @@
 - lane-local execution support
 - VLSU-side support
 
+## Directory Map
+
+| Path | Responsibility |
+| --- | --- |
+| `ara.sv` / `ara_soc.sv` | top-level Ara integration overlays |
+| `ara_dispatcher.sv` | request formation and decode-side control plumbing |
+| `ara_sequencer.sv` | global instruction sequencing |
+| `lane/` | lane-local scheduling and operand movement |
+| `vlsu/` | vector memory-side support |
+
+## Edit Rule
+
+Start here when the change crosses BMPU-local logic and interacts with the broader Ara execution flow.
+
 ## Read Next
 
 - [`lane/README.md`](lane/README.md)

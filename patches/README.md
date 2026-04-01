@@ -25,3 +25,7 @@ Use this directory when you want:
 - a reviewable artifact of what changed inside `ara/`
 - a portable diff to move bitfly-managed changes between worktrees
 - a checkpoint before continuing local edits
+
+## Tracking Policy
+
+`patches/local/` is intended for local workflow support and is ignored by default. Promote a patch into tracked project history only if it serves as a deliberate reviewed artifact rather than a transient checkpoint.

@@ -22,3 +22,13 @@ With `--llvm-dst`, it can also sync:
 ## Why It Matters
 
 BitFly uses `src/` as the maintained source of truth. This script makes that policy operational and keeps the synced Ara delta inspectable and reviewable.
+
+## Practical Rule
+
+Use `scripts/dev/` when the task is repository maintenance rather than experiment execution.
+
+Typical examples:
+
+- syncing maintained overlays from `src/` into `ara/`
+- promoting a useful Ara-side experiment back into maintained BitFly overlays
+- inspecting sync boundaries before a commit or review

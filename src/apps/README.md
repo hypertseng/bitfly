@@ -56,6 +56,20 @@ under the same model-derived shape set.
 
 The batch runner primarily targets the model-split apps.
 
+## Naming Contract
+
+For model-split apps, the directory name itself is part of the experiment contract:
+
+```text
+<implementation>_<precision>_<model>
+```
+
+That name should stay aligned with:
+
+- the generator inputs
+- the emitted tensors under `kernel/`
+- the reporting keys written into benchmark summaries
+
 ## Common App Structure
 
 Most benchmark app directories contain:
@@ -82,6 +96,10 @@ Most benchmark app directories contain:
 - `bmpmm_*` versus `rvv_*` is the main reported comparison.
 - `llama2/` is not the same thing as the benchmark matrix used by `run_model_split_apps.sh`.
 - `common/` is the right place to factor out behavior shared across multiple apps.
+
+## Documentation Rule
+
+When you introduce a new maintained workflow under `src/apps/`, document it at the shared-tree level first unless the workflow is truly local to one app directory. This keeps the many repetitive benchmark directories from drifting out of sync.
 
 ## Related Documentation
 

@@ -22,6 +22,19 @@ The `scripts/` tree is the command surface of BitFly. It is organized by workflo
 | [`debug/`](debug/README.md) | focused debug launchers for hardware blocks |
 | [`dev/`](dev/README.md) | sync and repository maintenance helpers |
 
+## Workflow Policy
+
+Use `scripts/` as the repository command surface, not as a dumping ground for unrelated helpers.
+
+Prefer:
+
+- `scripts/dev/` for sync and maintenance operations
+- `scripts/benchmarks/` for experiment launchers
+- `scripts/analysis/` for post-processing and figure generation
+- `scripts/debug/` for shortest-loop hardware debug
+
+If a script does not clearly fit one of those workflows, it usually needs either a better home or better documentation.
+
 ## Command Notes
 
 ### Sync
@@ -58,3 +71,11 @@ Historical wrapper paths remain available so older shell history continues to wo
 - `scripts/sync_src_to_ara.sh`
 
 For new documentation, new automation, and paper references, prefer the categorized paths under `scripts/`.
+
+## Output Discipline
+
+Runner and analysis scripts should write outputs into explicit run or output directories rather than beside maintained source files. The normal homes are:
+
+- `tmp/model_app_runs/` for benchmark campaigns
+- dedicated figure/output directories for analysis products
+- `patches/local/` for local exported sync patches

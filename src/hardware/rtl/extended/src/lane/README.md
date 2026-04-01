@@ -10,4 +10,15 @@
 - `operand_requester.sv`: operand request path
 - `vector_regfile.sv`: vector register file overlay
 
-This directory is the right place for bugs that show up as lane imbalance, operand starvation, or register-file interaction issues.
+## Typical Problems Routed Here
+
+This directory is the right place for bugs that show up as:
+
+- lane imbalance or starvation
+- operand request / response mismatches
+- issue-side scheduling stalls
+- vector register interaction issues near BMPU or VFU execution
+
+## Edit Boundary
+
+If the bug is purely inside BMPU arithmetic or SA behavior, start from [`../../../bmpu/README.md`](../../../bmpu/README.md) instead of here.

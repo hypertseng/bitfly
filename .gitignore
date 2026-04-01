@@ -10,9 +10,30 @@ __pycache__/
 *.pyo
 
 # Editor / local notes
+.codex
 .vscode/
 function.md
+
+# Local model links / third-party checkouts
+/Llama-3.2-1B
+/Llama-3.2-3B
+/src/apps/llama2/llama3.2.c/
+
+# Local generated patches
+/patches/local/
 
 # Generated analysis artifacts
 roofline_bitfly_arch_model.pdf
 roofline_bitfly_arch_model.png
+roofline_search_results.pdf
+roofline_search_results.png
+
+# Simulation logs / traces
+bitfly_bmpu_verify*.log
+trace_hart_*.dasm
+
+# Local llama weights / story binaries
+/src/apps/llama2/Llama-3.2-1B-q8_0.bin
+/src/apps/llama2/Llama-3.2-3B-q8_0.bin
+/src/apps/llama2/stories110M.bin
+/src/apps/llama2/stories42M.bin

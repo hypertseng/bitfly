@@ -6,8 +6,9 @@ The `docs/` directory contains the workflow and reproducibility notes that sit a
 
 1. [`artifact_quickstart.md`](artifact_quickstart.md): fastest path from clone to correctness, benchmark, and roofline outputs
 2. [`artifact_checklist.md`](artifact_checklist.md): pre-release and pre-submission checklist
-3. [`repo_guide.md`](repo_guide.md): repository ownership and the `src/` versus `ara/` model
-4. [`benchmark_workflow.md`](benchmark_workflow.md): benchmark methodology, output contract, and log interpretation
+3. [`repo_structure.md`](repo_structure.md): directory map and file placement guide
+4. [`repo_guide.md`](repo_guide.md): repository ownership and the `src/` versus `ara/` model
+5. [`benchmark_workflow.md`](benchmark_workflow.md): benchmark methodology, output contract, and log interpretation
 
 ## Document Map
 
@@ -15,6 +16,7 @@ The `docs/` directory contains the workflow and reproducibility notes that sit a
 | --- | --- |
 | [`artifact_quickstart.md`](artifact_quickstart.md) | reader-facing quick start for artifact reproduction |
 | [`artifact_checklist.md`](artifact_checklist.md) | release and submission checklist for artifact hygiene |
+| [`repo_structure.md`](repo_structure.md) | directory tree, source placement, and navigation map |
 | [`repo_guide.md`](repo_guide.md) | repository mental model and ownership boundaries |
 | [`benchmark_workflow.md`](benchmark_workflow.md) | benchmark campaign workflow and reporting contract |
 
