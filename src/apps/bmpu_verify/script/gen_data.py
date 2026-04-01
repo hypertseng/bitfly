@@ -35,6 +35,10 @@ CASES = [
     {"tag": "case12", "name": "int2_mt8_nt16_kt64_g8x1",    "M": 64, "K": 64, "N": 64, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 8, "gn": 1, "prec": 2},
     {"tag": "case13", "name": "int4_mt8_nt16_kt64_g8x1",    "M": 64, "K": 64, "N": 64, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 8, "gn": 1, "prec": 3},
     {"tag": "case14", "name": "int4_mt8_nt16_kt64_g1x8",    "M": 68, "K": 64, "N": 72, "mtile": 8, "ntile": 16, "ktile": 64, "gm": 1, "gn": 8, "prec": 3},
+    {"tag": "case15", "name": "binary_mt8_nt128_kt64_g1x1_min",  "M": 8,  "K": 64, "N": 128, "mtile": 8,  "ntile": 128, "ktile": 64, "gm": 1, "gn": 1, "prec": 0},
+    {"tag": "case16", "name": "binary_mt8_nt128_kt64_g1x1_tail", "M": 24, "K": 64, "N": 160, "mtile": 8,  "ntile": 128, "ktile": 64, "gm": 1, "gn": 1, "prec": 0},
+    {"tag": "case17", "name": "binary_mt16_nt64_kt64_g1x1_min",  "M": 16, "K": 64, "N": 64,  "mtile": 16, "ntile": 64,  "ktile": 64, "gm": 1, "gn": 1, "prec": 0},
+    {"tag": "case18", "name": "binary_mt16_nt64_kt64_g1x1_tail", "M": 32, "K": 64, "N": 96,  "mtile": 16, "ntile": 64,  "ktile": 64, "gm": 1, "gn": 1, "prec": 0},
 ]
 
 

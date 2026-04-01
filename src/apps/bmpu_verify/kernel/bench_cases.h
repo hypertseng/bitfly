@@ -3,7 +3,7 @@
 
 #include "../../common/bmpmm_bench_common.h"
 
-#define BMPMM_BENCH_CASE_COUNT 14
+#define BMPMM_BENCH_CASE_COUNT 18
 
 static const bmpmm_bench_case_t kBenchCases[BMPMM_BENCH_CASE_COUNT] = {
     {"tiny", "bitfly-bmpu_verify", "binary_mt8_nt16_kt64_g2x2", 64UL, 64UL, 64UL, {8UL, 16UL, 64UL, 2UL, 2UL, 0UL}},
@@ -20,6 +20,10 @@ static const bmpmm_bench_case_t kBenchCases[BMPMM_BENCH_CASE_COUNT] = {
     {"tiny", "bitfly-bmpu_verify", "int2_mt8_nt16_kt64_g8x1", 64UL, 64UL, 64UL, {8UL, 16UL, 64UL, 8UL, 1UL, 2UL}},
     {"tiny", "bitfly-bmpu_verify", "int4_mt8_nt16_kt64_g8x1", 64UL, 64UL, 64UL, {8UL, 16UL, 64UL, 8UL, 1UL, 3UL}},
     {"tiny", "bitfly-bmpu_verify", "int4_mt8_nt16_kt64_g1x8", 68UL, 72UL, 64UL, {8UL, 16UL, 64UL, 1UL, 8UL, 3UL}},
+    {"tiny", "bitfly-bmpu_verify", "binary_mt8_nt128_kt64_g1x1_min", 8UL, 128UL, 64UL, {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {"tiny", "bitfly-bmpu_verify", "binary_mt8_nt128_kt64_g1x1_tail", 24UL, 160UL, 64UL, {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {"tiny", "bitfly-bmpu_verify", "binary_mt16_nt64_kt64_g1x1_min", 16UL, 64UL, 64UL, {16UL, 64UL, 64UL, 1UL, 1UL, 0UL}},
+    {"tiny", "bitfly-bmpu_verify", "binary_mt16_nt64_kt64_g1x1_tail", 32UL, 96UL, 64UL, {16UL, 64UL, 64UL, 1UL, 1UL, 0UL}},
 };
 
 #endif

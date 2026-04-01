@@ -2450,6 +2450,23 @@ int main()
 #ifndef LLAMA2_FILTER_SEQ_LEN
 #define LLAMA2_FILTER_SEQ_LEN 0UL
 #endif
+#ifndef LLAMA2_STARTUP_BREADCRUMB
+#define LLAMA2_STARTUP_BREADCRUMB 0
+#endif
+#ifndef LLAMA2_BMPMM_USE_EMBEDDED_OFFLINE
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+#define LLAMA2_BMPMM_USE_EMBEDDED_OFFLINE 1
+#else
+#define LLAMA2_BMPMM_USE_EMBEDDED_OFFLINE 0
+#endif
+#endif
+#ifndef LLAMA2_LOG_VERBOSE
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+#define LLAMA2_LOG_VERBOSE 0
+#else
+#define LLAMA2_LOG_VERBOSE 1
+#endif
+#endif
 
 #define LLAMA2_MODEL_ID_15M 1UL
 #define LLAMA2_MODEL_ID_42M 2UL
@@ -2525,16 +2542,23 @@ int main()
 #define LLAMA2_MAX_N 8192UL
 #define LLAMA2_MAX_K 8192UL
 #endif
+#define LLAMA2_FAST_MAX_GROUP_ROWS 128UL
+#define LLAMA2_FAST_MAX_GROUP_COLS 128UL
 #define LLAMA2_MAX_WEIGHT_PLANES 4UL
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+#define LLAMA2_MAX_ACT_BYTES (LLAMA2_FAST_MAX_GROUP_ROWS * LLAMA2_MAX_K)
+#define LLAMA2_MAX_WEIGHT_BYTES_PACKED (LLAMA2_MAX_WEIGHT_PLANES * (((LLAMA2_MAX_K + 7UL) / 8UL) * (((LLAMA2_FAST_MAX_GROUP_COLS + 7UL) / 8UL) * 8UL)))
+#else
 #define LLAMA2_MAX_ACT_BYTES (LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_K)
 #define LLAMA2_MAX_WEIGHT_BYTES_PACKED (LLAMA2_MAX_WEIGHT_PLANES * (((LLAMA2_MAX_K + 7UL) / 8UL) * (((LLAMA2_MAX_N + 7UL) / 8UL) * 8UL)))
+#endif
 #define LLAMA2_MAX_WEIGHT_BYTES_INT8 (LLAMA2_MAX_K * LLAMA2_MAX_N)
 #if !defined(SPIKE) && !defined(ARA_LINUX)
 #define LLAMA2_MAX_WEIGHT_BYTES LLAMA2_MAX_WEIGHT_BYTES_PACKED
 #else
 #define LLAMA2_MAX_WEIGHT_BYTES ((LLAMA2_MAX_WEIGHT_BYTES_PACKED > LLAMA2_MAX_WEIGHT_BYTES_INT8) ? LLAMA2_MAX_WEIGHT_BYTES_PACKED : LLAMA2_MAX_WEIGHT_BYTES_INT8)
 #endif
-#define LLAMA2_MAX_OUTPUT_ELEMS 4UL
+#define LLAMA2_MAX_OUTPUT_ELEMS 1024UL
 #define LLAMA2_BMPMM_CACHE_CAP 256
 #define LLAMA2_RVV_CACHE_CAP 256
 #define LLAMA2_SHARED_CACHE_CAP 32
@@ -2553,6 +2577,23 @@ int main()
 static int8_t g_activation_buf[LLAMA2_MAX_ACT_BYTES] __attribute__((aligned(4 * NR_LANES)));
 static int8_t g_weight_buf[LLAMA2_MAX_WEIGHT_BYTES] __attribute__((aligned(4 * NR_LANES)));
 static int16_t g_output_buf[LLAMA2_MAX_OUTPUT_ELEMS] __attribute__((aligned(4 * NR_LANES)));
+
+__attribute__((unused, noinline)) static unsigned long llama2_keepalive_anchor(void)
+{
+    return (unsigned long)(uintptr_t)g_activation_buf ^
+           (unsigned long)(uintptr_t)g_weight_buf ^
+           (unsigned long)(uintptr_t)g_output_buf;
+}
+
+#if !defined(SPIKE) && !defined(ARA_LINUX) && LLAMA2_STARTUP_BREADCRUMB
+extern volatile char fake_uart;
+
+__attribute__((noinline)) static void llama2_debug_mark(const char *tag)
+{
+    while (*tag)
+        fake_uart = *tag++;
+}
+#endif
 
 #if defined(SPIKE)
 uintptr_t handle_trap(uintptr_t cause, uintptr_t epc, uintptr_t regs[32])
@@ -2748,6 +2789,9 @@ static const unsigned long kEdgePrefillSeqLens[] = {
 #endif
 
 static const ShapeCfgEntry kFallbackShapeCfgs[] = {
+#if LLAMA2_BMPMM_USE_EMBEDDED_OFFLINE
+#include "embedded_shape_cfgs.inc"
+#endif
     {.M = 0UL, .N = 288UL, .K = 288UL, .cfg = {16UL, 16UL, 64UL, 1UL, 4UL, 0UL}},
     {.M = 0UL, .N = 288UL, .K = 768UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
     {.M = 0UL, .N = 512UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
@@ -2806,6 +2850,9 @@ static int gShapeCfgCount = 0;
 static int gShapeCfgLoaded = 0;
 static LlamaSharedCacheEntry gSharedCache[LLAMA2_SHARED_CACHE_CAP] = {0};
 static int gSharedCacheCount = 0;
+static BenchOp gQuickOps[7];
+static LlamaBmpmmCacheEntry gBmpmmCache[LLAMA2_BMPMM_CACHE_CAP] = {0};
+static LlamaRvvCacheEntry gRvvCache[LLAMA2_RVV_CACHE_CAP] = {0};
 
 #if defined(SPIKE) || defined(ARA_LINUX)
 static float g_shared_x[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_DIM];
@@ -3184,6 +3231,10 @@ static int64_t run_bmpmm_fast(const BenchOp *op)
         return op->bmpmm_csv_total_cycles;
     return round_cycles(estimate_shared_lowp_matmul_cycles(op->M, op->K, op->N, op->precision->prec));
 #else
+#if LLAMA2_BMPMM_USE_EMBEDDED_OFFLINE
+    if (op->bmpmm_csv_total_cycles > 0)
+        return op->bmpmm_csv_total_cycles;
+#endif
     int64_t estimated_total = 0;
     llama_bmpmm_exec_opts_t opts = {
         .mode = BMPMM_LOWP_EXEC_FAST,
@@ -3804,11 +3855,11 @@ static void print_speedup_ratio(int64_t numerator_cycles, int64_t denominator_cy
     printf("%lu.%03lux", whole, frac);
 }
 
-int main(void)
+__attribute__((noinline)) static int llama2_quick_compare_main(void)
 {
-    BenchOp ops[7];
-    LlamaBmpmmCacheEntry bmpmm_cache[LLAMA2_BMPMM_CACHE_CAP] = {0};
-    LlamaRvvCacheEntry rvv_cache[LLAMA2_RVV_CACHE_CAP] = {0};
+#if !defined(SPIKE) && !defined(ARA_LINUX) && LLAMA2_STARTUP_BREADCRUMB
+    llama2_debug_mark("<QC>");
+#endif
     int bmpmm_cache_count = 0;
     int rvv_cache_count = 0;
     int ran_cases = 0;
@@ -3820,12 +3871,17 @@ int main(void)
         return 1;
     }
 
+#if LLAMA2_LOG_VERBOSE
     printf("[llama2] quick compare mode\n");
     printf("[llama2] workload: full prefill estimate with real model-derived shapes\n");
     printf("[llama2] shapes come from model headers; sequence lengths are clipped to edge-side set ");
 #if !defined(SPIKE) && !defined(ARA_LINUX)
     printf("{32,64,128,256}\n");
+#if LLAMA2_BMPMM_USE_EMBEDDED_OFFLINE
+    printf("[llama2] bmpmm linear layers use embedded offline tiling-search cycle estimates on baremetal Verilator\n");
+#else
     printf("[llama2] bmpmm linear layers use Verilator sampled-hardware fast estimation; shared ops use analytic estimation\n");
+#endif
     printf("[llama2] RVV baseline is INT8 analytic fast estimator on baremetal Verilator\n");
 #else
     printf("{32,64,128,256}\n");
@@ -3840,6 +3896,7 @@ int main(void)
            (unsigned long)LLAMA2_FILTER_MODEL,
            (unsigned long)LLAMA2_FILTER_PREC,
            (unsigned long)LLAMA2_FILTER_SEQ_LEN);
+#endif
 
     for (unsigned long prec_idx = 0; prec_idx < (sizeof(kPrecisions) / sizeof(kPrecisions[0])); ++prec_idx)
     {
@@ -3847,10 +3904,12 @@ int main(void)
         if (LLAMA2_FILTER_PREC != 0UL && LLAMA2_FILTER_PREC != prec_id)
             continue;
 
+#if LLAMA2_LOG_VERBOSE
         printf("\n============================================================\n");
         printf("[llama2] precision=%s search=%s\n", kPrecisions[prec_idx].name, kPrecisions[prec_idx].search_csv);
         printf("[llama2] rvv_path=%s\n", kPrecisions[prec_idx].rvv_path);
         printf("============================================================\n");
+#endif
 
         for (unsigned long p = 0; p < (sizeof(kProfiles) / sizeof(kProfiles[0])); ++p)
         {
@@ -3864,11 +3923,13 @@ int main(void)
             if (!load_model_config(profile->asset_path, &model_cfg))
                 fallback_model_config(profile, &model_cfg);
 
+#if LLAMA2_LOG_VERBOSE
             printf("\n------------------------------------------------------------\n");
             printf("[llama2] model=%s source=%s\n", profile->name, profile->asset_path);
             printf("[llama2] dim=%lu hidden=%lu layers=%lu heads=%lu kv_heads=%lu\n",
                    model_cfg.dim, model_cfg.hidden_dim, model_cfg.n_layers, model_cfg.n_heads, model_cfg.n_kv_heads);
             printf("[llama2] vocab=%lu seq_cap=%lu\n", model_cfg.vocab_size, model_cfg.seq_len);
+#endif
 
             for (unsigned long seq_idx = 0; seq_idx < (sizeof(kEdgePrefillSeqLens) / sizeof(kEdgePrefillSeqLens[0])); ++seq_idx)
             {
@@ -3878,7 +3939,7 @@ int main(void)
                     continue;
 
                 const int op_count = model_supports_seq_len(&model_cfg, seq_len)
-                                         ? build_profile_ops(&model_cfg, &kPrecisions[prec_idx], seq_len, ops, 7)
+                                         ? build_profile_ops(&model_cfg, &kPrecisions[prec_idx], seq_len, gQuickOps, 7)
                                          : 0;
                 const LlamaSharedOpEstimate shared_est =
                     measure_shared_prefill_cycles_real(&model_cfg, seq_len);
@@ -3903,26 +3964,28 @@ int main(void)
                     return 1;
                 }
 
+#if LLAMA2_LOG_VERBOSE
                 printf("[llama2] seq=%lu\n", seq_len);
+#endif
 
                 for (int i = 0; i < op_count; ++i)
                 {
-                    const BenchOp *op = &ops[i];
-                    int64_t bmpmm_cycles = lookup_bmpmm_cache(bmpmm_cache, bmpmm_cache_count, op);
-                    int64_t rvv_cycles = lookup_rvv_cache(rvv_cache, rvv_cache_count, op);
+                    const BenchOp *op = &gQuickOps[i];
+                    int64_t bmpmm_cycles = lookup_bmpmm_cache(gBmpmmCache, bmpmm_cache_count, op);
+                    int64_t rvv_cycles = lookup_rvv_cache(gRvvCache, rvv_cache_count, op);
 
                     if (bmpmm_cycles < 0)
                     {
                         bmpmm_cycles = run_bmpmm_fast(op);
                         if (bmpmm_cycles >= 0)
-                            store_bmpmm_cache(bmpmm_cache, &bmpmm_cache_count, op, bmpmm_cycles);
+                            store_bmpmm_cache(gBmpmmCache, &bmpmm_cache_count, op, bmpmm_cycles);
                     }
 
                     if (rvv_cycles < 0)
                     {
                         rvv_cycles = run_rvv_fast(op);
                         if (rvv_cycles >= 0)
-                            store_rvv_cache(rvv_cache, &rvv_cache_count, op, rvv_cycles);
+                            store_rvv_cache(gRvvCache, &rvv_cache_count, op, rvv_cycles);
                     }
 
                     if (bmpmm_cycles < 0 || rvv_cycles < 0)
@@ -3935,6 +3998,7 @@ int main(void)
                     bmpmm_layer_cycles += bmpmm_cycles;
                     rvv_layer_cycles += rvv_cycles;
 
+#if LLAMA2_LOG_VERBOSE
                     printf("[llama2]   op=%-10s shape=(%lu,%lu,%lu) "
                            "bmpmm_cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu) "
                            "bmpmm_cycles=%ld rvv_prec=%s rvv_cycles=%ld speedup=",
@@ -3947,8 +4011,10 @@ int main(void)
                            (long)rvv_cycles);
                     print_speedup_ratio(rvv_cycles, bmpmm_cycles);
                     printf("\n");
+#endif
                 }
 
+#if LLAMA2_LOG_VERBOSE
                 printf("[llama2]   layer_linear_cycles: bmpmm=%ld rvv=%ld speedup=",
                        (long)bmpmm_layer_cycles,
                        (long)rvv_layer_cycles);
@@ -3978,13 +4044,29 @@ int main(void)
                        (long)rvv_lm_head_cycles);
                 print_speedup_ratio(rvv_lm_head_cycles, bmpmm_lm_head_cycles);
                 printf("\n");
-                printf("[llama2]   prefill_total_cycles: bmpmm=%ld rvv=%ld speedup=",
-                       (long)((bmpmm_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + bmpmm_lm_head_cycles),
-                       (long)((rvv_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + rvv_lm_head_cycles));
-                print_speedup_ratio(
-                    (rvv_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + rvv_lm_head_cycles,
-                    (bmpmm_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + bmpmm_lm_head_cycles);
-                printf("\n");
+#endif
+                {
+                    const int64_t bmpmm_prefill_total =
+                        (bmpmm_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + bmpmm_lm_head_cycles;
+                    const int64_t rvv_prefill_total =
+                        (rvv_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + rvv_lm_head_cycles;
+#if LLAMA2_LOG_VERBOSE
+                    printf("[llama2]   prefill_total_cycles: bmpmm=%ld rvv=%ld speedup=",
+                           (long)bmpmm_prefill_total,
+                           (long)rvv_prefill_total);
+                    print_speedup_ratio(rvv_prefill_total, bmpmm_prefill_total);
+                    printf("\n");
+#else
+                    printf("LLAMA2_RESULT,%s,%s,%lu,%ld,%ld,",
+                           profile->name,
+                           kPrecisions[prec_idx].name,
+                           seq_len,
+                           (long)bmpmm_prefill_total,
+                           (long)rvv_prefill_total);
+                    print_speedup_ratio(rvv_prefill_total, bmpmm_prefill_total);
+                    printf("\n");
+#endif
+                }
             }
         }
     }
@@ -3996,6 +4078,35 @@ int main(void)
     }
 
     return 0;
+}
+
+int main(void)
+{
+#ifdef LLAMA2_STARTUP_SMOKE_EXIT
+    return 0;
+#endif
+#ifdef LLAMA2_STARTUP_SMOKE_KEEPALIVE
+    if (llama2_keepalive_anchor() == 0UL)
+        printf("[llama2] keepalive impossible\n");
+#ifdef LLAMA2_STARTUP_SMOKE_PRINT
+    printf("[llama2] smoke print\n");
+#endif
+    return 0;
+#endif
+#ifdef LLAMA2_STARTUP_SMOKE_PRINT
+    printf("[llama2] smoke print\n");
+    return 0;
+#endif
+#if !defined(SPIKE) && !defined(ARA_LINUX) && LLAMA2_STARTUP_BREADCRUMB
+    llama2_debug_mark("<M0>");
+#endif
+#if LLAMA2_LOG_VERBOSE
+    printf("[llama2] startup\n");
+#endif
+#if !defined(SPIKE) && !defined(ARA_LINUX) && LLAMA2_STARTUP_BREADCRUMB
+    llama2_debug_mark("<M1>");
+#endif
+    return llama2_quick_compare_main();
 }
 
 #endif

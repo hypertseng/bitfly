@@ -17,6 +17,10 @@
 #define BMPMM_LOWP_DEBUG 0
 #endif
 
+#ifndef BMPMM_LOWP_DEBUG_PRINT_LIMIT
+#define BMPMM_LOWP_DEBUG_PRINT_LIMIT 8
+#endif
+
 #ifndef BMPMM_LOWP_FAST_CALL_OVERHEAD_CYCLES
 #define BMPMM_LOWP_FAST_CALL_OVERHEAD_CYCLES 320
 #endif
@@ -63,6 +67,8 @@ typedef struct
     unsigned long M;
     unsigned long mtile;
     unsigned long ntile;
+    int compact_input_layout;
+    int compact_store_layout;
     int invalid_cfg;
     int64_t *compute_cycles;
     int debug_enabled;
@@ -131,11 +137,57 @@ static inline int bmpmm_lowp_is_verify_app(const char *app_tag)
             app_tag[6] == '\0');
 }
 
+static inline int bmpmm_lowp_is_debug_app(const char *app_tag)
+{
+    if (bmpmm_lowp_is_verify_app(app_tag))
+        return 1;
+
+    return (app_tag &&
+            app_tag[0] == 'f' &&
+            app_tag[1] == 'a' &&
+            app_tag[2] == 's' &&
+            app_tag[3] == 't' &&
+            app_tag[4] == '_' &&
+            app_tag[5] == 'e' &&
+            app_tag[6] == 'r' &&
+            app_tag[7] == 'r' &&
+            app_tag[8] == 'o' &&
+            app_tag[9] == 'r' &&
+            app_tag[10] == '_' &&
+            app_tag[11] == 'c' &&
+            app_tag[12] == 'h' &&
+            app_tag[13] == 'e' &&
+            app_tag[14] == 'c' &&
+            app_tag[15] == 'k' &&
+            app_tag[16] == '_' &&
+            app_tag[17] == 'd' &&
+            app_tag[18] == 'b' &&
+            app_tag[19] == 'g' &&
+            app_tag[20] == '\0');
+}
+
+static __attribute__((unused)) inline int bmpmm_lowp_is_binary_app(const char *app_tag)
+{
+    return (app_tag &&
+            app_tag[0] == 'b' &&
+            app_tag[1] == 'm' &&
+            app_tag[2] == 'p' &&
+            app_tag[3] == 'm' &&
+            app_tag[4] == 'm' &&
+            app_tag[5] == '_' &&
+            app_tag[6] == 'b' &&
+            app_tag[7] == 'i' &&
+            app_tag[8] == 'n' &&
+            app_tag[9] == 'a' &&
+            app_tag[10] == 'r' &&
+            app_tag[11] == 'y');
+}
+
 static inline void bmpmm_lowp_emit_cfg(const bmpmm_template_cfg_t *cfg, unsigned long k_cfg, void *user)
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     unsigned long dbg_idx = ctx->emit_cfg_count++;
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] emit_cfg_begin p=%lu k=%lu mt=%lu nt=%lu gm=%lu gn=%lu\n",
                ctx->app_tag, cfg->prec, k_cfg, cfg->mtile, cfg->ntile, cfg->gm, cfg->gn);
     if (!bmpcfg_emit_prec(cfg->prec, k_cfg, cfg->mtile, cfg->ntile, cfg->gm, cfg->gn))
@@ -145,16 +197,21 @@ static inline void bmpmm_lowp_emit_cfg(const bmpmm_template_cfg_t *cfg, unsigned
         ctx->invalid_cfg = 1;
         return;
     }
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] emit_cfg_done p=%lu k=%lu\n", ctx->app_tag, cfg->prec, k_cfg);
 }
 
 static inline const void *bmpmm_lowp_addr_a(const void *A, const bmpmm_template_cfg_t *cfg,
                                             unsigned long m_tile_idx, unsigned long k0, void *user)
 {
-    (void)user;
+    bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     const int8_t *a = (const int8_t *)A;
     const unsigned long k_aligned = bmpmm_lowp_align_up_ul(cfg->K, 8UL);
+    if (ctx->compact_input_layout)
+    {
+        const unsigned long local_m = (cfg->gm != 0UL) ? (m_tile_idx % cfg->gm) : 0UL;
+        return a + local_m * cfg->mtile * k_aligned + k0;
+    }
     return a + m_tile_idx * cfg->mtile * k_aligned + k0;
 }
 
@@ -166,6 +223,11 @@ static inline const void *bmpmm_lowp_addr_b(const void *B, const bmpmm_template_
     const unsigned long n_groups_per_tile = bmpmm_ceil_div_ul(cfg->ntile, 8UL);
     const unsigned long tile_words = bmpmm_ceil_div_ul(cfg->K, 8UL) * ctx->planes * n_groups_per_tile;
     const unsigned long k_blk0 = k0 / 8UL;
+    if (ctx->compact_input_layout)
+    {
+        const unsigned long local_n = (cfg->gn != 0UL) ? (n_tile_idx % cfg->gn) : 0UL;
+        return b + (local_n * tile_words + k_blk0 * ctx->planes * n_groups_per_tile) * 8UL;
+    }
     return b + (n_tile_idx * tile_words + k_blk0 * ctx->planes * n_groups_per_tile) * 8UL;
 }
 
@@ -174,6 +236,13 @@ static inline void *bmpmm_lowp_addr_c(void *C, const bmpmm_template_cfg_t *cfg,
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     int16_t *c = (int16_t *)C;
+    if (ctx->compact_store_layout)
+    {
+        const unsigned long local_m = (cfg->gm != 0UL) ? (m_tile_idx % cfg->gm) : 0UL;
+        const unsigned long local_n = (cfg->gn != 0UL) ? (n_tile_idx % cfg->gn) : 0UL;
+        const unsigned long group_rows = cfg->gm * cfg->mtile;
+        return c + (local_n * cfg->ntile) * group_rows + (local_m * cfg->mtile);
+    }
     if (bmpmm_lowp_is_verify_app(ctx->app_tag))
     {
         const unsigned long m_tiles = bmpmm_ceil_div_ul(cfg->M, cfg->mtile);
@@ -188,10 +257,10 @@ static inline void bmpmm_lowp_load_w(const void *ptr, unsigned long w_slot, void
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     unsigned long dbg_idx = ctx->load_w_count++;
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] load_w_begin slot=%lu ptr=0x%lx\n", ctx->app_tag, w_slot, (unsigned long)ptr);
     asm volatile("bmple 0(%0), w\n\t" : : "r"(ptr) : "memory");
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] load_w_done slot=%lu\n", ctx->app_tag, w_slot);
 }
 
@@ -199,10 +268,10 @@ static inline void bmpmm_lowp_load_a(const void *ptr, unsigned long a_slot, void
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     unsigned long dbg_idx = ctx->load_a_count++;
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] load_a_begin slot=%lu ptr=0x%lx\n", ctx->app_tag, a_slot, (unsigned long)ptr);
     asm volatile("bmple 0(%0), a\n\t" : : "r"(ptr) : "memory");
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] load_a_done slot=%lu\n", ctx->app_tag, a_slot);
 }
 
@@ -211,10 +280,10 @@ static inline void bmpmm_lowp_compute(void *user)
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     unsigned long dbg_idx = ctx->compute_count++;
     int64_t start = get_cycle_count();
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] compute_begin iter=%lu\n", ctx->app_tag, dbg_idx);
     asm volatile("bmpmm\n\t" : : : "memory");
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] compute_done iter=%lu\n", ctx->app_tag, dbg_idx);
     if (ctx->compute_cycles)
         *ctx->compute_cycles += get_cycle_count() - start;
@@ -229,10 +298,10 @@ static inline void bmpmm_lowp_store_c(void *ptr, unsigned long a_slot, unsigned 
 {
     bmpmm_lowp_template_ctx_t *ctx = (bmpmm_lowp_template_ctx_t *)user;
     unsigned long dbg_idx = ctx->store_count++;
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] store_begin a=%lu w=%lu ptr=0x%lx\n", ctx->app_tag, a_slot, w_slot, (unsigned long)ptr);
     asm volatile("bmpse 0(%0)\n\t" : : "r"(ptr) : "memory");
-    if (ctx->debug_enabled && dbg_idx < 8)
+    if (ctx->debug_enabled && dbg_idx < BMPMM_LOWP_DEBUG_PRINT_LIMIT)
         printf("[%s][DBG] store_done a=%lu w=%lu\n", ctx->app_tag, a_slot, w_slot);
 }
 
@@ -856,23 +925,20 @@ static int bmpmm_lowp_execute_fast(const char *app_tag,
     const unsigned long m_tiles = bmpmm_ceil_div_ul(cfg->M, cfg->mtile);
     const unsigned long n_tiles = bmpmm_ceil_div_ul(cfg->N, cfg->ntile);
     const unsigned long k_tiles = bmpmm_ceil_div_ul(cfg->K, cfg->ktile);
-    const unsigned long full_k_tiles = cfg->K / cfg->ktile;
-    const unsigned long has_k_tail = ((cfg->K % cfg->ktile) != 0UL);
-    const unsigned long full_group_count = has_k_tail ? 0UL
-                                                      : (m_tiles / cfg->gm) * (n_tiles / cfg->gn);
+    const unsigned long full_group_count = (m_tiles / cfg->gm) * (n_tiles / cfg->gn);
+    const unsigned long enable_full_group_reuse = (full_group_count >= 2UL);
+    bmpmm_lowp_template_ctx_t meas_ctx = *ctx;
     int64_t total_cycles = 0;
     int64_t total_compute_cycles = 0;
     int64_t full_group_total = 0;
     int64_t full_group_compute = 0;
     int full_group_valid = 0;
-    int64_t full_setup_total = 0;
-    int64_t full_compute_total = 0;
-    int64_t full_compute_only = 0;
-    int64_t full_store_total = 0;
-    int full_component_valid = 0;
 
     if (m_tiles == 0UL || n_tiles == 0UL || k_tiles == 0UL)
         return 0;
+
+    meas_ctx.compact_input_layout = 0;
+    meas_ctx.compact_store_layout = 0;
 
     for (unsigned long mg = 0UL; mg < m_tiles; mg += cfg->gm)
     {
@@ -887,9 +953,9 @@ static int bmpmm_lowp_execute_fast(const char *app_tag,
             if (mg_len == 0UL || ng_len == 0UL)
                 continue;
 
-            if (!has_k_tail && mg_len == cfg->gm && ng_len == cfg->gn)
+            if (mg_len == cfg->gm && ng_len == cfg->gn)
             {
-                if (full_group_count >= 4UL)
+                if (enable_full_group_reuse)
                 {
                     if (!full_group_valid)
                     {
@@ -897,14 +963,14 @@ static int bmpmm_lowp_execute_fast(const char *app_tag,
                         int64_t warmup_compute = 0;
 
                         if (full_group_count > 1UL &&
-                            !bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, ctx,
+                            !bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, &meas_ctx,
                                                             mg, ng, cfg->gm, cfg->gn,
-                                                            &warmup_total, &warmup_compute))
+                                                            &warmup_total,
+                                                            &warmup_compute))
                         {
                             return 0;
                         }
-
-                        if (!bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, ctx,
+                        if (!bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, &meas_ctx,
                                                             mg, ng, cfg->gm, cfg->gn,
                                                             &full_group_total,
                                                             &full_group_compute))
@@ -913,49 +979,13 @@ static int bmpmm_lowp_execute_fast(const char *app_tag,
                         }
                         full_group_valid = 1;
                     }
-
                     total_cycles += full_group_total;
                     total_compute_cycles += full_group_compute;
                     continue;
                 }
-
-                if (!full_component_valid)
-                {
-                    bmpmm_template_cfg_t full_group_cfg = *cfg;
-                    bmpmm_group_plan_t full_plan;
-
-                    full_group_cfg.gm = cfg->gm;
-                    full_group_cfg.gn = cfg->gn;
-                    bmpmm_select_group_plan(&full_group_cfg, cfg->gm, cfg->gn, cfg->ktile, &full_plan);
-
-                    if (!bmpmm_lowp_measure_group_setup(cfg, cfg->gm, cfg->gn, &full_setup_total))
-                    {
-                        return 0;
-                    }
-                    if (!bmpmm_lowp_measure_compute_phase(&full_group_cfg, &full_plan, ops, a, b, ctx,
-                                                          mg, ng, 0UL, cfg->ktile,
-                                                          &full_compute_total,
-                                                          &full_compute_only))
-                    {
-                        return 0;
-                    }
-                    if (!bmpmm_lowp_measure_store_phase(&full_group_cfg, &full_plan, ops, c, ctx,
-                                                        mg, ng, cfg->ktile,
-                                                        &full_store_total))
-                    {
-                        return 0;
-                    }
-                    full_component_valid = 1;
-                }
-
-                total_cycles += full_setup_total;
-                total_cycles += (int64_t)full_k_tiles * full_compute_total;
-                total_cycles += full_store_total;
-                total_compute_cycles += (int64_t)full_k_tiles * full_compute_only;
-                continue;
             }
 
-            if (!bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, ctx,
+            if (!bmpmm_lowp_measure_group_exact(cfg, ops, a, b, c, &meas_ctx,
                                                 mg, ng, mg_len, ng_len,
                                                 &group_total,
                                                 &group_compute))
@@ -1069,9 +1099,11 @@ int bmpmm_lowp_mixed_matmul_with_cfg_opts(const char *app_tag,
         .M = M,
         .mtile = cfg.mtile,
         .ntile = cfg.ntile,
+        .compact_input_layout = (mode == BMPMM_LOWP_EXEC_FAST) ? 1 : 0,
+        .compact_store_layout = (mode == BMPMM_LOWP_EXEC_FAST) ? 1 : 0,
         .invalid_cfg = 0,
         .compute_cycles = compute_cycles,
-        .debug_enabled = BMPMM_LOWP_DEBUG && bmpmm_lowp_is_verify_app(app_tag),
+        .debug_enabled = BMPMM_LOWP_DEBUG && bmpmm_lowp_is_debug_app(app_tag),
         .emit_cfg_count = 0,
         .load_w_count = 0,
         .load_a_count = 0,

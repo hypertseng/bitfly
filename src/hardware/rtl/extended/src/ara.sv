@@ -162,8 +162,8 @@ module ara
 
     logic [16:0] k_dim;
     logic [2:0]  prec;
-    logic [5:0]  mtile;
-    logic [6:0]  ntile;
+    logic [6:0]  mtile;
+    logic [7:0]  ntile;
     logic [3:0]  gm;
     logic [3:0]  gn;
     logic [3:0]  group_g;

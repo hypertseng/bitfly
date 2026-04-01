@@ -194,8 +194,8 @@ module ara_dispatcher
 
   logic [16:0] k_dim_d, k_dim_q;
   logic [2:0] prec_d, prec_q;
-  logic [5:0] mtile_d, mtile_q;
-  logic [6:0] ntile_d, ntile_q;
+  logic [6:0] mtile_d, mtile_q;
+  logic [7:0] ntile_d, ntile_q;
   logic [3:0] gm_d, gm_q;
   logic [3:0] gn_d, gn_q;
   logic [3:0] group_g_d, group_g_q;
@@ -222,8 +222,8 @@ module ara_dispatcher
       bmp_issue_trans_id_q <= '0;
       k_dim_q              <= '0;
       prec_q               <= '0;
-      mtile_q              <= 6'd8;
-      ntile_q              <= 7'd16;
+      mtile_q              <= 7'd8;
+      ntile_q              <= 8'd16;
       gm_q                 <= 4'd1;
       gn_q                 <= 4'd1;
       group_g_q            <= 4'd1;
@@ -3944,8 +3944,8 @@ module ara_dispatcher
           riscv::OpcodeCustom1: begin
             // Decode the instruction
             automatic rvv_instruction_t insn = rvv_instruction_t'(instr.instr);
-            automatic logic [5:0] mtile_dec;
-            automatic logic [6:0] ntile_dec;
+            automatic logic [6:0] mtile_dec;
+            automatic logic [7:0] ntile_dec;
             automatic logic bmptile_illegal;
             automatic logic bmpcfg_illegal;
             automatic logic [16:0] k_dim_dec;
@@ -3975,18 +3975,18 @@ module ara_dispatcher
             endcase
 
             if (insn.custom1_type.mtile_code <= 4'd14) begin
-              mtile_dec = 6'(6'd8 + ({2'b00, insn.custom1_type.mtile_code} << 2));
+              mtile_dec = 7'(7'd8 + ({3'b000, insn.custom1_type.mtile_code} << 2));
               // Reserve odd 4-row encodings: the executable BMPU path only
               // supports 8-row mtile granularity.
               if (insn.custom1_type.mtile_code[0]) begin
                 bmptile_illegal = 1'b1;
               end
             end else begin
-              mtile_dec = 6'd8;
+              mtile_dec = 7'd8;
               bmptile_illegal = 1'b1;
             end
 
-            ntile_dec = 7'(7'd16 + ({4'b0000, insn.custom1_type.ntile_code} << 4));
+            ntile_dec = 8'(8'd16 + ({5'b00000, insn.custom1_type.ntile_code} << 4));
 
             if (bmptile_illegal) begin
               illegal_insn = 1'b1;

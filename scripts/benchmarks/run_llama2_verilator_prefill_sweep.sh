@@ -15,6 +15,7 @@ MODELS_CSV="15M,42M,110M,1B,3B"
 PRECS_CSV="W1A8,W2A8,W4A8"
 SEQS_CSV="32,64,128,256"
 LOG_ROOT=""
+DEFAULT_SEQS_CSV="32,64,128,256"
 
 usage() {
   cat <<'EOF'
@@ -66,6 +67,15 @@ split_csv() {
   IFS=',' read -r -a out_ref <<< "$csv"
 }
 
+seqs_are_edge_subset() {
+  local -a seqs
+  split_csv "$SEQS_CSV" seqs
+  for seq in "${seqs[@]}"; do
+    [[ ",$DEFAULT_SEQS_CSV," == *",$seq,"* ]] || return 1
+  done
+  return 0
+}
+
 model_id() {
   case "$1" in
     15M) echo 1 ;;
@@ -83,6 +93,22 @@ prec_id() {
     W2A8) echo 2 ;;
     W4A8) echo 3 ;;
     *) echo "Unknown precision: $1" >&2; exit 1 ;;
+  esac
+}
+
+model_matches() {
+  local requested="$1"
+  local actual="$2"
+  case "$requested" in
+    1B)
+      [[ "$actual" == "1B" || "$actual" == *"1B"* ]]
+      ;;
+    3B)
+      [[ "$actual" == "3B" || "$actual" == *"3B"* ]]
+      ;;
+    *)
+      [[ "$actual" == "$requested" ]]
+      ;;
   esac
 }
 
@@ -124,7 +150,7 @@ sanitize_name() {
 
 extract_prefill_line() {
   local logfile="$1"
-  grep -F "[llama2]   prefill_total_cycles:" "$logfile" | tail -n 1 || true
+  grep -E '^LLAMA2_RESULT,|^\[llama2\]   prefill_total_cycles:' "$logfile" | tail -n 1 || true
 }
 
 append_summary() {
@@ -142,10 +168,99 @@ append_summary() {
     return 1
   fi
 
-  bmpmm="$(echo "$line" | sed -n 's/.*bmpmm=\([0-9][0-9]*\).*/\1/p')"
-  rvv="$(echo "$line" | sed -n 's/.*rvv=\([0-9][0-9]*\).*/\1/p')"
-  speedup="$(echo "$line" | sed -n 's/.*speedup=\([0-9.][0-9.]*x\).*/\1/p')"
+  if [[ "$line" == LLAMA2_RESULT,* ]]; then
+    bmpmm="$(echo "$line" | cut -d, -f5)"
+    rvv="$(echo "$line" | cut -d, -f6)"
+    speedup="$(echo "$line" | cut -d, -f7)"
+  else
+    bmpmm="$(echo "$line" | sed -n 's/.*bmpmm=\([0-9][0-9]*\).*/\1/p')"
+    rvv="$(echo "$line" | sed -n 's/.*rvv=\([0-9][0-9]*\).*/\1/p')"
+    speedup="$(echo "$line" | sed -n 's/.*speedup=\([0-9.][0-9.]*x\).*/\1/p')"
+  fi
   echo "$model,$prec,$seq,$bmpmm,$rvv,$speedup,$logfile" >> "$SUMMARY_CSV"
+}
+
+append_summary_from_result_lines() {
+  local logfile="$1"
+  local count=0
+  while IFS= read -r line; do
+    [[ "$line" == LLAMA2_RESULT,* ]] || continue
+    echo "$line" | awk -F',' -v logfile="$logfile" '{
+      printf "%s,%s,%s,%s,%s,%s,%s\n", $2, $3, $4, $5, $6, $7, logfile
+    }' >> "$SUMMARY_CSV"
+    count=$((count + 1))
+  done < "$logfile"
+
+  if [[ "$count" -eq 0 ]]; then
+    return 1
+  fi
+  return 0
+}
+
+append_pair_summary_from_results() {
+  local model="$1"
+  local prec="$2"
+  local seqs_csv="$3"
+  local logfile="$4"
+  local count=0
+  while IFS= read -r line; do
+    local line_model
+    local line_prec
+    local line_seq
+    local line_bmpmm
+    local line_rvv
+    local line_speedup
+    [[ "$line" == LLAMA2_RESULT,* ]] || continue
+    line_model="$(echo "$line" | cut -d, -f2)"
+    line_prec="$(echo "$line" | cut -d, -f3)"
+    line_seq="$(echo "$line" | cut -d, -f4)"
+    model_matches "$model" "$line_model" || continue
+    [[ "$line_prec" == "$prec" ]] || continue
+    [[ ",$seqs_csv," == *",$line_seq,"* ]] || continue
+    line_bmpmm="$(echo "$line" | cut -d, -f5)"
+    line_rvv="$(echo "$line" | cut -d, -f6)"
+    line_speedup="$(echo "$line" | cut -d, -f7)"
+    echo "$model,$line_prec,$line_seq,$line_bmpmm,$line_rvv,$line_speedup,$logfile" >> "$SUMMARY_CSV"
+    count=$((count + 1))
+  done < "$logfile"
+
+  if [[ "$count" -eq 0 ]]; then
+    return 1
+  fi
+  return 0
+}
+
+append_model_summary_from_results() {
+  local model="$1"
+  local precs_csv="$2"
+  local seqs_csv="$3"
+  local logfile="$4"
+  local count=0
+  while IFS= read -r line; do
+    local line_model
+    local line_prec
+    local line_seq
+    local line_bmpmm
+    local line_rvv
+    local line_speedup
+    [[ "$line" == LLAMA2_RESULT,* ]] || continue
+    line_model="$(echo "$line" | cut -d, -f2)"
+    line_prec="$(echo "$line" | cut -d, -f3)"
+    line_seq="$(echo "$line" | cut -d, -f4)"
+    model_matches "$model" "$line_model" || continue
+    [[ ",$precs_csv," == *",$line_prec,"* ]] || continue
+    [[ ",$seqs_csv," == *",$line_seq,"* ]] || continue
+    line_bmpmm="$(echo "$line" | cut -d, -f5)"
+    line_rvv="$(echo "$line" | cut -d, -f6)"
+    line_speedup="$(echo "$line" | cut -d, -f7)"
+    echo "$model,$line_prec,$line_seq,$line_bmpmm,$line_rvv,$line_speedup,$logfile" >> "$SUMMARY_CSV"
+    count=$((count + 1))
+  done < "$logfile"
+
+  if [[ "$count" -eq 0 ]]; then
+    return 1
+  fi
+  return 0
 }
 
 run_case() {
@@ -165,6 +280,56 @@ run_case() {
   append_summary "$model" "$prec" "$seq" "$logfile"
 }
 
+build_pair_app() {
+  local model="$1"
+  local prec="$2"
+  local model_define
+  local prec_define
+  model_define="$(model_id "$model")"
+  prec_define="$(prec_id "$prec")"
+
+  log "Building grouped case model=$model prec=$prec seqs=$SEQS_CSV"
+  sync_llama2_app
+  make -C "$ARA_APPS_DIR" -j"$BUILD_JOBS" \
+    ENV_DEFINES="-DLLAMA2_FILTER_MODEL=$model_define -DLLAMA2_FILTER_PREC=$prec_define -DLLAMA2_FILTER_SEQ_LEN=0" \
+    bin/llama2
+}
+
+build_model_app() {
+  local model="$1"
+  local model_define
+  model_define="$(model_id "$model")"
+
+  log "Building grouped model=$model precs=$PRECS_CSV seqs=$SEQS_CSV"
+  sync_llama2_app
+  make -C "$ARA_APPS_DIR" -j"$BUILD_JOBS" \
+    ENV_DEFINES="-DLLAMA2_FILTER_MODEL=$model_define -DLLAMA2_FILTER_PREC=0 -DLLAMA2_FILTER_SEQ_LEN=0" \
+    bin/llama2
+}
+
+run_pair_case() {
+  local model="$1"
+  local prec="$2"
+  local logfile="$LOG_ROOT/$(sanitize_name "model_${model}__prec_${prec}__seqs_group.log")"
+  log "Running grouped case model=$model prec=$prec seqs=$SEQS_CSV"
+  (
+    cd "$HW_DIR"
+    ./build/verilator/Vara_tb_verilator -l ram,../apps/bin/llama2,elf
+  ) | tee "$logfile"
+  append_pair_summary_from_results "$model" "$prec" "$SEQS_CSV" "$logfile"
+}
+
+run_model_case() {
+  local model="$1"
+  local logfile="$LOG_ROOT/$(sanitize_name "model_${model}__group.log")"
+  log "Running grouped model=$model precs=$PRECS_CSV seqs=$SEQS_CSV"
+  (
+    cd "$HW_DIR"
+    ./build/verilator/Vara_tb_verilator -l ram,../apps/bin/llama2,elf
+  ) | tee "$logfile"
+  append_model_summary_from_results "$model" "$PRECS_CSV" "$SEQS_CSV" "$logfile"
+}
+
 main() {
   local -a models precs seqs
   split_csv "$MODELS_CSV" models
@@ -177,14 +342,23 @@ main() {
 
   build_hw_if_needed
 
-  for model in "${models[@]}"; do
-    for prec in "${precs[@]}"; do
-      for seq in "${seqs[@]}"; do
-        build_case "$model" "$prec" "$seq"
-        run_case "$model" "$prec" "$seq"
+  if seqs_are_edge_subset; then
+    for model in "${models[@]}"; do
+      for prec in "${precs[@]}"; do
+        build_pair_app "$model" "$prec"
+        run_pair_case "$model" "$prec"
       done
     done
-  done
+  else
+    for model in "${models[@]}"; do
+      for prec in "${precs[@]}"; do
+        for seq in "${seqs[@]}"; do
+          build_case "$model" "$prec" "$seq"
+          run_case "$model" "$prec" "$seq"
+        done
+      done
+    done
+  fi
 
   log "Sweep finished. Summary: $SUMMARY_CSV"
 }
