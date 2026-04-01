@@ -24,6 +24,7 @@ PRECS_CSV=""
 IMPLS_CSV=""
 APPS_CSV=""
 EXTRA_MAKE_ARGS=""
+APP_ENV_DEFINES="-DBMPMM_LOWP_DEFAULT_MODE=BMPMM_LOWP_EXEC_FAST -DRVV_BINARY_VECTOR_DEFAULT_MODE=RVV_BINARY_VECTOR_EXEC_FAST -DRVV_INT2_VECTOR_DEFAULT_MODE=RVV_INT2_VECTOR_EXEC_FAST -DRVV_INT4_VECTOR_DEFAULT_MODE=RVV_INT4_VECTOR_EXEC_FAST"
 
 usage() {
   cat <<USAGE
@@ -45,6 +46,7 @@ Options:
   --heartbeat-sec <N>          runner heartbeat interval, default: 60
   --poll-sec <N>               runner poll interval, default: 5
   --extra-make-args <string>   extra args appended to hardware make
+  --app-env-defines <string>   app build ENV_DEFINES, default enables fast estimate for bmpmm/rvv
   -h, --help                   show help
 
 Examples:
@@ -70,6 +72,7 @@ while [[ $# -gt 0 ]]; do
     --heartbeat-sec) HEARTBEAT_SEC="$2"; shift 2 ;;
     --poll-sec) POLL_SEC="$2"; shift 2 ;;
     --extra-make-args) EXTRA_MAKE_ARGS="$2"; shift 2 ;;
+    --app-env-defines) APP_ENV_DEFINES="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage; exit 1 ;;
   esac
@@ -88,6 +91,29 @@ mkdir -p "$LOG_ROOT"
 RUNNER_LOG="$LOG_ROOT/runner.log"
 SUMMARY_CSV="$LOG_ROOT/summary.csv"
 APPS_TXT="$LOG_ROOT/apps.txt"
+MAIN_BASHPID="${BASHPID:-$$}"
+IN_BATCH=0
+CURRENT_BATCH_NAME=""
+ACTIVE_PIDS=()
+
+cleanup_active_batch() {
+  local self_pid="${BASHPID:-$$}"
+  local pid
+
+  if [[ "$self_pid" != "$MAIN_BASHPID" ]]; then
+    return 0
+  fi
+  if [[ "$IN_BATCH" -ne 1 || ${#ACTIVE_PIDS[@]} -eq 0 ]]; then
+    return 0
+  fi
+
+  log "Cleaning up $CURRENT_BATCH_NAME with ${#ACTIVE_PIDS[@]} active app runners"
+  for pid in "${ACTIVE_PIDS[@]}"; do
+    kill "$pid" 2>/dev/null || true
+  done
+}
+
+trap cleanup_active_batch EXIT HUP INT TERM
 
 log() {
   echo "[$(date '+%F %T')] $*" | tee -a "$RUNNER_LOG"
@@ -174,8 +200,9 @@ build_apps() {
     bins+=("bin/$app")
   done
   log "Building ${#apps[@]} apps with -j$BUILD_JOBS"
+  log "App ENV_DEFINES: $APP_ENV_DEFINES"
   activate_env
-  make -j"$BUILD_JOBS" -C "$APPS_DIR" -B "${bins[@]}"
+  make -j"$BUILD_JOBS" -C "$APPS_DIR" -B ENV_DEFINES="$APP_ENV_DEFINES" "${bins[@]}"
 }
 
 build_verilator() {
@@ -238,6 +265,9 @@ run_batch() {
   mkdir -p "$batch_dir"
   log "Running $batch_name with ${#apps[@]} apps, parallel=$PARALLEL"
   last_heartbeat=$(date +%s)
+  IN_BATCH=1
+  CURRENT_BATCH_NAME="$batch_name"
+  ACTIVE_PIDS=()
 
   reap_finished() {
     local -a keep_pids=() keep_apps=() keep_starts=()
@@ -254,6 +284,7 @@ run_batch() {
     active_pids=("${keep_pids[@]}")
     active_apps=("${keep_apps[@]}")
     active_starts=("${keep_starts[@]}")
+    ACTIVE_PIDS=("${active_pids[@]}")
   }
 
   emit_heartbeat() {
@@ -279,6 +310,7 @@ run_batch() {
     active_pids+=("$pid")
     active_apps+=("$app")
     active_starts+=("$(date +%s)")
+    ACTIVE_PIDS=("${active_pids[@]}")
     log "LAUNCH $batch_name app=$app pid=$pid logfile=$batch_dir/${app}.log"
     while (( ${#active_pids[@]} >= PARALLEL )); do
       sleep "$POLL_SEC"
@@ -294,6 +326,9 @@ run_batch() {
   done
 
   log "Completed $batch_name"
+  ACTIVE_PIDS=()
+  CURRENT_BATCH_NAME=""
+  IN_BATCH=0
 }
 
 main() {

@@ -1,12 +1,26 @@
 #include "vector.h"
 #include "runtime.h"
 
+#ifdef RVV_BINARY_FAST_DEBUG
+#ifdef SPIKE
+#include <stdio.h>
+#elif defined ARA_LINUX
+#include <stdio.h>
+#else
+#include "printf.h"
+#endif
+#define RVV_BINARY_FAST_DBG(...) printf(__VA_ARGS__)
+#else
+#define RVV_BINARY_FAST_DBG(...) ((void)0)
+#endif
+
 // helper macro used by the vector kernel only
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 static unsigned long g_rvv_binary_vector_default_mode = RVV_BINARY_VECTOR_DEFAULT_MODE;
 static int64_t g_rvv_binary_vector_last_estimated_total_cycles = 0;
 static int64_t g_rvv_binary_vector_last_estimated_compute_cycles = 0;
+static int g_rvv_binary_profile_compute_cycles = 1;
 
 static inline unsigned long rvv_binary_vector_sanitize_mode(unsigned long mode)
 {
@@ -32,6 +46,21 @@ void matmul_vec_slice_init()
 }
 
 int64_t vector_compute_time = 0;
+
+#define RVV_BINARY_PROFILE_COMPUTE(stmt)        \
+    do                                          \
+    {                                           \
+        if (g_rvv_binary_profile_compute_cycles) \
+        {                                       \
+            int64_t start = get_cycle_count();  \
+            stmt;                               \
+            vector_compute_time += get_cycle_count() - start; \
+        }                                       \
+        else                                    \
+        {                                       \
+            stmt;                               \
+        }                                       \
+    } while (0)
 
 static void vector_int8_matmul_strict(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
                                       unsigned long int M, unsigned long int K, unsigned long int N)
@@ -70,9 +99,11 @@ static void rvv_binary_measure_block(int16_t *restrict c, const int8_t *restrict
                                      int64_t *block_total_cycles, int64_t *block_compute_cycles)
 {
     const int64_t saved_compute = vector_compute_time;
+    const int saved_profile_compute = g_rvv_binary_profile_compute_cycles;
     int64_t start;
 
     vector_compute_time = 0;
+    g_rvv_binary_profile_compute_cycles = 0;
     start = get_cycle_count();
     asm volatile("vsetvli zero, %0, e16, m2, ta, ma" : : "r"(n_len));
     matmul_vec_slice_init();
@@ -82,6 +113,7 @@ static void rvv_binary_measure_block(int16_t *restrict c, const int8_t *restrict
         *block_total_cycles = get_cycle_count() - start;
     if (block_compute_cycles)
         *block_compute_cycles = vector_compute_time;
+    g_rvv_binary_profile_compute_cycles = saved_profile_compute;
     vector_compute_time = saved_compute;
 }
 
@@ -129,6 +161,9 @@ static void vector_int8_matmul_fast(int16_t *restrict c, const int8_t *restrict 
             total_compute_cycles += (int64_t)m_blocks * tail_block_compute;
         }
     }
+
+    RVV_BINARY_FAST_DBG("[rvv_binary][fast_dbg] sampled M=%lu K=%lu N=%lu total=%ld\n",
+                        M, K, N, (long)total_cycles);
 
     vector_compute_time = total_compute_cycles;
     g_rvv_binary_vector_last_estimated_total_cycles = total_cycles;
@@ -237,44 +272,28 @@ void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
 
         asm volatile("vle8.v v20, (%0);" ::"r"(b));
         b += N;
-        int64_t start = get_cycle_count();
-        asm volatile("vwmacc.vx v0, %0, v18" ::"r"(t0));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v0, %0, v18" ::"r"(t0)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t0) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v2, %0, v18" ::"r"(t1));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v2, %0, v18" ::"r"(t1)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t1) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v4, %0, v18" ::"r"(t2));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v4, %0, v18" ::"r"(t2)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t2) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v6, %0, v18" ::"r"(t3));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v6, %0, v18" ::"r"(t3)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t3) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v8, %0, v18" ::"r"(t4));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v8, %0, v18" ::"r"(t4)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t4) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v10, %0, v18" ::"r"(t5));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v10, %0, v18" ::"r"(t5)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t5) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v12, %0, v18" ::"r"(t6));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v12, %0, v18" ::"r"(t6)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t6) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v14, %0, v18" ::"r"(t7));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v14, %0, v18" ::"r"(t7)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t7) : [a] "r"(a));
 
         // Load one row of B
@@ -285,58 +304,42 @@ void matmul_vec(int16_t *c, const int8_t *a, const int8_t *b,
             break;
 
         a = (const int8_t *)a_ + ++k;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v0, %0, v20" ::"r"(t0));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v0, %0, v20" ::"r"(t0)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t0) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v2, %0, v20" ::"r"(t1));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v2, %0, v20" ::"r"(t1)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t1) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v4, %0, v20" ::"r"(t2));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v4, %0, v20" ::"r"(t2)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t2) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v6, %0, v20" ::"r"(t3));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v6, %0, v20" ::"r"(t3)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t3) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v8, %0, v20" ::"r"(t4));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v8, %0, v20" ::"r"(t4)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t4) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v10, %0, v20" ::"r"(t5));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v10, %0, v20" ::"r"(t5)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t5) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v12, %0, v20" ::"r"(t6));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v12, %0, v20" ::"r"(t6)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t6) : [a] "r"(a));
         a += K;
-        start = get_cycle_count();
-        asm volatile("vwmacc.vx v14, %0, v20" ::"r"(t7));
-        vector_compute_time += get_cycle_count() - start;
+        RVV_BINARY_PROFILE_COMPUTE(asm volatile("vwmacc.vx v14, %0, v20" ::"r"(t7)));
         asm volatile("lb %[t], (%[a])" : [t] "=r"(t7) : [a] "r"(a));
     }
 
     // Last iteration: store results
-    int64_t start = get_cycle_count();
-    asm volatile("vwmacc.vx v0, %0, v20" ::"r"(t0));
-    asm volatile("vwmacc.vx v2, %0, v20" ::"r"(t1));
-    asm volatile("vwmacc.vx v4, %0, v20" ::"r"(t2));
-    asm volatile("vwmacc.vx v6, %0, v20" ::"r"(t3));
-    asm volatile("vwmacc.vx v8, %0, v20" ::"r"(t4));
-    asm volatile("vwmacc.vx v10, %0, v20" ::"r"(t5));
-    asm volatile("vwmacc.vx v12, %0, v20" ::"r"(t6));
-    asm volatile("vwmacc.vx v14, %0, v20" ::"r"(t7));
-    vector_compute_time += get_cycle_count() - start;
+    RVV_BINARY_PROFILE_COMPUTE(
+        asm volatile("vwmacc.vx v0, %0, v20" ::"r"(t0));
+        asm volatile("vwmacc.vx v2, %0, v20" ::"r"(t1));
+        asm volatile("vwmacc.vx v4, %0, v20" ::"r"(t2));
+        asm volatile("vwmacc.vx v6, %0, v20" ::"r"(t3));
+        asm volatile("vwmacc.vx v8, %0, v20" ::"r"(t4));
+        asm volatile("vwmacc.vx v10, %0, v20" ::"r"(t5));
+        asm volatile("vwmacc.vx v12, %0, v20" ::"r"(t6));
+        asm volatile("vwmacc.vx v14, %0, v20" ::"r"(t7));
+    );
     asm volatile("vsetivli zero, 0, e16, m2, ta, ma");
     asm volatile("vse16.v v0, (%0);" ::"r"(c));
     c += N;

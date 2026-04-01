@@ -12,7 +12,7 @@
 
 typedef struct
 {
-    // `fast` only estimates runtime from sampled inner-row execution.
+    // `fast` estimates runtime from sampled RVV block execution.
     // It does not materialize a valid full output matrix.
     unsigned long mode;
     int64_t *estimated_total_cycles;
