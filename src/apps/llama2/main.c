@@ -2429,29 +2429,144 @@ int main()
 #include "util.h"
 #include "kernel/bmpmm_compare.h"
 #include "kernel/rvv_compare.h"
+#include <stdio.h>
+#include <float.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <math.h>
 #include <string.h>
 
-#ifdef SPIKE
-#include <stdio.h>
-#elif defined ARA_LINUX
-#include <stdio.h>
-#else
+#if !defined(SPIKE) && !defined(ARA_LINUX)
 #include "printf.h"
 #endif
 
-#define LLAMA2_COMPARE_M 128UL
-#define LLAMA2_MAX_DIM 3072UL
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+#ifndef LLAMA2_FILTER_MODEL
+#define LLAMA2_FILTER_MODEL 0UL
+#endif
+#ifndef LLAMA2_FILTER_PREC
+#define LLAMA2_FILTER_PREC 0UL
+#endif
+#ifndef LLAMA2_FILTER_SEQ_LEN
+#define LLAMA2_FILTER_SEQ_LEN 0UL
+#endif
+
+#define LLAMA2_MODEL_ID_15M 1UL
+#define LLAMA2_MODEL_ID_42M 2UL
+#define LLAMA2_MODEL_ID_110M 3UL
+#define LLAMA2_MODEL_ID_1B 4UL
+#define LLAMA2_MODEL_ID_3B 5UL
+
+#define LLAMA2_PREC_ID_W1A8 1UL
+#define LLAMA2_PREC_ID_W2A8 2UL
+#define LLAMA2_PREC_ID_W4A8 3UL
+
+#if LLAMA2_FILTER_MODEL == LLAMA2_MODEL_ID_15M
+#define LLAMA2_MAX_SEQ_LEN 256UL
+#define LLAMA2_MAX_DIM 288UL
+#define LLAMA2_MAX_KV_DIM 288UL
+#define LLAMA2_MAX_HIDDEN 768UL
+#define LLAMA2_MAX_N 768UL
+#define LLAMA2_MAX_K 768UL
+#elif LLAMA2_FILTER_MODEL == LLAMA2_MODEL_ID_42M
+#define LLAMA2_MAX_SEQ_LEN 256UL
+#define LLAMA2_MAX_DIM 512UL
+#define LLAMA2_MAX_KV_DIM 512UL
+#define LLAMA2_MAX_HIDDEN 1376UL
+#define LLAMA2_MAX_N 1376UL
+#define LLAMA2_MAX_K 1376UL
+#elif LLAMA2_FILTER_MODEL == LLAMA2_MODEL_ID_110M
+#define LLAMA2_MAX_SEQ_LEN 256UL
+#define LLAMA2_MAX_DIM 768UL
+#define LLAMA2_MAX_KV_DIM 768UL
+#define LLAMA2_MAX_HIDDEN 2048UL
+#define LLAMA2_MAX_N 2048UL
+#define LLAMA2_MAX_K 2048UL
+#elif LLAMA2_FILTER_MODEL == LLAMA2_MODEL_ID_1B
+#define LLAMA2_MAX_SEQ_LEN 256UL
+#define LLAMA2_MAX_DIM 2048UL
+#define LLAMA2_MAX_KV_DIM 512UL
 #define LLAMA2_MAX_HIDDEN 8192UL
 #define LLAMA2_MAX_N 8192UL
 #define LLAMA2_MAX_K 8192UL
-#define LLAMA2_MAX_ACT_BYTES (LLAMA2_COMPARE_M * LLAMA2_MAX_K)
-#define LLAMA2_MAX_WEIGHT_BYTES (((LLAMA2_MAX_K + 7UL) / 8UL) * (((LLAMA2_MAX_N + 7UL) / 8UL) * 8UL))
-#define LLAMA2_MAX_OUTPUT_ELEMS (LLAMA2_COMPARE_M * (((LLAMA2_MAX_N + 127UL) / 128UL) * 128UL))
+#else
+#define LLAMA2_MAX_SEQ_LEN 256UL
+#define LLAMA2_MAX_DIM 3072UL
+#define LLAMA2_MAX_KV_DIM 1024UL
+#define LLAMA2_MAX_HIDDEN 8192UL
+#define LLAMA2_MAX_N 8192UL
+#define LLAMA2_MAX_K 8192UL
+#endif
+#else
+#ifndef LLAMA2_FILTER_MODEL
+#define LLAMA2_FILTER_MODEL 0UL
+#endif
+#ifndef LLAMA2_FILTER_PREC
+#define LLAMA2_FILTER_PREC 0UL
+#endif
+#ifndef LLAMA2_FILTER_SEQ_LEN
+#define LLAMA2_FILTER_SEQ_LEN 0UL
+#endif
 
-static int8_t g_activation_buf[LLAMA2_MAX_ACT_BYTES] __attribute__((aligned(4 * NR_LANES), section(".l2")));
-static int8_t g_weight_buf[LLAMA2_MAX_WEIGHT_BYTES] __attribute__((aligned(4 * NR_LANES), section(".l2")));
-static int16_t g_output_buf[LLAMA2_MAX_OUTPUT_ELEMS] __attribute__((aligned(4 * NR_LANES), section(".l2")));
+#define LLAMA2_MODEL_ID_15M 1UL
+#define LLAMA2_MODEL_ID_42M 2UL
+#define LLAMA2_MODEL_ID_110M 3UL
+#define LLAMA2_MODEL_ID_1B 4UL
+#define LLAMA2_MODEL_ID_3B 5UL
+
+#define LLAMA2_PREC_ID_W1A8 1UL
+#define LLAMA2_PREC_ID_W2A8 2UL
+#define LLAMA2_PREC_ID_W4A8 3UL
+
+#define LLAMA2_MAX_SEQ_LEN 256UL
+#define LLAMA2_MAX_DIM 3072UL
+#define LLAMA2_MAX_KV_DIM 1024UL
+#define LLAMA2_MAX_HIDDEN 8192UL
+#define LLAMA2_MAX_N 8192UL
+#define LLAMA2_MAX_K 8192UL
+#endif
+#define LLAMA2_MAX_WEIGHT_PLANES 4UL
+#define LLAMA2_MAX_ACT_BYTES (LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_K)
+#define LLAMA2_MAX_WEIGHT_BYTES_PACKED (LLAMA2_MAX_WEIGHT_PLANES * (((LLAMA2_MAX_K + 7UL) / 8UL) * (((LLAMA2_MAX_N + 7UL) / 8UL) * 8UL)))
+#define LLAMA2_MAX_WEIGHT_BYTES_INT8 (LLAMA2_MAX_K * LLAMA2_MAX_N)
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+#define LLAMA2_MAX_WEIGHT_BYTES LLAMA2_MAX_WEIGHT_BYTES_PACKED
+#else
+#define LLAMA2_MAX_WEIGHT_BYTES ((LLAMA2_MAX_WEIGHT_BYTES_PACKED > LLAMA2_MAX_WEIGHT_BYTES_INT8) ? LLAMA2_MAX_WEIGHT_BYTES_PACKED : LLAMA2_MAX_WEIGHT_BYTES_INT8)
+#endif
+#define LLAMA2_MAX_OUTPUT_ELEMS 4UL
+#define LLAMA2_BMPMM_CACHE_CAP 256
+#define LLAMA2_RVV_CACHE_CAP 256
+#define LLAMA2_SHARED_CACHE_CAP 32
+#define LLAMA2_EST_MEM_BW_BYTES_PER_CYCLE 16.0
+#define LLAMA2_EST_FP32_MACS_PER_CYCLE 8.0
+#define LLAMA2_EST_INT8_MACS_PER_CYCLE 8.0
+#define LLAMA2_EST_LOWP_MACS_PER_CYCLE_W1 16.0
+#define LLAMA2_EST_LOWP_MACS_PER_CYCLE_W2 8.0
+#define LLAMA2_EST_LOWP_MACS_PER_CYCLE_W4 4.0
+#define LLAMA2_EST_EXPF_CYCLES 20.0
+#define LLAMA2_EST_SQRTF_CYCLES 16.0
+#define LLAMA2_EST_SINCOS_PAIR_CYCLES 28.0
+#define LLAMA2_EST_POWF_CYCLES 24.0
+#define LLAMA2_PREFILL_LAST_LOGITS_ONLY 1
+
+static int8_t g_activation_buf[LLAMA2_MAX_ACT_BYTES] __attribute__((aligned(4 * NR_LANES)));
+static int8_t g_weight_buf[LLAMA2_MAX_WEIGHT_BYTES] __attribute__((aligned(4 * NR_LANES)));
+static int16_t g_output_buf[LLAMA2_MAX_OUTPUT_ELEMS] __attribute__((aligned(4 * NR_LANES)));
+
+#if defined(SPIKE)
+uintptr_t handle_trap(uintptr_t cause, uintptr_t epc, uintptr_t regs[32])
+{
+    printf("[llama2] TRAP cause=%lx epc=%lx ra=%lx sp=%lx t0=%lx a0=%lx\n",
+           (unsigned long)cause,
+           (unsigned long)epc,
+           (unsigned long)regs[1],
+           (unsigned long)regs[2],
+           (unsigned long)regs[5],
+           (unsigned long)regs[10]);
+    exit(101);
+}
+#endif
 
 typedef struct
 {
@@ -2462,7 +2577,28 @@ typedef struct
     unsigned long n_layers;
     unsigned long n_heads;
     unsigned long n_kv_heads;
+    unsigned long vocab_size;
+    unsigned long seq_len;
 } LlamaQuickProfile;
+
+typedef struct
+{
+    const char *name;
+    unsigned long prec;
+    const char *search_csv;
+    const char *rvv_path;
+} LlamaQuickPrecision;
+
+typedef struct
+{
+    unsigned long dim;
+    unsigned long hidden_dim;
+    unsigned long n_layers;
+    unsigned long n_heads;
+    unsigned long n_kv_heads;
+    unsigned long vocab_size;
+    unsigned long seq_len;
+} LlamaQuickModelConfig;
 
 typedef struct
 {
@@ -2470,140 +2606,554 @@ typedef struct
     unsigned long N;
     unsigned long K;
     llama_bmpmm_exec_cfg_t cfg;
+    int64_t total_cycles;
+    int64_t compute_cycles;
 } ShapeCfgEntry;
 
 typedef struct
 {
     const char *name;
+    const LlamaQuickPrecision *precision;
     unsigned long M;
     unsigned long N;
     unsigned long K;
     llama_bmpmm_exec_cfg_t bmpmm_cfg;
+    int64_t bmpmm_csv_total_cycles;
+    int64_t bmpmm_csv_compute_cycles;
     llama_rvv_exec_cfg_t rvv_cfg;
 } BenchOp;
 
+typedef struct
+{
+    int valid;
+    unsigned long prec;
+    unsigned long M;
+    unsigned long N;
+    unsigned long K;
+    llama_bmpmm_exec_cfg_t cfg;
+    int64_t cycles;
+} LlamaBmpmmCacheEntry;
+
+typedef struct
+{
+    int valid;
+    unsigned long prec;
+    unsigned long M;
+    unsigned long N;
+    unsigned long K;
+    int64_t cycles;
+} LlamaRvvCacheEntry;
+
+typedef struct
+{
+    int64_t embed_cycles;
+    int64_t rope_table_cycles;
+    int64_t rope_apply_cycles;
+    int64_t rmsnorm_cycles;
+    int64_t quant_cycles;
+    int64_t kv_cache_cycles;
+    int64_t attn_score_cycles;
+    int64_t softmax_cycles;
+    int64_t attn_value_cycles;
+    int64_t swiglu_cycles;
+    int64_t residual_cycles;
+    int64_t lm_head_cycles;
+    int64_t total_cycles;
+} LlamaSharedOpEstimate;
+
+typedef struct
+{
+    int valid;
+    LlamaQuickModelConfig cfg;
+    unsigned long seq_len;
+    LlamaSharedOpEstimate est;
+} LlamaSharedCacheEntry;
+
+#if !defined(SPIKE) && !defined(ARA_LINUX)
 static const LlamaQuickProfile kProfiles[] = {
+    {.name = "15M", .asset_path = "src/apps/llama2/15mmodel.bin", .dim = 288UL, .hidden_dim = 768UL, .n_layers = 6UL, .n_heads = 6UL, .n_kv_heads = 6UL, .vocab_size = 32000UL, .seq_len = 256UL},
+    {.name = "42M", .asset_path = "src/apps/llama2/stories42M.bin", .dim = 512UL, .hidden_dim = 1376UL, .n_layers = 8UL, .n_heads = 8UL, .n_kv_heads = 8UL, .vocab_size = 32000UL, .seq_len = 1024UL},
+    {.name = "110M", .asset_path = "src/apps/llama2/stories110M.bin", .dim = 768UL, .hidden_dim = 2048UL, .n_layers = 12UL, .n_heads = 12UL, .n_kv_heads = 12UL, .vocab_size = 32000UL, .seq_len = 1024UL},
+    {.name = "Llama-3.2-1B-q8_0", .asset_path = "src/apps/llama2/llama3.2.c/Llama-3.2-1B-q8_0.bin", .dim = 2048UL, .hidden_dim = 8192UL, .n_layers = 16UL, .n_heads = 32UL, .n_kv_heads = 8UL, .vocab_size = 128256UL, .seq_len = 131072UL},
+    {.name = "Llama-3.2-3B-q8_0", .asset_path = "src/apps/llama2/llama3.2.c/Llama-3.2-3B-q8_0.bin", .dim = 3072UL, .hidden_dim = 8192UL, .n_layers = 28UL, .n_heads = 24UL, .n_kv_heads = 8UL, .vocab_size = 128256UL, .seq_len = 131072UL},
+};
+#else
+static const LlamaQuickProfile kProfiles[] = {
+    {.name = "15M", .asset_path = "src/apps/llama2/15mmodel.bin", .dim = 288UL, .hidden_dim = 768UL, .n_layers = 6UL, .n_heads = 6UL, .n_kv_heads = 6UL, .vocab_size = 32000UL, .seq_len = 256UL},
+    {.name = "42M", .asset_path = "src/apps/llama2/stories42M.bin", .dim = 512UL, .hidden_dim = 1376UL, .n_layers = 8UL, .n_heads = 8UL, .n_kv_heads = 8UL, .vocab_size = 32000UL, .seq_len = 1024UL},
+    {.name = "110M", .asset_path = "src/apps/llama2/stories110M.bin", .dim = 768UL, .hidden_dim = 2048UL, .n_layers = 12UL, .n_heads = 12UL, .n_kv_heads = 12UL, .vocab_size = 32000UL, .seq_len = 1024UL},
+    {.name = "Llama-3.2-1B-q8_0", .asset_path = "src/apps/llama2/llama3.2.c/Llama-3.2-1B-q8_0.bin", .dim = 2048UL, .hidden_dim = 8192UL, .n_layers = 16UL, .n_heads = 32UL, .n_kv_heads = 8UL, .vocab_size = 128256UL, .seq_len = 131072UL},
+    {.name = "Llama-3.2-3B-q8_0", .asset_path = "src/apps/llama2/llama3.2.c/Llama-3.2-3B-q8_0.bin", .dim = 3072UL, .hidden_dim = 8192UL, .n_layers = 28UL, .n_heads = 24UL, .n_kv_heads = 8UL, .vocab_size = 128256UL, .seq_len = 131072UL},
+};
+#endif
+
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+static const LlamaQuickPrecision kPrecisions[] = {
     {
-        .name = "15M",
-        .asset_path = "src/apps/llama2/15mmodel.bin",
-        .dim = 288UL,
-        .hidden_dim = 768UL,
-        .n_layers = 6UL,
-        .n_heads = 6UL,
-        .n_kv_heads = 6UL,
+        .name = "W1A8",
+        .prec = LLAMA2_RVV_PREC_BINARY,
+        .search_csv = "tmp/llama_prefill_best_binary_edge.csv",
+        .rvv_path = "rvv int8 fast estimator",
     },
     {
-        .name = "42M",
-        .asset_path = "src/apps/llama2/stories42M.bin",
-        .dim = 512UL,
-        .hidden_dim = 1376UL,
-        .n_layers = 8UL,
-        .n_heads = 8UL,
-        .n_kv_heads = 8UL,
+        .name = "W2A8",
+        .prec = LLAMA2_RVV_PREC_INT2,
+        .search_csv = "tmp/llama_prefill_best_int2_edge.csv",
+        .rvv_path = "rvv int8 fast estimator",
     },
     {
-        .name = "110M",
-        .asset_path = "src/apps/llama2/stories110M.bin",
-        .dim = 768UL,
-        .hidden_dim = 2048UL,
-        .n_layers = 12UL,
-        .n_heads = 12UL,
-        .n_kv_heads = 12UL,
+        .name = "W4A8",
+        .prec = LLAMA2_RVV_PREC_INT4,
+        .search_csv = "tmp/llama_prefill_best_int4_edge.csv",
+        .rvv_path = "rvv int8 fast estimator",
+    },
+};
+#else
+static const LlamaQuickPrecision kPrecisions[] = {
+    {
+        .name = "W1A8",
+        .prec = LLAMA2_RVV_PREC_BINARY,
+        .search_csv = "tmp/llama_prefill_best_binary_edge.csv",
+        .rvv_path = "rvv int8 fast estimator",
     },
     {
-        .name = "Llama-3.2-1B-q8_0",
-        .asset_path = "src/apps/llama2/llama3.2.c/Llama-3.2-1B-q8_0.bin",
-        .dim = 2048UL,
-        .hidden_dim = 8192UL,
-        .n_layers = 16UL,
-        .n_heads = 32UL,
-        .n_kv_heads = 8UL,
+        .name = "W2A8",
+        .prec = LLAMA2_RVV_PREC_INT2,
+        .search_csv = "tmp/llama_prefill_best_int2_edge.csv",
+        .rvv_path = "rvv int8 fast estimator",
     },
     {
-        .name = "Llama-3.2-3B-q8_0",
-        .asset_path = "src/apps/llama2/llama3.2.c/Llama-3.2-3B-q8_0.bin",
-        .dim = 3072UL,
-        .hidden_dim = 8192UL,
-        .n_layers = 28UL,
-        .n_heads = 24UL,
-        .n_kv_heads = 8UL,
+        .name = "W4A8",
+        .prec = LLAMA2_RVV_PREC_INT4,
+        .search_csv = "tmp/llama_prefill_best_int4_edge.csv",
+        .rvv_path = "rvv int8 fast estimator",
     },
+};
+#endif
+
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+static const unsigned long kEdgePrefillSeqLens[] = {
+    32UL,
+    64UL,
+    128UL,
+    256UL,
+};
+#else
+static const unsigned long kEdgePrefillSeqLens[] = {
+    32UL,
+    64UL,
+    128UL,
+    256UL,
+};
+#endif
+
+static const ShapeCfgEntry kFallbackShapeCfgs[] = {
+    {.M = 0UL, .N = 288UL, .K = 288UL, .cfg = {16UL, 16UL, 64UL, 1UL, 4UL, 0UL}},
+    {.M = 0UL, .N = 288UL, .K = 768UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 0UL, .N = 512UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 0UL, .N = 512UL, .K = 1376UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 0UL, .N = 512UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 0UL, .N = 768UL, .K = 288UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 0UL, .N = 768UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 0UL, .N = 768UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 0UL, .N = 1024UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 0UL, .N = 1376UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 0UL, .N = 2048UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
+    {.M = 0UL, .N = 2048UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 0UL, .N = 2048UL, .K = 8192UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 0UL, .N = 3072UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 0UL, .N = 3072UL, .K = 8192UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 0UL, .N = 8192UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
+    {.M = 0UL, .N = 8192UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
+    {.M = 0UL, .N = 288UL, .K = 288UL, .cfg = {16UL, 16UL, 64UL, 1UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 288UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 512UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 512UL, .K = 1376UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 512UL, .K = 2048UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 768UL, .K = 288UL, .cfg = {16UL, 16UL, 64UL, 1UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 768UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 768UL, .K = 2048UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 1024UL, .K = 3072UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 1376UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 2048UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 2048UL, .K = 2048UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 2048UL, .K = 8192UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 3072UL, .K = 3072UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 3072UL, .K = 8192UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 8192UL, .K = 2048UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 8192UL, .K = 3072UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL}},
+    {.M = 0UL, .N = 288UL, .K = 288UL, .cfg = {8UL, 32UL, 64UL, 4UL, 1UL, 3UL}},
+    {.M = 0UL, .N = 288UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 4UL, 2UL, 3UL}},
+    {.M = 0UL, .N = 512UL, .K = 512UL, .cfg = {16UL, 16UL, 64UL, 1UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 512UL, .K = 1376UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 512UL, .K = 2048UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 768UL, .K = 288UL, .cfg = {16UL, 16UL, 64UL, 1UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 768UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 768UL, .K = 2048UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 1024UL, .K = 3072UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 1376UL, .K = 512UL, .cfg = {8UL, 32UL, 64UL, 4UL, 1UL, 3UL}},
+    {.M = 0UL, .N = 2048UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 2048UL, .K = 2048UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 2048UL, .K = 8192UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 3072UL, .K = 3072UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 3072UL, .K = 8192UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 8192UL, .K = 2048UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
+    {.M = 0UL, .N = 8192UL, .K = 3072UL, .cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL}},
 };
 
-static const ShapeCfgEntry kShapeCfgs[] = {
-    {.M = 128UL, .N = 288UL, .K = 288UL, .cfg = {16UL, 16UL, 64UL, 1UL, 4UL, 0UL}},
-    {.M = 128UL, .N = 768UL, .K = 288UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
-    {.M = 128UL, .N = 288UL, .K = 768UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
-    {.M = 128UL, .N = 512UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
-    {.M = 128UL, .N = 1376UL, .K = 512UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
-    {.M = 128UL, .N = 512UL, .K = 1376UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
-    {.M = 128UL, .N = 768UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
-    {.M = 128UL, .N = 2048UL, .K = 768UL, .cfg = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL}},
-    {.M = 128UL, .N = 768UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
-    {.M = 128UL, .N = 2048UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
-    {.M = 128UL, .N = 512UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
-    {.M = 128UL, .N = 8192UL, .K = 2048UL, .cfg = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL}},
-    {.M = 128UL, .N = 2048UL, .K = 8192UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
-    {.M = 128UL, .N = 3072UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
-    {.M = 128UL, .N = 1024UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
-    {.M = 128UL, .N = 8192UL, .K = 3072UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
-    {.M = 128UL, .N = 3072UL, .K = 8192UL, .cfg = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL}},
-};
+static ShapeCfgEntry gShapeCfgs[256];
+static int gShapeCfgCount = 0;
+static int gShapeCfgLoaded = 0;
+static LlamaSharedCacheEntry gSharedCache[LLAMA2_SHARED_CACHE_CAP] = {0};
+static int gSharedCacheCount = 0;
+
+#if defined(SPIKE) || defined(ARA_LINUX)
+static float g_shared_x[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_DIM];
+static float g_shared_xb[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_DIM];
+static float g_shared_xb2[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_DIM];
+static float g_shared_hb[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_HIDDEN];
+static float g_shared_hb2[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_HIDDEN];
+static int8_t g_shared_xq[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_DIM];
+static int8_t g_shared_hq[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_HIDDEN];
+static float g_shared_q[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_DIM];
+static float g_shared_k[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_KV_DIM];
+static float g_shared_v[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_KV_DIM];
+static float g_shared_kcache[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_KV_DIM];
+static float g_shared_vcache[LLAMA2_MAX_SEQ_LEN * LLAMA2_MAX_KV_DIM];
+static float g_shared_att_row[LLAMA2_MAX_SEQ_LEN];
+static float g_shared_freq[LLAMA2_MAX_DIM / 2UL];
+static float g_shared_cos[LLAMA2_MAX_SEQ_LEN * (LLAMA2_MAX_DIM / 2UL)];
+static float g_shared_sin[LLAMA2_MAX_SEQ_LEN * (LLAMA2_MAX_DIM / 2UL)];
+static float g_shared_rms_weight[LLAMA2_MAX_DIM];
+static float g_shared_x_scale = 1.0f;
+static float g_shared_h_scale = 1.0f;
+static int g_shared_state_ready = 0;
+#endif
+
+static double estimate_mem_cycles(double bytes);
+static double estimate_int8_matmul_cycles(unsigned long M, unsigned long K, unsigned long N);
+static double estimate_shared_lowp_matmul_cycles(unsigned long M, unsigned long K, unsigned long N, unsigned long prec);
+static int64_t round_cycles(double cycles);
 
 static void init_buffers(void)
 {
     static int initialized = 0;
     if (initialized)
         return;
-    for (unsigned long i = 0; i < LLAMA2_MAX_ACT_BYTES; ++i)
+
+    /*
+     * These staging buffers are only used by the fast estimator paths.
+     * BSS already guarantees zero-initialized storage, which is sufficient for
+     * both the Spike CSV-only fallback and the Verilator sampled-hardware path.
+     * Avoid sweeping tens of MiB here: that startup cost dominates Verilator.
+     */
+    for (unsigned long i = 0; i < 256UL && i < LLAMA2_MAX_ACT_BYTES; ++i)
         g_activation_buf[i] = (int8_t)((i & 0x7UL) - 3);
-    for (unsigned long i = 0; i < LLAMA2_MAX_WEIGHT_BYTES; ++i)
+    for (unsigned long i = 0; i < 256UL && i < LLAMA2_MAX_WEIGHT_BYTES; ++i)
         g_weight_buf[i] = (int8_t)(0x5a ^ (int)(i & 0x3fUL));
-    for (unsigned long i = 0; i < LLAMA2_MAX_OUTPUT_ELEMS; ++i)
-        g_output_buf[i] = 0;
     initialized = 1;
 }
 
-static const ShapeCfgEntry *find_shape_cfg(unsigned long M, unsigned long N, unsigned long K)
+#if defined(SPIKE) || defined(ARA_LINUX)
+static void init_shared_state(void)
 {
-    for (unsigned long i = 0; i < (sizeof(kShapeCfgs) / sizeof(kShapeCfgs[0])); ++i)
+    if (g_shared_state_ready)
+        return;
+    for (unsigned long i = 0; i < LLAMA2_MAX_DIM; ++i)
+        g_shared_rms_weight[i] = 1.0f;
+    g_shared_state_ready = 1;
+}
+#endif
+
+static void fallback_model_config(const LlamaQuickProfile *profile, LlamaQuickModelConfig *cfg)
+{
+    cfg->dim = profile->dim;
+    cfg->hidden_dim = profile->hidden_dim;
+    cfg->n_layers = profile->n_layers;
+    cfg->n_heads = profile->n_heads;
+    cfg->n_kv_heads = profile->n_kv_heads;
+    cfg->vocab_size = profile->vocab_size;
+    cfg->seq_len = profile->seq_len;
+}
+
+#if defined(ARA_LINUX)
+static FILE *open_repo_relative(const char *path, const char *mode, char *resolved_path, size_t resolved_cap)
+{
+    static const char *prefixes[] = {
+        "",
+        "./",
+        "../",
+        "../../",
+        "../../../",
+    };
+
+    for (unsigned long i = 0; i < (sizeof(prefixes) / sizeof(prefixes[0])); ++i)
     {
-        const ShapeCfgEntry *entry = &kShapeCfgs[i];
-        if (entry->M == M && entry->N == N && entry->K == K)
+        FILE *fp = 0;
+        char candidate[512];
+        const char *prefix = prefixes[i];
+        int len = snprintf(candidate, sizeof(candidate), "%s%s", prefix, path);
+        if (len <= 0 || (size_t)len >= sizeof(candidate))
+            continue;
+        fp = fopen(candidate, mode);
+        if (!fp)
+            continue;
+        if (resolved_path && resolved_cap > 0)
+        {
+            strncpy(resolved_path, candidate, resolved_cap - 1U);
+            resolved_path[resolved_cap - 1U] = '\0';
+        }
+        return fp;
+    }
+
+    if (resolved_path && resolved_cap > 0)
+    {
+        strncpy(resolved_path, path, resolved_cap - 1U);
+        resolved_path[resolved_cap - 1U] = '\0';
+    }
+    return 0;
+}
+
+static int parse_v2_model_header(FILE *fp, LlamaQuickModelConfig *cfg)
+{
+    uint32_t magic = 0;
+    int version = 0;
+    int vals[7];
+
+    if (fread(&magic, sizeof(uint32_t), 1, fp) != 1)
+        return 0;
+    if (fread(&version, sizeof(int), 1, fp) != 1)
+        return 0;
+    if (magic != 0x616b3432 || version != 2)
+        return 0;
+    if (fread(vals, sizeof(int), 7, fp) != 7)
+        return 0;
+
+    cfg->dim = (unsigned long)vals[0];
+    cfg->hidden_dim = (unsigned long)vals[1];
+    cfg->n_layers = (unsigned long)vals[2];
+    cfg->n_heads = (unsigned long)vals[3];
+    cfg->n_kv_heads = (unsigned long)vals[4];
+    cfg->vocab_size = (unsigned long)vals[5];
+    cfg->seq_len = (unsigned long)vals[6];
+    return 1;
+}
+
+static int parse_legacy_model_header(FILE *fp, LlamaQuickModelConfig *cfg)
+{
+    int vals[7];
+
+    if (fseek(fp, 0L, SEEK_SET) != 0)
+        return 0;
+    if (fread(vals, sizeof(int), 7, fp) != 7)
+        return 0;
+
+    cfg->dim = (unsigned long)vals[0];
+    cfg->hidden_dim = (unsigned long)vals[1];
+    cfg->n_layers = (unsigned long)vals[2];
+    cfg->n_heads = (unsigned long)vals[3];
+    cfg->n_kv_heads = (unsigned long)vals[4];
+    cfg->vocab_size = (unsigned long)(vals[5] < 0 ? -vals[5] : vals[5]);
+    cfg->seq_len = (unsigned long)vals[6];
+    return 1;
+}
+
+static int load_model_config(const char *path, LlamaQuickModelConfig *cfg)
+{
+    FILE *fp = open_repo_relative(path, "rb", 0, 0U);
+    int ok = 0;
+
+    if (!fp)
+        return 0;
+
+    memset(cfg, 0, sizeof(*cfg));
+    ok = parse_v2_model_header(fp, cfg);
+    if (!ok)
+        ok = parse_legacy_model_header(fp, cfg);
+    fclose(fp);
+    return ok;
+}
+
+static int parse_shape_cfg_line(char *line, unsigned long prec, ShapeCfgEntry *entry)
+{
+    char *saveptr = 0;
+    char *tok = strtok_r(line, ",", &saveptr);
+    unsigned long idx = 0;
+    unsigned long M = 0, N = 0, K = 0;
+    unsigned long gm = 0, gn = 0, mtile = 0, ntile = 0, ktile = 0;
+    int64_t total_cycles = 0;
+    int64_t compute_cycles = 0;
+
+    while (tok)
+    {
+        char *endptr_ul = 0;
+        char *endptr_d = 0;
+        const unsigned long value = strtoul(tok, &endptr_ul, 10);
+        const double dvalue = strtod(tok, &endptr_d);
+        if (endptr_ul == tok && endptr_d == tok)
+            return 0;
+        if (idx == 0UL)
+            M = value;
+        else if (idx == 1UL)
+            N = value;
+        else if (idx == 2UL)
+            K = value;
+        else if (idx == 4UL)
+            gm = value;
+        else if (idx == 5UL)
+            gn = value;
+        else if (idx == 8UL)
+            mtile = value;
+        else if (idx == 9UL)
+            ntile = value;
+        else if (idx == 10UL)
+            ktile = value;
+        else if (idx == 25UL)
+            total_cycles = (int64_t)(dvalue + 0.5);
+        else if (idx == 26UL)
+            compute_cycles = (int64_t)(dvalue + 0.5);
+        tok = strtok_r(0, ",", &saveptr);
+        ++idx;
+    }
+
+    if (idx < 11UL)
+        return 0;
+
+    entry->M = M;
+    entry->N = N;
+    entry->K = K;
+    entry->cfg.mtile = mtile;
+    entry->cfg.ntile = ntile;
+    entry->cfg.ktile = ktile;
+    entry->cfg.gm = gm;
+    entry->cfg.gn = gn;
+    entry->cfg.prec = prec;
+    entry->total_cycles = total_cycles;
+    entry->compute_cycles = compute_cycles;
+    return 1;
+}
+
+static int load_shape_cfgs_from_csv(const char *path, unsigned long prec)
+{
+    FILE *fp = open_repo_relative(path, "r", 0, 0U);
+    char line[2048];
+
+    if (!fp)
+        return 0;
+    if (!fgets(line, sizeof(line), fp))
+    {
+        fclose(fp);
+        return 0;
+    }
+
+    while (fgets(line, sizeof(line), fp))
+    {
+        ShapeCfgEntry entry;
+        char local[2048];
+
+        if (gShapeCfgCount >= (int)(sizeof(gShapeCfgs) / sizeof(gShapeCfgs[0])))
+        {
+            fclose(fp);
+            return 0;
+        }
+        memcpy(local, line, sizeof(local));
+        local[sizeof(local) - 1] = '\0';
+        if (!parse_shape_cfg_line(local, prec, &entry))
+        {
+            fclose(fp);
+            return 0;
+        }
+        gShapeCfgs[gShapeCfgCount++] = entry;
+    }
+
+    fclose(fp);
+    return 1;
+}
+#else
+static int load_model_config(const char *path, LlamaQuickModelConfig *cfg)
+{
+    (void)path;
+    (void)cfg;
+    return 0;
+}
+#endif
+
+static int ensure_shape_cfgs_loaded(void)
+{
+    if (gShapeCfgLoaded)
+        return 1;
+
+    gShapeCfgCount = 0;
+#if !defined(ARA_LINUX)
+    for (unsigned long j = 0; j < (sizeof(kFallbackShapeCfgs) / sizeof(kFallbackShapeCfgs[0])); ++j)
+        gShapeCfgs[gShapeCfgCount++] = kFallbackShapeCfgs[j];
+    gShapeCfgLoaded = 1;
+    return 1;
+#else
+    for (unsigned long i = 0; i < (sizeof(kPrecisions) / sizeof(kPrecisions[0])); ++i)
+    {
+        if (!load_shape_cfgs_from_csv(kPrecisions[i].search_csv, kPrecisions[i].prec))
+        {
+            gShapeCfgCount = 0;
+            for (unsigned long j = 0; j < (sizeof(kFallbackShapeCfgs) / sizeof(kFallbackShapeCfgs[0])); ++j)
+                gShapeCfgs[gShapeCfgCount++] = kFallbackShapeCfgs[j];
+            gShapeCfgLoaded = 1;
+            return 1;
+        }
+    }
+    gShapeCfgLoaded = 1;
+    return 1;
+#endif
+}
+
+static const ShapeCfgEntry *find_shape_cfg(unsigned long prec, unsigned long M, unsigned long N, unsigned long K)
+{
+    for (int i = 0; i < gShapeCfgCount; ++i)
+    {
+        const ShapeCfgEntry *entry = &gShapeCfgs[i];
+        if (entry->cfg.prec == prec && entry->M == M && entry->N == N && entry->K == K)
+            return entry;
+    }
+    for (int i = 0; i < gShapeCfgCount; ++i)
+    {
+        const ShapeCfgEntry *entry = &gShapeCfgs[i];
+        if (entry->cfg.prec == prec && entry->M == 0UL && entry->N == N && entry->K == K)
             return entry;
     }
     return 0;
 }
 
-static llama_rvv_exec_cfg_t default_rvv_cfg(void)
+static llama_rvv_exec_cfg_t default_rvv_cfg(unsigned long prec)
 {
     llama_rvv_exec_cfg_t cfg = {
-        .mtile = 8UL,
-        .ntile = 64UL,
-        .ktile = 128UL,
-        .gm = 1UL,
-        .gn = 2UL,
-        .prec = 0UL,
+        .mtile = 0UL,
+        .ntile = 0UL,
+        .ktile = 0UL,
+        .gm = 0UL,
+        .gn = 0UL,
+        .prec = LLAMA2_RVV_PREC_INT8,
     };
+    (void)prec;
     return cfg;
 }
 
-static int build_profile_ops(const LlamaQuickProfile *profile, BenchOp *ops, int cap)
+static int build_profile_ops(const LlamaQuickModelConfig *model_cfg, const LlamaQuickPrecision *precision,
+                             unsigned long seq_len, BenchOp *ops, int cap)
 {
-    const unsigned long kv_dim = (profile->dim * profile->n_kv_heads) / profile->n_heads;
+    const unsigned long kv_dim = (model_cfg->dim * model_cfg->n_kv_heads) / model_cfg->n_heads;
     const struct
     {
         const char *name;
         unsigned long N;
         unsigned long K;
     } templates[] = {
-        {"q_proj", profile->dim, profile->dim},
-        {"k_proj", kv_dim, profile->dim},
-        {"v_proj", kv_dim, profile->dim},
-        {"o_proj", profile->dim, profile->dim},
-        {"gate_proj", profile->hidden_dim, profile->dim},
-        {"up_proj", profile->hidden_dim, profile->dim},
-        {"down_proj", profile->dim, profile->hidden_dim},
+        {"q_proj", model_cfg->dim, model_cfg->dim},
+        {"k_proj", kv_dim, model_cfg->dim},
+        {"v_proj", kv_dim, model_cfg->dim},
+        {"o_proj", model_cfg->dim, model_cfg->dim},
+        {"gate_proj", model_cfg->hidden_dim, model_cfg->dim},
+        {"up_proj", model_cfg->hidden_dim, model_cfg->dim},
+        {"down_proj", model_cfg->dim, model_cfg->hidden_dim},
     };
 
     if (cap < (int)(sizeof(templates) / sizeof(templates[0])))
@@ -2611,111 +3161,838 @@ static int build_profile_ops(const LlamaQuickProfile *profile, BenchOp *ops, int
 
     for (unsigned long i = 0; i < (sizeof(templates) / sizeof(templates[0])); ++i)
     {
-        const ShapeCfgEntry *shape_cfg = find_shape_cfg(LLAMA2_COMPARE_M, templates[i].N, templates[i].K);
+        const ShapeCfgEntry *shape_cfg = find_shape_cfg(precision->prec, seq_len, templates[i].N, templates[i].K);
         if (!shape_cfg)
             return 0;
         ops[i].name = templates[i].name;
-        ops[i].M = LLAMA2_COMPARE_M;
+        ops[i].precision = precision;
+        ops[i].M = seq_len;
         ops[i].N = templates[i].N;
         ops[i].K = templates[i].K;
         ops[i].bmpmm_cfg = shape_cfg->cfg;
-        ops[i].rvv_cfg = default_rvv_cfg();
+        ops[i].bmpmm_csv_total_cycles = shape_cfg->total_cycles;
+        ops[i].bmpmm_csv_compute_cycles = shape_cfg->compute_cycles;
+        ops[i].rvv_cfg = default_rvv_cfg(precision->prec);
     }
     return (int)(sizeof(templates) / sizeof(templates[0]));
 }
 
 static int64_t run_bmpmm_fast(const BenchOp *op)
 {
+#if defined(SPIKE)
+    if (op->bmpmm_csv_total_cycles > 0)
+        return op->bmpmm_csv_total_cycles;
+    return round_cycles(estimate_shared_lowp_matmul_cycles(op->M, op->K, op->N, op->precision->prec));
+#else
     int64_t estimated_total = 0;
     llama_bmpmm_exec_opts_t opts = {
         .mode = BMPMM_LOWP_EXEC_FAST,
         .estimated_total_cycles = &estimated_total,
     };
-    if (!llama_bmpmm_binary_with_cfg_opts(g_output_buf, g_activation_buf, g_weight_buf, op->M, op->K, op->N, &op->bmpmm_cfg, &opts))
+    if (!llama_bmpmm_matmul_with_cfg_opts(g_output_buf, g_activation_buf, g_weight_buf, op->M, op->K, op->N, &op->bmpmm_cfg, &opts))
         return -1;
     return estimated_total;
+#endif
 }
 
 static int64_t run_rvv_fast(const BenchOp *op)
 {
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+    return round_cycles(estimate_int8_matmul_cycles(op->M, op->K, op->N));
+#else
     int64_t estimated_total = 0;
     llama_rvv_exec_opts_t opts = {
         .mode = LLAMA2_RVV_EXEC_FAST,
         .estimated_total_cycles = &estimated_total,
     };
-    if (!llama_rvv_binary_with_cfg_opts(g_output_buf, g_activation_buf, g_weight_buf, op->M, op->K, op->N, &op->rvv_cfg, &opts))
+    if (!llama_rvv_matmul_with_cfg_opts(g_output_buf, g_activation_buf, g_weight_buf, op->M, op->K, op->N, &op->rvv_cfg, &opts))
         return -1;
     return estimated_total;
+#endif
+}
+
+static int64_t lookup_bmpmm_cache(const LlamaBmpmmCacheEntry *entries, int count, const BenchOp *op)
+{
+    for (int i = 0; i < count; ++i)
+    {
+        const LlamaBmpmmCacheEntry *entry = &entries[i];
+        if (!entry->valid)
+            continue;
+        if (entry->prec != op->precision->prec || entry->M != op->M || entry->N != op->N || entry->K != op->K)
+            continue;
+        if (!bmpmm_exec_cfg_equal(&entry->cfg, &op->bmpmm_cfg))
+            continue;
+        return entry->cycles;
+    }
+    return -1;
+}
+
+static void store_bmpmm_cache(LlamaBmpmmCacheEntry *entries, int *count, const BenchOp *op, int64_t cycles)
+{
+    if (*count >= LLAMA2_BMPMM_CACHE_CAP)
+        return;
+    entries[*count].valid = 1;
+    entries[*count].prec = op->precision->prec;
+    entries[*count].M = op->M;
+    entries[*count].N = op->N;
+    entries[*count].K = op->K;
+    entries[*count].cfg = op->bmpmm_cfg;
+    entries[*count].cycles = cycles;
+    *count += 1;
+}
+
+static int64_t lookup_rvv_cache(const LlamaRvvCacheEntry *entries, int count, const BenchOp *op)
+{
+    for (int i = 0; i < count; ++i)
+    {
+        const LlamaRvvCacheEntry *entry = &entries[i];
+        if (!entry->valid)
+            continue;
+        if (entry->prec == op->precision->prec && entry->M == op->M && entry->N == op->N && entry->K == op->K)
+            return entry->cycles;
+    }
+    return -1;
+}
+
+static void store_rvv_cache(LlamaRvvCacheEntry *entries, int *count, const BenchOp *op, int64_t cycles)
+{
+    if (*count >= LLAMA2_RVV_CACHE_CAP)
+        return;
+    entries[*count].valid = 1;
+    entries[*count].prec = op->precision->prec;
+    entries[*count].M = op->M;
+    entries[*count].N = op->N;
+    entries[*count].K = op->K;
+    entries[*count].cycles = cycles;
+    *count += 1;
+}
+
+static int shared_model_cfg_equal(const LlamaQuickModelConfig *a, const LlamaQuickModelConfig *b)
+{
+    return a->dim == b->dim &&
+           a->hidden_dim == b->hidden_dim &&
+           a->n_layers == b->n_layers &&
+           a->n_heads == b->n_heads &&
+           a->n_kv_heads == b->n_kv_heads &&
+           a->vocab_size == b->vocab_size &&
+           a->seq_len == b->seq_len;
+}
+
+static const LlamaSharedOpEstimate *lookup_shared_cache(const LlamaQuickModelConfig *cfg, unsigned long seq_len)
+{
+    for (int i = 0; i < gSharedCacheCount; ++i)
+    {
+        const LlamaSharedCacheEntry *entry = &gSharedCache[i];
+        if (!entry->valid)
+            continue;
+        if (entry->seq_len == seq_len && shared_model_cfg_equal(&entry->cfg, cfg))
+            return &entry->est;
+    }
+    return 0;
+}
+
+static void store_shared_cache(const LlamaQuickModelConfig *cfg, unsigned long seq_len, const LlamaSharedOpEstimate *est)
+{
+    if (gSharedCacheCount >= LLAMA2_SHARED_CACHE_CAP)
+        return;
+    gSharedCache[gSharedCacheCount].valid = 1;
+    gSharedCache[gSharedCacheCount].cfg = *cfg;
+    gSharedCache[gSharedCacheCount].seq_len = seq_len;
+    gSharedCache[gSharedCacheCount].est = *est;
+    gSharedCacheCount += 1;
+}
+
+#if defined(SPIKE) || defined(ARA_LINUX)
+static void shared_quantize_tensor(int8_t *q, float *scale_out, const float *x, unsigned long count)
+{
+    float max_val = 0.0f;
+    for (unsigned long i = 0; i < count; ++i)
+    {
+        float val = fabsf(x[i]);
+        if (val > max_val)
+            max_val = val;
+    }
+
+    {
+        const float scale = (max_val > 1e-8f) ? (max_val / 127.0f) : 1e-8f;
+        const float inv_scale = 1.0f / scale;
+        *scale_out = scale;
+        for (unsigned long i = 0; i < count; ++i)
+        {
+            float quant = x[i] * inv_scale;
+            int32_t qval = (int32_t)roundf(quant);
+            if (qval > 127)
+                qval = 127;
+            else if (qval < -128)
+                qval = -128;
+            q[i] = (int8_t)qval;
+        }
+    }
+}
+
+static void shared_rmsnorm(float *o, const float *x, unsigned long size)
+{
+    float ss = 0.0f;
+    for (unsigned long j = 0; j < size; ++j)
+        ss += x[j] * x[j];
+    ss /= (float)size;
+    ss += 1e-5f;
+    ss = 1.0f / sqrtf(ss);
+    for (unsigned long j = 0; j < size; ++j)
+        o[j] = g_shared_rms_weight[j] * (ss * x[j]);
+}
+
+static void shared_softmax(float *x, unsigned long size)
+{
+    float max_val = -FLT_MAX;
+    float sum = 0.0f;
+    for (unsigned long i = 0; i < size; ++i)
+    {
+        if (x[i] > max_val)
+            max_val = x[i];
+    }
+    for (unsigned long i = 0; i < size; ++i)
+    {
+        x[i] = expf(x[i] - max_val);
+        sum += x[i];
+    }
+    if (sum == 0.0f)
+        return;
+    for (unsigned long i = 0; i < size; ++i)
+        x[i] /= sum;
+}
+
+static void prepare_shared_inputs(const LlamaQuickModelConfig *model_cfg, unsigned long seq_len)
+{
+    const unsigned long dim = model_cfg->dim;
+    const unsigned long hidden_dim = model_cfg->hidden_dim;
+    const unsigned long kv_dim = (model_cfg->dim * model_cfg->n_kv_heads) / model_cfg->n_heads;
+    const unsigned long tokens_dim = seq_len * dim;
+    const unsigned long tokens_hidden = seq_len * hidden_dim;
+    const unsigned long tokens_kv = seq_len * kv_dim;
+
+    memset(g_shared_xb, 0, tokens_dim * sizeof(float));
+    memset(g_shared_xb2, 0, tokens_dim * sizeof(float));
+    memset(g_shared_hb, 0, tokens_hidden * sizeof(float));
+    memset(g_shared_hb2, 0, tokens_hidden * sizeof(float));
+    memset(g_shared_xq, 0, tokens_dim * sizeof(int8_t));
+    memset(g_shared_hq, 0, tokens_hidden * sizeof(int8_t));
+    memset(g_shared_q, 0, tokens_dim * sizeof(float));
+    memset(g_shared_k, 0, tokens_kv * sizeof(float));
+    memset(g_shared_v, 0, tokens_kv * sizeof(float));
+    memset(g_shared_kcache, 0, tokens_kv * sizeof(float));
+    memset(g_shared_vcache, 0, tokens_kv * sizeof(float));
+}
+
+static void measure_embedding_cycles(const LlamaQuickModelConfig *model_cfg, unsigned long seq_len, int64_t *cycles_out)
+{
+    const unsigned long dim = model_cfg->dim;
+    int64_t start = get_cycle_count();
+    for (unsigned long t = 0; t < seq_len; ++t)
+    {
+        float *row = g_shared_x + t * dim;
+        for (unsigned long i = 0; i < dim; ++i)
+            row[i] = ((float)((int)((t * 17UL + i * 13UL) & 255UL) - 128)) * (1.0f / 128.0f);
+    }
+    *cycles_out = get_cycle_count() - start;
+}
+
+static void measure_rope_table_cycles(const LlamaQuickModelConfig *model_cfg, unsigned long seq_len, int64_t *cycles_out)
+{
+    const unsigned long dim = model_cfg->dim;
+    const unsigned long head_size = dim / model_cfg->n_heads;
+    const unsigned long half_dim = dim / 2UL;
+    int64_t start = get_cycle_count();
+
+    for (unsigned long i = 0; i < half_dim; ++i)
+    {
+        unsigned long head_dim = i % (head_size / 2UL);
+        g_shared_freq[i] = 1.0f / powf(10000.0f, (float)head_dim / (float)head_size);
+    }
+    for (unsigned long t = 0; t < seq_len; ++t)
+    {
+        float *cos_row = g_shared_cos + t * half_dim;
+        float *sin_row = g_shared_sin + t * half_dim;
+        for (unsigned long i = 0; i < half_dim; ++i)
+        {
+            float val = (float)t * g_shared_freq[i];
+            cos_row[i] = cosf(val);
+            sin_row[i] = sinf(val);
+        }
+    }
+    *cycles_out = get_cycle_count() - start;
+}
+
+static void measure_one_layer_shared_cycles(const LlamaQuickModelConfig *model_cfg, unsigned long seq_len, LlamaSharedOpEstimate *layer_est)
+{
+    const unsigned long dim = model_cfg->dim;
+    const unsigned long hidden_dim = model_cfg->hidden_dim;
+    const unsigned long kv_dim = (model_cfg->dim * model_cfg->n_kv_heads) / model_cfg->n_heads;
+    const unsigned long n_heads = model_cfg->n_heads;
+    const unsigned long head_size = dim / n_heads;
+    const unsigned long kv_mul = n_heads / model_cfg->n_kv_heads;
+    const unsigned long tokens_dim = seq_len * dim;
+    const unsigned long tokens_hidden = seq_len * hidden_dim;
+    int64_t start;
+
+    memset(layer_est, 0, sizeof(*layer_est));
+
+    /* attention rmsnorm -> quantize -> {q,k,v} projections (excluded here) */
+    start = get_cycle_count();
+    for (unsigned long t = 0; t < seq_len; ++t)
+        shared_rmsnorm(g_shared_xb + t * dim, g_shared_x + t * dim, dim);
+    layer_est->rmsnorm_cycles += get_cycle_count() - start;
+
+    start = get_cycle_count();
+    shared_quantize_tensor(g_shared_xq, &g_shared_x_scale, g_shared_xb, tokens_dim);
+    layer_est->quant_cycles += get_cycle_count() - start;
+
+    /* RoPE, KV-cache update, QK^T, softmax, and AV run on the projected tensors. */
+    start = get_cycle_count();
+    for (unsigned long t = 0; t < seq_len; ++t)
+    {
+        float *q_row = g_shared_q + t * dim;
+        float *k_row = g_shared_k + t * kv_dim;
+        const float *cos_row = g_shared_cos + t * (dim / 2UL);
+        const float *sin_row = g_shared_sin + t * (dim / 2UL);
+
+        for (unsigned long i = 0; i + 1UL < dim; i += 2UL)
+        {
+            float q0 = q_row[i];
+            float q1 = q_row[i + 1UL];
+            float c = cos_row[i / 2UL];
+            float s = sin_row[i / 2UL];
+            q_row[i] = q0 * c - q1 * s;
+            q_row[i + 1UL] = q0 * s + q1 * c;
+            if (i + 1UL < kv_dim)
+            {
+                float k0 = k_row[i];
+                float k1 = k_row[i + 1UL];
+                k_row[i] = k0 * c - k1 * s;
+                k_row[i + 1UL] = k0 * s + k1 * c;
+            }
+        }
+    }
+    layer_est->rope_apply_cycles += get_cycle_count() - start;
+
+    start = get_cycle_count();
+    memcpy(g_shared_kcache, g_shared_k, seq_len * kv_dim * sizeof(float));
+    memcpy(g_shared_vcache, g_shared_v, seq_len * kv_dim * sizeof(float));
+    layer_est->kv_cache_cycles += get_cycle_count() - start;
+
+    {
+        const float scale = 1.0f / sqrtf((float)head_size);
+        for (unsigned long h = 0; h < n_heads; ++h)
+        {
+            const unsigned long kv_head = (h / kv_mul) * head_size;
+            for (unsigned long t = 0; t < seq_len; ++t)
+            {
+                float *out = g_shared_xb + t * dim + h * head_size;
+
+                start = get_cycle_count();
+                for (unsigned long s = 0; s <= t; ++s)
+                {
+                    const float *q = g_shared_q + t * dim + h * head_size;
+                    const float *k = g_shared_kcache + s * kv_dim + kv_head;
+                    float score = 0.0f;
+                    for (unsigned long i = 0; i < head_size; ++i)
+                        score += q[i] * k[i];
+                    g_shared_att_row[s] = score * scale;
+                }
+                layer_est->attn_score_cycles += get_cycle_count() - start;
+
+                start = get_cycle_count();
+                shared_softmax(g_shared_att_row, t + 1UL);
+                layer_est->softmax_cycles += get_cycle_count() - start;
+
+                start = get_cycle_count();
+                memset(out, 0, head_size * sizeof(float));
+                for (unsigned long s = 0; s <= t; ++s)
+                {
+                    const float *v = g_shared_vcache + s * kv_dim + kv_head;
+                    const float a = g_shared_att_row[s];
+                    for (unsigned long i = 0; i < head_size; ++i)
+                        out[i] += a * v[i];
+                }
+                layer_est->attn_value_cycles += get_cycle_count() - start;
+            }
+        }
+    }
+
+    /* attention output quantize -> {o_proj} (excluded here) -> residual */
+    start = get_cycle_count();
+    shared_quantize_tensor(g_shared_xq, &g_shared_x_scale, g_shared_xb, tokens_dim);
+    layer_est->quant_cycles += get_cycle_count() - start;
+
+    start = get_cycle_count();
+    for (unsigned long i = 0; i < tokens_dim; ++i)
+        g_shared_x[i] += g_shared_xb2[i];
+    layer_est->residual_cycles += get_cycle_count() - start;
+
+    /* ffn rmsnorm -> quantize -> {w1,w3} projections (excluded here) */
+    start = get_cycle_count();
+    for (unsigned long t = 0; t < seq_len; ++t)
+        shared_rmsnorm(g_shared_xb + t * dim, g_shared_x + t * dim, dim);
+    layer_est->rmsnorm_cycles += get_cycle_count() - start;
+
+    start = get_cycle_count();
+    shared_quantize_tensor(g_shared_xq, &g_shared_x_scale, g_shared_xb, tokens_dim);
+    layer_est->quant_cycles += get_cycle_count() - start;
+
+    start = get_cycle_count();
+    for (unsigned long i = 0; i < tokens_hidden; ++i)
+    {
+        float val = g_shared_hb[i];
+        val *= (1.0f / (1.0f + expf(-val)));
+        val *= g_shared_hb2[i];
+        g_shared_hb[i] = val;
+    }
+    layer_est->swiglu_cycles += get_cycle_count() - start;
+
+    /* SwiGLU output quantize -> {w2} projection (excluded here) -> residual */
+    start = get_cycle_count();
+    shared_quantize_tensor(g_shared_hq, &g_shared_h_scale, g_shared_hb, tokens_hidden);
+    layer_est->quant_cycles += get_cycle_count() - start;
+
+    memset(g_shared_xb, 0, tokens_dim * sizeof(float));
+
+    start = get_cycle_count();
+    for (unsigned long i = 0; i < tokens_dim; ++i)
+        g_shared_x[i] += g_shared_xb[i];
+    layer_est->residual_cycles += get_cycle_count() - start;
+}
+
+static LlamaSharedOpEstimate measure_shared_prefill_cycles_real(const LlamaQuickModelConfig *model_cfg,
+                                                                unsigned long seq_len)
+{
+    const LlamaSharedOpEstimate *cached = lookup_shared_cache(model_cfg, seq_len);
+    LlamaSharedOpEstimate layer_est;
+    LlamaSharedOpEstimate total_est;
+    const unsigned long dim = model_cfg->dim;
+    const unsigned long final_tokens = LLAMA2_PREFILL_LAST_LOGITS_ONLY ? 1UL : seq_len;
+    int64_t start;
+
+    if (cached)
+        return *cached;
+
+    init_shared_state();
+    prepare_shared_inputs(model_cfg, seq_len);
+    memset(&total_est, 0, sizeof(total_est));
+
+    measure_embedding_cycles(model_cfg, seq_len, &total_est.embed_cycles);
+    measure_rope_table_cycles(model_cfg, seq_len, &total_est.rope_table_cycles);
+    measure_one_layer_shared_cycles(model_cfg, seq_len, &layer_est);
+
+    total_est.rope_apply_cycles = layer_est.rope_apply_cycles * (int64_t)model_cfg->n_layers;
+    total_est.rmsnorm_cycles = layer_est.rmsnorm_cycles * (int64_t)model_cfg->n_layers;
+    total_est.quant_cycles = layer_est.quant_cycles * (int64_t)model_cfg->n_layers;
+    total_est.kv_cache_cycles = layer_est.kv_cache_cycles * (int64_t)model_cfg->n_layers;
+    total_est.attn_score_cycles = layer_est.attn_score_cycles * (int64_t)model_cfg->n_layers;
+    total_est.softmax_cycles = layer_est.softmax_cycles * (int64_t)model_cfg->n_layers;
+    total_est.attn_value_cycles = layer_est.attn_value_cycles * (int64_t)model_cfg->n_layers;
+    total_est.swiglu_cycles = layer_est.swiglu_cycles * (int64_t)model_cfg->n_layers;
+    total_est.residual_cycles = layer_est.residual_cycles * (int64_t)model_cfg->n_layers;
+
+    start = get_cycle_count();
+    for (unsigned long t = 0; t < final_tokens; ++t)
+    {
+        unsigned long token_idx = seq_len - final_tokens + t;
+        shared_rmsnorm(g_shared_xb + t * dim, g_shared_x + token_idx * dim, dim);
+    }
+    total_est.rmsnorm_cycles += get_cycle_count() - start;
+
+    start = get_cycle_count();
+    shared_quantize_tensor(g_shared_xq, &g_shared_x_scale,
+                           g_shared_xb,
+                           final_tokens * dim);
+    total_est.quant_cycles += get_cycle_count() - start;
+
+    total_est.lm_head_cycles = 0;
+    total_est.total_cycles =
+        total_est.embed_cycles +
+        total_est.rope_table_cycles +
+        total_est.rope_apply_cycles +
+        total_est.rmsnorm_cycles +
+        total_est.quant_cycles +
+        total_est.kv_cache_cycles +
+        total_est.attn_score_cycles +
+        total_est.softmax_cycles +
+        total_est.attn_value_cycles +
+        total_est.swiglu_cycles +
+        total_est.residual_cycles;
+
+    store_shared_cache(model_cfg, seq_len, &total_est);
+    return total_est;
+}
+#else
+static double estimate_fp32_stream_cycles(double ops, double bytes)
+{
+    const double compute_cycles = ops / LLAMA2_EST_FP32_MACS_PER_CYCLE;
+    const double memory_cycles = estimate_mem_cycles(bytes);
+    return compute_cycles > memory_cycles ? compute_cycles : memory_cycles;
+}
+
+static double estimate_rmsnorm_cycles(unsigned long rows, unsigned long cols)
+{
+    const double elems = (double)rows * (double)cols;
+    const double ops = elems * 4.0 + (double)rows * LLAMA2_EST_SQRTF_CYCLES;
+    const double bytes = elems * sizeof(float) * 3.0;
+    return estimate_fp32_stream_cycles(ops, bytes);
+}
+
+static double estimate_quant_cycles(unsigned long elems)
+{
+    const double count = (double)elems;
+    const double ops = count * 4.0;
+    const double bytes = count * (sizeof(float) + sizeof(int8_t));
+    return estimate_fp32_stream_cycles(ops, bytes);
+}
+
+static LlamaSharedOpEstimate measure_shared_prefill_cycles_real(const LlamaQuickModelConfig *model_cfg,
+                                                                unsigned long seq_len)
+{
+    const LlamaSharedOpEstimate *cached = lookup_shared_cache(model_cfg, seq_len);
+    LlamaSharedOpEstimate total_est;
+    const unsigned long dim = model_cfg->dim;
+    const unsigned long hidden_dim = model_cfg->hidden_dim;
+    const unsigned long kv_dim = (model_cfg->dim * model_cfg->n_kv_heads) / model_cfg->n_heads;
+    const unsigned long n_heads = model_cfg->n_heads;
+    const unsigned long head_size = dim / n_heads;
+    const unsigned long final_tokens = LLAMA2_PREFILL_LAST_LOGITS_ONLY ? 1UL : seq_len;
+    const unsigned long long tri = ((unsigned long long)seq_len * (unsigned long long)(seq_len + 1UL)) / 2ULL;
+    const double tokens_dim = (double)seq_len * (double)dim;
+    const double tokens_hidden = (double)seq_len * (double)hidden_dim;
+    const double tokens_kv = (double)seq_len * (double)kv_dim;
+    const double attn_scores = (double)n_heads * (double)tri;
+
+    if (cached)
+        return *cached;
+
+    memset(&total_est, 0, sizeof(total_est));
+
+    total_est.embed_cycles = round_cycles(estimate_mem_cycles(tokens_dim * sizeof(float)));
+    total_est.rope_table_cycles = round_cycles(
+        (double)(dim / 2UL) * LLAMA2_EST_POWF_CYCLES +
+        (double)seq_len * (double)(dim / 2UL) * LLAMA2_EST_SINCOS_PAIR_CYCLES);
+    total_est.rope_apply_cycles = round_cycles(
+        (double)model_cfg->n_layers *
+        estimate_fp32_stream_cycles(
+            (double)seq_len * (double)(dim + kv_dim) * 3.0,
+            (double)seq_len * (double)(dim + kv_dim) * sizeof(float) * 2.0));
+    total_est.rmsnorm_cycles = round_cycles(
+        (double)model_cfg->n_layers * 2.0 * estimate_rmsnorm_cycles(seq_len, dim) +
+        estimate_rmsnorm_cycles(final_tokens, dim));
+    total_est.quant_cycles = round_cycles(
+        (double)model_cfg->n_layers *
+            (2.0 * estimate_quant_cycles(seq_len * dim) +
+             estimate_quant_cycles(seq_len * hidden_dim)) +
+        estimate_quant_cycles(final_tokens * dim));
+    total_est.kv_cache_cycles = round_cycles(
+        (double)model_cfg->n_layers *
+        estimate_mem_cycles(tokens_kv * sizeof(float) * 4.0));
+    total_est.attn_score_cycles = round_cycles(
+        (double)model_cfg->n_layers *
+        estimate_fp32_stream_cycles(
+            attn_scores * (double)head_size,
+            attn_scores * (double)head_size * sizeof(float) * 2.0));
+    total_est.softmax_cycles = round_cycles(
+        (double)model_cfg->n_layers *
+        (attn_scores * LLAMA2_EST_EXPF_CYCLES +
+         estimate_fp32_stream_cycles(attn_scores * 3.0, attn_scores * sizeof(float) * 3.0)));
+    total_est.attn_value_cycles = round_cycles(
+        (double)model_cfg->n_layers *
+        estimate_fp32_stream_cycles(
+            attn_scores * (double)head_size,
+            attn_scores * (double)head_size * sizeof(float) * 2.0));
+    total_est.swiglu_cycles = round_cycles(
+        (double)model_cfg->n_layers *
+        (tokens_hidden * LLAMA2_EST_EXPF_CYCLES +
+         estimate_fp32_stream_cycles(tokens_hidden * 3.0, tokens_hidden * sizeof(float) * 3.0)));
+    total_est.residual_cycles = round_cycles(
+        (double)model_cfg->n_layers *
+        estimate_fp32_stream_cycles(tokens_dim * 2.0, tokens_dim * sizeof(float) * 3.0));
+    total_est.lm_head_cycles = 0;
+    total_est.total_cycles =
+        total_est.embed_cycles +
+        total_est.rope_table_cycles +
+        total_est.rope_apply_cycles +
+        total_est.rmsnorm_cycles +
+        total_est.quant_cycles +
+        total_est.kv_cache_cycles +
+        total_est.attn_score_cycles +
+        total_est.softmax_cycles +
+        total_est.attn_value_cycles +
+        total_est.swiglu_cycles +
+        total_est.residual_cycles;
+
+    store_shared_cache(model_cfg, seq_len, &total_est);
+    return total_est;
+}
+#endif
+
+static int model_supports_seq_len(const LlamaQuickModelConfig *model_cfg, unsigned long seq_len)
+{
+    return seq_len <= model_cfg->seq_len && seq_len <= LLAMA2_MAX_SEQ_LEN;
+}
+
+static unsigned long llama_weight_bits_from_prec(unsigned long prec)
+{
+    if (prec == LLAMA2_RVV_PREC_BINARY)
+        return 1UL;
+    if (prec == LLAMA2_RVV_PREC_INT2)
+        return 2UL;
+    if (prec == LLAMA2_RVV_PREC_INT4)
+        return 4UL;
+    return 8UL;
+}
+
+static double estimate_mem_cycles(double bytes)
+{
+    return bytes / LLAMA2_EST_MEM_BW_BYTES_PER_CYCLE;
+}
+
+static double estimate_int8_matmul_cycles(unsigned long M, unsigned long K, unsigned long N)
+{
+    const double macs = (double)M * (double)K * (double)N;
+    const double bytes = (double)(M * K) + (double)(K * N) + (double)(M * N * 2UL);
+    const double compute_cycles = macs / LLAMA2_EST_INT8_MACS_PER_CYCLE;
+    const double memory_cycles = estimate_mem_cycles(bytes);
+    return compute_cycles > memory_cycles ? compute_cycles : memory_cycles;
+}
+
+static double estimate_shared_lowp_matmul_cycles(unsigned long M, unsigned long K, unsigned long N, unsigned long prec)
+{
+    const unsigned long weight_bits = llama_weight_bits_from_prec(prec);
+    const double macs = (double)M * (double)K * (double)N;
+    const double bytes = (double)(M * K) + ((double)K * (double)N * (double)weight_bits / 8.0) + (double)(M * N * 2UL);
+    double lowp_macs_per_cycle = LLAMA2_EST_LOWP_MACS_PER_CYCLE_W4;
+
+    if (prec == LLAMA2_RVV_PREC_BINARY)
+        lowp_macs_per_cycle = LLAMA2_EST_LOWP_MACS_PER_CYCLE_W1;
+    else if (prec == LLAMA2_RVV_PREC_INT2)
+        lowp_macs_per_cycle = LLAMA2_EST_LOWP_MACS_PER_CYCLE_W2;
+
+    {
+        const double compute_cycles = macs / lowp_macs_per_cycle;
+        const double memory_cycles = estimate_mem_cycles(bytes);
+        return compute_cycles > memory_cycles ? compute_cycles : memory_cycles;
+    }
+}
+
+static int64_t round_cycles(double cycles)
+{
+    if (cycles <= 0.0)
+        return 0;
+    return (int64_t)(cycles + 0.5);
+}
+
+static void print_speedup_ratio(int64_t numerator_cycles, int64_t denominator_cycles)
+{
+    unsigned long whole = 0UL;
+    unsigned long frac = 0UL;
+
+    if (numerator_cycles > 0 && denominator_cycles > 0)
+    {
+        const unsigned long long scaled =
+            (((unsigned long long)numerator_cycles) * 1000ULL +
+             (unsigned long long)(denominator_cycles / 2LL)) /
+            (unsigned long long)denominator_cycles;
+        whole = (unsigned long)(scaled / 1000ULL);
+        frac = (unsigned long)(scaled % 1000ULL);
+    }
+
+    printf("%lu.%03lux", whole, frac);
 }
 
 int main(void)
 {
     BenchOp ops[7];
+    LlamaBmpmmCacheEntry bmpmm_cache[LLAMA2_BMPMM_CACHE_CAP] = {0};
+    LlamaRvvCacheEntry rvv_cache[LLAMA2_RVV_CACHE_CAP] = {0};
+    int bmpmm_cache_count = 0;
+    int rvv_cache_count = 0;
+    int ran_cases = 0;
     init_buffers();
 
-    printf("[llama2] quick compare mode\n");
-    printf("[llama2] offline BMPMM tiling search source: tmp/llama_quickcompare_best_binary.csv\n");
-    printf("[llama2] proxy workload: first-layer GEMMs only, M=%lu tokens, excludes rope/softmax/norm/lm_head\n", LLAMA2_COMPARE_M);
-    printf("[llama2] RVV baseline: current generic rvv_binary fast path (mtile=8, ntile=64, ktile=128, gm=1, gn=2)\n");
-
-    for (unsigned long p = 0; p < (sizeof(kProfiles) / sizeof(kProfiles[0])); ++p)
+    if (!ensure_shape_cfgs_loaded())
     {
-        const LlamaQuickProfile *profile = &kProfiles[p];
-        const int op_count = build_profile_ops(profile, ops, 7);
-        int64_t bmpmm_layer_cycles = 0;
-        int64_t rvv_layer_cycles = 0;
+        printf("[llama2] ERROR: failed to load offline tiling-search CSVs\n");
+        return 1;
+    }
 
-        if (op_count <= 0)
-        {
-            printf("[llama2] ERROR: missing shape config for profile %s\n", profile->name);
-            return 1;
-        }
+    printf("[llama2] quick compare mode\n");
+    printf("[llama2] workload: full prefill estimate with real model-derived shapes\n");
+    printf("[llama2] shapes come from model headers; sequence lengths are clipped to edge-side set ");
+#if !defined(SPIKE) && !defined(ARA_LINUX)
+    printf("{32,64,128,256}\n");
+    printf("[llama2] bmpmm linear layers use Verilator sampled-hardware fast estimation; shared ops use analytic estimation\n");
+    printf("[llama2] RVV baseline is INT8 analytic fast estimator on baremetal Verilator\n");
+#else
+    printf("{32,64,128,256}\n");
+    printf("[llama2] lowp linear layers use fast estimators; shared ops run as real one-layer framework kernels scaled by layer count\n");
+    printf("[llama2] RVV baseline is always INT8; lm_head is modeled per-architecture, not as a shared op\n");
+#endif
+    printf("[llama2] shared ops include attention(QK/AV), rope, softmax, rmsnorm, kv-cache, quantize, SwiGLU, residual\n");
+    printf("[llama2] lm_head is modeled per-architecture, not as a shared op\n");
+    printf("[llama2] final logits stage is modeled as last-token-only prefill output\n");
+    printf("[llama2] duplicate lowp shapes are cached across ops/models/seq-lens to keep the run lightweight\n");
+    printf("[llama2] filters: model=%lu precision=%lu seq=%lu (0 means all)\n",
+           (unsigned long)LLAMA2_FILTER_MODEL,
+           (unsigned long)LLAMA2_FILTER_PREC,
+           (unsigned long)LLAMA2_FILTER_SEQ_LEN);
+
+    for (unsigned long prec_idx = 0; prec_idx < (sizeof(kPrecisions) / sizeof(kPrecisions[0])); ++prec_idx)
+    {
+        const unsigned long prec_id = prec_idx + 1UL;
+        if (LLAMA2_FILTER_PREC != 0UL && LLAMA2_FILTER_PREC != prec_id)
+            continue;
 
         printf("\n============================================================\n");
-        printf("[llama2] model=%s\n", profile->name);
-        printf("[llama2] source=%s\n", profile->asset_path);
-        printf("[llama2] dim=%lu hidden=%lu layers=%lu heads=%lu kv_heads=%lu\n",
-               profile->dim, profile->hidden_dim, profile->n_layers, profile->n_heads, profile->n_kv_heads);
+        printf("[llama2] precision=%s search=%s\n", kPrecisions[prec_idx].name, kPrecisions[prec_idx].search_csv);
+        printf("[llama2] rvv_path=%s\n", kPrecisions[prec_idx].rvv_path);
         printf("============================================================\n");
 
-        for (int i = 0; i < op_count; ++i)
+        for (unsigned long p = 0; p < (sizeof(kProfiles) / sizeof(kProfiles[0])); ++p)
         {
-            const BenchOp *op = &ops[i];
-            const int64_t bmpmm_cycles = run_bmpmm_fast(op);
-            const int64_t rvv_cycles = run_rvv_fast(op);
-            const double speedup = (bmpmm_cycles > 0 && rvv_cycles > 0) ? ((double)rvv_cycles / (double)bmpmm_cycles) : 0.0;
+            const LlamaQuickProfile *profile = &kProfiles[p];
+            const unsigned long model_id = p + 1UL;
+            LlamaQuickModelConfig model_cfg;
 
-            if (bmpmm_cycles < 0 || rvv_cycles < 0)
+            if (LLAMA2_FILTER_MODEL != 0UL && LLAMA2_FILTER_MODEL != model_id)
+                continue;
+
+            if (!load_model_config(profile->asset_path, &model_cfg))
+                fallback_model_config(profile, &model_cfg);
+
+            printf("\n------------------------------------------------------------\n");
+            printf("[llama2] model=%s source=%s\n", profile->name, profile->asset_path);
+            printf("[llama2] dim=%lu hidden=%lu layers=%lu heads=%lu kv_heads=%lu\n",
+                   model_cfg.dim, model_cfg.hidden_dim, model_cfg.n_layers, model_cfg.n_heads, model_cfg.n_kv_heads);
+            printf("[llama2] vocab=%lu seq_cap=%lu\n", model_cfg.vocab_size, model_cfg.seq_len);
+
+            for (unsigned long seq_idx = 0; seq_idx < (sizeof(kEdgePrefillSeqLens) / sizeof(kEdgePrefillSeqLens[0])); ++seq_idx)
             {
-                printf("[llama2] ERROR: fast compare failed for %s shape=(%lu,%lu,%lu)\n",
-                       op->name, op->M, op->N, op->K);
-                return 1;
+                const unsigned long seq_len = kEdgePrefillSeqLens[seq_idx];
+
+                if (LLAMA2_FILTER_SEQ_LEN != 0UL && LLAMA2_FILTER_SEQ_LEN != seq_len)
+                    continue;
+
+                const int op_count = model_supports_seq_len(&model_cfg, seq_len)
+                                         ? build_profile_ops(&model_cfg, &kPrecisions[prec_idx], seq_len, ops, 7)
+                                         : 0;
+                const LlamaSharedOpEstimate shared_est =
+                    measure_shared_prefill_cycles_real(&model_cfg, seq_len);
+                const unsigned long final_tokens = LLAMA2_PREFILL_LAST_LOGITS_ONLY ? 1UL : seq_len;
+                const int64_t bmpmm_lm_head_cycles = round_cycles(
+                    estimate_shared_lowp_matmul_cycles(final_tokens, model_cfg.dim, model_cfg.vocab_size,
+                                                       kPrecisions[prec_idx].prec));
+                const int64_t rvv_lm_head_cycles = round_cycles(
+                    estimate_int8_matmul_cycles(final_tokens, model_cfg.dim, model_cfg.vocab_size));
+                int64_t bmpmm_layer_cycles = 0;
+                int64_t rvv_layer_cycles = 0;
+
+                if (!model_supports_seq_len(&model_cfg, seq_len))
+                    continue;
+
+                ran_cases = 1;
+
+                if (op_count <= 0)
+                {
+                    printf("[llama2] ERROR: missing shape config for model=%s seq=%lu precision=%s\n",
+                           profile->name, seq_len, kPrecisions[prec_idx].name);
+                    return 1;
+                }
+
+                printf("[llama2] seq=%lu\n", seq_len);
+
+                for (int i = 0; i < op_count; ++i)
+                {
+                    const BenchOp *op = &ops[i];
+                    int64_t bmpmm_cycles = lookup_bmpmm_cache(bmpmm_cache, bmpmm_cache_count, op);
+                    int64_t rvv_cycles = lookup_rvv_cache(rvv_cache, rvv_cache_count, op);
+
+                    if (bmpmm_cycles < 0)
+                    {
+                        bmpmm_cycles = run_bmpmm_fast(op);
+                        if (bmpmm_cycles >= 0)
+                            store_bmpmm_cache(bmpmm_cache, &bmpmm_cache_count, op, bmpmm_cycles);
+                    }
+
+                    if (rvv_cycles < 0)
+                    {
+                        rvv_cycles = run_rvv_fast(op);
+                        if (rvv_cycles >= 0)
+                            store_rvv_cache(rvv_cache, &rvv_cache_count, op, rvv_cycles);
+                    }
+
+                    if (bmpmm_cycles < 0 || rvv_cycles < 0)
+                    {
+                        printf("[llama2] ERROR: fast compare failed for %s shape=(%lu,%lu,%lu) prec=%s\n",
+                               op->name, op->M, op->N, op->K, op->precision->name);
+                        return 1;
+                    }
+
+                    bmpmm_layer_cycles += bmpmm_cycles;
+                    rvv_layer_cycles += rvv_cycles;
+
+                    printf("[llama2]   op=%-10s shape=(%lu,%lu,%lu) "
+                           "bmpmm_cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu) "
+                           "bmpmm_cycles=%ld rvv_prec=%s rvv_cycles=%ld speedup=",
+                           op->name,
+                           op->M, op->N, op->K,
+                           op->bmpmm_cfg.mtile, op->bmpmm_cfg.ntile, op->bmpmm_cfg.ktile,
+                           op->bmpmm_cfg.gm, op->bmpmm_cfg.gn, op->bmpmm_cfg.prec,
+                           (long)bmpmm_cycles,
+                           llama_rvv_prec_name(op->rvv_cfg.prec),
+                           (long)rvv_cycles);
+                    print_speedup_ratio(rvv_cycles, bmpmm_cycles);
+                    printf("\n");
+                }
+
+                printf("[llama2]   layer_linear_cycles: bmpmm=%ld rvv=%ld speedup=",
+                       (long)bmpmm_layer_cycles,
+                       (long)rvv_layer_cycles);
+                print_speedup_ratio(rvv_layer_cycles, bmpmm_layer_cycles);
+                printf("\n");
+                printf("[llama2]   model_linear_cycles: bmpmm=%ld rvv=%ld speedup=",
+                       (long)(bmpmm_layer_cycles * (int64_t)model_cfg.n_layers),
+                       (long)(rvv_layer_cycles * (int64_t)model_cfg.n_layers));
+                print_speedup_ratio(rvv_layer_cycles, bmpmm_layer_cycles);
+                printf("\n");
+                printf("[llama2]   shared_cycles: total=%ld "
+                       "(embed=%ld rope_tbl=%ld rope=%ld rms=%ld quant=%ld kv=%ld qk=%ld softmax=%ld av=%ld swiglu=%ld residual=%ld)\n",
+                       (long)shared_est.total_cycles,
+                       (long)shared_est.embed_cycles,
+                       (long)shared_est.rope_table_cycles,
+                       (long)shared_est.rope_apply_cycles,
+                       (long)shared_est.rmsnorm_cycles,
+                       (long)shared_est.quant_cycles,
+                       (long)shared_est.kv_cache_cycles,
+                       (long)shared_est.attn_score_cycles,
+                       (long)shared_est.softmax_cycles,
+                       (long)shared_est.attn_value_cycles,
+                       (long)shared_est.swiglu_cycles,
+                       (long)shared_est.residual_cycles);
+                printf("[llama2]   lm_head_cycles: bmpmm=%ld rvv=%ld speedup=",
+                       (long)bmpmm_lm_head_cycles,
+                       (long)rvv_lm_head_cycles);
+                print_speedup_ratio(rvv_lm_head_cycles, bmpmm_lm_head_cycles);
+                printf("\n");
+                printf("[llama2]   prefill_total_cycles: bmpmm=%ld rvv=%ld speedup=",
+                       (long)((bmpmm_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + bmpmm_lm_head_cycles),
+                       (long)((rvv_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + rvv_lm_head_cycles));
+                print_speedup_ratio(
+                    (rvv_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + rvv_lm_head_cycles,
+                    (bmpmm_layer_cycles * (int64_t)model_cfg.n_layers) + shared_est.total_cycles + bmpmm_lm_head_cycles);
+                printf("\n");
             }
-
-            bmpmm_layer_cycles += bmpmm_cycles;
-            rvv_layer_cycles += rvv_cycles;
-
-            printf("[llama2] op=%-10s shape=(%lu,%lu,%lu) "
-                   "bmpmm_cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu) "
-                   "bmpmm_cycles=%ld rvv_cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu) "
-                   "rvv_cycles=%ld speedup=%.3fx\n",
-                   op->name,
-                   op->M, op->N, op->K,
-                   op->bmpmm_cfg.mtile, op->bmpmm_cfg.ntile, op->bmpmm_cfg.ktile, op->bmpmm_cfg.gm, op->bmpmm_cfg.gn,
-                   (long)bmpmm_cycles,
-                   op->rvv_cfg.mtile, op->rvv_cfg.ntile, op->rvv_cfg.ktile, op->rvv_cfg.gm, op->rvv_cfg.gn,
-                   (long)rvv_cycles,
-                   speedup);
         }
+    }
 
-        printf("[llama2] layer_proxy bmpmm_cycles=%ld rvv_cycles=%ld speedup=%.3fx\n",
-               (long)bmpmm_layer_cycles,
-               (long)rvv_layer_cycles,
-               rvv_layer_cycles > 0 ? (double)rvv_layer_cycles / (double)bmpmm_layer_cycles : 0.0);
-        printf("[llama2] model_proxy bmpmm_cycles=%ld rvv_cycles=%ld speedup=%.3fx\n",
-               (long)(bmpmm_layer_cycles * (int64_t)profile->n_layers),
-               (long)(rvv_layer_cycles * (int64_t)profile->n_layers),
-               rvv_layer_cycles > 0 ? (double)rvv_layer_cycles / (double)bmpmm_layer_cycles : 0.0);
+    if (!ran_cases)
+    {
+        printf("[llama2] ERROR: no cases matched the current filters\n");
+        return 2;
     }
 
     return 0;
