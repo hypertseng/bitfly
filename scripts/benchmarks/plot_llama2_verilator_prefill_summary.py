@@ -5,6 +5,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.lines import Line2D
 from matplotlib.ticker import FuncFormatter, MaxNLocator
 
 
@@ -64,32 +65,6 @@ def speedup_formatter(value, _pos):
     return f"{value:.0f}x"
 
 
-def annotate_seq_legend(ax):
-    y0 = 0.60
-    dy = 0.10
-    ax.text(
-        0.96,
-        y0 + 0.12,
-        "Prompt length",
-        transform=ax.transAxes,
-        ha="right",
-        va="bottom",
-        fontsize=9.2,
-        color="#666666",
-    )
-    for idx, seq_len in enumerate(SEQ_ORDER):
-        ax.text(
-            0.96,
-            y0 - idx * dy,
-            f"L={seq_len}",
-            transform=ax.transAxes,
-            ha="right",
-            va="center",
-            fontsize=10.0,
-            color=SEQ_COLORS[seq_len],
-        )
-
-
 def main():
     args = parse_args()
     csv_path = Path(args.input)
@@ -114,7 +89,7 @@ def main():
         }
     )
 
-    fig, axes = plt.subplots(1, 3, figsize=(13.8, 2.85), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(13.8, 3.0), sharey=True)
     model_x = np.arange(len(MODEL_ORDER), dtype=float)
     bar_width = 0.16
     offsets = {
@@ -127,6 +102,21 @@ def main():
     all_speedups = [row["speedup_value"] for row in rows]
     y_max = max(all_speedups)
     y_top = min(32.0, max(6.0, y_max * 1.10))
+    legend_handles = [
+        Line2D(
+            [0],
+            [0],
+            color=SEQ_COLORS[seq_len],
+            linewidth=2.4,
+            marker="o",
+            markersize=5.2,
+            markerfacecolor=SEQ_COLORS[seq_len],
+            markeredgecolor="white",
+            markeredgewidth=0.8,
+            label=f"L={seq_len}",
+        )
+        for seq_len in SEQ_ORDER
+    ]
 
     for ax, prec in zip(axes, PREC_ORDER):
         for seq_len in SEQ_ORDER:
@@ -140,17 +130,16 @@ def main():
                 color=SEQ_COLORS[seq_len],
                 edgecolor="none",
                 linewidth=0.0,
-                alpha=0.34,
+                alpha=0.20,
                 zorder=2,
-                label=f"L={seq_len}",
             )
-            line, = ax.plot(
+            ax.plot(
                 xs,
                 ys,
                 color=SEQ_COLORS[seq_len],
-                linewidth=2.2,
+                linewidth=2.35,
                 marker="o",
-                markersize=4.9,
+                markersize=5.1,
                 markerfacecolor=SEQ_COLORS[seq_len],
                 markeredgecolor="white",
                 markeredgewidth=0.8,
@@ -174,12 +163,21 @@ def main():
         ax.spines["bottom"].set_color("#2F2F2F")
         ax.tick_params(width=1.0, length=5, color="#2F2F2F")
         ax.set_xlabel("Model Size")
-        if prec == "W4A8":
-            annotate_seq_legend(ax)
 
     axes[0].set_ylabel("Speedup over RVV INT8")
 
-    fig.subplots_adjust(left=0.075, right=0.992, bottom=0.24, top=0.86, wspace=0.10)
+    fig.legend(
+        handles=legend_handles,
+        loc="upper center",
+        ncol=4,
+        frameon=False,
+        bbox_to_anchor=(0.5, 0.985),
+        handlelength=1.8,
+        handletextpad=0.45,
+        columnspacing=1.2,
+    )
+
+    fig.subplots_adjust(left=0.075, right=0.992, bottom=0.24, top=0.83, wspace=0.10)
 
     png_path = outdir / "llama2_verilator_prefill_speedup_summary.png"
     pdf_path = outdir / "llama2_verilator_prefill_speedup_summary.pdf"
