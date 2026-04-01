@@ -167,7 +167,6 @@ module bmpu
   end
 
   localparam int unsigned MaxBmpuContexts   = 8;
-  localparam int unsigned MaxBmpuGroupElems = 1024;
   localparam int unsigned CtxIdxWidth       = (MaxBmpuContexts <= 1) ? 1 : $clog2(MaxBmpuContexts);
 
   logic bmpu_valid;
@@ -175,8 +174,6 @@ module bmpu
   logic sa_ctx_clear;
   logic restart_bubble_d, restart_bubble_q;
   logic compute_active_d, compute_active_q;
-  logic epoch_active_d, epoch_active_q;
-  logic first_k_round_d, first_k_round_q;
   logic [127:0] sa_result [NrInputQueues-1:0];
   logic [127:0] bmpu_result [NrInputQueues-1:0];
   logic [NrInputQueues-1:0] sa_act_operand_ready;
@@ -184,12 +181,9 @@ module bmpu
   logic [16:0] k_dim_d, k_dim_q;
   logic [2:0] prec_d, prec_q;
   logic [3:0] gm_d, gm_q, gn_d, gn_q;
-  logic [3:0] ctx_count_d, ctx_count_q;
-  logic [2:0] m_block_count_d, m_block_count_q, n_block_count_d, n_block_count_q;
-  logic [2:0] compute_ai_d, compute_ai_q, compute_wi_d, compute_wi_q;
-  logic [2:0] compute_mblock_d, compute_mblock_q, compute_nblock_d, compute_nblock_q;
-  logic [2:0] store_ai_d, store_ai_q, store_wi_d, store_wi_q;
-  logic [2:0] store_mblock_d, store_mblock_q, store_nblock_d, store_nblock_q;
+  logic [3:0] m_block_count_d, m_block_count_q, n_block_count_d, n_block_count_q;
+  logic [3:0] compute_mblock_d, compute_mblock_q, compute_nblock_d, compute_nblock_q;
+  logic [3:0] store_mblock_d, store_mblock_q, store_nblock_d, store_nblock_q;
   logic [0:0] store_col_d, store_col_q;
   logic [CtxIdxWidth-1:0] sa_compute_ctx_id, sa_output_ctx_id;
   logic sa_done_d, sa_done_q;
@@ -204,21 +198,14 @@ module bmpu
       sa_done_q        <= 1'b0;
       restart_bubble_q <= 1'b0;
       compute_active_q <= 1'b0;
-      epoch_active_q   <= 1'b0;
-      first_k_round_q  <= 1'b1;
       k_dim_q          <= '0;
       prec_q           <= '0;
       gm_q             <= 4'd1;
       gn_q             <= 4'd1;
-      ctx_count_q      <= 4'd1;
-      m_block_count_q  <= 3'd1;
-      n_block_count_q  <= 3'd1;
-      compute_ai_q     <= '0;
-      compute_wi_q     <= '0;
+      m_block_count_q  <= 4'd1;
+      n_block_count_q  <= 4'd1;
       compute_mblock_q <= '0;
       compute_nblock_q <= '0;
-      store_ai_q       <= '0;
-      store_wi_q       <= '0;
       store_mblock_q   <= '0;
       store_nblock_q   <= '0;
       store_col_q      <= '0;
@@ -228,21 +215,14 @@ module bmpu
       sa_done_q        <= sa_done_d;
       restart_bubble_q <= restart_bubble_d;
       compute_active_q <= compute_active_d;
-      epoch_active_q   <= epoch_active_d;
-      first_k_round_q  <= first_k_round_d;
       k_dim_q          <= k_dim_d;
       prec_q           <= prec_d;
       gm_q             <= gm_d;
       gn_q             <= gn_d;
-      ctx_count_q      <= ctx_count_d;
       m_block_count_q  <= m_block_count_d;
       n_block_count_q  <= n_block_count_d;
-      compute_ai_q     <= compute_ai_d;
-      compute_wi_q     <= compute_wi_d;
       compute_mblock_q <= compute_mblock_d;
       compute_nblock_q <= compute_nblock_d;
-      store_ai_q       <= store_ai_d;
-      store_wi_q       <= store_wi_d;
       store_mblock_q   <= store_mblock_d;
       store_nblock_q   <= store_nblock_d;
       store_col_q      <= store_col_d;
@@ -327,20 +307,13 @@ module bmpu
     prec_d                   = prec_q;
     gm_d                     = gm_q;
     gn_d                     = gn_q;
-    ctx_count_d              = ctx_count_q;
     m_block_count_d          = m_block_count_q;
     n_block_count_d          = n_block_count_q;
-    compute_ai_d             = compute_ai_q;
-    compute_wi_d             = compute_wi_q;
     compute_mblock_d         = compute_mblock_q;
     compute_nblock_d         = compute_nblock_q;
-    store_ai_d               = store_ai_q;
-    store_wi_d               = store_wi_q;
     store_mblock_d           = store_mblock_q;
     store_nblock_d           = store_nblock_q;
     store_col_d              = store_col_q;
-    epoch_active_d           = epoch_active_q;
-    first_k_round_d          = first_k_round_q;
     vfu_operation_sig = '{
       id                : vfu_operation_i.id,
       op                : vfu_operation_i.op,
@@ -418,12 +391,12 @@ module bmpu
 
     if (sa_done_q) begin  // sa computation done
       automatic logic last_compute_block;
-      last_compute_block = (compute_nblock_q + 3'd1 >= n_block_count_q)
-                        && (compute_mblock_q + 3'd1 >= m_block_count_q);
+      last_compute_block = (compute_nblock_q + 4'd1 >= n_block_count_q)
+                        && (compute_mblock_q + 4'd1 >= m_block_count_q);
       if (`BITFLY_BMPU_DEBUG && (lane_id_i == 0)) begin
-        if (`BITFLY_BMPU_DEBUG) $display("[%0t][BMPU_SA] sa_done c=(ai=%0d,wi=%0d,mb=%0d,nb=%0d) s=(ai=%0d,wi=%0d,mb=%0d,nb=%0d,col=%0d) gm=%0d gn=%0d mbc=%0d nbc=%0d last=%0b issue=%0d commit=%0d sa0=%h sa1=%h",
-                 $time, compute_ai_q, compute_wi_q, compute_mblock_q, compute_nblock_q,
-                 store_ai_q, store_wi_q, store_mblock_q, store_nblock_q, store_col_q,
+        if (`BITFLY_BMPU_DEBUG) $display("[%0t][BMPU_SA] sa_done c=(mb=%0d,nb=%0d) s=(mb=%0d,nb=%0d,col=%0d) gm=%0d gn=%0d mbc=%0d nbc=%0d last=%0b issue=%0d commit=%0d sa0=%h sa1=%h",
+                 $time, compute_mblock_q, compute_nblock_q,
+                 store_mblock_q, store_nblock_q, store_col_q,
                  gm_q, gn_q, m_block_count_q, n_block_count_q, last_compute_block, issue_cnt_q, commit_cnt_q,
                  sa_result[0], sa_result[1]);
       end
@@ -464,9 +437,9 @@ module bmpu
         end else begin
           if ((|bmpu_act_operand_valid_i) && (|bmpu_wgt_operand_valid_i)) begin
             if (`BITFLY_BMPU_DEBUG && (lane_id_i == 0) && !compute_active_q) begin
-              if (`BITFLY_BMPU_DEBUG) $display("[%0t][BMPU_GO] c=(ai=%0d,wi=%0d,mb=%0d,nb=%0d) actv=%b wgtv=%b first_k=%0b epoch=%0b",
+              if (`BITFLY_BMPU_DEBUG) $display("[%0t][BMPU_GO] c=(ai=%0d,wi=%0d,mb=%0d,nb=%0d) actv=%b wgtv=%b first_k=%0b",
                        $time, vinsn_issue_q.bmpu_pair_ai, vinsn_issue_q.bmpu_pair_wi, compute_mblock_q, compute_nblock_q,
-                       bmpu_act_operand_valid_i, bmpu_wgt_operand_valid_i, vinsn_issue_q.bmpu_first_k_round, epoch_active_q);
+                       bmpu_act_operand_valid_i, bmpu_wgt_operand_valid_i, vinsn_issue_q.bmpu_first_k_round);
             end
             sa_ctx_clear = !compute_active_q && vinsn_issue_q.bmpu_first_k_round;
 `ifndef SYNTHESIS
@@ -535,12 +508,12 @@ module bmpu
               store_col_d = store_col_q + 1'b1;
             end else begin
               store_col_d = '0;
-              if (store_nblock_q + 3'd1 < n_block_count_q) begin
-                store_nblock_d = store_nblock_q + 3'd1;
+              if (store_nblock_q + 4'd1 < n_block_count_q) begin
+                store_nblock_d = store_nblock_q + 4'd1;
               end else begin
                 store_nblock_d = '0;
-                if (store_mblock_q + 3'd1 < m_block_count_q) begin
-                  store_mblock_d = store_mblock_q + 3'd1;
+                if (store_mblock_q + 4'd1 < m_block_count_q) begin
+                  store_mblock_d = store_mblock_q + 4'd1;
                 end else begin
                   store_mblock_d = '0;
                 end
@@ -684,9 +657,10 @@ module bmpu
       prec_d      = vfu_operation_i.prec;
       gm_d        = vfu_operation_i.gm;
       gn_d        = vfu_operation_i.gn;
-      m_block_count_d = (vfu_operation_i.mtile[5:3] == '0) ? 3'd1 : vfu_operation_i.mtile[5:3];
-      n_block_count_d = (vfu_operation_i.ntile[6:4] == '0) ? 3'd1 : vfu_operation_i.ntile[6:4];
-      ctx_count_d = vfu_operation_i.group_g;
+      m_block_count_d = (vfu_operation_i.mtile + 7'd7) >> 3;
+      n_block_count_d = (vfu_operation_i.ntile + 8'd15) >> 4;
+      if (m_block_count_d == '0) m_block_count_d = 4'd1;
+      if (n_block_count_d == '0) n_block_count_d = 4'd1;
 
       // Bump pointers and counters of the vector instruction queue
       vinsn_queue_d.accept_pnt += 1;
@@ -704,12 +678,12 @@ module bmpu
       compute_active_d = 1'b0;
       bmpu_valid = 1'b0;
 
-      if (compute_nblock_q + 3'd1 < n_block_count_q) begin
-        compute_nblock_d = compute_nblock_q + 3'd1;
+      if (compute_nblock_q + 4'd1 < n_block_count_q) begin
+        compute_nblock_d = compute_nblock_q + 4'd1;
       end else begin
         compute_nblock_d = '0;
-        if (compute_mblock_q + 3'd1 < m_block_count_q) begin
-          compute_mblock_d = compute_mblock_q + 3'd1;
+        if (compute_mblock_q + 4'd1 < m_block_count_q) begin
+          compute_mblock_d = compute_mblock_q + 4'd1;
         end else begin
           compute_mblock_d = '0;
         end
@@ -756,8 +730,8 @@ module bmpu
                sa_done_q, compute_active_q,
                bmpu_act_operand_valid_i, bmpu_wgt_operand_valid_i,
                bmpu_act_operand_ready_o, bmpu_wgt_operand_ready_o,
-               compute_ai_q, compute_wi_q, compute_mblock_q, compute_nblock_q,
-               store_ai_q, store_wi_q, store_mblock_q, store_nblock_q, store_col_q);
+               vinsn_issue_q.bmpu_pair_ai, vinsn_issue_q.bmpu_pair_wi, compute_mblock_q, compute_nblock_q,
+               vinsn_issue_q.bmpu_pair_ai, vinsn_issue_q.bmpu_pair_wi, store_mblock_q, store_nblock_q, store_col_q);
     end
   end
 `endif

@@ -283,8 +283,8 @@ module operand_requester
     // Element width
     vew_e   vew;
     logic   bmpu_replay_en;
-    logic [2:0] bmpu_self_blocks;
-    logic [2:0] bmpu_repeat_blocks;
+    logic [3:0] bmpu_self_blocks;
+    logic [3:0] bmpu_repeat_blocks;
     vlen_t      bmpu_block_words;
     logic [2:0] bmpu_self_idx;
     logic [2:0] bmpu_repeat_idx;
@@ -301,9 +301,6 @@ module operand_requester
     // One-bit counters
     logic [NrVInsn-1:0] waw_hazard_counter;
   } requester_metadata_t;
-
-  requester_metadata_t [NrOperandQueues-1:0] requester_metadata_shadow_q;
-  logic [NrOperandQueues-1:0][6:0]          request_cnt_shadow_q;
 
   for (genvar b = 0; b < NrBanks; b++) begin
     for (genvar r = 0; r < NrOperandQueues; r++) begin
@@ -375,11 +372,6 @@ module operand_requester
     assign operand_issued_o[requester_index] = |(operand_requester_gnt);
 
     logic [6:0] request_cnt_d, request_cnt_q;
-
-    always_comb begin
-      requester_metadata_shadow_q[requester_index] = requester_metadata_q;
-      request_cnt_shadow_q[requester_index] = request_cnt_q;
-    end
 
     always_comb begin : operand_requester
       // Helper local variables

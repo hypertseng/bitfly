@@ -142,8 +142,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     vlen_t vl;
     vlen_t vstart;
     logic bmpu_replay_en;
-    logic [2:0] bmpu_self_blocks;
-    logic [2:0] bmpu_repeat_blocks;
+    logic [3:0] bmpu_self_blocks;
+    logic [3:0] bmpu_repeat_blocks;
     vlen_t bmpu_block_words;
     logic [1:0] bmpu_slot;
 
@@ -190,8 +190,8 @@ module lane import ara_pkg::*; import rvv_pkg::*; #(
     vlen_t vstart;
     rvv_pkg::vtype_t vtype;
     logic [16:0]        k_dim;
-    logic [5:0]         mtile;
-    logic [6:0]         ntile;
+    logic [6:0]         mtile;
+    logic [7:0]         ntile;
     logic [3:0]         gm;
     logic [3:0]         gn;
     logic [3:0]         group_g;
