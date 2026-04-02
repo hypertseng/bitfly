@@ -364,38 +364,6 @@ module vldu import ara_pkg::*; import rvv_pkg::*; #(
         axi_r_byte_pnt_d    = issue_is_weight ? axi_r_byte_pnt_q + DataWidthB : (axi_r_byte_pnt_q + valid_bytes);
         vrf_word_byte_pnt_d = issue_is_weight ? (vrf_word_byte_pnt_q + (NrLanes * DataWidthB)) : (vrf_word_byte_pnt_q + valid_bytes);
         vrf_word_byte_cnt_d = issue_is_weight ? (vrf_word_byte_cnt_q + (NrLanes * DataWidthB)) : (vrf_word_byte_cnt_q + valid_bytes);
-        
-        // if (is_weight_q) begin : weight_load
-        //     // 当前分段处理的字节范围
-        //     automatic int unsigned split_lower = split_q * bytes_per_split;
-        //     automatic int unsigned split_upper = (split_q + 1) * bytes_per_split - 1;
-
-        //     // 仅当当前分段包含有效数据时才处理
-        //     if ((split_lower >= (lower_byte + axi_r_byte_pnt_q)) && 
-        //         (split_upper <= upper_byte) && 
-        //         (vrf_word_byte_cnt_q + bytes_per_split <= issue_cnt_bytes_q)) begin : valid_split
-
-        //       // 分段内字节处理
-        //       for (int unsigned axi_byte = split_lower; axi_byte <= split_upper; axi_byte++) begin : split_bytes
-        //         automatic int unsigned vrf_seq_byte = axi_byte - lower_byte - axi_r_byte_pnt_q + vrf_word_byte_pnt_q;
-        //         automatic int unsigned vrf_byte = vrf_seq_byte; // Weight模式禁用重排
-
-        //         if (vrf_seq_byte < (NrLanes * DataWidthB)) begin : is_vrf_byte
-        //           automatic int unsigned vrf_offset = vrf_byte % DataWidthB; // Lane内偏移
-
-        //           // 写入数据（按分段偏移调整）
-        //           for (int unsigned vrf_lane = 0; vrf_lane < NrLanes; vrf_lane++) begin
-        //             result_queue_d[result_queue_write_pnt_q][vrf_lane].wdata[8*vrf_offset +: 8] =
-        //               axi_r_i.data[8*axi_byte +: 8];
-                    
-        //             // 掩码继承（需确保mask_q已按分段对齐）
-        //             result_queue_d[result_queue_write_pnt_q][vrf_lane].be[vrf_offset] =
-        //               vinsn_issue_q.vm || mask_q[vrf_lane][vrf_offset];
-        //           end
-        //         end
-        //       end
-        //     end
-        // end : weight_load
         if (issue_is_weight) begin : weight_load
           // 当前分段处理的字节范围
           automatic int unsigned split_lower = split_q * bytes_per_split;

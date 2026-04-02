@@ -91,7 +91,6 @@ typedef struct packed {
   logic       bmpu_en;
   logic       is_weight;
   logic       bmpu_output_en;
-  // elen_t              size;
 } pe_req_t;
 
 typedef struct packed {

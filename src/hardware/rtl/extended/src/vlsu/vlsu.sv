@@ -111,12 +111,6 @@ module vlsu import ara_pkg::*; import rvv_pkg::*; #(
 
   `FF(lsu_ex_flush_done_o, lsu_ex_flush_i, 1'b0, clk_i, rst_ni);
 
-  ///////////////////
-  //  Definitions  //
-  ///////////////////
-
-  typedef logic [AxiAddrWidth-1:0] axi_addr_t;
-
   ///////////////
   //  AXI Cut  //
   ///////////////
