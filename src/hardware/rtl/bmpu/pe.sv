@@ -12,6 +12,7 @@ module pe #(
     input  logic                  ctx_clear_i,
     input  logic [CTX_IDX_W-1:0]  ctx_id_i,
     input  logic [CTX_IDX_W-1:0]  output_ctx_id_i,
+    input  logic                  output_read_en_i,
     input  logic [63:0]           activations,
     input  logic [63:0]           weights,
     input  logic [2:0]            shift_amt_i,
@@ -26,7 +27,9 @@ module pe #(
   logic [63:0] activation_reg;
   logic [63:0] weight_reg;
   logic [63:0] activation_compute;
+  logic [63:0] activation_lbmac;
   logic [63:0] weight_compute;
+  logic [63:0] weight_lbmac;
   logic signed [20:0] partial_sum_reg [CTX_MAX-1:0][8];
   logic signed [11:0] pe_outputs[8];
 
@@ -89,13 +92,17 @@ module pe #(
 
   always_comb begin
     output_selected_o = '0;
-    for (int i = 0; i < 8; i++) begin
-      output_selected_o[i*16+:16] = sat21_to_s16(partial_sum_reg[output_ctx_id_i][i]);
+    if (output_read_en_i) begin
+      for (int i = 0; i < 8; i++) begin
+        output_selected_o[i*16+:16] = sat21_to_s16(partial_sum_reg[output_ctx_id_i][i]);
+      end
     end
   end
 
   assign activation_compute = act_hold_i ? activation_reg : activations;
+  assign activation_lbmac   = mac_en_i ? activation_compute : '0;
   assign weight_compute     = wgt_hold_i ? weight_reg : weights;
+  assign weight_lbmac       = mac_en_i ? weight_compute : '0;
 
   assign weight_out      = weight_reg;
   assign activation_out  = activation_reg;
@@ -107,8 +114,8 @@ module pe #(
           .BIT_WEIGHT(BIT_WEIGHT)
       ) u_lbmac (
           .mode_i     (lbmac_mode_i),
-          .weights    (weight_compute[i*8+:8]),
-          .activations(activation_compute),
+          .weights    (weight_lbmac[i*8+:8]),
+          .activations(activation_lbmac),
           .result     (pe_outputs[i])
       );
     end

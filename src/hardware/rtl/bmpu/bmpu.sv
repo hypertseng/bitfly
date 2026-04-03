@@ -107,6 +107,32 @@ module bmpu
   assign vinsn_commit       = vinsn_queue_q.vinsn[vinsn_queue_q.commit_pnt];
   assign vinsn_commit_valid = (vinsn_queue_q.commit_cnt != '0);
 
+  typedef struct packed {
+    vid_t id;
+    ara_op_e op;
+    logic vm;
+    vlen_t vl;
+    vlen_t vstart;
+    rvv_pkg::vtype_t vtype;
+    logic [16:0] k_dim;
+    logic [5:0] mtile;
+    logic [6:0] ntile;
+    logic [3:0] gm;
+    logic [3:0] gn;
+    logic [3:0] group_g;
+    logic       bmpu_en;
+    logic       is_weight;
+    logic       bmpu_output_en;
+    logic [2:0] prec;
+    logic [2:0] bmpu_pair_ai;
+    logic [2:0] bmpu_pair_wi;
+    logic       bmpu_first_k_round;
+  } bmpu_req_sig_t;
+
+  bmpu_req_sig_t vfu_operation_last_sig_d, vfu_operation_last_sig_q, vfu_operation_sig;
+  logic vfu_operation_valid_msk;
+  logic vfu_sync_mask_d, vfu_sync_mask_q;
+
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       vinsn_queue_q <= '0;
@@ -185,13 +211,22 @@ module bmpu
   logic [3:0] compute_mblock_d, compute_mblock_q, compute_nblock_d, compute_nblock_q;
   logic [3:0] store_mblock_d, store_mblock_q, store_nblock_d, store_nblock_q;
   logic [0:0] store_col_d, store_col_q;
+  logic [CtxIdxWidth-1:0] sa_ctx_pair_base, sa_ctx_mblock_base;
+  logic [CtxIdxWidth-1:0] sa_compute_ctx_base, sa_output_ctx_base;
   logic [CtxIdxWidth-1:0] sa_compute_ctx_id, sa_output_ctx_id;
+  vaddr_t result_addr_stride, result_addr_base;
   logic sa_done_d, sa_done_q;
 
-  assign sa_compute_ctx_id = ((((vinsn_issue_q.bmpu_pair_ai * gn_q) + vinsn_issue_q.bmpu_pair_wi) * m_block_count_q)
-                              + compute_mblock_q) * n_block_count_q + compute_nblock_q;
-  assign sa_output_ctx_id  = ((((vinsn_issue_q.bmpu_pair_ai * gn_q) + vinsn_issue_q.bmpu_pair_wi) * m_block_count_q)
-                              + store_mblock_q) * n_block_count_q + store_nblock_q;
+  assign sa_ctx_pair_base   = (vinsn_issue_q.bmpu_pair_ai * gn_q) + vinsn_issue_q.bmpu_pair_wi;
+  assign sa_ctx_mblock_base = sa_ctx_pair_base * m_block_count_q;
+  assign sa_compute_ctx_base = sa_ctx_mblock_base + compute_mblock_q;
+  assign sa_output_ctx_base  = sa_ctx_mblock_base + store_mblock_q;
+  assign sa_compute_ctx_id   = (sa_compute_ctx_base * n_block_count_q) + compute_nblock_q;
+  assign sa_output_ctx_id    = (sa_output_ctx_base * n_block_count_q) + store_nblock_q;
+  assign result_addr_stride  = (k_dim_q * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane;
+  assign result_addr_base    = result_addr_stride
+                             + ((vinsn_issue_q.vl - issue_cnt_q)
+                             >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew)));
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
@@ -273,30 +308,6 @@ module bmpu
   logic [1:0] issue_effective_eew, commit_effective_eew;
   logic [8:0] element_cnt_issue;
   logic [8:0] element_cnt_commit;
-  typedef struct packed {
-    vid_t id;
-    ara_op_e op;
-    logic vm;
-    vlen_t vl;
-    vlen_t vstart;
-    rvv_pkg::vtype_t vtype;
-    logic [16:0] k_dim;
-    logic [5:0] mtile;
-    logic [6:0] ntile;
-    logic [3:0] gm;
-    logic [3:0] gn;
-    logic [3:0] group_g;
-    logic       bmpu_en;
-    logic       is_weight;
-    logic       bmpu_output_en;
-    logic [2:0] prec;
-    logic [2:0] bmpu_pair_ai;
-    logic [2:0] bmpu_pair_wi;
-    logic       bmpu_first_k_round;
-  } bmpu_req_sig_t;
-  bmpu_req_sig_t vfu_operation_last_sig_d, vfu_operation_last_sig_q, vfu_operation_sig;
-  logic vfu_operation_valid_msk;
-  logic vfu_sync_mask_d, vfu_sync_mask_q;
 
   always_comb begin : p_bmpu
     // Maintain state
@@ -498,7 +509,7 @@ module bmpu
               bmpu_result[1][112 +: 16], bmpu_result[0][112 +: 16],
               bmpu_result[1][96 +: 16],  bmpu_result[0][96 +: 16]};
           for (int unsigned i = 0; i < NrResultQueues; i++) begin
-            result_queue_d[result_queue_write_pnt_q][i].addr  = (k_dim_q * (4'b1000 << EW8) / DataWidth) * NrVRFBanksPerLane + ((vinsn_issue_q.vl - issue_cnt_q) >> (unsigned'(EW64) - unsigned'(vinsn_issue_q.vtype.vsew))) + i;
+            result_queue_d[result_queue_write_pnt_q][i].addr  = result_addr_base + i;
             result_queue_d[result_queue_write_pnt_q][i].id = vinsn_issue_q.id;
             result_queue_d[result_queue_write_pnt_q][i].be = '1;
           end

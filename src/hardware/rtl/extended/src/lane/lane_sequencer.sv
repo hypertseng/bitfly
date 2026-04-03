@@ -102,6 +102,13 @@ module lane_sequencer
     logic       reuse_a;
   } bmpu_plan_t;
 
+  logic [1:0] bmpu_plan_a_slots_d, bmpu_plan_a_slots_q;
+  logic [1:0] bmpu_plan_w_slots_d, bmpu_plan_w_slots_q;
+  logic [3:0] bmpu_plan_a_windows_d, bmpu_plan_a_windows_q;
+  logic [3:0] bmpu_plan_w_windows_d, bmpu_plan_w_windows_q;
+  logic       bmpu_plan_row_snake_d, bmpu_plan_row_snake_q;
+  logic       bmpu_plan_reuse_a_d, bmpu_plan_reuse_a_q;
+
   logic       bmpu_group_active_d, bmpu_group_active_q;
   logic       bmpu_store_phase_d, bmpu_store_phase_q;
   logic       bmpu_first_k_round_d, bmpu_first_k_round_q;
@@ -196,6 +203,12 @@ module lane_sequencer
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
+      bmpu_plan_a_slots_q <= 2'd1;
+      bmpu_plan_w_slots_q <= 2'd1;
+      bmpu_plan_a_windows_q <= 4'd1;
+      bmpu_plan_w_windows_q <= 4'd1;
+      bmpu_plan_row_snake_q <= 1'b0;
+      bmpu_plan_reuse_a_q <= 1'b0;
       bmpu_group_active_q <= 1'b0;
       bmpu_store_phase_q <= 1'b0;
       bmpu_first_k_round_q <= 1'b1;
@@ -213,6 +226,12 @@ module lane_sequencer
       bmpu_store_w_win_q <= '0;
       bmpu_store_pair_ord_q <= '0;
     end else begin
+      bmpu_plan_a_slots_q <= bmpu_plan_a_slots_d;
+      bmpu_plan_w_slots_q <= bmpu_plan_w_slots_d;
+      bmpu_plan_a_windows_q <= bmpu_plan_a_windows_d;
+      bmpu_plan_w_windows_q <= bmpu_plan_w_windows_d;
+      bmpu_plan_row_snake_q <= bmpu_plan_row_snake_d;
+      bmpu_plan_reuse_a_q <= bmpu_plan_reuse_a_d;
       bmpu_group_active_q <= bmpu_group_active_d;
       bmpu_store_phase_q <= bmpu_store_phase_d;
       bmpu_first_k_round_q <= bmpu_first_k_round_d;
@@ -476,54 +495,69 @@ module lane_sequencer
       output int unsigned a_pos,
       output int unsigned w_pos
   );
-    int unsigned ord;
-    ord = 0;
     a_pos = 0;
     w_pos = 0;
+    if ((a_len == 0) || (w_len == 0) || (pair_ord >= (a_len * w_len)))
+      return;
+
     if (reuse_a) begin
-      for (int unsigned ap = 0; ap < a_len; ++ap) begin
-        if ((ap & 1) == 0) begin
-          for (int unsigned wp = 0; wp < w_len; ++wp) begin
-            if (ord == pair_ord) begin
-              a_pos = ap;
-              w_pos = wp;
-              return;
-            end
-            ord++;
-          end
-        end else begin
-          for (int unsigned wrev = 0; wrev < w_len; ++wrev) begin
-            if (ord == pair_ord) begin
-              a_pos = ap;
-              w_pos = w_len - 1 - wrev;
-              return;
-            end
-            ord++;
-          end
+      unique case (w_len)
+        1: begin
+          a_pos = pair_ord;
+          w_pos = 0;
         end
-      end
+        2: unique case (pair_ord)
+          0: begin a_pos = 0; w_pos = 0; end
+          1: begin a_pos = 0; w_pos = 1; end
+          2: begin a_pos = 1; w_pos = 1; end
+          3: begin a_pos = 1; w_pos = 0; end
+          4: begin a_pos = 2; w_pos = 0; end
+          5: begin a_pos = 2; w_pos = 1; end
+          default: ;
+        endcase
+        3: unique case (pair_ord)
+          0: begin a_pos = 0; w_pos = 0; end
+          1: begin a_pos = 0; w_pos = 1; end
+          2: begin a_pos = 0; w_pos = 2; end
+          3: begin a_pos = 1; w_pos = 2; end
+          4: begin a_pos = 1; w_pos = 1; end
+          5: begin a_pos = 1; w_pos = 0; end
+          6: begin a_pos = 2; w_pos = 0; end
+          7: begin a_pos = 2; w_pos = 1; end
+          8: begin a_pos = 2; w_pos = 2; end
+          default: ;
+        endcase
+        default: ;
+      endcase
     end else begin
-      for (int unsigned wp = 0; wp < w_len; ++wp) begin
-        if ((wp & 1) == 0) begin
-          for (int unsigned ap = 0; ap < a_len; ++ap) begin
-            if (ord == pair_ord) begin
-              a_pos = ap;
-              w_pos = wp;
-              return;
-            end
-            ord++;
-          end
-        end else begin
-          for (int unsigned arev = 0; arev < a_len; ++arev) begin
-            if (ord == pair_ord) begin
-              a_pos = a_len - 1 - arev;
-              w_pos = wp;
-              return;
-            end
-            ord++;
-          end
+      unique case (a_len)
+        1: begin
+          a_pos = 0;
+          w_pos = pair_ord;
         end
-      end
+        2: unique case (pair_ord)
+          0: begin a_pos = 0; w_pos = 0; end
+          1: begin a_pos = 1; w_pos = 0; end
+          2: begin a_pos = 1; w_pos = 1; end
+          3: begin a_pos = 0; w_pos = 1; end
+          4: begin a_pos = 0; w_pos = 2; end
+          5: begin a_pos = 1; w_pos = 2; end
+          default: ;
+        endcase
+        3: unique case (pair_ord)
+          0: begin a_pos = 0; w_pos = 0; end
+          1: begin a_pos = 1; w_pos = 0; end
+          2: begin a_pos = 2; w_pos = 0; end
+          3: begin a_pos = 2; w_pos = 1; end
+          4: begin a_pos = 1; w_pos = 1; end
+          5: begin a_pos = 0; w_pos = 1; end
+          6: begin a_pos = 0; w_pos = 2; end
+          7: begin a_pos = 1; w_pos = 2; end
+          8: begin a_pos = 2; w_pos = 2; end
+          default: ;
+        endcase
+        default: ;
+      endcase
     end
   endfunction : bmpu_pair_from_ord
 
@@ -535,155 +569,33 @@ module lane_sequencer
       input logic [2:0] prec
   );
     bmpu_plan_t plan;
-    int unsigned best_load_bytes;
-    int best_pref;
-    int best_same_a;
-    int best_same_w;
-    int unsigned best_a_slots;
-    int unsigned best_w_slots;
-    int unsigned best_row_snake;
     int unsigned total_slots;
+    int unsigned min_a_slots;
+    int unsigned max_a_slots;
+    int unsigned chosen_a_slots;
+    int unsigned chosen_w_slots;
     int unsigned weight_bits;
     logic reuse_a;
-
-    best_load_bytes = '1;
-    best_pref = -1;
-    best_same_a = -1;
-    best_same_w = -1;
-    best_a_slots = 1;
-    best_w_slots = 1;
-    best_row_snake = 0;
 
     weight_bits = bmpu_weight_bits(prec);
     reuse_a = ((int'(mtile) * 8) >= (int'(ntile) * int'(weight_bits)));
     total_slots = bmpu_min(4, int'(gm) + int'(gn));
 
-    for (int unsigned a_slots = 1; a_slots <= bmpu_min(int'(gm), total_slots - 1); ++a_slots) begin
-      int unsigned w_slots;
-      int unsigned a_windows;
-      int unsigned w_windows;
-      w_slots = total_slots - a_slots;
-      if ((w_slots == 0) || (w_slots > int'(gn)))
-        continue;
+    min_a_slots = (total_slots > int'(gn)) ? (total_slots - int'(gn)) : 1;
+    if (min_a_slots == 0)
+      min_a_slots = 1;
+    max_a_slots = bmpu_min(int'(gm), total_slots - 1);
+    if (max_a_slots < min_a_slots)
+      max_a_slots = min_a_slots;
 
-      a_windows = bmpu_ceil_div(int'(gm), a_slots);
-      w_windows = bmpu_ceil_div(int'(gn), w_slots);
+    chosen_a_slots = reuse_a ? max_a_slots : min_a_slots;
+    chosen_w_slots = total_slots - chosen_a_slots;
 
-      for (int unsigned row_snake = 0; row_snake <= 1; ++row_snake) begin
-        int unsigned cur_a;
-        int unsigned cur_w;
-        int unsigned prev_a;
-        int unsigned prev_w;
-        int unsigned load_a;
-        int unsigned load_w;
-        int same_a;
-        int same_w;
-        int unsigned prev_pair_a;
-        int unsigned prev_pair_w;
-        logic have_prev_pair;
-
-        cur_a = 0;
-        cur_w = 0;
-        prev_a = '1;
-        prev_w = '1;
-        load_a = 0;
-        load_w = 0;
-        same_a = 0;
-        same_w = 0;
-        prev_pair_a = '1;
-        prev_pair_w = '1;
-        have_prev_pair = 1'b0;
-
-        while (1) begin
-          int unsigned a_start;
-          int unsigned a_len;
-          int unsigned w_start;
-          int unsigned w_len;
-          int unsigned pair_count;
-          int unsigned next_a;
-          int unsigned next_w;
-          logic has_next;
-
-          bmpu_window_shape(int'(gm), a_slots, cur_a, a_start, a_len);
-          bmpu_window_shape(int'(gn), w_slots, cur_w, w_start, w_len);
-
-          if (cur_a != prev_a)
-            load_a += a_len;
-          if (cur_w != prev_w)
-            load_w += w_len;
-
-          pair_count = a_len * w_len;
-          for (int unsigned pair_ord = 0; pair_ord < pair_count; ++pair_ord) begin
-            int unsigned a_pos;
-            int unsigned w_pos;
-            int unsigned abs_a;
-            int unsigned abs_w;
-            bmpu_pair_from_ord(a_len, w_len, reuse_a, pair_ord, a_pos, w_pos);
-            abs_a = a_start + a_pos;
-            abs_w = w_start + w_pos;
-            if (have_prev_pair) begin
-              if (abs_a == prev_pair_a)
-                same_a++;
-              if (abs_w == prev_pair_w)
-                same_w++;
-            end
-            prev_pair_a = abs_a;
-            prev_pair_w = abs_w;
-            have_prev_pair = 1'b1;
-          end
-
-          prev_a = cur_a;
-          prev_w = cur_w;
-          bmpu_next_window(a_windows, w_windows, row_snake[0], cur_a, cur_w, next_a, next_w, has_next);
-          if (!has_next)
-            break;
-          cur_a = next_a;
-          cur_w = next_w;
-        end
-
-        begin
-          int unsigned load_bytes;
-          int preferred;
-          logic better;
-          load_bytes = load_a * int'(mtile) + ((load_w * int'(ntile) * int'(weight_bits)) >> 3);
-          preferred = reuse_a ? same_a : same_w;
-          better = 1'b0;
-          if (load_bytes < best_load_bytes)
-            better = 1'b1;
-          else if ((load_bytes == best_load_bytes) && (preferred > best_pref))
-            better = 1'b1;
-          else if ((load_bytes == best_load_bytes) && (preferred == best_pref) && (same_a > best_same_a))
-            better = 1'b1;
-          else if ((load_bytes == best_load_bytes) && (preferred == best_pref) &&
-                   (same_a == best_same_a) && (same_w > best_same_w))
-            better = 1'b1;
-          else if ((load_bytes == best_load_bytes) && (preferred == best_pref) &&
-                   (same_a == best_same_a) && (same_w == best_same_w) &&
-                   (a_slots > best_a_slots))
-            better = 1'b1;
-          else if ((load_bytes == best_load_bytes) && (preferred == best_pref) &&
-                   (same_a == best_same_a) && (same_w == best_same_w) &&
-                   (a_slots == best_a_slots) && (row_snake < best_row_snake))
-            better = 1'b1;
-
-          if (better) begin
-            best_load_bytes = load_bytes;
-            best_pref = preferred;
-            best_same_a = same_a;
-            best_same_w = same_w;
-            best_a_slots = a_slots;
-            best_w_slots = w_slots;
-            best_row_snake = row_snake;
-          end
-        end
-      end
-    end
-
-    plan.a_slots = best_a_slots[1:0];
-    plan.w_slots = best_w_slots[1:0];
-    plan.a_windows = bmpu_ceil_div(int'(gm), best_a_slots);
-    plan.w_windows = bmpu_ceil_div(int'(gn), best_w_slots);
-    plan.row_snake = best_row_snake[0];
+    plan.a_slots = chosen_a_slots[1:0];
+    plan.w_slots = chosen_w_slots[1:0];
+    plan.a_windows = bmpu_ceil_div(int'(gm), chosen_a_slots);
+    plan.w_windows = bmpu_ceil_div(int'(gn), chosen_w_slots);
+    plan.row_snake = reuse_a;
     plan.reuse_a = reuse_a;
     return plan;
   endfunction : bmpu_select_plan
@@ -709,6 +621,12 @@ module lane_sequencer
     // Make no requests to the lane's VFUs
     vfu_operation_d       = '0;
     vfu_operation_valid_d = 1'b0;
+    bmpu_plan_a_slots_d = bmpu_plan_a_slots_q;
+    bmpu_plan_w_slots_d = bmpu_plan_w_slots_q;
+    bmpu_plan_a_windows_d = bmpu_plan_a_windows_q;
+    bmpu_plan_w_windows_d = bmpu_plan_w_windows_q;
+    bmpu_plan_row_snake_d = bmpu_plan_row_snake_q;
+    bmpu_plan_reuse_a_d = bmpu_plan_reuse_a_q;
     bmpu_group_active_d = bmpu_group_active_q;
     bmpu_store_phase_d = bmpu_store_phase_q;
     bmpu_first_k_round_d = bmpu_first_k_round_q;
@@ -804,12 +722,23 @@ module lane_sequencer
       bmpu_new_group = !bmpu_group_active_q &&
                        (pe_req.op inside {BMPLE, BMPMM, BMPSE});
       bmpu_first_store_insn = !bmpu_store_phase_q && (pe_req.op == BMPSE);
-      bmpu_plan = bmpu_select_plan(
-          bmpu_new_group ? pe_req.gm : bmpu_group_gm_q,
-          bmpu_new_group ? pe_req.gn : bmpu_group_gn_q,
-          bmpu_new_group ? pe_req.mtile : bmpu_group_mtile_q,
-          bmpu_new_group ? pe_req.ntile : bmpu_group_ntile_q,
-          bmpu_new_group ? pe_req.prec : bmpu_group_prec_q);
+      if (bmpu_new_group) begin
+        bmpu_plan = bmpu_select_plan(
+            pe_req.gm,
+            pe_req.gn,
+            pe_req.mtile,
+            pe_req.ntile,
+            pe_req.prec);
+      end else begin
+        bmpu_plan = '{
+            a_slots   : bmpu_plan_a_slots_q,
+            w_slots   : bmpu_plan_w_slots_q,
+            a_windows : bmpu_plan_a_windows_q,
+            w_windows : bmpu_plan_w_windows_q,
+            row_snake : bmpu_plan_row_snake_q,
+            reuse_a   : bmpu_plan_reuse_a_q
+        };
+      end
       bmpu_cur_a_win = bmpu_new_group ? 0 : bmpu_compute_a_win_q;
       bmpu_cur_w_win = bmpu_new_group ? 0 : bmpu_compute_w_win_q;
       bmpu_window_shape(
@@ -1652,6 +1581,12 @@ module lane_sequencer
         automatic logic has_next_window;
 
         if (bmpu_new_group) begin
+          bmpu_plan_a_slots_d = bmpu_plan.a_slots;
+          bmpu_plan_w_slots_d = bmpu_plan.w_slots;
+          bmpu_plan_a_windows_d = bmpu_plan.a_windows;
+          bmpu_plan_w_windows_d = bmpu_plan.w_windows;
+          bmpu_plan_row_snake_d = bmpu_plan.row_snake;
+          bmpu_plan_reuse_a_d = bmpu_plan.reuse_a;
           bmpu_group_active_d = 1'b1;
           bmpu_store_phase_d = 1'b0;
           bmpu_first_k_round_d = 1'b1;
@@ -1738,6 +1673,12 @@ module lane_sequencer
               bmpu_group_active_d = 1'b0;
               bmpu_store_phase_d = 1'b0;
               bmpu_first_k_round_d = 1'b1;
+              bmpu_plan_a_slots_d = 2'd1;
+              bmpu_plan_w_slots_d = 2'd1;
+              bmpu_plan_a_windows_d = 4'd1;
+              bmpu_plan_w_windows_d = 4'd1;
+              bmpu_plan_row_snake_d = 1'b0;
+              bmpu_plan_reuse_a_d = 1'b0;
               bmpu_compute_a_win_d = '0;
               bmpu_compute_w_win_d = '0;
               bmpu_compute_pair_ord_d = '0;

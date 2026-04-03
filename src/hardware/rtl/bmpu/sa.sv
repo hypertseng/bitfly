@@ -43,10 +43,13 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   logic [15:0] compute_last;
   logic [2:0]  planes;
   logic [15:0] k_iters;
+  logic [15:0] k_plane_cycles;
   logic [ROWS-1:0] act_window;
   logic [COLS-1:0] wgt_window;
   logic [ROWS-1:0] act_window_eff;
   logic [COLS-1:0] wgt_window_eff;
+  logic [ROWS-1:0] act_hold_window;
+  logic [COLS-1:0] wgt_hold_window;
   elen_t [ROWS-1:0] act_in;
   elen_t [COLS-1:0] wgt_in;
   logic             sa_stage_ready;
@@ -66,7 +69,8 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
 
   always_comb begin
     k_iters        = (k_dim_i / BIT_ACT);
-    compute_cycles = ROWS - 1 + k_iters * planes + COLS;
+    k_plane_cycles = k_iters * planes;
+    compute_cycles = ROWS - 1 + k_plane_cycles + COLS;
     compute_last   = (compute_cycles == 0) ? 16'd0 : (compute_cycles - 16'd1);
   end
 
@@ -84,6 +88,8 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   end
 
   assign sa_done_o = sa_step && (cycle_cnt == compute_last);
+  assign act_hold_window = act_window & ~bmpu_act_operand_valid_i;
+  assign wgt_hold_window = wgt_window & ~bmpu_wgt_operand_valid_i;
 
   always_comb begin
     store_mode = valid_i && output_en_i;
@@ -93,14 +99,14 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     wgt_window = '0;
 
     for (int i = 0; i < ROWS; i++) begin
-      if ((cycle_cnt >= i) && (cycle_cnt < (i + k_iters * planes))) begin
+      if ((cycle_cnt >= i) && (cycle_cnt < (i + k_plane_cycles))) begin
         act_window[i] = 1'b1;
         act_in[i] = bmpu_act_operand_i[i];
       end
     end
 
     for (int j = 0; j < COLS; j++) begin
-      if ((cycle_cnt >= j) && (cycle_cnt < (j + k_iters * planes))) begin
+      if ((cycle_cnt >= j) && (cycle_cnt < (j + k_plane_cycles))) begin
         wgt_window[j] = 1'b1;
         wgt_in[j] = bmpu_wgt_operand_i[j];
       end
@@ -110,6 +116,8 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
   always_comb begin
     automatic logic act_suffix_ok;
     automatic logic wgt_suffix_ok;
+    automatic logic [ROWS-1:0] act_valid_window;
+    automatic logic [COLS-1:0] wgt_valid_window;
     automatic logic [ROWS-1:0] act_suffix_mask;
     automatic logic [COLS-1:0] wgt_suffix_mask;
     automatic logic [ROWS-1:0] act_prefix_mask;
@@ -117,6 +125,8 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
 
     act_suffix_ok   = store_mode;
     wgt_suffix_ok   = store_mode;
+    act_valid_window = bmpu_act_operand_valid_i & act_window;
+    wgt_valid_window = bmpu_wgt_operand_valid_i & wgt_window;
     act_window_eff  = '0;
     wgt_window_eff  = '0;
 
@@ -127,7 +137,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
           act_prefix_mask[i] = 1'b1;
         end
         act_suffix_mask = act_window & ~act_prefix_mask;
-        if ((bmpu_act_operand_valid_i & act_window) == act_suffix_mask) begin
+        if (act_valid_window == act_suffix_mask) begin
           act_suffix_ok  = 1'b1;
           act_window_eff = act_suffix_mask;
         end
@@ -139,7 +149,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
           wgt_prefix_mask[j] = 1'b1;
         end
         wgt_suffix_mask = wgt_window & ~wgt_prefix_mask;
-        if ((bmpu_wgt_operand_valid_i & wgt_window) == wgt_suffix_mask) begin
+        if (wgt_valid_window == wgt_suffix_mask) begin
           wgt_suffix_ok  = 1'b1;
           wgt_window_eff = wgt_suffix_mask;
         end
@@ -152,7 +162,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
     for (int i = 0; i < ROWS; i++) begin
       automatic logic row_in_window;
       automatic logic [2:0] row_plane_idx;
-      row_in_window = (cycle_cnt >= i) && (cycle_cnt < (i + k_iters * planes));
+      row_in_window = (cycle_cnt >= i) && (cycle_cnt < (i + k_plane_cycles));
       row_plane_idx = '0;
       if (row_in_window) begin
         row_plane_idx = (cycle_cnt - i) % planes;
@@ -183,7 +193,7 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
         always_comb begin
           pe_mac_en    = sa_step
                       && (cycle_cnt >= (i + j))
-                      && (cycle_cnt < ((i + j) + k_iters * planes));
+                      && (cycle_cnt < ((i + j) + k_plane_cycles));
           pe_plane_idx = '0;
           if (pe_mac_en) begin
             pe_plane_idx = (cycle_cnt - (i + j)) % planes;
@@ -231,12 +241,13 @@ module sa import ara_pkg::*; import rvv_pkg::*; #(
             .ctx_clear_i              (ctx_clear_i),
             .ctx_id_i                 (ctx_id_i),
             .output_ctx_id_i          (output_ctx_id_i),
+            .output_read_en_i         (output_en_i),
             .activations              ((j == 0) ? act_in[i] : act_reg[i][j-1]),
             .weights                  ((i == 0) ? wgt_in[j] : weight_reg[i-1][j]),
             .shift_amt_i              (pe_shift_amt),
             .lbmac_mode_i             (pe_lbmac_mode),
-            .act_hold_i               ((j == 0) ? (act_window[i] && !bmpu_act_operand_valid_i[i]) : 1'b0),
-            .wgt_hold_i               ((i == 0) ? (wgt_window[j] && !bmpu_wgt_operand_valid_i[j]) : 1'b0),
+            .act_hold_i               ((j == 0) ? act_hold_window[i] : 1'b0),
+            .wgt_hold_i               ((i == 0) ? wgt_hold_window[j] : 1'b0),
             .activation_out           (act_reg[i][j]),
             .weight_out               (weight_reg[i][j]),
             .output_selected_o        (output_reg_selected[i][j])
