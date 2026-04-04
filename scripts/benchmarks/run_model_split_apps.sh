@@ -12,6 +12,8 @@ CONDA_ENV_NAME="bitfly"
 MODE="all"
 BUILD_JOBS=16
 PARALLEL=6
+RVV_PARALLEL=""
+BMPMM_PARALLEL=""
 BATCH_SIZE=6
 RUN_VERILATE=1
 REBUILD_APPS=1
@@ -24,7 +26,8 @@ PRECS_CSV=""
 IMPLS_CSV=""
 APPS_CSV=""
 EXTRA_MAKE_ARGS=""
-APP_ENV_DEFINES="-DBMPMM_LOWP_DEFAULT_MODE=BMPMM_LOWP_EXEC_FAST -DRVV_BINARY_VECTOR_DEFAULT_MODE=RVV_BINARY_VECTOR_EXEC_FAST -DRVV_INT2_VECTOR_DEFAULT_MODE=RVV_INT2_VECTOR_EXEC_FAST -DRVV_INT4_VECTOR_DEFAULT_MODE=RVV_INT4_VECTOR_EXEC_FAST"
+APP_ENV_DEFINES="-DBMPMM_LOWP_DEFAULT_MODE=BMPMM_LOWP_EXEC_STRICT -DRVV_BINARY_VECTOR_DEFAULT_MODE=RVV_BINARY_VECTOR_EXEC_FAST -DRVV_INT2_VECTOR_DEFAULT_MODE=RVV_INT2_VECTOR_EXEC_FAST -DRVV_INT4_VECTOR_DEFAULT_MODE=RVV_INT4_VECTOR_EXEC_FAST"
+BMPMM_COEFFS="$ROOT_DIR/scripts/benchmarks/bmpmm_cost_model_coeffs.json"
 
 usage() {
   cat <<USAGE
@@ -34,6 +37,8 @@ Options:
   --mode <all|build|run>       Default: all
   --build-jobs <N>             make -j for app/hardware build, default: 16
   --parallel <N>               concurrent simv jobs, default: 6
+  --rvv-parallel <N>           concurrent rvv simv jobs, default: --parallel
+  --bmpmm-parallel <N>         concurrent bmpmm predictor jobs, default: --parallel
   --batch-size <N>             apps per batch, default: 6
   --models <csv>               default: gemma3_270m,smollm2_360m,qwen25_05b,replit_code_v1_3b,tinyllama_11b,opt_13b,qwen25_15b,stablelm2_16b,smollm2_17b,gemma2_2b
   --precisions <csv>           default: binary,INT2,INT4
@@ -46,7 +51,8 @@ Options:
   --heartbeat-sec <N>          runner heartbeat interval, default: 60
   --poll-sec <N>               runner poll interval, default: 5
   --extra-make-args <string>   extra args appended to hardware make
-  --app-env-defines <string>   app build ENV_DEFINES, default enables fast estimate for bmpmm/rvv
+  --app-env-defines <string>   app build ENV_DEFINES, default keeps bmpmm strict and rvv fast
+  --bmpmm-coeffs <json>        coefficient json for Python bmpmm cost model
   -h, --help                   show help
 
 Examples:
@@ -60,6 +66,8 @@ while [[ $# -gt 0 ]]; do
     --mode) MODE="$2"; shift 2 ;;
     --build-jobs) BUILD_JOBS="$2"; shift 2 ;;
     --parallel) PARALLEL="$2"; shift 2 ;;
+    --rvv-parallel) RVV_PARALLEL="$2"; shift 2 ;;
+    --bmpmm-parallel) BMPMM_PARALLEL="$2"; shift 2 ;;
     --batch-size) BATCH_SIZE="$2"; shift 2 ;;
     --models) MODELS_CSV="$2"; shift 2 ;;
     --precisions) PRECS_CSV="$2"; shift 2 ;;
@@ -73,6 +81,7 @@ while [[ $# -gt 0 ]]; do
     --poll-sec) POLL_SEC="$2"; shift 2 ;;
     --extra-make-args) EXTRA_MAKE_ARGS="$2"; shift 2 ;;
     --app-env-defines) APP_ENV_DEFINES="$2"; shift 2 ;;
+    --bmpmm-coeffs) BMPMM_COEFFS="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage; exit 1 ;;
   esac
@@ -96,6 +105,13 @@ IN_BATCH=0
 CURRENT_BATCH_NAME=""
 ACTIVE_PIDS=()
 
+if [[ -z "$RVV_PARALLEL" ]]; then
+  RVV_PARALLEL="$PARALLEL"
+fi
+if [[ -z "$BMPMM_PARALLEL" ]]; then
+  BMPMM_PARALLEL="$PARALLEL"
+fi
+
 cleanup_active_batch() {
   local self_pid="${BASHPID:-$$}"
   local pid
@@ -113,7 +129,7 @@ cleanup_active_batch() {
   done
 }
 
-trap cleanup_active_batch EXIT HUP INT TERM
+trap cleanup_active_batch HUP INT TERM
 
 log() {
   echo "[$(date '+%F %T')] $*" | tee -a "$RUNNER_LOG"
@@ -191,31 +207,80 @@ clean_app_artifacts() {
   rm -f "$APPS_DIR/bin/$app" "$APPS_DIR/bin/$app.dump" "$APPS_DIR/bin/$app.spike" "$APPS_DIR/bin/$app.spike.dump"
 }
 
+is_bmpmm_app() {
+  [[ "$1" == bmpmm_* ]]
+}
+
+is_rvv_app() {
+  [[ "$1" == rvv_* ]]
+}
+
 build_apps() {
   local -a apps=("$@")
+  local -a buildable_apps=()
   (( ${#apps[@]} > 0 )) || return 0
-  local -a bins=()
   for app in "${apps[@]}"; do
+    if is_rvv_app "$app"; then
+      buildable_apps+=("$app")
+    fi
+  done
+  if (( ${#buildable_apps[@]} == 0 )); then
+    log "Skipping app rebuild: no rvv apps selected"
+    return 0
+  fi
+  local -a bins=()
+  for app in "${buildable_apps[@]}"; do
     clean_app_artifacts "$app"
     bins+=("bin/$app")
   done
-  log "Building ${#apps[@]} apps with -j$BUILD_JOBS"
+  log "Building ${#buildable_apps[@]} rvv apps with -j$BUILD_JOBS"
   log "App ENV_DEFINES: $APP_ENV_DEFINES"
   activate_env
   make -j"$BUILD_JOBS" -C "$APPS_DIR" -B ENV_DEFINES="$APP_ENV_DEFINES" "${bins[@]}"
 }
 
 build_verilator() {
+  local -a apps=("$@")
+  local app
   if [[ "$RUN_VERILATE" -eq 0 ]]; then
     log "Skipping verilate by request"
     return 0
   fi
-  log "Building Verilator model with -j$BUILD_JOBS"
+  for app in "${apps[@]}"; do
+    if is_rvv_app "$app"; then
+      log "Building Verilator model with -j$BUILD_JOBS"
+      activate_env
+      if [[ "$TRACE" -eq 1 ]]; then
+        make -j"$BUILD_JOBS" -C "$HW_DIR" verilate trace=1 $EXTRA_MAKE_ARGS
+      else
+        make -j"$BUILD_JOBS" -C "$HW_DIR" verilate $EXTRA_MAKE_ARGS
+      fi
+      return 0
+    fi
+  done
+  log "Skipping verilate: no rvv apps selected"
+}
+
+run_one_bmpmm_app() {
+  local app="$1"
+  local logfile="$2"
+  if [[ -z "$BMPMM_COEFFS" ]]; then
+    echo "bmpmm app $app requires --bmpmm-coeffs <json>" >"$logfile"
+    return 2
+  fi
+  activate_env
+  python3 "$ROOT_DIR/scripts/benchmarks/bmpmm_cost_model.py" predict-app --app "$app" --coeffs "$BMPMM_COEFFS" >"$logfile" 2>&1
+}
+
+run_one_rvv_app() {
+  local app="$1"
+  local logfile="$2"
+  log "SIMV $app logfile=$logfile"
   activate_env
   if [[ "$TRACE" -eq 1 ]]; then
-    make -j"$BUILD_JOBS" -C "$HW_DIR" verilate trace=1 $EXTRA_MAKE_ARGS
+    stdbuf -oL -eL make -C "$HW_DIR" simv app="$app" trace=1 $EXTRA_MAKE_ARGS >"$logfile" 2>&1
   else
-    make -j"$BUILD_JOBS" -C "$HW_DIR" verilate $EXTRA_MAKE_ARGS
+    stdbuf -oL -eL make -C "$HW_DIR" simv app="$app" $EXTRA_MAKE_ARGS >"$logfile" 2>&1
   fi
 }
 
@@ -225,15 +290,13 @@ run_one_app() {
   local start_epoch end_epoch duration rc status
   start_epoch=$(date +%s)
   log "START $app logfile=$logfile"
-  activate_env
   set +e
-  if [[ "$TRACE" -eq 1 ]]; then
-    stdbuf -oL -eL make -C "$HW_DIR" simv app="$app" trace=1 $EXTRA_MAKE_ARGS >"$logfile" 2>&1
-    rc=$?
+  if is_bmpmm_app "$app"; then
+    run_one_bmpmm_app "$app" "$logfile"
   else
-    stdbuf -oL -eL make -C "$HW_DIR" simv app="$app" $EXTRA_MAKE_ARGS >"$logfile" 2>&1
-    rc=$?
+    run_one_rvv_app "$app" "$logfile"
   fi
+  rc=$?
   set -e
   end_epoch=$(date +%s)
   duration=$((end_epoch - start_epoch))
@@ -287,6 +350,20 @@ run_batch() {
     ACTIVE_PIDS=("${active_pids[@]}")
   }
 
+  active_kind_count() {
+    local kind="$1"
+    local count=0
+    local active_app
+    for active_app in "${active_apps[@]}"; do
+      if [[ "$kind" == "rvv" ]]; then
+        is_rvv_app "$active_app" && count=$((count + 1))
+      else
+        is_bmpmm_app "$active_app" && count=$((count + 1))
+      fi
+    done
+    printf '%s' "$count"
+  }
+
   emit_heartbeat() {
     if (( ${#active_pids[@]} == 0 )); then
       return 0
@@ -305,18 +382,36 @@ run_batch() {
   }
 
   for app in "${apps[@]}"; do
-    run_one_app "$app" "$batch_dir/${app}.log" &
+    local kind_limit kind_count
+    if is_rvv_app "$app"; then
+      kind_limit="$RVV_PARALLEL"
+    else
+      kind_limit="$BMPMM_PARALLEL"
+    fi
+    while :; do
+      reap_finished
+      if is_rvv_app "$app"; then
+        kind_count="$(active_kind_count rvv)"
+      else
+        kind_count="$(active_kind_count bmpmm)"
+      fi
+      if (( ${#active_pids[@]} < PARALLEL && kind_count < kind_limit )); then
+        break
+      fi
+      sleep "$POLL_SEC"
+      emit_heartbeat
+    done
+
+    (
+      trap - HUP INT TERM EXIT
+      run_one_app "$app" "$batch_dir/${app}.log"
+    ) &
     pid=$!
     active_pids+=("$pid")
     active_apps+=("$app")
     active_starts+=("$(date +%s)")
     ACTIVE_PIDS=("${active_pids[@]}")
     log "LAUNCH $batch_name app=$app pid=$pid logfile=$batch_dir/${app}.log"
-    while (( ${#active_pids[@]} >= PARALLEL )); do
-      sleep "$POLL_SEC"
-      reap_finished
-      emit_heartbeat
-    done
   done
 
   while (( ${#active_pids[@]} > 0 )); do
@@ -333,7 +428,7 @@ run_batch() {
 
 main() {
   local -a apps batch_apps
-  local total idx batch_idx
+  local total idx batch_idx app
 
   mapfile -t apps < <(list_target_apps)
   if (( ${#apps[@]} == 0 )); then
@@ -341,11 +436,19 @@ main() {
     exit 1
   fi
 
+  for app in "${apps[@]}"; do
+    if is_bmpmm_app "$app" && [[ -z "$BMPMM_COEFFS" ]]; then
+      echo "Selected bmpmm apps require --bmpmm-coeffs <json>" >&2
+      exit 1
+    fi
+  done
+
   printf '%s\n' "${apps[@]}" > "$APPS_TXT"
   printf 'app,status,duration_sec,logfile\n' > "$SUMMARY_CSV"
 
   log "Log root: $LOG_ROOT"
   log "Selected ${#apps[@]} apps"
+  log "Parallel caps: total=$PARALLEL rvv=$RVV_PARALLEL bmpmm=$BMPMM_PARALLEL"
   log "Apps: $(join_by ', ' "${apps[@]}")"
 
   case "$MODE" in
@@ -355,7 +458,7 @@ main() {
       else
         log "Skipping app rebuild by request"
       fi
-      build_verilator
+      build_verilator "${apps[@]}"
       ;;
   esac
 

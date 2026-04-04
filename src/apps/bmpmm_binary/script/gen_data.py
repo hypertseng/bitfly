@@ -88,19 +88,16 @@ def pack_weights_binary(weight_mat: np.ndarray, ntile: int):
 
 
 def make_top_shape_activation(m_dim: int, k_dim: int):
-    activation = np.zeros((m_dim, k_dim), dtype=np.int16)
-    for m_idx in range(m_dim):
-        for k_idx in range(k_dim):
-            activation[m_idx, k_idx] = ((m_idx * 13 + k_idx * 7 + 5) % 255) - 127
+    m_idx = np.arange(m_dim, dtype=np.int32)[:, None]
+    k_idx = np.arange(k_dim, dtype=np.int32)[None, :]
+    activation = ((m_idx * 13 + k_idx * 7 + 5) % 255) - 127
     return activation.astype(np.int8)
 
 
 def make_top_shape_weight(k_dim: int, n_dim: int):
-    weight = np.zeros((k_dim, n_dim), dtype=np.int8)
-    for k_idx in range(k_dim):
-        for n_idx in range(n_dim):
-            weight[k_idx, n_idx] = (k_idx * 11 + n_idx * 3 + 1) & 0x1
-    return weight
+    k_idx = np.arange(k_dim, dtype=np.int32)[:, None]
+    n_idx = np.arange(n_dim, dtype=np.int32)[None, :]
+    return ((k_idx * 11 + n_idx * 3 + 1) & 0x1).astype(np.int8)
 
 
 def emit_quad_symbol(lines, name, words, align=8):

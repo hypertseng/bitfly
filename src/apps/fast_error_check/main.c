@@ -25,9 +25,71 @@
 #define FAST_ERR_MODE_ALL 0
 #define FAST_ERR_MODE_RVV_BINARY_ONLY 1
 #define FAST_ERR_MODE_BMPMM_BINARY_ONLY 2
+#define FAST_ERR_MODE_RVV_ONLY 3
+#define FAST_ERR_MODE_BMPMM_ONLY 4
+#define FAST_ERR_MODE_RVV_INT2_ONLY 5
+#define FAST_ERR_MODE_RVV_INT4_ONLY 6
+#define FAST_ERR_MODE_BMPMM_INT2_ONLY 7
+#define FAST_ERR_MODE_BMPMM_INT4_ONLY 8
 
 #ifndef FAST_ERR_MODE
 #define FAST_ERR_MODE FAST_ERR_MODE_RVV_BINARY_ONLY
+#endif
+
+#ifndef FAST_ERR_BMPMM_BINARY_NT64_START
+#define FAST_ERR_BMPMM_BINARY_NT64_START 0
+#endif
+
+#ifndef FAST_ERR_BMPMM_INT2_START
+#define FAST_ERR_BMPMM_INT2_START 0
+#endif
+
+#ifndef FAST_ERR_BMPMM_INT2_END
+#define FAST_ERR_BMPMM_INT2_END FAST_ERR_BMPMM_INT2_SHAPE_COUNT
+#endif
+
+#ifndef FAST_ERR_BMPMM_INT4_START
+#define FAST_ERR_BMPMM_INT4_START 0
+#endif
+
+#ifndef FAST_ERR_BMPMM_INT4_END
+#define FAST_ERR_BMPMM_INT4_END FAST_ERR_BMPMM_INT4_SHAPE_COUNT
+#endif
+
+#ifndef FAST_ERR_BMPMM_BINARY_NT64_END
+#define FAST_ERR_BMPMM_BINARY_NT64_END FAST_ERR_BMPMM_BINARY_NT64_SHAPE_COUNT
+#endif
+
+#ifndef FAST_ERR_BMPMM_BINARY_NT128_START
+#define FAST_ERR_BMPMM_BINARY_NT128_START 0
+#endif
+
+#ifndef FAST_ERR_BMPMM_BINARY_NT128_END
+#define FAST_ERR_BMPMM_BINARY_NT128_END FAST_ERR_BMPMM_BINARY_NT128_SHAPE_COUNT
+#endif
+
+#ifndef FAST_ERR_BMPMM_BINARY_MT16NT32_START
+#define FAST_ERR_BMPMM_BINARY_MT16NT32_START 0
+#endif
+
+#ifndef FAST_ERR_BMPMM_BINARY_MT16NT32_END
+#define FAST_ERR_BMPMM_BINARY_MT16NT32_END FAST_ERR_BMPMM_BINARY_MT16NT32_SHAPE_COUNT
+#endif
+
+#ifndef FAST_ERR_BMPMM_BINARY_MT8NT16_START
+#define FAST_ERR_BMPMM_BINARY_MT8NT16_START 0
+#endif
+
+#ifndef FAST_ERR_BMPMM_BINARY_MT8NT16_END
+#define FAST_ERR_BMPMM_BINARY_MT8NT16_END FAST_ERR_BMPMM_BINARY_MT8NT16_SHAPE_COUNT
+#endif
+
+#ifndef FAST_ERR_RVV_START
+#define FAST_ERR_RVV_START 0
+#endif
+
+#ifndef FAST_ERR_RVV_END
+#define FAST_ERR_RVV_END FAST_ERR_RVV_SHAPE_COUNT
 #endif
 
 typedef struct
@@ -111,17 +173,34 @@ typedef struct
 } fast_err_shape_t;
 
 static const fast_err_shape_t kBmpmmInt2Shapes[] = {
-    {"baseline", 16UL, 64UL, 16UL},
-    {"tail_mn", 24UL, 64UL, 24UL},
-    {"large_mkn", 40UL, 128UL, 40UL},
+    {"baseline", 16UL, 128UL, 64UL},
+    {"tail_m", 24UL, 128UL, 64UL},
+    {"tail_n", 16UL, 128UL, 80UL},
+    {"tail_k", 16UL, 160UL, 64UL},
+    {"mixed_tail", 24UL, 160UL, 80UL},
+    {"tail_mn_fullk", 24UL, 128UL, 80UL},
+    {"tail_n_deep", 16UL, 128UL, 96UL},
 };
 
 #define FAST_ERR_BMPMM_INT2_SHAPE_COUNT ((int)(sizeof(kBmpmmInt2Shapes) / sizeof(kBmpmmInt2Shapes[0])))
+
+static const fast_err_shape_t kBmpmmInt4Shapes[] = {
+    {"baseline", 16UL, 128UL, 64UL},
+    {"tail_m", 24UL, 128UL, 64UL},
+    {"tail_n", 16UL, 128UL, 80UL},
+    {"tail_k", 16UL, 160UL, 64UL},
+    {"mixed_tail", 24UL, 160UL, 80UL},
+    {"tail_mn_fullk", 24UL, 128UL, 80UL},
+    {"tail_n_deep", 16UL, 128UL, 96UL},
+};
+
+#define FAST_ERR_BMPMM_INT4_SHAPE_COUNT ((int)(sizeof(kBmpmmInt4Shapes) / sizeof(kBmpmmInt4Shapes[0])))
 
 static const fast_err_shape_t kBmpmmBinaryNt64Shapes[] = {
     {"g1x1_nt64_tail_rep", 16UL, 160UL, 128UL},
     {"g1x1_nt64_tail_m_rep", 24UL, 160UL, 128UL},
     {"g1x1_nt64_tail_k32_rep", 32UL, 224UL, 128UL},
+    {"g1x1_nt64_tail_k32_single_group_diag", 16UL, 224UL, 64UL},
 };
 
 #define FAST_ERR_BMPMM_BINARY_NT64_SHAPE_COUNT ((int)(sizeof(kBmpmmBinaryNt64Shapes) / sizeof(kBmpmmBinaryNt64Shapes[0])))
@@ -130,18 +209,37 @@ static const fast_err_shape_t kBmpmmBinaryNt128Shapes[] = {
     {"g1x1_nt128_tail_rep", 16UL, 160UL, 256UL},
     {"g1x1_nt128_tail_m_rep", 24UL, 160UL, 256UL},
     {"g1x1_nt128_tail_k32_rep", 16UL, 224UL, 256UL},
+    {"g1x1_nt128_tail_k32_single_group_diag", 16UL, 224UL, 128UL},
 };
 
 #define FAST_ERR_BMPMM_BINARY_NT128_SHAPE_COUNT ((int)(sizeof(kBmpmmBinaryNt128Shapes) / sizeof(kBmpmmBinaryNt128Shapes[0])))
 
-static const fast_err_shape_t kRvvBinaryShapes[] = {
+static const fast_err_shape_t kBmpmmBinaryMt16Nt32Shapes[] = {
+    {"mt16nt32_base", 16UL, 64UL, 64UL},
+    {"mt16nt32_tail_n", 16UL, 64UL, 96UL},
+    {"mt16nt32_tail_k", 16UL, 96UL, 64UL},
+    {"mt16nt32_mixed_tail", 24UL, 96UL, 96UL},
+};
+
+#define FAST_ERR_BMPMM_BINARY_MT16NT32_SHAPE_COUNT ((int)(sizeof(kBmpmmBinaryMt16Nt32Shapes) / sizeof(kBmpmmBinaryMt16Nt32Shapes[0])))
+
+static const fast_err_shape_t kBmpmmBinaryMt8Nt16Shapes[] = {
+    {"mt8nt16_base", 8UL, 128UL, 128UL},
+    {"mt8nt16_tail_n", 8UL, 128UL, 160UL},
+    {"mt8nt16_tail_k", 8UL, 160UL, 128UL},
+    {"mt8nt16_mixed_tail", 12UL, 160UL, 160UL},
+};
+
+#define FAST_ERR_BMPMM_BINARY_MT8NT16_SHAPE_COUNT ((int)(sizeof(kBmpmmBinaryMt8Nt16Shapes) / sizeof(kBmpmmBinaryMt8Nt16Shapes[0])))
+
+static const fast_err_shape_t kRvvShapes[] = {
     {"baseline", 16UL, 64UL, 16UL},
     {"tail_mn", 24UL, 64UL, 24UL},
     {"tail_k", 32UL, 96UL, 28UL},
     {"large_mkn", 40UL, 128UL, 40UL},
 };
 
-#define FAST_ERR_RVV_BINARY_SHAPE_COUNT ((int)(sizeof(kRvvBinaryShapes) / sizeof(kRvvBinaryShapes[0])))
+#define FAST_ERR_RVV_SHAPE_COUNT ((int)(sizeof(kRvvShapes) / sizeof(kRvvShapes[0])))
 
 static uint64_t pack_row_chunk(const int8_t *row, unsigned long k_chunk, unsigned long k_dim)
 {
@@ -222,6 +320,27 @@ static uint64_t pack_weight_word_int2(const int8_t *weight, unsigned long k_dim,
     return pack_8x8_bit_block(block);
 }
 
+static uint64_t pack_weight_word_int4(const int8_t *weight, unsigned long k_dim, unsigned long n_dim,
+                                      unsigned long plane, unsigned long k_blk, unsigned long n0)
+{
+    uint8_t block[8][8] = {{0}};
+    const unsigned long k_base = k_blk * 8UL;
+    for (unsigned long kr = 0UL; kr < 8UL; ++kr)
+    {
+        for (unsigned long nc = 0UL; nc < 8UL; ++nc)
+        {
+            const unsigned long kg = k_base + kr;
+            const unsigned long ng = n0 + nc;
+            if (kg < k_dim && ng < n_dim)
+            {
+                const unsigned int raw = ((unsigned int)((int)weight[kg * n_dim + ng])) & 0xFU;
+                block[kr][nc] = (uint8_t)((raw >> plane) & 0x1U);
+            }
+        }
+    }
+    return pack_8x8_bit_block(block);
+}
+
 static void pack_weights_bmpu_int2(uint64_t *dst_words, const int8_t *weight, unsigned long k_dim,
                                    unsigned long n_dim, unsigned long ntile)
 {
@@ -240,6 +359,30 @@ static void pack_weights_bmpu_int2(uint64_t *dst_words, const int8_t *weight, un
                 {
                     dst_words[out++] = pack_weight_word_int2(weight, k_dim, n_dim, plane, k_blk, n_base);
                     dst_words[out++] = pack_weight_word_int2(weight, k_dim, n_dim, plane, k_blk, n_base + 8UL);
+                }
+            }
+        }
+    }
+}
+
+static void pack_weights_bmpu_int4(uint64_t *dst_words, const int8_t *weight, unsigned long k_dim,
+                                   unsigned long n_dim, unsigned long ntile)
+{
+    const unsigned long d = ceil_div_ul(k_dim, 8UL);
+    unsigned long out = 0UL;
+    for (unsigned long tile_n = 0UL; tile_n < n_dim; tile_n += ntile)
+    {
+        const unsigned long tile_cols = min_ul(ntile, n_dim - tile_n);
+        const unsigned long n_blocks = max_ul(1UL, ceil_div_ul(tile_cols, 16UL));
+        for (unsigned long n_block = 0UL; n_block < n_blocks; ++n_block)
+        {
+            const unsigned long n_base = tile_n + n_block * 16UL;
+            for (unsigned long k_blk = 0UL; k_blk < d; ++k_blk)
+            {
+                for (unsigned long plane = 0UL; plane < 4UL; ++plane)
+                {
+                    dst_words[out++] = pack_weight_word_int4(weight, k_dim, n_dim, plane, k_blk, n_base);
+                    dst_words[out++] = pack_weight_word_int4(weight, k_dim, n_dim, plane, k_blk, n_base + 8UL);
                 }
             }
         }
@@ -318,7 +461,7 @@ static int run_bmpmm_int2_case(const fast_err_shape_t *shape)
     static uint64_t weight_lp_words[512] __attribute__((aligned(32)));
     static int16_t result_strict[FAST_ERR_MAX_M * FAST_ERR_MAX_N] __attribute__((aligned(32)));
     static int16_t result_fast[FAST_ERR_MAX_M * FAST_ERR_MAX_N] __attribute__((aligned(32)));
-    const bmpmm_exec_cfg_t cfg = {8UL, 16UL, 64UL, 2UL, 1UL, 2UL};
+    const bmpmm_exec_cfg_t cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 2UL};
     const unsigned long M = shape->M;
     const unsigned long K = shape->K;
     const unsigned long N = shape->N;
@@ -343,8 +486,8 @@ static int run_bmpmm_int2_case(const fast_err_shape_t *shape)
     memset(result_strict, 0, sizeof(result_strict));
     memset(result_fast, 0, sizeof(result_fast));
 
-    printf("[fast_error_check][bmpmm_int2][%s] shape=(%lu,%lu,%lu) strict_begin\n",
-           shape->name, M, N, K);
+    printf("[fast_error_check][bmpmm_int2][%s] shape=(%lu,%lu,%lu) cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu) strict_begin\n",
+           shape->name, M, N, K, cfg.mtile, cfg.ntile, cfg.ktile, cfg.gm, cfg.gn, cfg.prec);
     start_timer();
     (void)bmpmm_lowp_mixed_matmul_with_cfg_opts("fast_error_check",
                                                 result_strict,
@@ -413,6 +556,113 @@ static int run_bmpmm_int2_case(const fast_err_shape_t *shape)
            shape->name, (long)strict_total, (long)strict_compute, (long)strict_total_warm, (long)strict_total_same_buf,
            (long)fast_total, (long)fast_compute, err_same_buf);
     printf("[fast_error_check][bmpmm_int2][%s] err_vs_cold=%.2f%% err_vs_warm=%.2f%% err_vs_same_buf=%.2f%% verdict=%s limit=%.2f%%\n",
+           shape->name, rel_err_pct(fast_total, strict_total),
+           rel_err_pct(fast_total, strict_total_warm), err_same_buf,
+           pass ? "PASS" : "FAIL", err_same_buf_limit);
+    return pass;
+}
+
+static int run_bmpmm_int4_case(const fast_err_shape_t *shape)
+{
+    static int8_t activation[FAST_ERR_MAX_M * FAST_ERR_MAX_K] __attribute__((aligned(32)));
+    static int8_t weight_int4[FAST_ERR_MAX_K * FAST_ERR_MAX_N] __attribute__((aligned(32)));
+    static uint64_t weight_lp_words[1024] __attribute__((aligned(32)));
+    static int16_t result_strict[FAST_ERR_MAX_M * FAST_ERR_MAX_N] __attribute__((aligned(32)));
+    static int16_t result_fast[FAST_ERR_MAX_M * FAST_ERR_MAX_N] __attribute__((aligned(32)));
+    const bmpmm_exec_cfg_t cfg = {8UL, 16UL, 128UL, 2UL, 4UL, 3UL};
+    const unsigned long M = shape->M;
+    const unsigned long K = shape->K;
+    const unsigned long N = shape->N;
+    int64_t strict_total;
+    int64_t strict_total_warm;
+    int64_t strict_total_same_buf;
+    int64_t strict_compute = 0;
+    int64_t strict_compute_warm = 0;
+    int64_t strict_compute_same_buf = 0;
+    int64_t fast_total = 0;
+    int64_t fast_compute = 0;
+    bmpmm_lowp_exec_opts_t strict_opts = {BMPMM_LOWP_EXEC_STRICT, 0};
+    bmpmm_lowp_exec_opts_t fast_opts = {BMPMM_LOWP_EXEC_FAST, &fast_total};
+    const double err_same_buf_limit = FAST_ERR_LIMIT_PCT;
+    double err_same_buf = 0.0;
+    int pass;
+
+    fill_activation(activation, M, K);
+    fill_int4_weight(weight_int4, K, N);
+    pack_weights_bmpu_int4(weight_lp_words, weight_int4, K, N, cfg.ntile);
+    memset(result_strict, 0, sizeof(result_strict));
+    memset(result_fast, 0, sizeof(result_fast));
+
+    printf("[fast_error_check][bmpmm_int4][%s] shape=(%lu,%lu,%lu) cfg=(mt=%lu,nt=%lu,kt=%lu,gm=%lu,gn=%lu,p=%lu) strict_begin\n",
+           shape->name, M, N, K, cfg.mtile, cfg.ntile, cfg.ktile, cfg.gm, cfg.gn, cfg.prec);
+    start_timer();
+    (void)bmpmm_lowp_mixed_matmul_with_cfg_opts("fast_error_check",
+                                                result_strict,
+                                                activation,
+                                                (const int8_t *)weight_lp_words,
+                                                M,
+                                                K,
+                                                N,
+                                                &cfg,
+                                                &strict_compute,
+                                                &strict_opts);
+    stop_timer();
+    strict_total = get_timer();
+    printf("[fast_error_check][bmpmm_int4][%s] strict_done total=%ld compute=%ld\n",
+           shape->name, (long)strict_total, (long)strict_compute);
+
+    start_timer();
+    (void)bmpmm_lowp_mixed_matmul_with_cfg_opts("fast_error_check",
+                                                result_strict,
+                                                activation,
+                                                (const int8_t *)weight_lp_words,
+                                                M,
+                                                K,
+                                                N,
+                                                &cfg,
+                                                &strict_compute_warm,
+                                                &strict_opts);
+    stop_timer();
+    strict_total_warm = get_timer();
+    printf("[fast_error_check][bmpmm_int4][%s] strict_warm_done total=%ld compute=%ld\n",
+           shape->name, (long)strict_total_warm, (long)strict_compute_warm);
+
+    start_timer();
+    (void)bmpmm_lowp_mixed_matmul_with_cfg_opts("fast_error_check",
+                                                result_fast,
+                                                activation,
+                                                (const int8_t *)weight_lp_words,
+                                                M,
+                                                K,
+                                                N,
+                                                &cfg,
+                                                &strict_compute_same_buf,
+                                                &strict_opts);
+    stop_timer();
+    strict_total_same_buf = get_timer();
+    printf("[fast_error_check][bmpmm_int4][%s] strict_same_buf_done total=%ld compute=%ld\n",
+           shape->name, (long)strict_total_same_buf, (long)strict_compute_same_buf);
+
+    printf("[fast_error_check][bmpmm_int4][%s] fast_begin\n", shape->name);
+    (void)bmpmm_lowp_mixed_matmul_with_cfg_opts("fast_error_check",
+                                                result_fast,
+                                                activation,
+                                                (const int8_t *)weight_lp_words,
+                                                M,
+                                                K,
+                                                N,
+                                                &cfg,
+                                                &fast_compute,
+                                                &fast_opts);
+    printf("[fast_error_check][bmpmm_int4][%s] fast_done total=%ld compute=%ld\n",
+           shape->name, (long)fast_total, (long)fast_compute);
+
+    err_same_buf = rel_err_pct(fast_total, strict_total_same_buf);
+    pass = (err_same_buf <= err_same_buf_limit);
+    printf("[fast_error_check][bmpmm_int4][%s] strict_total=%ld strict_compute=%ld strict_warm_total=%ld strict_same_buf_total=%ld fast_total=%ld fast_compute=%ld err_same_buf=%.2f%%\n",
+           shape->name, (long)strict_total, (long)strict_compute, (long)strict_total_warm, (long)strict_total_same_buf,
+           (long)fast_total, (long)fast_compute, err_same_buf);
+    printf("[fast_error_check][bmpmm_int4][%s] err_vs_cold=%.2f%% err_vs_warm=%.2f%% err_vs_same_buf=%.2f%% verdict=%s limit=%.2f%%\n",
            shape->name, rel_err_pct(fast_total, strict_total),
            rel_err_pct(fast_total, strict_total_warm), err_same_buf,
            pass ? "PASS" : "FAIL", err_same_buf_limit);
@@ -521,101 +771,172 @@ static void run_bmpmm_int2_test(void)
 {
     int all_pass = 1;
 
-    for (int i = 0; i < FAST_ERR_BMPMM_INT2_SHAPE_COUNT; ++i)
+    for (int i = FAST_ERR_BMPMM_INT2_START;
+         i < FAST_ERR_BMPMM_INT2_END && i < FAST_ERR_BMPMM_INT2_SHAPE_COUNT;
+         ++i)
     {
         if (!run_bmpmm_int2_case(&kBmpmmInt2Shapes[i]))
             all_pass = 0;
     }
 
     printf("[fast_error_check][bmpmm_int2] summary tested=%d verdict=%s limit=%.2f%%\n",
-           FAST_ERR_BMPMM_INT2_SHAPE_COUNT, all_pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
+           min_ul((unsigned long)FAST_ERR_BMPMM_INT2_END, (unsigned long)FAST_ERR_BMPMM_INT2_SHAPE_COUNT) - min_ul((unsigned long)FAST_ERR_BMPMM_INT2_START, (unsigned long)FAST_ERR_BMPMM_INT2_SHAPE_COUNT),
+           all_pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
+}
+
+static void run_bmpmm_int4_test(void)
+{
+    int all_pass = 1;
+
+    for (int i = FAST_ERR_BMPMM_INT4_START;
+         i < FAST_ERR_BMPMM_INT4_END && i < FAST_ERR_BMPMM_INT4_SHAPE_COUNT;
+         ++i)
+    {
+        if (!run_bmpmm_int4_case(&kBmpmmInt4Shapes[i]))
+            all_pass = 0;
+    }
+
+    printf("[fast_error_check][bmpmm_int4] summary tested=%d verdict=%s limit=%.2f%%\n",
+           min_ul((unsigned long)FAST_ERR_BMPMM_INT4_END, (unsigned long)FAST_ERR_BMPMM_INT4_SHAPE_COUNT) - min_ul((unsigned long)FAST_ERR_BMPMM_INT4_START, (unsigned long)FAST_ERR_BMPMM_INT4_SHAPE_COUNT),
+           all_pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
 }
 
 static void run_bmpmm_binary_test(void)
 {
     const bmpmm_exec_cfg_t cfg_nt64 = {16UL, 64UL, 64UL, 1UL, 1UL, 0UL};
     const bmpmm_exec_cfg_t cfg_nt128 = {8UL, 128UL, 64UL, 1UL, 1UL, 0UL};
+    const bmpmm_exec_cfg_t cfg_mt16nt32 = {16UL, 32UL, 64UL, 1UL, 2UL, 0UL};
+    const bmpmm_exec_cfg_t cfg_mt8nt16 = {8UL, 16UL, 128UL, 1UL, 8UL, 0UL};
     int all_pass = 1;
 
-    for (int i = 0; i < FAST_ERR_BMPMM_BINARY_NT64_SHAPE_COUNT; ++i)
+    for (int i = FAST_ERR_BMPMM_BINARY_NT64_START;
+         i < FAST_ERR_BMPMM_BINARY_NT64_END && i < FAST_ERR_BMPMM_BINARY_NT64_SHAPE_COUNT;
+         ++i)
     {
         if (!run_bmpmm_binary_case(kBmpmmBinaryNt64Shapes[i].name, &kBmpmmBinaryNt64Shapes[i], &cfg_nt64))
             all_pass = 0;
     }
-    for (int i = 0; i < FAST_ERR_BMPMM_BINARY_NT128_SHAPE_COUNT; ++i)
+    for (int i = FAST_ERR_BMPMM_BINARY_NT128_START;
+         i < FAST_ERR_BMPMM_BINARY_NT128_END && i < FAST_ERR_BMPMM_BINARY_NT128_SHAPE_COUNT;
+         ++i)
     {
         if (!run_bmpmm_binary_case(kBmpmmBinaryNt128Shapes[i].name, &kBmpmmBinaryNt128Shapes[i], &cfg_nt128))
             all_pass = 0;
     }
+    for (int i = FAST_ERR_BMPMM_BINARY_MT16NT32_START;
+         i < FAST_ERR_BMPMM_BINARY_MT16NT32_END && i < FAST_ERR_BMPMM_BINARY_MT16NT32_SHAPE_COUNT;
+         ++i)
+    {
+        if (!run_bmpmm_binary_case(kBmpmmBinaryMt16Nt32Shapes[i].name, &kBmpmmBinaryMt16Nt32Shapes[i], &cfg_mt16nt32))
+            all_pass = 0;
+    }
+    for (int i = FAST_ERR_BMPMM_BINARY_MT8NT16_START;
+         i < FAST_ERR_BMPMM_BINARY_MT8NT16_END && i < FAST_ERR_BMPMM_BINARY_MT8NT16_SHAPE_COUNT;
+         ++i)
+    {
+        if (!run_bmpmm_binary_case(kBmpmmBinaryMt8Nt16Shapes[i].name, &kBmpmmBinaryMt8Nt16Shapes[i], &cfg_mt8nt16))
+            all_pass = 0;
+    }
 
     printf("[fast_error_check][bmpmm_binary] summary tested=%d verdict=%s limit=%.2f%%\n",
-           FAST_ERR_BMPMM_BINARY_NT64_SHAPE_COUNT + FAST_ERR_BMPMM_BINARY_NT128_SHAPE_COUNT,
+           FAST_ERR_BMPMM_BINARY_NT64_SHAPE_COUNT + FAST_ERR_BMPMM_BINARY_NT128_SHAPE_COUNT +
+               FAST_ERR_BMPMM_BINARY_MT16NT32_SHAPE_COUNT + FAST_ERR_BMPMM_BINARY_MT8NT16_SHAPE_COUNT,
            all_pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
 }
 
-static void run_rvv_int2_test(void)
+typedef void (*rvv_fill_weight_fn_t)(int8_t *dst, unsigned long k_dim, unsigned long n_dim);
+typedef void (*rvv_run_fn_t)(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
+                             unsigned long int M, unsigned long int K, unsigned long int N,
+                             int64_t *estimated_total_cycles);
+typedef int64_t (*rvv_counter_fn_t)(void);
+
+static void run_rvv_int2_strict(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
+                                unsigned long int M, unsigned long int K, unsigned long int N,
+                                int64_t *estimated_total_cycles)
 {
-    static int8_t activation[FAST_ERR_DEFAULT_M * FAST_ERR_DEFAULT_K] __attribute__((aligned(32)));
-    static int8_t weight[FAST_ERR_DEFAULT_K * FAST_ERR_DEFAULT_N] __attribute__((aligned(32)));
-    static int16_t result_strict[FAST_ERR_DEFAULT_M * FAST_ERR_DEFAULT_N] __attribute__((aligned(32)));
-    static int16_t result_fast[FAST_ERR_DEFAULT_M * FAST_ERR_DEFAULT_N] __attribute__((aligned(32)));
-    int64_t strict_total;
-    int64_t fast_total = 0;
     rvv_int2_vector_exec_opts_t strict_opts = {RVV_INT2_VECTOR_EXEC_STRICT, 0};
-    rvv_int2_vector_exec_opts_t fast_opts = {RVV_INT2_VECTOR_EXEC_FAST, &fast_total};
-
-    fill_activation(activation, FAST_ERR_DEFAULT_M, FAST_ERR_DEFAULT_K);
-    fill_int2_weight(weight, FAST_ERR_DEFAULT_K, FAST_ERR_DEFAULT_N);
-
-    start_timer();
-    rvv_int2_vector_int2_matmul_with_opts(result_strict, activation, weight,
-                                          FAST_ERR_DEFAULT_M, FAST_ERR_DEFAULT_K, FAST_ERR_DEFAULT_N,
-                                          &strict_opts);
-    stop_timer();
-    strict_total = get_timer();
-
-    rvv_int2_vector_int2_matmul_with_opts(result_fast, activation, weight,
-                                          FAST_ERR_DEFAULT_M, FAST_ERR_DEFAULT_K, FAST_ERR_DEFAULT_N,
-                                          &fast_opts);
-
-    printf("[fast_error_check][rvv_int2] strict_total=%ld fast_total=%ld fast_compute=%ld err_total=%.2f%%\n",
-           (long)strict_total, (long)fast_total,
-           (long)rvv_int2_vector_get_last_estimated_compute_cycles(),
-           rel_err_pct(fast_total, strict_total));
+    (void)estimated_total_cycles;
+    rvv_int2_vector_int2_matmul_with_opts(c, a, b, M, K, N, &strict_opts);
 }
 
-static void run_rvv_int4_test(void)
+static void run_rvv_int2_fast(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
+                              unsigned long int M, unsigned long int K, unsigned long int N,
+                              int64_t *estimated_total_cycles)
 {
-    static int8_t activation[FAST_ERR_DEFAULT_M * FAST_ERR_DEFAULT_K] __attribute__((aligned(32)));
-    static int8_t weight[FAST_ERR_DEFAULT_K * FAST_ERR_DEFAULT_N] __attribute__((aligned(32)));
-    static int16_t result_strict[FAST_ERR_DEFAULT_M * FAST_ERR_DEFAULT_N] __attribute__((aligned(32)));
-    static int16_t result_fast[FAST_ERR_DEFAULT_M * FAST_ERR_DEFAULT_N] __attribute__((aligned(32)));
-    int64_t strict_total;
-    int64_t fast_total = 0;
-    rvv_int4_vector_exec_opts_t strict_opts = {RVV_INT4_VECTOR_EXEC_STRICT, 0};
-    rvv_int4_vector_exec_opts_t fast_opts = {RVV_INT4_VECTOR_EXEC_FAST, &fast_total};
-
-    fill_activation(activation, FAST_ERR_DEFAULT_M, FAST_ERR_DEFAULT_K);
-    fill_int4_weight(weight, FAST_ERR_DEFAULT_K, FAST_ERR_DEFAULT_N);
-
-    start_timer();
-    rvv_int4_vector_int4_matmul_with_opts(result_strict, activation, weight,
-                                          FAST_ERR_DEFAULT_M, FAST_ERR_DEFAULT_K, FAST_ERR_DEFAULT_N,
-                                          &strict_opts);
-    stop_timer();
-    strict_total = get_timer();
-
-    rvv_int4_vector_int4_matmul_with_opts(result_fast, activation, weight,
-                                          FAST_ERR_DEFAULT_M, FAST_ERR_DEFAULT_K, FAST_ERR_DEFAULT_N,
-                                          &fast_opts);
-
-    printf("[fast_error_check][rvv_int4] strict_total=%ld fast_total=%ld fast_compute=%ld err_total=%.2f%%\n",
-           (long)strict_total, (long)fast_total,
-           (long)rvv_int4_vector_get_last_estimated_compute_cycles(),
-           rel_err_pct(fast_total, strict_total));
+    rvv_int2_vector_exec_opts_t fast_opts = {RVV_INT2_VECTOR_EXEC_FAST, estimated_total_cycles};
+    rvv_int2_vector_int2_matmul_with_opts(c, a, b, M, K, N, &fast_opts);
 }
 
-static int run_rvv_binary_case(const fast_err_shape_t *shape)
+static int64_t get_rvv_int2_strict_compute_cycles(void)
+{
+    return rvv_int2_vector_compute_time;
+}
+
+static int64_t get_rvv_int2_fast_compute_cycles(void)
+{
+    return rvv_int2_vector_get_last_estimated_compute_cycles();
+}
+
+static void run_rvv_int4_strict(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
+                                unsigned long int M, unsigned long int K, unsigned long int N,
+                                int64_t *estimated_total_cycles)
+{
+    rvv_int4_vector_exec_opts_t strict_opts = {RVV_INT4_VECTOR_EXEC_STRICT, 0};
+    (void)estimated_total_cycles;
+    rvv_int4_vector_int4_matmul_with_opts(c, a, b, M, K, N, &strict_opts);
+}
+
+static void run_rvv_int4_fast(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
+                              unsigned long int M, unsigned long int K, unsigned long int N,
+                              int64_t *estimated_total_cycles)
+{
+    rvv_int4_vector_exec_opts_t fast_opts = {RVV_INT4_VECTOR_EXEC_FAST, estimated_total_cycles};
+    rvv_int4_vector_int4_matmul_with_opts(c, a, b, M, K, N, &fast_opts);
+}
+
+static int64_t get_rvv_int4_strict_compute_cycles(void)
+{
+    return rvv_int4_vector_compute_time;
+}
+
+static int64_t get_rvv_int4_fast_compute_cycles(void)
+{
+    return rvv_int4_vector_get_last_estimated_compute_cycles();
+}
+
+static void run_rvv_binary_strict(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
+                                  unsigned long int M, unsigned long int K, unsigned long int N,
+                                  int64_t *estimated_total_cycles)
+{
+    rvv_binary_vector_exec_opts_t strict_opts = {RVV_BINARY_VECTOR_EXEC_STRICT, 0};
+    (void)estimated_total_cycles;
+    rvv_binary_vector_int8_matmul_with_opts(c, a, b, M, K, N, &strict_opts);
+}
+
+static void run_rvv_binary_fast(int16_t *restrict c, const int8_t *restrict a, const int8_t *restrict b,
+                                unsigned long int M, unsigned long int K, unsigned long int N,
+                                int64_t *estimated_total_cycles)
+{
+    rvv_binary_vector_exec_opts_t fast_opts = {RVV_BINARY_VECTOR_EXEC_FAST, estimated_total_cycles};
+    rvv_binary_vector_int8_matmul_with_opts(c, a, b, M, K, N, &fast_opts);
+}
+
+static int64_t get_rvv_binary_strict_compute_cycles(void)
+{
+    return rvv_binary_vector_compute_time;
+}
+
+static int64_t get_rvv_binary_fast_compute_cycles(void)
+{
+    return rvv_binary_vector_get_last_estimated_compute_cycles();
+}
+
+static int run_rvv_case(const char *tag, const fast_err_shape_t *shape,
+                        rvv_fill_weight_fn_t fill_weight,
+                        rvv_run_fn_t run_strict,
+                        rvv_run_fn_t run_fast,
+                        rvv_counter_fn_t get_strict_compute_cycles,
+                        rvv_counter_fn_t get_fast_compute_cycles)
 {
     static int8_t activation[FAST_ERR_MAX_M * FAST_ERR_MAX_K] __attribute__((aligned(32)));
     static int8_t weight[FAST_ERR_MAX_K * FAST_ERR_MAX_N] __attribute__((aligned(32)));
@@ -633,70 +954,116 @@ static int run_rvv_binary_case(const fast_err_shape_t *shape)
     double err_total;
     double err_compute;
     int pass;
-    rvv_binary_vector_exec_opts_t strict_opts = {RVV_BINARY_VECTOR_EXEC_STRICT, 0};
-    rvv_binary_vector_exec_opts_t fast_opts = {RVV_BINARY_VECTOR_EXEC_FAST, &fast_total};
 
     fill_activation(activation, M, K);
-    fill_binary_weight(weight, K, N);
+    fill_weight(weight, K, N);
     memset(result_strict, 0, sizeof(result_strict));
     memset(result_fast, 0, sizeof(result_fast));
 
-    printf("[fast_error_check][rvv_binary][%s] shape=(%lu,%lu,%lu) strict_begin\n",
-           shape->name, M, N, K);
+    printf("[fast_error_check][%s][%s] shape=(%lu,%lu,%lu) strict_begin\n",
+           tag, shape->name, M, N, K);
     start_timer();
-    rvv_binary_vector_int8_matmul_with_opts(result_strict, activation, weight,
-                                            M, K, N,
-                                            &strict_opts);
+    run_strict(result_strict, activation, weight, M, K, N, 0);
     stop_timer();
     strict_total = get_timer();
-    strict_compute = rvv_binary_vector_compute_time;
-    printf("[fast_error_check][rvv_binary][%s] strict_done total=%ld compute=%ld\n",
-           shape->name, (long)strict_total, (long)strict_compute);
+    strict_compute = get_strict_compute_cycles();
+    printf("[fast_error_check][%s][%s] strict_done total=%ld compute=%ld\n",
+           tag, shape->name, (long)strict_total, (long)strict_compute);
 
     start_timer();
-    rvv_binary_vector_int8_matmul_with_opts(result_strict, activation, weight,
-                                            M, K, N,
-                                            &strict_opts);
+    run_strict(result_strict, activation, weight, M, K, N, 0);
     stop_timer();
     strict_total_warm = get_timer();
-    strict_compute_warm = rvv_binary_vector_compute_time;
-    printf("[fast_error_check][rvv_binary][%s] strict_warm_done total=%ld compute=%ld\n",
-           shape->name, (long)strict_total_warm, (long)strict_compute_warm);
+    strict_compute_warm = get_strict_compute_cycles();
+    printf("[fast_error_check][%s][%s] strict_warm_done total=%ld compute=%ld\n",
+           tag, shape->name, (long)strict_total_warm, (long)strict_compute_warm);
 
-    printf("[fast_error_check][rvv_binary][%s] fast_begin\n", shape->name);
-    rvv_binary_vector_int8_matmul_with_opts(result_fast, activation, weight,
-                                            M, K, N,
-                                            &fast_opts);
-    fast_compute = rvv_binary_vector_get_last_estimated_compute_cycles();
-    printf("[fast_error_check][rvv_binary][%s] fast_done total=%ld compute=%ld\n",
-           shape->name, (long)fast_total, (long)fast_compute);
+    printf("[fast_error_check][%s][%s] fast_begin\n", tag, shape->name);
+    run_fast(result_fast, activation, weight, M, K, N, &fast_total);
+    fast_compute = get_fast_compute_cycles();
+    printf("[fast_error_check][%s][%s] fast_done total=%ld compute=%ld\n",
+           tag, shape->name, (long)fast_total, (long)fast_compute);
 
     err_total = rel_err_pct(fast_total, strict_total_warm);
     err_compute = rel_err_pct(fast_compute, strict_compute_warm);
     pass = (err_total <= FAST_ERR_LIMIT_PCT) && (err_compute <= FAST_ERR_LIMIT_PCT);
 
-    printf("[fast_error_check][rvv_binary][%s] strict_total=%ld strict_compute=%ld strict_warm_total=%ld strict_warm_compute=%ld fast_total=%ld fast_compute=%ld\n",
-           shape->name, (long)strict_total, (long)strict_compute,
+    printf("[fast_error_check][%s][%s] strict_total=%ld strict_compute=%ld strict_warm_total=%ld strict_warm_compute=%ld fast_total=%ld fast_compute=%ld\n",
+           tag, shape->name, (long)strict_total, (long)strict_compute,
            (long)strict_total_warm, (long)strict_compute_warm,
            (long)fast_total, (long)fast_compute);
-    printf("[fast_error_check][rvv_binary][%s] err_vs_cold_total=%.2f%% err_vs_warm_total=%.2f%% err_vs_warm_compute=%.2f%% verdict=%s limit=%.2f%%\n",
-           shape->name, rel_err_pct(fast_total, strict_total), err_total, err_compute,
+    printf("[fast_error_check][%s][%s] err_vs_cold_total=%.2f%% err_vs_warm_total=%.2f%% err_vs_warm_compute=%.2f%% verdict=%s limit=%.2f%%\n",
+           tag, shape->name, rel_err_pct(fast_total, strict_total), err_total, err_compute,
            pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
     return pass;
+}
+
+static void run_rvv_int2_test(void)
+{
+    int all_pass = 1;
+    int tested = 0;
+
+    for (int i = FAST_ERR_RVV_START; i < FAST_ERR_RVV_END && i < FAST_ERR_RVV_SHAPE_COUNT; ++i)
+    {
+        ++tested;
+        if (!run_rvv_case("rvv_int2", &kRvvShapes[i],
+                          fill_int2_weight,
+                          run_rvv_int2_strict,
+                          run_rvv_int2_fast,
+                          get_rvv_int2_strict_compute_cycles,
+                          get_rvv_int2_fast_compute_cycles))
+            all_pass = 0;
+    }
+
+    printf("[fast_error_check][rvv_int2] summary tested=%d verdict=%s limit=%.2f%%\n",
+           tested, all_pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
+}
+
+static void run_rvv_int4_test(void)
+{
+    int all_pass = 1;
+    int tested = 0;
+
+    for (int i = FAST_ERR_RVV_START; i < FAST_ERR_RVV_END && i < FAST_ERR_RVV_SHAPE_COUNT; ++i)
+    {
+        ++tested;
+        if (!run_rvv_case("rvv_int4", &kRvvShapes[i],
+                          fill_int4_weight,
+                          run_rvv_int4_strict,
+                          run_rvv_int4_fast,
+                          get_rvv_int4_strict_compute_cycles,
+                          get_rvv_int4_fast_compute_cycles))
+            all_pass = 0;
+    }
+
+    printf("[fast_error_check][rvv_int4] summary tested=%d verdict=%s limit=%.2f%%\n",
+           tested, all_pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
+}
+
+static int run_rvv_binary_case(const fast_err_shape_t *shape)
+{
+    return run_rvv_case("rvv_binary", shape,
+                        fill_binary_weight,
+                        run_rvv_binary_strict,
+                        run_rvv_binary_fast,
+                        get_rvv_binary_strict_compute_cycles,
+                        get_rvv_binary_fast_compute_cycles);
 }
 
 static void run_rvv_binary_test(void)
 {
     int all_pass = 1;
+    int tested = 0;
 
-    for (int i = 0; i < FAST_ERR_RVV_BINARY_SHAPE_COUNT; ++i)
+    for (int i = FAST_ERR_RVV_START; i < FAST_ERR_RVV_END && i < FAST_ERR_RVV_SHAPE_COUNT; ++i)
     {
-        if (!run_rvv_binary_case(&kRvvBinaryShapes[i]))
+        ++tested;
+        if (!run_rvv_binary_case(&kRvvShapes[i]))
             all_pass = 0;
     }
 
     printf("[fast_error_check][rvv_binary] summary tested=%d verdict=%s limit=%.2f%%\n",
-           FAST_ERR_RVV_BINARY_SHAPE_COUNT, all_pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
+           tested, all_pass ? "PASS" : "FAIL", FAST_ERR_LIMIT_PCT);
 }
 
 int main(void)
@@ -711,11 +1078,51 @@ int main(void)
            FAST_ERR_LIMIT_PCT);
     printf("[fast_error_check] run=bmpmm_binary\n");
     run_bmpmm_binary_test();
+#elif FAST_ERR_MODE == FAST_ERR_MODE_RVV_ONLY
+    printf("[fast_error_check] mode=rvv_only limit=%.2f%%\n",
+           FAST_ERR_LIMIT_PCT);
+    printf("[fast_error_check] run=rvv_int2\n");
+    run_rvv_int2_test();
+    printf("[fast_error_check] run=rvv_int4\n");
+    run_rvv_int4_test();
+    printf("[fast_error_check] run=rvv_binary\n");
+    run_rvv_binary_test();
+#elif FAST_ERR_MODE == FAST_ERR_MODE_BMPMM_ONLY
+    printf("[fast_error_check] mode=bmpmm_only limit=%.2f%%\n",
+           FAST_ERR_LIMIT_PCT);
+    printf("[fast_error_check] run=bmpmm_int2_multi_shape\n");
+    run_bmpmm_int2_test();
+    printf("[fast_error_check] run=bmpmm_int4_multi_shape\n");
+    run_bmpmm_int4_test();
+    printf("[fast_error_check] run=bmpmm_binary\n");
+    run_bmpmm_binary_test();
+#elif FAST_ERR_MODE == FAST_ERR_MODE_RVV_INT2_ONLY
+    printf("[fast_error_check] mode=rvv_int2_only limit=%.2f%%\n",
+           FAST_ERR_LIMIT_PCT);
+    printf("[fast_error_check] run=rvv_int2\n");
+    run_rvv_int2_test();
+#elif FAST_ERR_MODE == FAST_ERR_MODE_RVV_INT4_ONLY
+    printf("[fast_error_check] mode=rvv_int4_only limit=%.2f%%\n",
+           FAST_ERR_LIMIT_PCT);
+    printf("[fast_error_check] run=rvv_int4\n");
+    run_rvv_int4_test();
+#elif FAST_ERR_MODE == FAST_ERR_MODE_BMPMM_INT2_ONLY
+    printf("[fast_error_check] mode=bmpmm_int2_only limit=%.2f%%\n",
+           FAST_ERR_LIMIT_PCT);
+    printf("[fast_error_check] run=bmpmm_int2_multi_shape\n");
+    run_bmpmm_int2_test();
+#elif FAST_ERR_MODE == FAST_ERR_MODE_BMPMM_INT4_ONLY
+    printf("[fast_error_check] mode=bmpmm_int4_only limit=%.2f%%\n",
+           FAST_ERR_LIMIT_PCT);
+    printf("[fast_error_check] run=bmpmm_int4_multi_shape\n");
+    run_bmpmm_int4_test();
 #else
     printf("[fast_error_check] bmpmm_int2_shapes=%d limit=%.2f%%\n",
            FAST_ERR_BMPMM_INT2_SHAPE_COUNT, FAST_ERR_LIMIT_PCT);
     printf("[fast_error_check] run=bmpmm_int2_multi_shape\n");
     run_bmpmm_int2_test();
+    printf("[fast_error_check] run=bmpmm_int4_multi_shape\n");
+    run_bmpmm_int4_test();
     printf("[fast_error_check] run=bmpmm_binary\n");
     run_bmpmm_binary_test();
     printf("[fast_error_check] run=rvv_int2\n");

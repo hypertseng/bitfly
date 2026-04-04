@@ -16,9 +16,16 @@
 #include "kernel/bench_cases.h"
 #include "kernel/vector.h"
 
+#if defined(SPIKE) || defined(ARA_LINUX)
+#define RVV_LOG_FLUSH() fflush(stdout)
+#else
+#define RVV_LOG_FLUSH() ((void)0)
+#endif
+
 int main()
 {
     printf("[rvv_INT2] precision=int2\n");
+    RVV_LOG_FLUSH();
     const char *current_model = 0;
     int64_t rvv_model_cycles = 0;
     const int fast_mode = (vector_int2_get_default_mode() == RVV_INT2_VECTOR_EXEC_FAST);
@@ -33,15 +40,18 @@ int main()
             if (current_model)
             {
                 printf("[rvv_INT2] model_total model=%s rvv_cycles=%ld\n", current_model, (long)rvv_model_cycles);
+                RVV_LOG_FLUSH();
             }
             current_model = sc->model;
             rvv_model_cycles = 0;
             printf("\n============================================================\n");
             printf("[rvv_INT2] model=%s scale=%s\n", sc->model, sc->scale);
             printf("============================================================\n");
+            RVV_LOG_FLUSH();
         }
         printf("\n------------------------------------------------------------\n");
         printf("[rvv_INT2] case%d layer=%s shape=(%lu,%lu,%lu)\n", i+1, sc->layer, sc->M, sc->N, sc->K);
+        RVV_LOG_FLUSH();
 
         model_runtime_cache_entry_t *cached = model_runtime_cache_lookup(runtime_cache, runtime_cache_count, sc);
         if (cached)
@@ -49,6 +59,7 @@ int main()
             rvv_model_cycles += cached->runtime;
             printf("[rvv_INT2] duplicate_shape_skip case%d reuse_case%d\n", i + 1, cached->first_case_index + 1);
             printf("[rvv_INT2] rvv_runtime=%ld rvv_compute=%ld\n", (long)cached->runtime, (long)cached->aux_cycles);
+            RVV_LOG_FLUSH();
             continue;
         }
 
@@ -62,10 +73,12 @@ int main()
         model_runtime_cache_store(runtime_cache, &runtime_cache_count, MODEL_RUNTIME_CACHE_CAP,
                                   sc, i, rvv_runtime, rvv_compute, data.result_hp);
         printf("[rvv_INT2] rvv_runtime=%ld rvv_compute=%ld\n", (long)rvv_runtime, (long)rvv_compute);
+        RVV_LOG_FLUSH();
     }
     if (current_model)
     {
         printf("[rvv_INT2] model_total model=%s rvv_cycles=%ld\n", current_model, (long)rvv_model_cycles);
+        RVV_LOG_FLUSH();
     }
     return 0;
 }

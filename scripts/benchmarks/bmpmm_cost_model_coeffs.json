@@ -1,0 +1,90 @@
+{
+  "feature_order": [
+    "bias",
+    "full_windows",
+    "tail_windows",
+    "store_windows",
+    "full_load_a_bytes",
+    "full_load_w_bytes",
+    "tail_load_a_bytes",
+    "tail_load_w_bytes",
+    "store_pairs"
+  ],
+  "precisions": {
+    "binary": {
+      "cfg_overrides": {},
+      "default": {
+        "bias": 1787.7776102270193,
+        "full_load_a_bytes": 0.31670056859873225,
+        "full_load_w_bytes": 0.31670056859873225,
+        "full_windows": 0.0,
+        "store_pairs": 0.0,
+        "store_windows": 2043.984137070394,
+        "tail_load_a_bytes": 0.9629043550901287,
+        "tail_load_w_bytes": 0.9629043550901287,
+        "tail_windows": 0.0
+      },
+      "meta": {
+        "loo_avg_rel_err_pct": 1.611806347577667,
+        "loo_max_rel_err_pct": 3.7943888587429244,
+        "sample_count": 7,
+        "selected_terms": [
+          "bias",
+          "store_windows",
+          "full_load_bytes",
+          "tail_load_bytes"
+        ]
+      }
+    },
+    "int2": {
+      "cfg_overrides": {},
+      "default": {
+        "bias": 3093.611987382104,
+        "full_load_a_bytes": 0.7712317626183772,
+        "full_load_w_bytes": 0.7712317626183772,
+        "full_windows": 810.3627760252961,
+        "store_pairs": 0.0,
+        "store_windows": 0.0,
+        "tail_load_a_bytes": 0.0,
+        "tail_load_w_bytes": 0.0,
+        "tail_windows": 656.2933753943203
+      },
+      "meta": {
+        "loo_avg_rel_err_pct": 2.8711596118130434,
+        "loo_max_rel_err_pct": 4.809031932357728,
+        "sample_count": 7,
+        "selected_terms": [
+          "bias",
+          "full_windows",
+          "tail_windows",
+          "full_load_bytes"
+        ]
+      }
+    },
+    "int4": {
+      "cfg_overrides": {},
+      "default": {
+        "bias": 2482.128381476377,
+        "full_load_a_bytes": 0.8560582247965387,
+        "full_load_w_bytes": 0.8560582247965387,
+        "full_windows": 0.0,
+        "store_pairs": 0.0,
+        "store_windows": 0.0,
+        "tail_load_a_bytes": 0.9713040176524538,
+        "tail_load_w_bytes": 0.9713040176524538,
+        "tail_windows": 0.0
+      },
+      "meta": {
+        "loo_avg_rel_err_pct": 0.6682096105330299,
+        "loo_max_rel_err_pct": 1.3105834038311328,
+        "sample_count": 5,
+        "selected_terms": [
+          "bias",
+          "full_load_bytes",
+          "tail_load_bytes"
+        ]
+      }
+    }
+  },
+  "version": 1
+}

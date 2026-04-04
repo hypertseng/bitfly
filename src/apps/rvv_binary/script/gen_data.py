@@ -1,49 +1,63 @@
 import argparse
 import math
+import os
 from pathlib import Path
+import sys
 
 import numpy as np
+
+COMMON = Path(__file__).resolve().parents[2] / "common"
+if str(COMMON) not in sys.path:
+    sys.path.insert(0, str(COMMON))
+
+from bmpmm_case_selection import MODEL_LAYER_CASES, infer_model_filter_from_app_name
 
 
 SEED = 42
 np.random.seed(SEED)
+RVV_HP_ALIGN = "4096"
+SKIP_RESULT_TORCH = os.environ.get("LOWP_SKIP_RESULT_TORCH", "1") == "1"
+SKIP_LP_DATA = os.environ.get("LOWP_SKIP_LP_DATA", "1") == "1"
+app_name = Path(__file__).resolve().parents[1].name
+MODEL_FILTER = os.environ.get("BMPMM_MODEL_FILTER") or infer_model_filter_from_app_name(app_name)
+MINIMAL_HP_DATA = os.environ.get("LOWP_MINIMAL_HP_DATA", "1") == "1"
+MINIMAL_HP_ROWS = int(os.environ.get("LOWP_MINIMAL_HP_ROWS", "8"))
+MINIMAL_HP_K = int(os.environ.get("LOWP_MINIMAL_HP_K", "64"))
+USE_INCBIN = os.environ.get("LOWP_USE_INCBIN", "1") == "1"
+GEN_DEBUG = os.environ.get("LOWP_GEN_DEBUG", "0") == "1"
+_BLOB_DIR = None
 
-BENCH_CASES = [
-    ("case1", "tiny", "google/gemma-3-270m", "model.layers.0.self_attn.q_proj", 128, 1024, 640),
-    ("case2", "tiny", "google/gemma-3-270m", "model.layers.0.self_attn.k_proj", 128, 256, 640),
-    ("case3", "tiny", "google/gemma-3-270m", "model.layers.0.self_attn.v_proj", 128, 256, 640),
-    ("case4", "tiny", "google/gemma-3-270m", "model.layers.0.self_attn.o_proj", 128, 640, 1024),
-    ("case5", "tiny", "google/gemma-3-270m", "model.layers.0.mlp.gate_proj", 128, 2048, 640),
-    ("case6", "tiny", "google/gemma-3-270m", "model.layers.0.mlp.up_proj", 128, 2048, 640),
-    ("case7", "tiny", "google/gemma-3-270m", "model.layers.0.mlp.down_proj", 128, 640, 2048),
-    ("case8", "small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.q_proj", 128, 896, 896),
-    ("case9", "small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.k_proj", 128, 128, 896),
-    ("case10", "small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.v_proj", 128, 128, 896),
-    ("case11", "small", "Qwen/Qwen2.5-0.5B", "model.layers.0.self_attn.o_proj", 128, 896, 896),
-    ("case12", "small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.gate_proj", 128, 4864, 896),
-    ("case13", "small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.up_proj", 128, 4864, 896),
-    ("case14", "small", "Qwen/Qwen2.5-0.5B", "model.layers.0.mlp.down_proj", 128, 896, 4864),
-    ("case15", "medium", "facebook/opt-1.3b", "model.decoder.layers.0.self_attn.q_proj", 128, 2048, 2048),
-    ("case16", "medium", "facebook/opt-1.3b", "model.decoder.layers.0.self_attn.k_proj", 128, 2048, 2048),
-    ("case17", "medium", "facebook/opt-1.3b", "model.decoder.layers.0.self_attn.v_proj", 128, 2048, 2048),
-    ("case18", "medium", "facebook/opt-1.3b", "model.decoder.layers.0.self_attn.out_proj", 128, 2048, 2048),
-    ("case19", "medium", "facebook/opt-1.3b", "model.decoder.layers.0.fc1", 128, 8192, 2048),
-    ("case20", "medium", "facebook/opt-1.3b", "model.decoder.layers.0.fc2", 128, 2048, 8192),
-    ("case21", "midlarge", "Qwen/Qwen2.5-1.5B", "model.layers.0.self_attn.q_proj", 128, 1536, 1536),
-    ("case22", "midlarge", "Qwen/Qwen2.5-1.5B", "model.layers.0.self_attn.k_proj", 128, 256, 1536),
-    ("case23", "midlarge", "Qwen/Qwen2.5-1.5B", "model.layers.0.self_attn.v_proj", 128, 256, 1536),
-    ("case24", "midlarge", "Qwen/Qwen2.5-1.5B", "model.layers.0.self_attn.o_proj", 128, 1536, 1536),
-    ("case25", "midlarge", "Qwen/Qwen2.5-1.5B", "model.layers.0.mlp.gate_proj", 128, 8960, 1536),
-    ("case26", "midlarge", "Qwen/Qwen2.5-1.5B", "model.layers.0.mlp.up_proj", 128, 8960, 1536),
-    ("case27", "midlarge", "Qwen/Qwen2.5-1.5B", "model.layers.0.mlp.down_proj", 128, 1536, 8960),
-    ("case28", "large", "google/gemma-2-2b", "model.layers.0.self_attn.q_proj", 128, 2048, 2304),
-    ("case29", "large", "google/gemma-2-2b", "model.layers.0.self_attn.k_proj", 128, 1024, 2304),
-    ("case30", "large", "google/gemma-2-2b", "model.layers.0.self_attn.v_proj", 128, 1024, 2304),
-    ("case31", "large", "google/gemma-2-2b", "model.layers.0.self_attn.o_proj", 128, 2304, 2048),
-    ("case32", "large", "google/gemma-2-2b", "model.layers.0.mlp.gate_proj", 128, 9216, 2304),
-    ("case33", "large", "google/gemma-2-2b", "model.layers.0.mlp.up_proj", 128, 9216, 2304),
-    ("case34", "large", "google/gemma-2-2b", "model.layers.0.mlp.down_proj", 128, 2304, 9216),
-]
+
+def _dbg(msg):
+    if GEN_DEBUG:
+        print(msg, file=sys.stderr, flush=True)
+
+
+def _blob_dir():
+    global _BLOB_DIR
+    if _BLOB_DIR is None:
+        _BLOB_DIR = Path.cwd() / "data_blobs"
+        _BLOB_DIR.mkdir(parents=True, exist_ok=True)
+    return _BLOB_DIR
+
+
+def _emit_incbin(lines, name, data: bytes, align):
+    blob_path = (_blob_dir() / f"{name}.bin").resolve()
+    blob_path.write_bytes(data)
+    lines.append(f".global {name}")
+    lines.append(f".balign {align}")
+    lines.append(f"{name}:")
+    lines.append(f'    .incbin "{blob_path.as_posix()}"')
+
+
+def selected_rvv_cases(model_filter):
+    cases = [case for case in MODEL_LAYER_CASES if model_filter is None or case["model"] == model_filter]
+    out = []
+    for index, case in enumerate(cases, start=1):
+        item = dict(case)
+        item["name"] = f"case{index}"
+        out.append(item)
+    return out
 
 
 def _pack_activation_row_to_words(row_int8: np.ndarray):
@@ -100,19 +114,16 @@ def pack_weights_binary(weight_mat: np.ndarray):
 
 
 def make_top_shape_activation(m_dim: int, k_dim: int):
-    activation = np.zeros((m_dim, k_dim), dtype=np.int16)
-    for m_idx in range(m_dim):
-        for k_idx in range(k_dim):
-            activation[m_idx, k_idx] = ((m_idx * 13 + k_idx * 7 + 5) % 255) - 127
+    m_idx = np.arange(m_dim, dtype=np.int32)[:, None]
+    k_idx = np.arange(k_dim, dtype=np.int32)[None, :]
+    activation = ((m_idx * 13 + k_idx * 7 + 5) % 255) - 127
     return activation.astype(np.int8)
 
 
 def make_top_shape_weight(k_dim: int, n_dim: int):
-    weight = np.zeros((k_dim, n_dim), dtype=np.int8)
-    for k_idx in range(k_dim):
-        for n_idx in range(n_dim):
-            weight[k_idx, n_idx] = (k_idx * 11 + n_idx * 3 + 1) & 0x1
-    return weight
+    k_idx = np.arange(k_dim, dtype=np.int32)[:, None]
+    n_idx = np.arange(n_dim, dtype=np.int32)[None, :]
+    return ((k_idx * 11 + n_idx * 3 + 1) & 0x1).astype(np.int8)
 
 
 def emit_quad_symbol(lines, name, words, align=8):
@@ -129,6 +140,9 @@ def emit_int16_col_major(lines, name, array, align="NR_LANES*4"):
     pad = (4 - len(flat) % 4) % 4
     if pad:
         flat = np.pad(flat, (0, pad), constant_values=0)
+    if USE_INCBIN:
+        _emit_incbin(lines, name, flat.tobytes(), align)
+        return
     words = np.frombuffer(flat.tobytes(), dtype=np.uint32)
     lines.append(f".global {name}")
     lines.append(f".balign {align}")
@@ -142,6 +156,9 @@ def emit_int16_row_major(lines, name, array, align="NR_LANES*4"):
     pad = (4 - len(flat) % 4) % 4
     if pad:
         flat = np.pad(flat, (0, pad), constant_values=0)
+    if USE_INCBIN:
+        _emit_incbin(lines, name, flat.tobytes(), align)
+        return
     words = np.frombuffer(flat.tobytes(), dtype=np.uint32)
     lines.append(f".global {name}")
     lines.append(f".balign {align}")
@@ -155,12 +172,42 @@ def emit_int8_row_major(lines, name, array, align="NR_LANES*4"):
     pad = (4 - len(flat) % 4) % 4
     if pad:
         flat = np.pad(flat, (0, pad), constant_values=0)
+    if USE_INCBIN:
+        _emit_incbin(lines, name, flat.tobytes(), align)
+        return
     words = np.frombuffer(flat.tobytes(), dtype=np.uint32)
     lines.append(f".global {name}")
     lines.append(f".balign {align}")
     lines.append(f"{name}:")
     for i in range(0, len(words), 8):
         lines.append("    .word " + ", ".join(f"0x{int(v):08x}" for v in words[i : i + 8]))
+
+
+def emit_symbol_alias(lines, alias_name, target_name):
+    lines.append(f".global {alias_name}")
+    lines.append(f".set {alias_name}, {target_name}")
+
+
+def emit_placeholder_symbol(lines, name, align=8):
+    lines.append(f".global {name}")
+    lines.append(f".balign {align}")
+    lines.append(f"{name}:")
+    lines.append("    .word 0x00000000")
+
+
+def emit_case_aliases(lines, alias_name, target_name):
+    symbol_stems = [
+        "activation_lp",
+        "weight_lp",
+        "result_lp",
+        "activation_hp",
+        "weight_hp",
+        "result_hp",
+        "result_torch",
+    ]
+    lines.append(f"/* alias {alias_name} -> {target_name} */")
+    for stem in symbol_stems:
+        emit_symbol_alias(lines, f"{stem}_{alias_name}", f"{stem}_{target_name}")
 
 
 def compute_m_v_binary(d: int):
@@ -223,41 +270,64 @@ def build_square_dataset(lines, s: int):
     m_v = compute_m_v_binary(d)
     lines.append(f"/* square={s}: binary P=1, D={d}, adaptive M_v={m_v} */")
 
-    a_lp_words, _ = pack_activations_lp(a.astype(np.int8))
-    emit_quad_symbol(lines, f"activation_lp_square_{s}", a_lp_words)
+    if SKIP_LP_DATA:
+        emit_placeholder_symbol(lines, f"activation_lp_square_{s}")
+        emit_placeholder_symbol(lines, f"weight_lp_square_{s}")
+        emit_placeholder_symbol(lines, f"result_lp_square_{s}")
+    else:
+        a_lp_words, _ = pack_activations_lp(a.astype(np.int8))
+        emit_quad_symbol(lines, f"activation_lp_square_{s}", a_lp_words)
 
-    w_lp_words, _ = pack_weights_binary(w_src.astype(np.int8))
-    emit_quad_symbol(lines, f"weight_lp_square_{s}", w_lp_words)
-    lines.append(f"/* weight_lp_square_{s} layout: single-plane, depth={d} */")
+        w_lp_words, _ = pack_weights_binary(w_src.astype(np.int8))
+        emit_quad_symbol(lines, f"weight_lp_square_{s}", w_lp_words)
+        lines.append(f"/* weight_lp_square_{s} layout: single-plane, depth={d} */")
 
-    emit_int16_col_major(lines, f"result_lp_square_{s}", np.zeros((s, s), dtype=np.int16))
+        emit_int16_col_major(lines, f"result_lp_square_{s}", np.zeros((s, s), dtype=np.int16))
 
-    emit_int8_row_major(lines, f"activation_hp_square_{s}", a)
+    emit_int8_row_major(lines, f"activation_hp_square_{s}", a, align=RVV_HP_ALIGN)
     b_hp = np.where(w_src == 0, -1, 1).astype(np.int16)
-    emit_int8_row_major(lines, f"weight_hp_square_{s}", b_hp)
-    emit_int16_row_major(lines, f"result_hp_square_{s}", np.zeros((s, s), dtype=np.int16))
+    emit_int8_row_major(lines, f"weight_hp_square_{s}", b_hp, align=RVV_HP_ALIGN)
+    emit_int16_row_major(lines, f"result_hp_square_{s}", np.zeros((s, s), dtype=np.int16), align=RVV_HP_ALIGN)
 
-    c = (a.astype(np.int32) @ b_hp.astype(np.int32)).astype(np.int16)
-    emit_int16_row_major(lines, f"result_torch_square_{s}", c)
+    if SKIP_RESULT_TORCH:
+        emit_symbol_alias(lines, f"result_torch_square_{s}", f"result_hp_square_{s}")
+    else:
+        c = (a.astype(np.int32) @ b_hp.astype(np.int32)).astype(np.int16)
+        emit_int16_row_major(lines, f"result_torch_square_{s}", c, align=RVV_HP_ALIGN)
 
 
-def build_top_shape_dataset(lines, name: str, m_dim: int, n_dim: int, k_dim: int):
-    activation = make_top_shape_activation(m_dim, k_dim)
-    weight = make_top_shape_weight(k_dim, n_dim)
+def build_top_shape_dataset(lines, case):
+    name = case["name"]
+    m_dim, n_dim, k_dim = case["M"], case["N"], case["K"]
+    _dbg(f"[rvv_binary_gen] begin {name} shape=({m_dim},{n_dim},{k_dim})")
+    hp_m_dim = min(m_dim, MINIMAL_HP_ROWS) if MINIMAL_HP_DATA else m_dim
+    hp_k_dim = min(k_dim, MINIMAL_HP_K) if MINIMAL_HP_DATA else k_dim
+    activation = make_top_shape_activation(hp_m_dim if MINIMAL_HP_DATA else m_dim, k_dim)
+    weight = make_top_shape_weight(hp_k_dim if MINIMAL_HP_DATA else k_dim, n_dim)
     weight_hp = np.where(weight == 0, -1, 1).astype(np.int8)
+    _dbg(f"[rvv_binary_gen] arrays_ready {name} hp_m={hp_m_dim} hp_k={hp_k_dim}")
 
     lines.append(f"/* {name}: shape=({m_dim},{n_dim},{k_dim}) */")
-    activation_words, _ = pack_activations_lp(activation)
-    emit_quad_symbol(lines, f"activation_lp_{name}", activation_words)
+    if SKIP_LP_DATA:
+        emit_placeholder_symbol(lines, f"activation_lp_{name}")
+        emit_placeholder_symbol(lines, f"weight_lp_{name}")
+        emit_placeholder_symbol(lines, f"result_lp_{name}")
+    else:
+        activation_words, _ = pack_activations_lp(activation)
+        emit_quad_symbol(lines, f"activation_lp_{name}", activation_words)
 
-    weight_words, _ = pack_weights_binary(weight)
-    emit_quad_symbol(lines, f"weight_lp_{name}", weight_words)
+        weight_words, _ = pack_weights_binary(weight)
+        emit_quad_symbol(lines, f"weight_lp_{name}", weight_words)
 
-    emit_int16_col_major(lines, f"result_lp_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
+        emit_int16_col_major(lines, f"result_lp_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
     emit_int8_row_major(lines, f"activation_hp_{name}", activation)
     emit_int8_row_major(lines, f"weight_hp_{name}", weight_hp)
-    emit_int16_row_major(lines, f"result_hp_{name}", np.zeros((m_dim, n_dim), dtype=np.int16))
-    emit_int16_row_major(lines, f"result_torch_{name}", (activation.astype(np.int32) @ weight_hp.astype(np.int32)).astype(np.int16))
+    emit_int16_row_major(lines, f"result_hp_{name}", np.zeros((hp_m_dim, n_dim), dtype=np.int16))
+    if SKIP_RESULT_TORCH:
+        emit_symbol_alias(lines, f"result_torch_{name}", f"result_hp_{name}")
+    else:
+        emit_int16_row_major(lines, f"result_torch_{name}", (activation.astype(np.int32) @ weight_hp.astype(np.int32)).astype(np.int16))
+    _dbg(f"[rvv_binary_gen] done {name}")
 
 
 def main():
@@ -266,12 +336,19 @@ def main():
     parser.add_argument("--sizes", type=int, nargs="+", default=[64], help="Square matrix sizes")
     args = parser.parse_args()
 
-    lines = [".section .data", f"/* auto-generated by gen_data.py, seed={SEED} */"]
+    lines = [".section .l2,\"aw\",@progbits", f"/* auto-generated by gen_data.py, seed={SEED} */"]
     for s in args.sizes:
         build_square_dataset(lines, s)
-    for name, scale, model, layer, m_dim, n_dim, k_dim in BENCH_CASES:
-        lines.append(f"/* model={model}, scale={scale}, layer={layer} */")
-        build_top_shape_dataset(lines, name, m_dim, n_dim, k_dim)
+    bench_cases = selected_rvv_cases(MODEL_FILTER)
+    unique_case_by_shape = {}
+    for case in bench_cases:
+        case_key = (case["M"], case["N"], case["K"])
+        lines.append(f"/* model={case['model']}, scale={case['scale']}, layer={case['layer']} */")
+        if MODEL_FILTER is not None and case_key in unique_case_by_shape:
+            emit_case_aliases(lines, case["name"], unique_case_by_shape[case_key])
+            continue
+        unique_case_by_shape[case_key] = case["name"]
+        build_top_shape_dataset(lines, case)
 
     text = "\n".join(lines) + "\n"
     if args.out == "-":

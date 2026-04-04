@@ -18,7 +18,7 @@ Most commonly used entry points:
 | `search.py` | additional design-space search helper |
 | `kernel_profiling.py` | kernel-level profiling support |
 | `inference_time.py` | inference-time analysis helper |
-| `plot_model_app_runs.py` | summarize model-split benchmark runs from `summary.csv` style outputs |
+| `../benchmarks/plot_model_app_runs.py` | summarize model-split benchmark runs from `summary.csv` style outputs |
 
 ## Use This Directory For
 

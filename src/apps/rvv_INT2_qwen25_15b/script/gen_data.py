@@ -1,10 +1,13 @@
+import os
+import runpy
 from pathlib import Path
-import sys
 
 COMMON = Path(__file__).resolve().parents[2] / "common"
-if str(COMMON) not in sys.path:
-    sys.path.insert(0, str(COMMON))
+sys_path = str(COMMON)
+if sys_path not in os.sys.path:
+    os.sys.path.insert(0, sys_path)
 
-from bmpmm_gen_common import generate_lowp_dataset
+from bmpmm_case_selection import infer_model_filter_from_app_name
 
-print(generate_lowp_dataset(2, model_filter='Qwen/Qwen2.5-1.5B'), end="")
+os.environ["BMPMM_MODEL_FILTER"] = infer_model_filter_from_app_name(Path(__file__).resolve().parents[1].name)
+runpy.run_path(str(Path(__file__).resolve().parents[2] / "rvv_INT2" / "script" / "gen_data.py"), run_name="__main__")
